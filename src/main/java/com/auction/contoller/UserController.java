@@ -1,4 +1,4 @@
-package com.auction.controller;
+package com.auction.contoller;
 
 import com.auction.dto.request.ChangePasswordRequest;
 import com.auction.service.interfaces.ResetPasswordService;
