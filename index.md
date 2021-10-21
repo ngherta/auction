@@ -1,37 +1,21 @@
-## Welcome to GitHub Pages
+# Welcome to LOT!
 
-You can use the [editor on GitHub](https://github.com/gogo6ar/auction/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+<b>LOT</b> is a platform for creating events of buying and selling goods by offering them up for bid, taking bids, and then selling the item to the highest bidder or buying the item from the lowest bidder
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+My customer is a person that is collect interested in selling something or just wants to buy some rare item and get emotions.
 
-### Markdown
+One of the reasons I chose this project is because I chose project for my bachelor's degree at university.
+Another reason is the fact that i have never done anything like this.It involves many things that I'll be doing for the first time.
+I want to create a convenient and useful application that people will use. 
+I’m sure I’ll learn a lot out of all this. It should prove challenging, which is the point of this program.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Table of contents:
+* [Project wiki](https://github.com/gogo6ar/auction/wiki)
+* [Functional requirements](https://github.com/gogo6ar/auction/wiki/Functional-Requirements)
+* [Non-functional requirements](https://github.com/gogo6ar/auction/wiki/Non-Functional-Requirements)
 
-```markdown
-Syntax highlighted code block
+### Current progress
+///
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/gogo6ar/auction/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+### Future plans
+///
