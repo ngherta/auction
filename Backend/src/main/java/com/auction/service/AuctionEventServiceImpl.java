@@ -15,7 +15,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -54,5 +57,24 @@ public class AuctionEventServiceImpl implements AuctionEventService {
         }
 
         return AuctionEventDto.from(auctionEvent);
+    }
+
+    @Override
+    @Transactional
+    public void changeStatusToFinished(List<Long> list) {
+        List<AuctionEvent> listOfEvents = new ArrayList<>();
+        Optional<AuctionEvent> auctionEvent;
+
+        for (Long id : list) {
+            auctionEvent = auctionEventRepository.findById(id);
+            if (auctionEvent.isPresent()) {
+                auctionEvent.get().setStatusType(AuctionStatus.FINISHED);
+                listOfEvents.add(auctionEvent.get());
+            }
+        }
+
+        if (!listOfEvents.isEmpty()) {
+            auctionEventRepository.saveAll(listOfEvents);
+        }
     }
 }
