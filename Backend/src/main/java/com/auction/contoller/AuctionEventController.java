@@ -7,14 +7,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.HtmlUtils;
 
 @RestController
 @RequiredArgsConstructor
-//@RequestMapping("/auction")
+@CrossOrigin("*")
+@RequestMapping("/auction")
 public class AuctionEventController {
 
     private final AuctionEventService auctionEventService;

@@ -20,7 +20,7 @@ import java.util.Date;
 public class AuctionAction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @EqualsAndHashCode.Exclude

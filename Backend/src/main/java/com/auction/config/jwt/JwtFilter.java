@@ -18,7 +18,7 @@ import java.io.IOException;
 
 import static org.springframework.util.StringUtils.hasText;
 
-@Component
+//@Component
 @Log
 public class JwtFilter extends GenericFilterBean {
 

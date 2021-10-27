@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,9 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private JwtFilter jwtFilter;
+//
+//    @Autowired
+//    private JwtFilter jwtFilter;
 
     @Bean
     @Override
@@ -46,9 +47,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/*").hasRole("USER")
                 .antMatchers("/register", "/auth").permitAll()
                 .antMatchers("/auction/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .antMatchers("/websocket/**").permitAll()
+                .antMatchers("/**").permitAll()
+                .anyRequest().authenticated();
+//                .and()
+//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
