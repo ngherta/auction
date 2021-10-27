@@ -3,6 +3,7 @@ package com.auction.helper;
 import com.auction.model.AuctionEvent;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.service.interfaces.AuctionEventService;
+import com.auction.service.interfaces.AuctionEventSortService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,6 +19,7 @@ public class ScheduledTasks {
 
   private final AuctionEventService auctionEventService;
   private final AuctionEventRepository auctionEventRepository;
+  private final AuctionEventSortService auctionEventSortService;
 
   @Scheduled(fixedDelay = 20000)
   public void checkEventForFinish() {
@@ -31,6 +33,8 @@ public class ScheduledTasks {
 
   @Scheduled(fixedDelay = 60000)
   public void changeOrderForEvents(){
-    //need to be implemented
+    log.info("Start sorting AuctionEvents...");
+//    auctionEventSortService.sortAuctionEvent();
+    log.info("Finish sorting AuctionEvents...");
   }
 }
