@@ -2,6 +2,9 @@ package com.auction.service;
 
 import com.auction.dto.AuctionEventDto;
 import com.auction.dto.request.AuctionEventRequest;
+import com.auction.dto.request.AuctionFinishByFinishPriceRequest;
+import com.auction.exception.AuctionEventNotFoundException;
+import com.auction.exception.UserNotFoundException;
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionCharity;
 import com.auction.model.AuctionEvent;
@@ -13,7 +16,7 @@ import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionCharityRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.AuctionWinnerRepository;
-import com.auction.repository.UserEntityRepository;
+import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +26,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -31,7 +35,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
     private final AuctionEventRepository auctionEventRepository;
     private final AuctionCharityRepository auctionCharityRepository;
-    private final UserEntityRepository userEntityRepository;
+    private final UserRepository userRepository;
     private final AuctionWinnerRepository auctionWinnerRepository;
     private final AuctionActionRepository auctionActionRepository;
 
@@ -42,7 +46,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
         auctionEvent.setTitle(request.getTitle());
         auctionEvent.setDescription(request.getDescription());
 
-        User user = userEntityRepository.findById(request.getUserId()).get();
+        User user = userRepository.findById(request.getUserId()).get();
         auctionEvent.setUser(user);
 
         if (request.getAuctionStatus().equals(AuctionStatus.ACTIVE.name())) {
@@ -95,5 +99,30 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
         auctionWinnerRepository.saveAll(listOfWinners);
         auctionEventRepository.saveAll(list);
+    }
+
+    @Override
+    @Transactional
+    public void finishByFinishPrice(AuctionFinishByFinishPriceRequest request) throws AuctionEventNotFoundException, UserNotFoundException {
+        Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(request.getAuctionId());
+        Optional<User> user = userRepository.findById(request.getUserId());
+
+        if (!auctionEvent.isPresent()) {
+            throw new AuctionEventNotFoundException("Auction event[" + request.getAuctionId() + "doesn't exist");
+        }
+
+        if (!user.isPresent()) {
+            throw new UserNotFoundException("User[" + request.getUserId() + "] doesn't exist");
+        }
+
+        auctionEvent.get().setStatusType(AuctionStatus.FINISHED);
+        auctionEventRepository.save(auctionEvent.get());
+
+
+        AuctionWinner auctionWinner = new AuctionWinner();
+        auctionWinner.setUser(user.get());
+        auctionWinner.setAuctionEvent(auctionEvent.get());
+        auctionWinner.setPrice(100.20);
+        auctionWinnerRepository.save(auctionWinner);
     }
 }

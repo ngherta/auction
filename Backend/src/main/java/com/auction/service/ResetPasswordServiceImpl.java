@@ -5,7 +5,7 @@ import com.auction.exception.UserDoesntResetPassword;
 import com.auction.model.ResetPasswordEntity;
 import com.auction.model.User;
 import com.auction.repository.ResetPasswordRepository;
-import com.auction.repository.UserEntityRepository;
+import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.ResetPasswordService;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
@@ -23,7 +23,7 @@ import java.io.UnsupportedEncodingException;
 @RequiredArgsConstructor
 public class ResetPasswordServiceImpl implements ResetPasswordService {
 
-    private final UserEntityRepository userEntityRepository;
+    private final UserRepository userRepository;
     private final JavaMailSender mailSender;
     private final ResetPasswordRepository resetPasswordRepository;
     private final PasswordEncoder passwordEncoder;
@@ -31,7 +31,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     public void resetPasswordByEmail (String email) throws MessagingException, UnsupportedEncodingException {
         User user;
         try {
-            user = userEntityRepository.findByEmail(email);
+            user = userRepository.findByEmail(email);
         }catch (UsernameNotFoundException e) {
             throw new UsernameNotFoundException("User with email" + email + " doesn't exist.");
         }
@@ -49,7 +49,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Override
     public UserDto changePasswordAfterReset(String email, String newPassword) {
-        User user = userEntityRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
 
         if (user == null) {
             throw new UsernameNotFoundException("This user doesn't exist");
@@ -60,7 +60,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));
-        userEntityRepository.save(user);
+        userRepository.save(user);
 
         UserDto userDto = UserDto.from(user);
 

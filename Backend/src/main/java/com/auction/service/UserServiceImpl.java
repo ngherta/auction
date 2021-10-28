@@ -5,7 +5,7 @@ import com.auction.dto.request.RegistrationRequest;
 import com.auction.exception.SameCredentialsException;
 import com.auction.model.User;
 import com.auction.model.enums.UserRole;
-import com.auction.repository.UserEntityRepository;
+import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +19,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserEntityRepository userEntityRepository;
+    private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -37,15 +37,15 @@ public class UserServiceImpl implements UserService {
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
         user.setRole(UserRole.USER);
-        user = userEntityRepository.save(user);
+        user = userRepository.save(user);
         return UserDto.from(user);
     }
 
     public boolean validateUserCredentials(RegistrationRequest request) throws SameCredentialsException {
-        if (userEntityRepository.findByEmail(request.getEmail()) != null) {
+        if (userRepository.findByEmail(request.getEmail()) != null) {
             throw new SameCredentialsException("User with email[" + request.getEmail() + "] already exists");
         }
-        if (userEntityRepository.findByLogin(request.getLogin()).isPresent()) {
+        if (userRepository.findByLogin(request.getLogin()).isPresent()) {
             throw new SameCredentialsException("User with login[" + request.getLogin() + "] already exists");
         }
         return true;
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByLogin(String login) {
-        return userEntityRepository.findByLogin(login).get();
+        return userRepository.findByLogin(login).get();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
-        List<User> list = userEntityRepository.findAll();
+        List<User> list = userRepository.findAll();
         List<UserDto> listDto = new ArrayList<>();
         for (User userEntity : list) {
             listDto.add(UserDto.from(userEntity));

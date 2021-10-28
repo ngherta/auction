@@ -1,7 +1,7 @@
 package com.auction.config.services;
 
 import com.auction.model.User;
-import com.auction.repository.UserEntityRepository;
+import com.auction.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
-    UserEntityRepository userRepository;
+    UserRepository userRepository;
 
     @Override
     @Transactional
