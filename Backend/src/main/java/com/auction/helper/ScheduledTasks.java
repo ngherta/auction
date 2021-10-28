@@ -34,7 +34,7 @@ public class ScheduledTasks {
   @Scheduled(fixedDelay = 60000)
   public void changeOrderForEvents(){
     log.info("Start sorting AuctionEvents...");
-//    auctionEventSortService.sortAuctionEvent();
+    auctionEventSortService.sortAuctionEvent();
     log.info("Finish sorting AuctionEvents...");
   }
 }

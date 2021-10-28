@@ -125,4 +125,12 @@ public class AuctionEventServiceImpl implements AuctionEventService {
         auctionWinner.setPrice(100.20);
         auctionWinnerRepository.save(auctionWinner);
     }
+
+    @Override
+    public List<AuctionEventDto> getAllSortByRating() {
+        List<AuctionEventDto> auctionEventDtoList = new ArrayList<>();
+        List<AuctionEvent> auctionEventList = auctionEventRepository.getAuctionEventByRating();
+
+        return auctionEventDtoList;
+    }
 }

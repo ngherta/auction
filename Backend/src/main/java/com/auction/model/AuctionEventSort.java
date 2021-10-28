@@ -28,5 +28,5 @@ public class AuctionEventSort {
   @JoinColumn(name = "auction_id", nullable = false, updatable = false)
   private AuctionEvent auctionEvent;
 
-  private Double sortRating;
+  private Long sortRating;
 }

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,12 @@ public class AuctionEventController {
         AuctionEventDto auctionEventDto = auctionEventService.save(request);
 
         return ResponseEntity.ok(auctionEventDto);
+    }
+
+    @GetMapping("/sort")
+    public ResponseEntity getAllAuctionByRating() {
+//        auctionEventService.g
+        return ResponseEntity.ok().build();
     }
 
     @MessageMapping("/hello")
