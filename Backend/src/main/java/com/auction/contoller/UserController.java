@@ -1,10 +1,12 @@
 package com.auction.contoller;
 
 import com.auction.dto.request.ChangePasswordRequest;
+import com.auction.dto.request.DeleteUserRequest;
 import com.auction.service.interfaces.ResetPasswordService;
 import com.auction.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,5 +45,12 @@ public class UserController {
     @GetMapping()
     public ResponseEntity getAllUsers() {
         return ResponseEntity.ok().body(userService.getAll());
+    }
+
+    @DeleteMapping
+    public ResponseEntity deleteUser(@RequestBody DeleteUserRequest request) {
+        userService.deleteUser(request);
+
+        return ResponseEntity.ok().build();
     }
 }

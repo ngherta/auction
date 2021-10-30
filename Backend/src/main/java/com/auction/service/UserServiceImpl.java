@@ -1,12 +1,15 @@
 package com.auction.service;
 
 import com.auction.dto.UserDto;
+import com.auction.dto.request.DeleteUserRequest;
 import com.auction.dto.request.RegistrationRequest;
 import com.auction.exception.SameCredentialsException;
+import com.auction.exception.UserNotFoundException;
 import com.auction.model.User;
 import com.auction.model.enums.UserRole;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,8 +17,10 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -58,10 +63,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByLoginAndPassword(String login, String password) {
-        User userEntity = findByLogin(login);
-        if (userEntity != null) {
-            if (passwordEncoder.matches(password, userEntity.getPassword())) {
-                return userEntity;
+        Optional<User> userEntity;
+        boolean isEmail = login.contains("@");
+        if (isEmail){
+            userEntity = Optional.ofNullable(userRepository.findByEmail(login));
+        }
+        else {
+            userEntity = userRepository.findByLogin(login);
+        }
+
+        if (!userEntity.isPresent()) {
+            if (passwordEncoder.matches(password, userEntity.get().getPassword())) {
+                return userEntity.get();
             }
         }
         return null;
@@ -75,5 +88,17 @@ public class UserServiceImpl implements UserService {
             listDto.add(UserDto.from(userEntity));
         }
         return listDto;
+    }
+
+    @Override
+    public void deleteUserById(DeleteUserRequest request) throws UserNotFoundException {
+        Optional<User> user = userRepository.findById(request.getUserId());
+
+        if (!user.isPresent()) {
+            throw new UserNotFoundException("User[" + request.getUserId() + "] doesn't exist.");
+        }
+
+        log.info("Deleting user[" + request.getUserId() + "]");
+        userRepository.delete(user.get());
     }
 }

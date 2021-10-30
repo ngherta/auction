@@ -7,16 +7,14 @@ import com.auction.repository.AuctionEventSortRepository;
 import com.auction.service.interfaces.AuctionEventSortService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -36,25 +34,22 @@ public class AuctionEventSortServiceImpl implements AuctionEventSortService {
 
 
     for (int i = 0; i < listOfObj.size(); i++) {
-      //
-      AuctionEventSort auctionEventSort1;
-      try{
-        auctionEventSort1 = auctionEventSortRepository.findById()
-      }catch (Exception e) {}
-      //
-
       AuctionEventSort auctionEventSort = new AuctionEventSort();
       Object objectTmp[] = listOfObj.get(i);
 
       BigInteger auctionIdBig = (BigInteger) objectTmp[0];
       BigInteger ratingBig = (BigInteger) objectTmp[1];
-      AuctionEvent auctionEvent = entityManager.getReference(AuctionEvent.class, auctionIdBig.longValue());
+      Optional<AuctionEventSort> auctionEventSortCheck;
+      auctionEventSortCheck = auctionEventSortRepository.findById(auctionIdBig.longValue());
 
+      if (auctionEventSortCheck.isPresent()) {
+        auctionEventSort = auctionEventSortCheck.get();
+      } else {
+        AuctionEvent auctionEvent = entityManager.getReference(AuctionEvent.class, auctionIdBig.longValue());
+        auctionEventSort.setAuctionEvent(auctionEvent);
+      }
 
-
-      auctionEventSort.setAuctionEvent(auctionEvent);
       auctionEventSort.setSortRating(ratingBig.longValue());
-      auctionEventSort.setAuctionEvent(auctionEvent);
 
       auctionEventSortList.add(auctionEventSort);
     }
