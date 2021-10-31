@@ -13,9 +13,16 @@ I’m sure I’ll learn a lot out of all this. It should prove challenging, whic
 * [Project wiki](https://github.com/gogo6ar/auction/wiki)
 * [Functional requirements](https://github.com/gogo6ar/auction/wiki/Functional-Requirements)
 * [Non-functional requirements](https://github.com/gogo6ar/auction/wiki/Non-Functional-Requirements)
+* [Viewpoints Catalog](https://github.com/gogo6ar/auction/wiki/Viewpoints-Catalog)
+* [Progress board](https://github.com/gogo6ar/auction/projects/1)
+* [Backlog](https://github.com/gogo6ar/auction/issues)
+
+
 
 ### Current progress
-///
+The project is now in the documentation stage.
 
 ### Future plans
-///
+
+In the near future, I want to start developing my project, get great pleasure from the process and learn a lot of new things. 
+I believe that this project has a future, so I would like to use the coolest and most modern technologies.
