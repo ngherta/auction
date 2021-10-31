@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AuctionEventSortRepository extends JpaRepository<AuctionEventSort, Long> {
+  void deleteAllByAuctionEvent(Long auctionId);
 }

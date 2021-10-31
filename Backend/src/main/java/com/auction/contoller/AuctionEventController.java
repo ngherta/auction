@@ -2,12 +2,14 @@ package com.auction.contoller;
 
 import com.auction.dto.AuctionEventDto;
 import com.auction.dto.request.AuctionEventRequest;
+import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.service.interfaces.AuctionEventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,4 +51,9 @@ public class AuctionEventController {
         return "Hello, " + HtmlUtils.htmlEscape(message + "xq");
     }
 
+    @DeleteMapping()
+    public ResponseEntity deleteById(Long auctioId) throws AuctionEventNotFoundException {
+        auctionEventService.delete(auctioId);
+        return ResponseEntity.ok().build();
+    }
 }

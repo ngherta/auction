@@ -19,4 +19,6 @@ public interface AuctionEventService {
     List<AuctionEventDto> getAllSortByRating();
 
     List<AuctionEventDto> getAll();
+
+    void delete(Long auctionId) throws AuctionEventNotFoundException;
 }

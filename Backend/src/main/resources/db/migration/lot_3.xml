@@ -5,24 +5,14 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
   <changeSet id="1" author="ngh">
-    <createTable tableName="user">
+    <createTable tableName="userRole">
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="email" type="varchar(255)">
-        <constraints unique="true"></constraints>
-      </column>
-      <column name="first_name" type="varchar(255)"></column>
-      <column name="last_name" type="varchar(255)"></column>
-      <column name="login" type="varchar(255)">
-        <constraints unique="true"></constraints>
-      </column>
-      <column name="password" type="varchar(255)"></column>
-      <column name="role" type="varchar(255)"></column>
-      <column name="user_rating" type="varchar(255)"></column>
+      <column name="user_role" type="int4"></column>
     </createTable>
     <rollback>
-      <dropTable tableName="user"/>
+      <dropTable tableName="user_role"/>
     </rollback>
   </changeSet>
 </databaseChangeLog>

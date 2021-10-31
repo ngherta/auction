@@ -19,4 +19,6 @@ public interface AuctionActionRepository extends JpaRepository<AuctionAction, Lo
   AuctionAction getWinnerAuctionAction(@Param("auctionId")Long auctionId);
 
   List<AuctionAction> findByAuctionEvent(Long auctionId);
+
+  void deleteAllByAuctionEvent(Long auctionId);
 }

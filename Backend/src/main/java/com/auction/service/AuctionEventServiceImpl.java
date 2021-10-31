@@ -15,6 +15,7 @@ import com.auction.model.enums.AuctionType;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionCharityRepository;
 import com.auction.repository.AuctionEventRepository;
+import com.auction.repository.AuctionEventSortRepository;
 import com.auction.repository.AuctionWinnerRepository;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.AuctionEventService;
@@ -38,6 +39,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     private final UserRepository userRepository;
     private final AuctionWinnerRepository auctionWinnerRepository;
     private final AuctionActionRepository auctionActionRepository;
+    private final AuctionEventSortRepository auctionEventSortRepository;
 
     @Override
     @Transactional
@@ -160,4 +162,29 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
         return auctionEventDtoList;
     }
+
+    @Override
+    @Transactional
+    public void delete(Long auctionId) throws AuctionEventNotFoundException {
+        Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
+        if (!auctionEvent.isPresent()) {
+            throw new AuctionEventNotFoundException("Auction event[" + auctionId + "] doesn't exist");
+        }
+
+        if (auctionEvent.get().getAuctionType().equals(AuctionType.CHARITY)) {
+            AuctionCharity auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionId);
+            auctionCharityRepository.delete(auctionCharity);
+        }
+
+        if (auctionEvent.get().getStatusType().equals(AuctionStatus.FINISHED)) {
+            AuctionWinner auctionWinner = auctionWinnerRepository.findByAuctionEvent(auctionId);
+            auctionWinnerRepository.delete(auctionWinner);
+        }
+
+        auctionEventSortRepository.deleteAllByAuctionEvent(auctionId);
+
+        auctionActionRepository.deleteAllByAuctionEvent(auctionId);
+    }
+
+
 }
