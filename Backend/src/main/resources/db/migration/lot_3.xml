@@ -19,7 +19,7 @@
       </column>
       <column name="password" type="varchar(255)"></column>
       <column name="role" type="varchar(255)"></column>
-      <column name="user_rating" type="float8"></column>
+      <column name="user_rating" type="varchar(255)"></column>
     </createTable>
     <rollback>
       <dropTable tableName="user"/>
