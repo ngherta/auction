@@ -17,4 +17,6 @@ public interface AuctionEventService {
     void finishByFinishPrice(AuctionFinishByFinishPriceRequest request) throws AuctionEventNotFoundException, UserNotFoundException;
 
     List<AuctionEventDto> getAllSortByRating();
+
+    List<AuctionEventDto> getAll();
 }

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.HtmlUtils;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
@@ -30,10 +32,14 @@ public class AuctionEventController {
         return ResponseEntity.ok(auctionEventDto);
     }
 
+    @GetMapping()
+    public List<AuctionEventDto> getAll() {
+        return auctionEventService.getAll();
+    }
+
     @GetMapping("/sort")
-    public ResponseEntity getAllAuctionByRating() {
-//        auctionEventService.g
-        return ResponseEntity.ok().build();
+    public List<AuctionEventDto> getAllAuctionByRating() {
+        return auctionEventService.getAllSortByRating();
     }
 
     @MessageMapping("/hello")

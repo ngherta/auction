@@ -60,6 +60,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
         if (request.getCharityPercent() == 0) {
             auctionEvent = auctionEventRepository.save(auctionEvent);
+            return AuctionEventDto.from(auctionEvent);
         }
 
         AuctionCharity auctionCharity = new AuctionCharity();
@@ -71,10 +72,9 @@ public class AuctionEventServiceImpl implements AuctionEventService {
             auctionCharity.setAuctionEvent(auctionEvent);
             auctionCharity.setPercent(request.getCharityPercent());
             auctionCharity = auctionCharityRepository.save(auctionCharity);
-            return AuctionEventDto.from(auctionEvent, auctionCharity);
         }
 
-        return AuctionEventDto.from(auctionEvent);
+        return AuctionEventDto.from(auctionEvent, auctionCharity);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
         AuctionWinner auctionWinner = new AuctionWinner();
         auctionWinner.setUser(user.get());
         auctionWinner.setAuctionEvent(auctionEvent.get());
-        auctionWinner.setPrice(100.20);
+        auctionWinner.setPrice(auctionEvent.get().getFinishPrice());
         auctionWinnerRepository.save(auctionWinner);
     }
 
@@ -130,6 +130,33 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     public List<AuctionEventDto> getAllSortByRating() {
         List<AuctionEventDto> auctionEventDtoList = new ArrayList<>();
         List<AuctionEvent> auctionEventList = auctionEventRepository.getAuctionEventByRating();
+
+        for (AuctionEvent auctionEvent : auctionEventList) {
+            if (auctionEvent.getAuctionType().equals(AuctionType.CHARITY.name())) {
+                AuctionCharity auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionEvent.getId());
+                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent, auctionCharity));
+            }
+            else {
+                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent));
+            }
+        }
+
+        return auctionEventDtoList;
+    }
+
+    @Override
+    public List<AuctionEventDto> getAll() {
+        List<AuctionEvent> list = auctionEventRepository.findAll();
+        List<AuctionEventDto> auctionEventDtoList = new ArrayList<>();
+        for (AuctionEvent auctionEvent : list) {
+            if (auctionEvent.getAuctionType().equals(AuctionType.CHARITY.name())) {
+                AuctionCharity auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionEvent.getId());
+                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent, auctionCharity));
+            }
+            else {
+                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent));
+            }
+        }
 
         return auctionEventDtoList;
     }

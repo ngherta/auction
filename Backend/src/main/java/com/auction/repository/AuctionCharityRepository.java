@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AuctionCharityRepository extends JpaRepository<AuctionCharity, Long> {
     AuctionCharity save(AuctionCharity auctionCharity);
+
+    AuctionCharity findByAuctionEvent(Long id);
 }

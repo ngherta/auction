@@ -2,6 +2,7 @@ package com.auction.contoller;
 
 import com.auction.dto.request.ChangePasswordRequest;
 import com.auction.dto.request.DeleteUserRequest;
+import com.auction.exception.UserNotFoundException;
 import com.auction.service.interfaces.ResetPasswordService;
 import com.auction.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
@@ -48,8 +49,8 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity deleteUser(@RequestBody DeleteUserRequest request) {
-        userService.deleteUser(request);
+    public ResponseEntity deleteUser(@RequestBody DeleteUserRequest request) throws UserNotFoundException {
+        userService.deleteUserById(request);
 
         return ResponseEntity.ok().build();
     }
