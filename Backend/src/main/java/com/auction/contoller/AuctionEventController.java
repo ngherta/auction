@@ -60,8 +60,9 @@ public class AuctionEventController {
     }
 
     @PutMapping("/{auctionId}")
-    public ResponseEntity updateById(@PathVariable Long auctionId) throws AuctionEventNotFoundException {
-        auctionEventService.delete(auctionId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity updateById(@PathVariable Long auctionId,
+                                     @RequestBody AuctionEventRequest request) throws AuctionEventNotFoundException {
+        AuctionEventDto auctionEventDto = auctionEventService.update(request ,auctionId);
+        return ResponseEntity.ok(auctionEventDto);
     }
 }
