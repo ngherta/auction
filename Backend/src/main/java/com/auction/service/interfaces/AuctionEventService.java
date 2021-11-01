@@ -21,4 +21,6 @@ public interface AuctionEventService {
     List<AuctionEventDto> getAll();
 
     void delete(Long auctionId) throws AuctionEventNotFoundException;
+
+    AuctionEventDto update(AuctionEventRequest request, Long auctionId) throws AuctionEventNotFoundException;
 }

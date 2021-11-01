@@ -186,5 +186,56 @@ public class AuctionEventServiceImpl implements AuctionEventService {
         auctionActionRepository.deleteAllByAuctionEvent(auctionId);
     }
 
+    @Override
+    @Transactional
+    public AuctionEventDto update(AuctionEventRequest request, Long auctionId) throws AuctionEventNotFoundException {
+        Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
+        if (!auctionEvent.isPresent()) {
+            throw new AuctionEventNotFoundException("Auction event[" + auctionId + "] doesn't exist.");
+        }
+
+        ///Need to add more exceptions!
+        AuctionType oldAuctionType = auctionEvent.get().getAuctionType();
+
+        auctionEvent.get().setId(auctionId);
+        auctionEvent.get().setTitle(request.getTitle());
+        auctionEvent.get().setDescription(request.getDescription());
+
+        ///
+
+        if (request.getAuctionStatus().equals(AuctionStatus.ACTIVE.name())) {
+            auctionEvent.get().setStatusType(AuctionStatus.ACTIVE);
+        }
+        else if(request.getAuctionStatus().equals(AuctionStatus.EXPECTATION.name())) {
+            auctionEvent.get().setStatusType(AuctionStatus.EXPECTATION);
+        }
+
+        if (request.getCharityPercent() == 0) {
+            auctionEvent = Optional.ofNullable(auctionEventRepository.save(auctionEvent.get()));
+            return AuctionEventDto.from(auctionEvent.get());
+        }
+
+        AuctionCharity auctionCharity = new AuctionCharity();
+
+        if (oldAuctionType.name().equals(AuctionType.CHARITY.name()) && !request.getAuctionType().equals(AuctionType.CHARITY.name())) {
+            auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionId);
+            auctionCharityRepository.delete(auctionCharity);
+            auctionEvent.get().setAuctionType(AuctionType.COMMERCIAL);
+        }
+        else if (request.getCharityPercent() > 0 && auctionEvent.get().getAuctionType().equals(AuctionType.CHARITY.name())){
+            auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionId);
+            auctionCharity.setPercent(request.getCharityPercent());
+            auctionCharityRepository.save(auctionCharity);
+        }
+        else if (request.getCharityPercent() > 0 && auctionEvent.get().getAuctionType().equals(AuctionType.COMMERCIAL.name())){
+            auctionCharity = new AuctionCharity();
+            auctionCharity.setPercent(request.getCharityPercent());
+            auctionCharity.setAuctionEvent(auctionEvent.get());
+            auctionCharityRepository.save(auctionCharity);
+        }
+
+        return AuctionEventDto.from(auctionEvent.get(), auctionCharity);
+    }
+
 
 }
