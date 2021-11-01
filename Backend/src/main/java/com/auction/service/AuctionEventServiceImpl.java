@@ -19,11 +19,14 @@ import com.auction.repository.AuctionEventSortRepository;
 import com.auction.repository.AuctionWinnerRepository;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.AuctionEventService;
+import com.auction.service.interfaces.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +43,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     private final AuctionWinnerRepository auctionWinnerRepository;
     private final AuctionActionRepository auctionActionRepository;
     private final AuctionEventSortRepository auctionEventSortRepository;
+    private final MailService mailService;
 
     @Override
     @Transactional
@@ -81,7 +85,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
     @Override
     @Transactional
-    public void changeStatusToFinished(List<AuctionEvent> list) {
+    public void changeStatusToFinished(List<AuctionEvent> list) throws MessagingException, UnsupportedEncodingException {
         List<AuctionWinner> listOfWinners = new ArrayList<>();
 
         for (AuctionEvent event : list) {
@@ -97,10 +101,26 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
             event.setStatusType(AuctionStatus.FINISHED);
             log.info("AuctionEvent [" + event.getId() + "] set new status - FINISHED.");
+
+            log.info("Start to send email to winner " + auctionWinner.getUser().getEmail());
+            mailService.sendEmailToAuctionWinner(auctionWinner);
+            log.info("Finish to send email to winner");
+
+            log.info("Start to send email to participants " + event.getTitle());
+            sendEmailToParticipants(event, auctionWinner);
+            log.info("Finish to send email to participants");
         }
 
         auctionWinnerRepository.saveAll(listOfWinners);
         auctionEventRepository.saveAll(list);
+    }
+
+    @Override
+    public void sendEmailToParticipants(AuctionEvent auctionEvent, AuctionWinner auctionWinner) throws MessagingException, UnsupportedEncodingException {
+        List<AuctionAction> list = auctionActionRepository.getAllByAuctionGroupByUser(auctionEvent.getId(), auctionWinner.getUser().getId());
+        if (!list.isEmpty()) {
+            mailService.sendEmailToAuctionParticipant(list);
+        }
     }
 
     @Override

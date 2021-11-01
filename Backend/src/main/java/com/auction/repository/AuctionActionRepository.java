@@ -1,6 +1,7 @@
 package com.auction.repository;
 
 import com.auction.model.AuctionAction;
+import com.auction.model.AuctionEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,7 +19,15 @@ public interface AuctionActionRepository extends JpaRepository<AuctionAction, Lo
           "LIMIT 1")
   AuctionAction getWinnerAuctionAction(@Param("auctionId")Long auctionId);
 
-  List<AuctionAction> findByAuctionEvent(Long auctionId);
+  List<AuctionAction> findByAuctionEvent(AuctionEvent auctionEvent);
+
+  @Query(nativeQuery = true, value =
+          "SELECT * FROM auction_action AS aa " +
+          "WHERE aa.auction_id = auctionId AND " +
+          "aa.user_id != userWinnerId " +
+          "GROUP BY aa.user_id ")
+  List<AuctionAction> getAllByAuctionGroupByUser(@Param("auctionId") Long auctionId,
+                                                 @Param("userWinnerId") Long userWinnerId);
 
   void deleteAllByAuctionEvent(Long auctionId);
 }

@@ -6,13 +6,16 @@ import com.auction.dto.request.AuctionFinishByFinishPriceRequest;
 import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.exception.UserNotFoundException;
 import com.auction.model.AuctionEvent;
+import com.auction.model.AuctionWinner;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public interface AuctionEventService {
     AuctionEventDto save(AuctionEventRequest request);
 
-    void changeStatusToFinished(List<AuctionEvent> list);
+    void changeStatusToFinished(List<AuctionEvent> list) throws MessagingException, UnsupportedEncodingException;
 
     void finishByFinishPrice(AuctionFinishByFinishPriceRequest request) throws AuctionEventNotFoundException, UserNotFoundException;
 
@@ -23,4 +26,6 @@ public interface AuctionEventService {
     void delete(Long auctionId) throws AuctionEventNotFoundException;
 
     AuctionEventDto update(AuctionEventRequest request, Long auctionId) throws AuctionEventNotFoundException;
+
+    void sendEmailToParticipants(AuctionEvent auctionEvent, AuctionWinner auctionWinner) throws MessagingException, UnsupportedEncodingException;
 }

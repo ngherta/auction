@@ -34,12 +34,12 @@ public class AuctionActionServiceImpl implements AuctionActionService {
     auctionAction.setAuctionEvent(entityManager.getReference(AuctionEvent.class, request.getAuctionId()));
     auctionAction = auctionActionRepository.save(auctionAction);
     //Check transaction, if last auctionAction exists in list
-    return getAllByAuction(auctionAction.getAuctionEvent().getId());
+    return getAllByAuction(auctionAction.getAuctionEvent());
   }
 
   @Override
-  public List<AuctionActionDto> getAllByAuction(Long auctionId) {
-    List<AuctionAction> list = auctionActionRepository.findByAuctionEvent(auctionId);
+  public List<AuctionActionDto> getAllByAuction(AuctionEvent auctionEvent) {
+    List<AuctionAction> list = auctionActionRepository.findByAuctionEvent(auctionEvent);
     List<AuctionActionDto> listDto = AuctionActionDto.from(list);
     return listDto;
   }

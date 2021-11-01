@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class ScheduledTasks {
   private final AuctionEventSortService auctionEventSortService;
 
   @Scheduled(fixedDelay = 20000)
-  public void checkEventForFinish() {
+  public void checkEventForFinish() throws MessagingException, UnsupportedEncodingException {
     List<AuctionEvent> list = auctionEventRepository.getListForChangeStatus();
     log.info("Try to find auction events to finish it.");
     if (!list.isEmpty()) {
