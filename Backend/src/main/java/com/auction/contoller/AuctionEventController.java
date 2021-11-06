@@ -3,6 +3,8 @@ package com.auction.contoller;
 import com.auction.dto.AuctionEventDto;
 import com.auction.dto.request.AuctionEventRequest;
 import com.auction.exception.AuctionEventNotFoundException;
+import com.auction.model.AuctionEvent;
+import com.auction.repository.AuctionEventRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +31,7 @@ import java.util.List;
 public class AuctionEventController {
 
     private final AuctionEventService auctionEventService;
+    private final AuctionEventRepository auctionEventRepository;
 
     @PostMapping()
     public ResponseEntity createAuctionEvent(@RequestBody AuctionEventRequest request) {
@@ -55,7 +59,11 @@ public class AuctionEventController {
 
     @DeleteMapping()
     public ResponseEntity deleteById(Long auctionId) throws AuctionEventNotFoundException {
-        auctionEventService.delete(auctionId);
+        Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
+        if (!auctionEvent.isPresent()) {
+            throw new AuctionEventNotFoundException("Auction event[" + auctionId + "] doesn't exist");
+        }
+        auctionEventService.delete(auctionEvent.get());
         return ResponseEntity.ok().build();
     }
 

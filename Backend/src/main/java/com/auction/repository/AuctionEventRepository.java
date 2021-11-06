@@ -1,6 +1,7 @@
 package com.auction.repository;
 
 import com.auction.model.AuctionEvent;
+import com.auction.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -33,4 +34,6 @@ public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long
             "left join auction_sort as aa on a.id = aa.auction_id " +
             "order by aa.rating")
     List<AuctionEvent> getAuctionEventByRating();
+
+    List<AuctionEvent> findByUser(User user);
 }

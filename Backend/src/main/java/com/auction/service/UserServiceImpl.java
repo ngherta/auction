@@ -5,9 +5,13 @@ import com.auction.dto.request.DeleteUserRequest;
 import com.auction.dto.request.RegistrationRequest;
 import com.auction.exception.SameCredentialsException;
 import com.auction.exception.UserNotFoundException;
+import com.auction.model.AuctionEvent;
 import com.auction.model.User;
 import com.auction.model.enums.UserRole;
+import com.auction.repository.AuctionActionRepository;
+import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.UserRepository;
+import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,12 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuctionEventService auctionEventService;
+    @Autowired
+    private AuctionEventRepository auctionEventRepository;
+    @Autowired
+    private AuctionActionRepository auctionActionRepository;
 
     @Transactional
     @Override
@@ -97,6 +107,15 @@ public class UserServiceImpl implements UserService {
         if (!user.isPresent()) {
             throw new UserNotFoundException("User[" + request.getUserId() + "] doesn't exist.");
         }
+
+        List<AuctionEvent> auctionEventList = auctionEventRepository.findByUser(user.get());
+        for (AuctionEvent auctionEvent : auctionEventList) {
+            auctionEventService.delete(auctionEvent);
+        }
+
+        auctionActionRepository.deleteAllByUser(user.get());
+
+        //Chat
 
         log.info("Deleting user[" + request.getUserId() + "]");
         userRepository.delete(user.get());

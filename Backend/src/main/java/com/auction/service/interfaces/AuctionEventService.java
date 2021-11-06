@@ -23,7 +23,7 @@ public interface AuctionEventService {
 
     List<AuctionEventDto> getAll();
 
-    void delete(Long auctionId) throws AuctionEventNotFoundException;
+    void delete(AuctionEvent auctionEvent);
 
     AuctionEventDto update(AuctionEventRequest request, Long auctionId) throws AuctionEventNotFoundException;
 

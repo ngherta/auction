@@ -2,6 +2,7 @@ package com.auction.repository;
 
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
+import com.auction.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,5 +30,7 @@ public interface AuctionActionRepository extends JpaRepository<AuctionAction, Lo
   List<AuctionAction> getAllByAuctionGroupByUser(@Param("auctionId") Long auctionId,
                                                  @Param("userWinnerId") Long userWinnerId);
 
-  void deleteAllByAuctionEvent(Long auctionId);
+  void deleteAllByAuctionEvent(AuctionEvent auctionEvent);
+
+  void deleteAllByUser(User user);
 }

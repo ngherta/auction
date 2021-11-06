@@ -14,6 +14,7 @@ import com.auction.model.enums.AuctionStatus;
 import com.auction.model.enums.AuctionType;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionCharityRepository;
+import com.auction.repository.AuctionEventImgRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.AuctionEventSortRepository;
 import com.auction.repository.AuctionWinnerRepository;
@@ -43,6 +44,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     private final AuctionWinnerRepository auctionWinnerRepository;
     private final AuctionActionRepository auctionActionRepository;
     private final AuctionEventSortRepository auctionEventSortRepository;
+    private final AuctionEventImgRepository auctionEventImgRepository;
     private final MailService mailService;
 
     @Override
@@ -185,25 +187,22 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
     @Override
     @Transactional
-    public void delete(Long auctionId) throws AuctionEventNotFoundException {
-        Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
-        if (!auctionEvent.isPresent()) {
-            throw new AuctionEventNotFoundException("Auction event[" + auctionId + "] doesn't exist");
-        }
-
-        if (auctionEvent.get().getAuctionType().equals(AuctionType.CHARITY)) {
-            AuctionCharity auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionId);
+    public void delete(AuctionEvent auctionEvent) {
+        if (auctionEvent.getAuctionType().equals(AuctionType.CHARITY)) {
+            AuctionCharity auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionEvent.getId());
             auctionCharityRepository.delete(auctionCharity);
         }
 
-        if (auctionEvent.get().getStatusType().equals(AuctionStatus.FINISHED)) {
-            AuctionWinner auctionWinner = auctionWinnerRepository.findByAuctionEvent(auctionId);
+        if (auctionEvent.getStatusType().equals(AuctionStatus.FINISHED)) {
+            AuctionWinner auctionWinner = auctionWinnerRepository.findByAuctionEvent(auctionEvent.getId());
             auctionWinnerRepository.delete(auctionWinner);
         }
 
-        auctionEventSortRepository.deleteAllByAuctionEvent(auctionId);
+        auctionEventImgRepository.deleteAllByAuctionEvent(auctionEvent);
 
-        auctionActionRepository.deleteAllByAuctionEvent(auctionId);
+        auctionEventSortRepository.deleteAllByAuctionEvent(auctionEvent.getId());
+
+        auctionActionRepository.deleteAllByAuctionEvent(auctionEvent);
     }
 
     @Override
