@@ -1,5 +1,5 @@
 package com.auction.model.enums;
 
 public enum AuctionStatus {
-    ACTIVE, EXPECTATION, FINISHED;
+    ACTIVE, EXPECTATION, BLOCKED, FINISHED;
 }

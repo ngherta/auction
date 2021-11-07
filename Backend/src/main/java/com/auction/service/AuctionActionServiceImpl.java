@@ -43,4 +43,5 @@ public class AuctionActionServiceImpl implements AuctionActionService {
     List<AuctionActionDto> listDto = AuctionActionDto.from(list);
     return listDto;
   }
+
 }
