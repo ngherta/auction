@@ -1,9 +1,7 @@
 package com.auction.service.interfaces;
 
-import com.auction.model.AuctionAction;
-import com.auction.model.AuctionEvent;
-import com.auction.model.AuctionWinner;
-import com.auction.model.User;
+import com.auction.web.model.AuctionAction;
+import com.auction.web.model.AuctionWinner;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;

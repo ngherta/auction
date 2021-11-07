@@ -1,11 +1,11 @@
-package com.auction.contoller;
+package com.auction.web.contoller;
 
 import com.auction.config.jwt.JwtProvider;
 import com.auction.dto.request.AuthRequest;
 import com.auction.dto.request.RegistrationRequest;
 import com.auction.dto.response.AuthResponse;
 import com.auction.exception.SameCredentialsException;
-import com.auction.model.User;
+import com.auction.web.model.User;
 import com.auction.service.interfaces.AuthenticationService;
 import com.auction.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.auction.repository;
 
-import com.auction.model.AuctionCharity;
+import com.auction.web.model.AuctionCharity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

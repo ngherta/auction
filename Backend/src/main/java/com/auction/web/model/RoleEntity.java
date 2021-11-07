@@ -1,6 +1,6 @@
-package com.auction.model;
+package com.auction.web.model;
 
-import com.auction.model.enums.UserRole;
+import com.auction.web.model.enums.UserRole;
 import lombok.Data;
 
 import javax.persistence.Column;

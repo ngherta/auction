@@ -1,8 +1,6 @@
 package com.auction.dto;
 
-import com.auction.model.AuctionAction;
-import com.auction.model.AuctionEvent;
-import com.auction.model.User;
+import com.auction.web.model.AuctionAction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

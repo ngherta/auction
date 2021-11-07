@@ -5,7 +5,7 @@ import com.auction.dto.request.DeleteUserRequest;
 import com.auction.dto.request.RegistrationRequest;
 import com.auction.exception.SameCredentialsException;
 import com.auction.exception.UserNotFoundException;
-import com.auction.model.User;
+import com.auction.web.model.User;
 
 import java.util.List;
 

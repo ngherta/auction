@@ -1,10 +1,10 @@
 package com.auction.dto;
 
-import com.auction.model.AuctionCharity;
-import com.auction.model.AuctionEvent;
-import com.auction.model.User;
-import com.auction.model.enums.AuctionStatus;
-import com.auction.model.enums.AuctionType;
+import com.auction.web.model.AuctionCharity;
+import com.auction.web.model.AuctionEvent;
+import com.auction.web.model.User;
+import com.auction.web.model.enums.AuctionStatus;
+import com.auction.web.model.enums.AuctionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

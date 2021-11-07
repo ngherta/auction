@@ -1,4 +1,4 @@
-package com.auction.model;
+package com.auction.web.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -1,8 +1,7 @@
 package com.auction.service.interfaces;
 
-import com.auction.dto.UserDto;
 import com.auction.dto.request.AuthRequest;
-import com.auction.model.User;
+import com.auction.web.model.User;
 
 import javax.mail.AuthenticationFailedException;
 

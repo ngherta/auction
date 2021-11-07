@@ -5,8 +5,8 @@ import com.auction.dto.request.AuctionEventRequest;
 import com.auction.dto.request.AuctionFinishByFinishPriceRequest;
 import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.exception.UserNotFoundException;
-import com.auction.model.AuctionEvent;
-import com.auction.model.AuctionWinner;
+import com.auction.web.model.AuctionEvent;
+import com.auction.web.model.AuctionWinner;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;

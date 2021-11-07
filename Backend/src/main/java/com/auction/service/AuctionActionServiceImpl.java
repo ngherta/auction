@@ -2,9 +2,9 @@ package com.auction.service;
 
 import com.auction.dto.AuctionActionDto;
 import com.auction.dto.request.BetRequest;
-import com.auction.model.AuctionAction;
-import com.auction.model.AuctionEvent;
-import com.auction.model.User;
+import com.auction.web.model.AuctionAction;
+import com.auction.web.model.AuctionEvent;
+import com.auction.web.model.User;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.service.interfaces.AuctionActionService;
 import lombok.RequiredArgsConstructor;

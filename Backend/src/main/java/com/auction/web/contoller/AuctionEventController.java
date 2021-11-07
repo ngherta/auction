@@ -1,9 +1,9 @@
-package com.auction.contoller;
+package com.auction.web.contoller;
 
 import com.auction.dto.AuctionEventDto;
 import com.auction.dto.request.AuctionEventRequest;
 import com.auction.exception.AuctionEventNotFoundException;
-import com.auction.model.AuctionEvent;
+import com.auction.web.model.AuctionEvent;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import lombok.RequiredArgsConstructor;

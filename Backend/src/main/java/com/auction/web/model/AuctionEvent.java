@@ -1,8 +1,7 @@
-package com.auction.model;
+package com.auction.web.model;
 
-import com.auction.model.enums.AuctionStatus;
-import com.auction.model.enums.AuctionType;
-import lombok.Builder;
+import com.auction.web.model.enums.AuctionStatus;
+import com.auction.web.model.enums.AuctionType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -19,10 +18,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Date;
-import java.util.Set;
 
 @Entity
 @Table(name = "auction_table")

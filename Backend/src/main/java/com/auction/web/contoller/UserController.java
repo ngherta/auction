@@ -1,4 +1,4 @@
-package com.auction.contoller;
+package com.auction.web.contoller;
 
 import com.auction.dto.request.ChangePasswordRequest;
 import com.auction.dto.request.DeleteUserRequest;

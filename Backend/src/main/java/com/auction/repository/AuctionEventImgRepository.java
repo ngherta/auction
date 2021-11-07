@@ -1,7 +1,7 @@
 package com.auction.repository;
 
-import com.auction.model.AuctionEvent;
-import com.auction.model.AuctionEventImg;
+import com.auction.web.model.AuctionEvent;
+import com.auction.web.model.AuctionEventImg;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

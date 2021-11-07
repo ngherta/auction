@@ -1,4 +1,4 @@
-package com.auction.model.enums;
+package com.auction.web.model.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 

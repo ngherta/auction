@@ -1,8 +1,8 @@
 package com.auction.dto;
 
-import com.auction.model.AuctionEventComplaint;
-import com.auction.model.AuctionEventComplaintAudit;
-import com.auction.model.enums.ComplaintStatus;
+import com.auction.web.model.AuctionEventComplaint;
+import com.auction.web.model.AuctionEventComplaintAudit;
+import com.auction.web.model.enums.ComplaintStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

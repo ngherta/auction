@@ -1,6 +1,6 @@
 package com.auction.config;
 
-import com.auction.model.User;
+import com.auction.web.model.User;
 import com.auction.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,6 +1,6 @@
 package com.auction.helper;
 
-import com.auction.model.AuctionEvent;
+import com.auction.web.model.AuctionEvent;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.AuctionEventSortService;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.List;
 
 @Component

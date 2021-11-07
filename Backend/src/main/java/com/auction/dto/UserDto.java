@@ -1,7 +1,7 @@
 package com.auction.dto;
 
-import com.auction.model.User;
-import com.auction.model.enums.UserRole;
+import com.auction.web.model.User;
+import com.auction.web.model.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

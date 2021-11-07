@@ -1,7 +1,7 @@
 package com.auction.service;
 
 import com.auction.dto.request.AuthRequest;
-import com.auction.model.User;
+import com.auction.web.model.User;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.AuthenticationService;
 import lombok.RequiredArgsConstructor;

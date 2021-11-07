@@ -2,8 +2,8 @@ package com.auction.service;
 
 import com.auction.dto.UserDto;
 import com.auction.exception.UserDoesntResetPassword;
-import com.auction.model.ResetPasswordEntity;
-import com.auction.model.User;
+import com.auction.web.model.ResetPasswordEntity;
+import com.auction.web.model.User;
 import com.auction.repository.ResetPasswordRepository;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.ResetPasswordService;

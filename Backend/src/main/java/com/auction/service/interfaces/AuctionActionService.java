@@ -2,8 +2,7 @@ package com.auction.service.interfaces;
 
 import com.auction.dto.AuctionActionDto;
 import com.auction.dto.request.BetRequest;
-import com.auction.model.AuctionAction;
-import com.auction.model.AuctionEvent;
+import com.auction.web.model.AuctionEvent;
 
 import java.util.List;
 

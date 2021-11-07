@@ -1,10 +1,7 @@
 package com.auction.service;
 
-import com.auction.model.AuctionAction;
-import com.auction.model.AuctionEvent;
-import com.auction.model.AuctionWinner;
-import com.auction.model.ResetPasswordEntity;
-import com.auction.model.User;
+import com.auction.web.model.AuctionAction;
+import com.auction.web.model.AuctionWinner;
 import com.auction.service.interfaces.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

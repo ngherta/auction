@@ -1,8 +1,8 @@
 package com.auction.service.interfaces;
 
 import com.auction.dto.UserDto;
-import com.auction.model.ResetPasswordEntity;
-import com.auction.model.User;
+import com.auction.web.model.ResetPasswordEntity;
+import com.auction.web.model.User;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;

@@ -1,6 +1,5 @@
-package com.auction.model;
+package com.auction.web.model;
 
-import com.auction.model.enums.MessageStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,33 +10,29 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.util.Date;
 
 @Entity
 @Table(name = "auction_winner")
 @NoArgsConstructor
 @Data
-public class ChatMessage {
+public class AuctionWinner {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private String id;
-  private String chatId;
+  private Long id;
 
-  @ManyToOne
+  @OneToOne
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
-  @JoinColumn(name = "sender_id", nullable = false, updatable = false)
-  private User senderId;
+  @JoinColumn(name = "auction_id", nullable = false, updatable = false)
+  private AuctionEvent auctionEvent;
 
-  @ManyToOne
+  @OneToOne
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
-  @JoinColumn(name = "recipient_id", nullable = false, updatable = false)
-  private User recipientId;
+  @JoinColumn(name = "user_id", nullable = false, updatable = false)
+  private User user;
 
-  private String content;
-  private Date genDate;
-  private MessageStatus status;
+  private Double price;
 }

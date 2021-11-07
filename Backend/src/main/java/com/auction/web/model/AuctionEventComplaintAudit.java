@@ -1,6 +1,6 @@
-package com.auction.model;
+package com.auction.web.model;
 
-import com.auction.model.enums.ComplaintStatus;
+import com.auction.web.model.enums.ComplaintStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
