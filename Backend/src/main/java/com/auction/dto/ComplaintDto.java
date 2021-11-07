@@ -1,9 +1,7 @@
 package com.auction.dto;
 
-import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionEventComplaint;
 import com.auction.model.AuctionEventComplaintAudit;
-import com.auction.model.User;
 import com.auction.model.enums.ComplaintStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +28,7 @@ public class ComplaintDto {
   public static ComplaintDto from (AuctionEventComplaint complaint,
                                    AuctionEventComplaintAudit complaintAudit) {
     ComplaintDto complaintDto = from(complaint);
-    UserDto admin = UserDto.from(complaintAudit.getUser());
+    UserDto admin = UserDto.from(complaintAudit.getAdmin());
     complaintDto.setAdmin(admin);
 
     return complaintDto;

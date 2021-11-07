@@ -28,4 +28,6 @@ public interface AuctionEventService {
     AuctionEventDto update(AuctionEventRequest request, Long auctionId) throws AuctionEventNotFoundException;
 
     void sendEmailToParticipants(AuctionEvent auctionEvent, AuctionWinner auctionWinner) throws MessagingException, UnsupportedEncodingException;
+
+    AuctionEvent blockAuctionEvent(AuctionEvent auctionEvent);
 }

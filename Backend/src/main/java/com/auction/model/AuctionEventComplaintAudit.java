@@ -35,7 +35,7 @@ public class AuctionEventComplaintAudit {
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
   @JoinColumn(name = "user_admin_id", nullable = false, updatable = false)
-  private User user;
+  private User admin;
 
   @Column(name = "status")
   private ComplaintStatus complaintStatus;

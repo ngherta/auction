@@ -126,6 +126,13 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     }
 
     @Override
+    public AuctionEvent blockAuctionEvent(AuctionEvent auctionEvent) {
+        auctionEvent.setStatusType(AuctionStatus.BLOCKED);
+        log.info("AuctionEvent[" + auctionEvent.getId() + "] new status - " + AuctionStatus.BLOCKED.name());
+        return auctionEventRepository.save(auctionEvent);
+    }
+
+    @Override
     @Transactional
     public void finishByFinishPrice(AuctionFinishByFinishPriceRequest request) throws AuctionEventNotFoundException, UserNotFoundException {
         Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(request.getAuctionId());
