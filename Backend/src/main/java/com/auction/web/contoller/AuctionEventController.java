@@ -76,6 +76,8 @@ public class AuctionEventController {
 
     @PutMapping("/{auctionId}")
     public ResponseEntity block(@PathVariable Long auctionId) throws AuctionEventNotFoundException {
+        //if admin!
+
         Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
         if (auctionEvent.isEmpty()) {
             throw new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "doesn't exist.");
