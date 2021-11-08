@@ -2,6 +2,7 @@ package com.auction.repository;
 
 import com.auction.web.model.AuctionEvent;
 import com.auction.web.model.User;
+import com.auction.web.model.enums.AuctionStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -25,12 +26,14 @@ public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long
             "select a.id, " +
             "(select count(*) from auction_action aa where aa.auction_id = a.id) as count " +
             "from auction_table a " +
+            "where a.status != 'BLOCKED' " +
             "order by count")
     List<Object[]> getAuctionEventForSorting();
 
     @Query(nativeQuery = true, value =
             "select a.* from auction_table as a " +
             "left join auction_sort as aa on a.id = aa.auction_id " +
+            "where a.status != 'BLOCKED' " +
             "order by aa.rating")
     List<AuctionEvent> getAuctionEventByRating();
 

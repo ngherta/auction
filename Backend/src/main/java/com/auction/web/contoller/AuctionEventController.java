@@ -73,4 +73,15 @@ public class AuctionEventController {
         AuctionEventDto auctionEventDto = auctionEventService.update(request ,auctionId);
         return ResponseEntity.ok(auctionEventDto);
     }
+
+    @PutMapping("/{auctionId}")
+    public ResponseEntity block(@PathVariable Long auctionId) throws AuctionEventNotFoundException {
+        Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
+        if (auctionEvent.isEmpty()) {
+            throw new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "doesn't exist.");
+        }
+        AuctionEventDto auctionEventDto = AuctionEventDto.from(auctionEventService.blockAuctionEvent(auctionEvent.get()));
+
+        return ResponseEntity.ok(auctionEventDto);
+    }
 }
