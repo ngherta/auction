@@ -1,12 +1,14 @@
 package com.auction.dto;
 
+import com.auction.web.model.Role;
 import com.auction.web.model.User;
-import com.auction.web.model.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,12 +17,11 @@ import lombok.Setter;
 @Builder
 public class UserDto {
     private Long id;
-    private String login;
     private String email;
     private String password;
     private String firstName;
     private String lastName;
-    private UserRole userRole;
+    private Set<Role> userRole;
 
     public static UserDto from(User user) {
         UserDto userDto = UserDto.builder()
@@ -28,9 +29,8 @@ public class UserDto {
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .login(user.getLogin())
                 .password(user.getPassword())
-                .userRole(user.getRole())
+                .userRole(user.getUserRoles())
                 .build();
         return userDto;
     }

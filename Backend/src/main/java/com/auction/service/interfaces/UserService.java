@@ -11,11 +11,7 @@ import java.util.List;
 
 public interface UserService {
 
-    UserDto saveUser(RegistrationRequest request) throws SameCredentialsException;
-
-    User findByLogin(String login);
-
-    User findByLoginAndPassword(String login, String password) throws Exception;
+//    UserDto saveUser(RegistrationRequest request) throws SameCredentialsException;
 
     List<UserDto> getAll();
 

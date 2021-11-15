@@ -74,7 +74,7 @@ public class AuctionEventController {
         return ResponseEntity.ok(auctionEventDto);
     }
 
-    @PutMapping("/{auctionId}")
+    @PutMapping("/block/{auctionId}")
     public ResponseEntity block(@PathVariable Long auctionId) throws AuctionEventNotFoundException {
         Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
         if (auctionEvent.isEmpty()) {
@@ -83,5 +83,13 @@ public class AuctionEventController {
         AuctionEventDto auctionEventDto = AuctionEventDto.from(auctionEventService.blockAuctionEvent(auctionEvent.get()));
 
         return ResponseEntity.ok(auctionEventDto);
+    }
+
+    //WEBSOKET
+    @MessageMapping("/searching")
+    @SendTo("/topic/search")
+    public String search(String message) throws Exception {
+        auctionEventService.search(message);
+        return "Hello, " + HtmlUtils.htmlEscape(message + "xq");
     }
 }

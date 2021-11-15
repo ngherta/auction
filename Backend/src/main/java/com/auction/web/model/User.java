@@ -1,33 +1,34 @@
 package com.auction.web.model;
 
-import com.auction.web.model.enums.UserRole;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "login"),
                 @UniqueConstraint(columnNames = "email")
         })
 @Data
+@NoArgsConstructor
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column
-    private String login;
 
     @Column
     private String email;
@@ -41,9 +42,17 @@ public class User {
     @Column
     private String lastName;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> userRoles = new HashSet<>();
 
     @Column(name = "user_rating")
     private Double userRating;
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

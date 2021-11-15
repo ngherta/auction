@@ -57,14 +57,11 @@ public class AuctionEventServiceImpl implements AuctionEventService {
         User user = userRepository.findById(request.getUserId()).get();
         auctionEvent.setUser(user);
 
-        if (request.getAuctionStatus().equals(AuctionStatus.ACTIVE.name())) {
-            auctionEvent.setStatusType(AuctionStatus.ACTIVE);
-        }
-        else if(request.getAuctionStatus().equals(AuctionStatus.EXPECTATION.name())) {
-            auctionEvent.setStatusType(AuctionStatus.EXPECTATION);
-        }
+        auctionEvent.setStatusType(AuctionStatus.EXPECTATION);
 
         auctionEvent.setGenDate(new Date());
+
+        auctionEvent.setStartDate(request.getStartDate());
 
         if (request.getCharityPercent() == 0) {
             auctionEvent = auctionEventRepository.save(auctionEvent);
@@ -72,11 +69,11 @@ public class AuctionEventServiceImpl implements AuctionEventService {
         }
 
         AuctionCharity auctionCharity = new AuctionCharity();
-        if (request.getAuctionType().equals(AuctionType.COMMERCIAL.name())) {
+        if (request.getCharityPercent() == 0) {
             auctionEvent.setAuctionType(AuctionType.COMMERCIAL);
         }
         else if (request.getCharityPercent() > 0) {
-            auctionEvent.setAuctionType(AuctionType.COMMERCIAL);
+            auctionEvent.setAuctionType(AuctionType.CHARITY);
             auctionCharity.setAuctionEvent(auctionEvent);
             auctionCharity.setPercent(request.getCharityPercent());
             auctionCharity = auctionCharityRepository.save(auctionCharity);
@@ -130,6 +127,12 @@ public class AuctionEventServiceImpl implements AuctionEventService {
         auctionEvent.setStatusType(AuctionStatus.BLOCKED);
         log.info("AuctionEvent[" + auctionEvent.getId() + "] new status - " + AuctionStatus.BLOCKED.name());
         return auctionEventRepository.save(auctionEvent);
+    }
+
+    @Override
+    public void search(String message) {
+        int limit = 5;
+        auctionEventRepository.search(message, limit);
     }
 
     @Override

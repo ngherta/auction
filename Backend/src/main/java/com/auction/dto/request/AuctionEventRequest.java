@@ -1,10 +1,13 @@
 package com.auction.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.Date;
 
 @Data
 public class AuctionEventRequest {
@@ -16,8 +19,8 @@ public class AuctionEventRequest {
     private Double startPrice;
     private Double finishPrice;
     private Long userId;
-    private String startDate;
-    private String finishDate;
+    private Date startDate;
+    private Date finishDate;
     private Double charityPercent;
 
     @JsonCreator
@@ -27,9 +30,10 @@ public class AuctionEventRequest {
                                @JsonProperty String auctionStatus,
                                @JsonProperty Double startPrice,
                                @JsonProperty Double finishPrice,
-                               @JsonProperty Long userId,
-                               @JsonProperty String startDate,
-                               @JsonProperty String finishDate,
+                               @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm")
+                               Date startDate,
+                               @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm")
+                               Date finishDate,
                                @JsonProperty Double charityPercent) {
         this.title = title;
         this.description = description;

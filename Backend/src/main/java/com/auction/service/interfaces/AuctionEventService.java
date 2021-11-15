@@ -13,21 +13,23 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public interface AuctionEventService {
-    AuctionEventDto save(AuctionEventRequest request);
+  AuctionEventDto save(AuctionEventRequest request);
 
-    void changeStatusToFinished(List<AuctionEvent> list) throws MessagingException, UnsupportedEncodingException;
+  void changeStatusToFinished(List<AuctionEvent> list) throws MessagingException, UnsupportedEncodingException;
 
-    void finishByFinishPrice(AuctionFinishByFinishPriceRequest request) throws AuctionEventNotFoundException, UserNotFoundException;
+  void finishByFinishPrice(AuctionFinishByFinishPriceRequest request) throws AuctionEventNotFoundException, UserNotFoundException;
 
-    List<AuctionEventDto> getAllSortByRating();
+  List<AuctionEventDto> getAllSortByRating();
 
-    List<AuctionEventDto> getAll();
+  List<AuctionEventDto> getAll();
 
-    void delete(AuctionEvent auctionEvent);
+  void delete(AuctionEvent auctionEvent);
 
-    AuctionEventDto update(AuctionEventRequest request, Long auctionId) throws AuctionEventNotFoundException;
+  AuctionEventDto update(AuctionEventRequest request, Long auctionId) throws AuctionEventNotFoundException;
 
-    void sendEmailToParticipants(AuctionEvent auctionEvent, AuctionWinner auctionWinner) throws MessagingException, UnsupportedEncodingException;
+  void sendEmailToParticipants(AuctionEvent auctionEvent, AuctionWinner auctionWinner) throws MessagingException, UnsupportedEncodingException;
 
-    AuctionEvent blockAuctionEvent(AuctionEvent auctionEvent);
+  AuctionEvent blockAuctionEvent(AuctionEvent auctionEvent);
+
+  void search(String message);
 }

@@ -38,57 +38,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AuctionActionRepository auctionActionRepository;
 
-    @Transactional
-    @Override
-    public UserDto saveUser(RegistrationRequest request) throws SameCredentialsException {
-        if (!this.validateUserCredentials(request)) {
-            return null;
-        }
 
-        User user = new User();
-        user.setLogin(request.getLogin());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setEmail(request.getEmail());
-        user.setRole(UserRole.USER);
-        user = userRepository.save(user);
-        return UserDto.from(user);
-    }
-
-    public boolean validateUserCredentials(RegistrationRequest request) throws SameCredentialsException {
-        if (userRepository.findByEmail(request.getEmail()) != null) {
-            throw new SameCredentialsException("User with email[" + request.getEmail() + "] already exists");
-        }
-        if (userRepository.findByLogin(request.getLogin()).isPresent()) {
-            throw new SameCredentialsException("User with login[" + request.getLogin() + "] already exists");
-        }
-        return true;
-    }
-
-    @Override
-    public User findByLogin(String login) {
-        return userRepository.findByLogin(login).get();
-    }
-
-    @Override
-    public User findByLoginAndPassword(String login, String password) {
-        Optional<User> userEntity;
-        boolean isEmail = login.contains("@");
-        if (isEmail){
-            userEntity = Optional.ofNullable(userRepository.findByEmail(login));
-        }
-        else {
-            userEntity = userRepository.findByLogin(login);
-        }
-
-        if (!userEntity.isPresent()) {
-            if (passwordEncoder.matches(password, userEntity.get().getPassword())) {
-                return userEntity.get();
-            }
-        }
-        return null;
-    }
+//    public boolean validateUserCredentials(RegistrationRequest request) throws SameCredentialsException {
+//        if (userRepository.findByEmail(request.getEmail()) != null) {
+//            throw new SameCredentialsException("User with email[" + request.getEmail() + "] already exists");
+//        }
+//        if (userRepository.findByLogin(request.getLogin()).isPresent()) {
+//            throw new SameCredentialsException("User with login[" + request.getLogin() + "] already exists");
+//        }
+//        return true;
+//    }
 
     @Override
     public List<UserDto> getAll() {

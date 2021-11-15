@@ -1,7 +1,8 @@
 package com.auction.config.services;
 
-import com.auction.web.model.User;
+import com.auction.config.UserDetailsImpl;
 import com.auction.repository.UserRepository;
+import com.auction.web.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,15 +13,16 @@ import javax.transaction.Transactional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
-    UserRepository userRepository;
+  @Autowired
+  UserRepository userRepository;
 
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByLogin(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+  @Override
+  @Transactional
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + email));
 
-        return UserDetailsImpl.build(user);
-    }
+    return UserDetailsImpl.build(user);
+  }
+
 }

@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.swing.text.html.Option;
 import java.io.UnsupportedEncodingException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,12 +31,12 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     private final PasswordEncoder passwordEncoder;
 
     public void resetPasswordByEmail (String email) throws MessagingException, UnsupportedEncodingException {
-        User user;
-        try {
-            user = userRepository.findByEmail(email);
-        }catch (UsernameNotFoundException e) {
+        Optional<User> userOptional =  userRepository.findByEmail(email);
+        if (userOptional.isEmpty()) {
             throw new UsernameNotFoundException("User with email" + email + " doesn't exist.");
         }
+
+        User user = userOptional.get();
 
         ResetPasswordEntity resetPassword = new ResetPasswordEntity();
 
@@ -49,20 +51,16 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Override
     public UserDto changePasswordAfterReset(String email, String newPassword) {
-        User user = userRepository.findByEmail(email);
-
-        if (user == null) {
-            throw new UsernameNotFoundException("This user doesn't exist");
+        Optional<User> user =  userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("User with email" + email + " doesn't exist.");
         }
 
-        if (user.getPassword() != null) {
-            throw new UserDoesntResetPassword("This user doesn't reset his password");
-        }
 
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
+        user.get().setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user.get());
 
-        UserDto userDto = UserDto.from(user);
+        UserDto userDto = UserDto.from(user.get());
 
         return userDto;
     }

@@ -20,6 +20,7 @@ public class AuctionActionDto {
   private Long id;
   private Long auctionEvent;
   private UserDto user;
+  private Double bid;
   private Date date;
 
   public static List<AuctionActionDto> from(List<AuctionAction> auctionActionList) {
@@ -29,6 +30,7 @@ public class AuctionActionDto {
               .id(auctionAction.getId())
               .user(UserDto.from(auctionAction.getUser()))
               .auctionEvent(auctionAction.getAuctionEvent().getId())
+              .bid(auctionAction.getBet())
               .date(auctionAction.getDate())
               .build();
       auctionActionDtoList.add(auctionActionDto);
