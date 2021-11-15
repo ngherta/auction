@@ -1,6 +1,7 @@
 package com.auction.web.contoller;
 
 import com.auction.dto.AuctionEventDto;
+import com.auction.dto.ComplaintDto;
 import com.auction.dto.request.AuctionEventRequest;
 import com.auction.dto.request.ComplaintAdminRequest;
 import com.auction.exception.AuctionEventNotFoundException;
@@ -79,17 +80,18 @@ public class AuctionEventController {
         return ResponseEntity.ok(auctionEventDto);
     }
 
-    @PutMapping("/{auctionId}")
+    @PutMapping("/block/{auctionId}")
     public ResponseEntity block(@PathVariable Long auctionId) throws AuctionEventNotFoundException {
+
         Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
         if (auctionEvent.isEmpty()) {
             throw new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "doesn't exist.");
         }
         AuctionEventDto auctionEventDto = AuctionEventDto.from(auctionEventService.blockAuctionEvent(auctionEvent.get()));
 
-        ComplaintDto complaintDto = complaintService.blockAuction(request);
+//        ComplaintDto complaintDto = complaintService.blockAuction();
 
-        return ResponseEntity.ok(complaintDto);
+        return ResponseEntity.ok().build();
     }
 
     //WEBSOKET

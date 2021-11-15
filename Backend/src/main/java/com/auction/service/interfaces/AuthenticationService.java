@@ -1,10 +1,12 @@
 package com.auction.service.interfaces;
 
-import com.auction.dto.request.AuthRequest;
-import com.auction.web.model.User;
-
-import javax.mail.AuthenticationFailedException;
+import com.auction.dto.request.LoginRequest;
+import com.auction.dto.request.SignupRequest;
+import com.auction.dto.response.JwtResponse;
+import com.auction.exception.SameCredentialsException;
 
 public interface AuthenticationService {
-    User authenticate (AuthRequest request) throws AuthenticationFailedException;
+    JwtResponse authenticateUser(LoginRequest loginRequest);
+
+    void register(SignupRequest signUpRequest) throws SameCredentialsException;
 }
