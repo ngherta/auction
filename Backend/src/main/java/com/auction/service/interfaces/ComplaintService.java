@@ -14,4 +14,6 @@ public interface ComplaintService {
   List<ComplaintDto> getAll();
 
   ComplaintDto blockAuction(ComplaintAdminRequest request) throws UserNotFoundException;
+
+
 }

@@ -22,7 +22,7 @@ public class ScheduledTasks {
   private final AuctionEventRepository auctionEventRepository;
   private final AuctionEventSortService auctionEventSortService;
 
-  @Scheduled(fixedDelay = 20000)
+  @Scheduled(fixedDelay = 200000)
   public void checkEventForFinish() throws MessagingException, UnsupportedEncodingException {
     List<AuctionEvent> list = auctionEventRepository.getListForChangeStatus();
     log.info("Try to find auction events to finish it.");

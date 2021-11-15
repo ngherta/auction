@@ -2,10 +2,14 @@ package com.auction.web.contoller;
 
 import com.auction.dto.AuctionEventDto;
 import com.auction.dto.request.AuctionEventRequest;
+import com.auction.dto.request.ComplaintAdminRequest;
 import com.auction.exception.AuctionEventNotFoundException;
+import com.auction.exception.UserNotFoundException;
+import com.auction.service.interfaces.ComplaintService;
 import com.auction.web.model.AuctionEvent;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.service.interfaces.AuctionEventService;
+import com.auction.web.model.enums.AuctionStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -32,6 +36,7 @@ public class AuctionEventController {
 
     private final AuctionEventService auctionEventService;
     private final AuctionEventRepository auctionEventRepository;
+    private final ComplaintService complaintService;
 
     @PostMapping()
     public ResponseEntity createAuctionEvent(@RequestBody AuctionEventRequest request) {
@@ -74,7 +79,7 @@ public class AuctionEventController {
         return ResponseEntity.ok(auctionEventDto);
     }
 
-    @PutMapping("/block/{auctionId}")
+    @PutMapping("/{auctionId}")
     public ResponseEntity block(@PathVariable Long auctionId) throws AuctionEventNotFoundException {
         Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
         if (auctionEvent.isEmpty()) {
@@ -82,7 +87,9 @@ public class AuctionEventController {
         }
         AuctionEventDto auctionEventDto = AuctionEventDto.from(auctionEventService.blockAuctionEvent(auctionEvent.get()));
 
-        return ResponseEntity.ok(auctionEventDto);
+        ComplaintDto complaintDto = complaintService.blockAuction(request);
+
+        return ResponseEntity.ok(complaintDto);
     }
 
     //WEBSOKET
