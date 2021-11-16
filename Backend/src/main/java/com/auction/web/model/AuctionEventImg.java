@@ -23,16 +23,6 @@ public class AuctionEventImg {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne
-  @EqualsAndHashCode.Exclude
-  @ToString.Exclude
-  @JoinColumn(name = "auction_id", nullable = false, updatable = false)
-  private AuctionEvent auctionEvent;
-
   @Column(name = "url")
   private String url;
-
-  @Column(name = "main_img")
-  private boolean mainImg;
-
 }

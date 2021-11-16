@@ -22,9 +22,9 @@ public class ScheduledTasks {
   private final AuctionEventRepository auctionEventRepository;
   private final AuctionEventSortService auctionEventSortService;
 
-  @Scheduled(fixedDelay = 200000)
+  @Scheduled(cron = "0 0/1 * * * ?")
   public void checkEventForFinish() throws MessagingException, UnsupportedEncodingException {
-    List<AuctionEvent> list = auctionEventRepository.getListForChangeStatus();
+    List<AuctionEvent> list = auctionEventRepository.getListForFinish();
     log.info("Try to find auction events to finish it.");
     if (!list.isEmpty()) {
       log.info("Found auction events for finishing.");
@@ -32,7 +32,17 @@ public class ScheduledTasks {
     }
   }
 
-  @Scheduled(fixedDelay = 10000)
+  @Scheduled(cron = "0 0/1 * * * ?")
+  public void checkEventForStart() {
+    List<AuctionEvent> list = auctionEventRepository.getListForStart();
+    log.info("Try to find auction events to start it.");
+    if (!list.isEmpty()) {
+      list.stream().forEach(e -> log.info("Found auction events for starting - auctionEvent[{}]", e.getId()));
+      auctionEventService.changeStatusToStart(list);
+    }
+  }
+
+  @Scheduled(fixedDelay = 100000)
   public void changeOrderForEvents(){
     log.info("Start sorting AuctionEvents...");
     auctionEventSortService.sortAuctionEvent();

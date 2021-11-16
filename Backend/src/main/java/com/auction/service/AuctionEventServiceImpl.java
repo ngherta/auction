@@ -4,6 +4,7 @@ import com.auction.dto.AuctionEventDto;
 import com.auction.dto.request.AuctionEventRequest;
 import com.auction.dto.request.AuctionFinishByFinishPriceRequest;
 import com.auction.exception.AuctionEventNotFoundException;
+import com.auction.exception.StartPriceNullException;
 import com.auction.exception.UserNotFoundException;
 import com.auction.web.model.AuctionAction;
 import com.auction.web.model.AuctionCharity;
@@ -14,7 +15,6 @@ import com.auction.web.model.enums.AuctionStatus;
 import com.auction.web.model.enums.AuctionType;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionCharityRepository;
-import com.auction.repository.AuctionEventImgRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.AuctionEventSortRepository;
 import com.auction.repository.AuctionWinnerRepository;
@@ -44,12 +44,11 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     private final AuctionWinnerRepository auctionWinnerRepository;
     private final AuctionActionRepository auctionActionRepository;
     private final AuctionEventSortRepository auctionEventSortRepository;
-    private final AuctionEventImgRepository auctionEventImgRepository;
     private final MailService mailService;
 
     @Override
     @Transactional
-    public AuctionEventDto save(AuctionEventRequest request) {
+    public AuctionEventDto save(AuctionEventRequest request) throws StartPriceNullException {
         AuctionEvent auctionEvent = new AuctionEvent();
         auctionEvent.setTitle(request.getTitle());
         auctionEvent.setDescription(request.getDescription());
@@ -57,11 +56,20 @@ public class AuctionEventServiceImpl implements AuctionEventService {
         User user = userRepository.findById(request.getUserId()).get();
         auctionEvent.setUser(user);
 
+        if (request.getStartPrice() == null) {
+            throw new StartPriceNullException("Start price is null");
+        }
+
+        auctionEvent.setStartPrice(request.getStartPrice());
+
+        auctionEvent.setFinishPrice(request.getFinishPrice());
+
         auctionEvent.setStatusType(AuctionStatus.EXPECTATION);
 
         auctionEvent.setGenDate(new Date());
 
         auctionEvent.setStartDate(request.getStartDate());
+        auctionEvent.setFinishDate(request.getFinishDate());
 
         if (request.getCharityPercent() == 0) {
             auctionEvent = auctionEventRepository.save(auctionEvent);
@@ -133,6 +141,12 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     public void search(String message) {
         int limit = 5;
         auctionEventRepository.search(message, limit);
+    }
+
+    @Override
+    public void changeStatusToStart(List<AuctionEvent> list) {
+        list.stream().forEach(e -> e.setStatusType(AuctionStatus.ACTIVE));
+        auctionEventRepository.saveAll(list);
     }
 
     @Override
@@ -208,10 +222,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
             auctionWinnerRepository.delete(auctionWinner);
         }
 
-        auctionEventImgRepository.deleteAllByAuctionEvent(auctionEvent);
-
         auctionEventSortRepository.deleteAllByAuctionEvent(auctionEvent.getId());
-
         auctionActionRepository.deleteAllByAuctionEvent(auctionEvent);
     }
 

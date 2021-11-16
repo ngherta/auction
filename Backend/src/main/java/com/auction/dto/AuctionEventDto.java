@@ -11,7 +11,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -43,6 +45,8 @@ public class AuctionEventDto {
 
     private Double charityPercent;
 
+    private List<String> images;
+
     public static AuctionEventDto from(AuctionEvent auctionEvent) {
         AuctionEventDto auctionEventDto = AuctionEventDto.builder()
                 .id(auctionEvent.getId())
@@ -57,6 +61,10 @@ public class AuctionEventDto {
                 .finishDate(auctionEvent.getFinishDate())
                 .genDate(auctionEvent.getGenDate())
                 .build();
+        List<String> images = new ArrayList<>();
+        auctionEvent.getImages().stream().map(e -> images.add(e.getUrl()));
+        auctionEventDto.setImages(images);
+
         return auctionEventDto;
     }
 

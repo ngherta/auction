@@ -4,6 +4,7 @@ import com.auction.dto.AuctionEventDto;
 import com.auction.dto.request.AuctionEventRequest;
 import com.auction.dto.request.AuctionFinishByFinishPriceRequest;
 import com.auction.exception.AuctionEventNotFoundException;
+import com.auction.exception.StartPriceNullException;
 import com.auction.exception.UserNotFoundException;
 import com.auction.web.model.AuctionEvent;
 import com.auction.web.model.AuctionWinner;
@@ -13,7 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public interface AuctionEventService {
-  AuctionEventDto save(AuctionEventRequest request);
+  AuctionEventDto save(AuctionEventRequest request) throws StartPriceNullException;
 
   void changeStatusToFinished(List<AuctionEvent> list) throws MessagingException, UnsupportedEncodingException;
 
@@ -32,4 +33,6 @@ public interface AuctionEventService {
   AuctionEvent blockAuctionEvent(AuctionEvent auctionEvent);
 
   void search(String message);
+
+  void changeStatusToStart(List<AuctionEvent> list);
 }

@@ -18,7 +18,6 @@ import java.util.Set;
 public class UserDto {
     private Long id;
     private String email;
-    private String password;
     private String firstName;
     private String lastName;
     private Set<Role> userRole;
@@ -29,7 +28,6 @@ public class UserDto {
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .password(user.getPassword())
                 .userRole(user.getUserRoles())
                 .build();
         return userDto;

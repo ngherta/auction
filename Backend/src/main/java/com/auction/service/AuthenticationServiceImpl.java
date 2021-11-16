@@ -73,6 +73,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     Optional<Role> role = roleRepository.findByUserRole(UserRole.USER);
     roles.add(role.get());
     user.setUserRoles(roles);
+    user.setFirstName(signUpRequest.getFirstName());
+    user.setLastName(signUpRequest.getLastName());
     userRepository.save(user);
   }
 }

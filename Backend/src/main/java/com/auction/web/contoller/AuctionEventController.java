@@ -1,16 +1,12 @@
 package com.auction.web.contoller;
 
 import com.auction.dto.AuctionEventDto;
-import com.auction.dto.ComplaintDto;
 import com.auction.dto.request.AuctionEventRequest;
-import com.auction.dto.request.ComplaintAdminRequest;
 import com.auction.exception.AuctionEventNotFoundException;
-import com.auction.exception.UserNotFoundException;
-import com.auction.service.interfaces.ComplaintService;
-import com.auction.web.model.AuctionEvent;
+import com.auction.exception.StartPriceNullException;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.service.interfaces.AuctionEventService;
-import com.auction.web.model.enums.AuctionStatus;
+import com.auction.web.model.AuctionEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -37,10 +33,10 @@ public class AuctionEventController {
 
     private final AuctionEventService auctionEventService;
     private final AuctionEventRepository auctionEventRepository;
-    private final ComplaintService complaintService;
 
+//    @PreAuthorize("hasRole('USER')")
     @PostMapping()
-    public ResponseEntity createAuctionEvent(@RequestBody AuctionEventRequest request) {
+    public ResponseEntity createAuctionEvent(@RequestBody AuctionEventRequest request) throws StartPriceNullException {
         AuctionEventDto auctionEventDto = auctionEventService.save(request);
 
         return ResponseEntity.ok(auctionEventDto);
