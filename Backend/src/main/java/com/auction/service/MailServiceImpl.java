@@ -3,6 +3,7 @@ package com.auction.service;
 import com.auction.web.model.AuctionAction;
 import com.auction.web.model.AuctionWinner;
 import com.auction.service.interfaces.MailService;
+import com.auction.web.model.TokenConfirmation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -18,6 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class MailServiceImpl implements MailService {
+
+  private final static String siteURL = "http://localhost:8080/";
 
   private final JavaMailSender mailSender;
 
@@ -46,6 +49,35 @@ public class MailServiceImpl implements MailService {
     String auctionUrl = siteURL + "auction/" + auctionWinner.getAuctionEvent().getId();
 
     content = content.replace("[[URL]]", auctionUrl);
+
+    helper.setText(content, true);
+
+    mailSender.send(message);
+  }
+
+  @Override
+  public void sendConfirmation(TokenConfirmation confirmation) throws MessagingException, UnsupportedEncodingException {
+    String toAddress = confirmation.getUser().getEmail();
+    String fromAddress = "gherta.nicolai@gmail.com";
+    String senderName = "Film-manager";
+    String subject = "Please verify your registration";
+    String content = "Dear [[name]],<br>"
+            + "Please click the link below to verify your registration:<br>"
+            + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
+            + "Thank you,<br>"
+            + "Your company name.";
+
+    MimeMessage message = mailSender.createMimeMessage();
+    MimeMessageHelper helper = new MimeMessageHelper(message);
+
+    helper.setFrom(fromAddress, senderName);
+    helper.setTo(toAddress);
+    helper.setSubject(subject);
+
+    content = content.replace("[[name]]", confirmation.getUser().getFirstName() + " " + confirmation.getUser().getLastName());
+    String verifyURL = siteURL + "users/verify?code=" + confirmation.getConfirmation();
+
+    content = content.replace("[[URL]]", verifyURL);
 
     helper.setText(content, true);
 

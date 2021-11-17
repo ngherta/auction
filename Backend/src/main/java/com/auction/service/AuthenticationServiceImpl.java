@@ -6,7 +6,6 @@ import com.auction.dto.UserDto;
 import com.auction.dto.request.LoginRequest;
 import com.auction.dto.request.SignupRequest;
 import com.auction.dto.response.JwtResponse;
-import com.auction.dto.response.MessageResponse;
 import com.auction.exception.SameCredentialsException;
 import com.auction.repository.UserRepository;
 import com.auction.repository.UserRoleRepository;
@@ -14,10 +13,7 @@ import com.auction.service.interfaces.AuthenticationService;
 import com.auction.web.model.Role;
 import com.auction.web.model.User;
 import com.auction.web.model.enums.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,10 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -43,6 +37,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   private PasswordEncoder encoder;
   @Autowired
   private JwtUtils jwtUtils;
+  @Autowired
+  private TokenConfirmationServiceImpl tokenConfirmationService;
 
 
   @Override
@@ -75,6 +71,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     user.setUserRoles(roles);
     user.setFirstName(signUpRequest.getFirstName());
     user.setLastName(signUpRequest.getLastName());
-    userRepository.save(user);
+    user = userRepository.save(user);
+
+    tokenConfirmationService.generate(user);
   }
 }

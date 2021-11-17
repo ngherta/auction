@@ -5,8 +5,12 @@ import com.auction.dto.request.SignupRequest;
 import com.auction.dto.response.JwtResponse;
 import com.auction.dto.response.MessageResponse;
 import com.auction.exception.SameCredentialsException;
+import com.auction.exception.TokenConfirmationNotFound;
+import com.auction.exception.UserAlreadyEnabledException;
 import com.auction.service.interfaces.AuthenticationService;
+import com.auction.service.interfaces.TokenConfirmationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +26,8 @@ import javax.validation.Valid;
 public class AuthController {
     @Autowired
     private AuthenticationService authenticationService;
+    @Autowired
+    private TokenConfirmationService confirmationService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -33,5 +39,11 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws SameCredentialsException {
         authenticationService.register(signUpRequest);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @PostMapping("/confirm")
+    public ResponseEntity<?> confirm(@Param("code") String code) throws UserAlreadyEnabledException, TokenConfirmationNotFound {
+        confirmationService.confirm(code);
+        return ResponseEntity.ok("Succes confirmation!");
     }
 }
