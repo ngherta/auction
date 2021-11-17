@@ -38,17 +38,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AuctionActionRepository auctionActionRepository;
 
-
-//    public boolean validateUserCredentials(RegistrationRequest request) throws SameCredentialsException {
-//        if (userRepository.findByEmail(request.getEmail()) != null) {
-//            throw new SameCredentialsException("User with email[" + request.getEmail() + "] already exists");
-//        }
-//        if (userRepository.findByLogin(request.getLogin()).isPresent()) {
-//            throw new SameCredentialsException("User with login[" + request.getLogin() + "] already exists");
-//        }
-//        return true;
-//    }
-
     @Override
     public List<UserDto> getAll() {
         List<User> list = userRepository.findAll();

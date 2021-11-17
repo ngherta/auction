@@ -4,6 +4,7 @@ import com.auction.web.model.AuctionEvent;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.AuctionEventSortService;
+import com.auction.web.model.enums.AuctionStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,7 +25,7 @@ public class ScheduledTasks {
 
   @Scheduled(cron = "0 0/1 * * * ?")
   public void checkEventForFinish() throws MessagingException, UnsupportedEncodingException {
-    List<AuctionEvent> list = auctionEventRepository.getListForFinish();
+    List<AuctionEvent> list = auctionEventRepository.getListForStartOrFinish(AuctionStatus.ACTIVE.name());
     log.info("Try to find auction events to finish it.");
     if (!list.isEmpty()) {
       log.info("Found auction events for finishing.");
@@ -34,7 +35,7 @@ public class ScheduledTasks {
 
   @Scheduled(cron = "0 0/1 * * * ?")
   public void checkEventForStart() {
-    List<AuctionEvent> list = auctionEventRepository.getListForStart();
+    List<AuctionEvent> list = auctionEventRepository.getListForStartOrFinish(AuctionStatus.EXPECTATION.name());
     log.info("Try to find auction events to start it.");
     if (!list.isEmpty()) {
       list.stream().forEach(e -> log.info("Found auction events for starting - auctionEvent[{}]", e.getId()));

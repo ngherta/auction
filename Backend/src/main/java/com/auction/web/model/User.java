@@ -2,6 +2,7 @@ package com.auction.web.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,6 +42,10 @@ public class User {
 
     @Column
     private String lastName;
+
+    @Column
+    @ColumnDefault("false")
+    private boolean enabled;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "user_roles",
