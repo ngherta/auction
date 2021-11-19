@@ -44,7 +44,7 @@ public class User {
     private String lastName;
 
     @Column
-    @ColumnDefault("false")
+    @ColumnDefault("true")
     private boolean enabled;
 
     @ManyToMany(fetch = FetchType.LAZY)

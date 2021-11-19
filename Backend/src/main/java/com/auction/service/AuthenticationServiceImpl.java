@@ -13,6 +13,7 @@ import com.auction.service.interfaces.AuthenticationService;
 import com.auction.web.model.Role;
 import com.auction.web.model.User;
 import com.auction.web.model.enums.UserRole;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,24 +22,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
+@AllArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
-  @Autowired
-  private AuthenticationManager authenticationManager;
-  @Autowired
-  private UserRepository userRepository;
-  @Autowired
-  private UserRoleRepository roleRepository;
-  @Autowired
-  private PasswordEncoder encoder;
-  @Autowired
-  private JwtUtils jwtUtils;
-  @Autowired
-  private TokenConfirmationServiceImpl tokenConfirmationService;
+
+  private final AuthenticationManager authenticationManager;
+  private final UserRepository userRepository;
+  private final UserRoleRepository roleRepository;
+  private final PasswordEncoder encoder;
+  private final JwtUtils jwtUtils;
+  private final TokenConfirmationServiceImpl tokenConfirmationService;
 
 
   @Override
@@ -56,7 +55,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   }
 
   @Override
-  public void register(SignupRequest signUpRequest) throws SameCredentialsException {
+  public void register(SignupRequest signUpRequest) throws SameCredentialsException, MessagingException, UnsupportedEncodingException {
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
       throw new SameCredentialsException("Error: Email is already in use!");
     }
@@ -73,6 +72,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     user.setLastName(signUpRequest.getLastName());
     user = userRepository.save(user);
 
-    tokenConfirmationService.generate(user);
+//    tokenConfirmationService.generate(user);
   }
 }

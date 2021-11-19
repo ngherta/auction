@@ -4,8 +4,11 @@ import com.auction.exception.TokenConfirmationNotFound;
 import com.auction.exception.UserAlreadyEnabledException;
 import com.auction.web.model.User;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
+
 public interface TokenConfirmationService {
   void confirm(String confirmation) throws TokenConfirmationNotFound, UserAlreadyEnabledException;
 
-  void generate(User user);
+  void generate(User user) throws MessagingException, UnsupportedEncodingException;
 }

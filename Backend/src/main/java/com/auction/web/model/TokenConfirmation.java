@@ -20,7 +20,6 @@ import java.util.Date;
 @Table(name = "token_confirmation")
 @Data
 @NoArgsConstructor
-@Builder
 public class TokenConfirmation {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,5 +35,5 @@ public class TokenConfirmation {
   private String confirmation;
 
   @Column
-  private Date genDate;
+  private Date genDate = new Date();
 }

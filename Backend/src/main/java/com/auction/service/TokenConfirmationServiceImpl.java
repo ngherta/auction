@@ -12,7 +12,9 @@ import lombok.AllArgsConstructor;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Optional;
 
@@ -44,13 +46,11 @@ public class TokenConfirmationServiceImpl implements TokenConfirmationService {
 
   @Override
   @Transactional
-  public void generate(User user) {
+  public void generate(User user) throws MessagingException, UnsupportedEncodingException {
     String randomCode = RandomString.make(64);
-    TokenConfirmation confirmation = TokenConfirmation.builder()
-            .confirmation(randomCode)
-            .user(user)
-            .genDate(new Date())
-            .build();
+    TokenConfirmation confirmation = new TokenConfirmation();
+    confirmation.setConfirmation(randomCode);
+    confirmation.setUser(user);
     confirmation = tokenConfirmationRepository.save(confirmation);
     mailService.sendConfirmation(confirmation);
   }
