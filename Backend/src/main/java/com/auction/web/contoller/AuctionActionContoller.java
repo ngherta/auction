@@ -23,16 +23,10 @@ import java.util.Optional;
 public class AuctionActionContoller {
 
   private final AuctionActionService auctionActionService;
-  private final AuctionEventRepository auctionEventRepository;
 
   @GetMapping("/{auctionId}")
   public ResponseEntity getByAuctionId(@PathVariable Long auctionId) throws AuctionEventNotFoundException {
-    Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
-    if (auctionEvent.isEmpty()) {
-      throw new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "] doesn't exist.");
-    }
-    List<AuctionActionDto> list = auctionActionService.getAllByAuction(auctionEvent.get());
 
-    return ResponseEntity.ok(list);
+    return ResponseEntity.ok(auctionActionService.getAllByAuctionId(auctionId));
   }
 }

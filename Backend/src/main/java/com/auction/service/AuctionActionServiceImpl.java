@@ -2,6 +2,8 @@ package com.auction.service;
 
 import com.auction.dto.AuctionActionDto;
 import com.auction.dto.request.BetRequest;
+import com.auction.exception.AuctionEventNotFoundException;
+import com.auction.repository.AuctionEventRepository;
 import com.auction.web.model.AuctionAction;
 import com.auction.web.model.AuctionEvent;
 import com.auction.web.model.User;
@@ -15,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -23,10 +26,11 @@ public class AuctionActionServiceImpl implements AuctionActionService {
 
   private final AuctionActionRepository auctionActionRepository;
   private final EntityManager entityManager;
+  private final AuctionEventRepository auctionEventRepository;
 
   @Override
   @Transactional
-  public List<AuctionActionDto> bet(BetRequest request) {
+  public List<AuctionActionDto> bet(BetRequest request) throws AuctionEventNotFoundException {
     AuctionAction auctionAction = new AuctionAction();
     auctionAction.setBet(request.getPrice());
     auctionAction.setDate(new Date());
@@ -34,12 +38,16 @@ public class AuctionActionServiceImpl implements AuctionActionService {
     auctionAction.setAuctionEvent(entityManager.getReference(AuctionEvent.class, request.getAuctionId()));
     auctionAction = auctionActionRepository.save(auctionAction);
     //Check transaction, if last auctionAction exists in list
-    return getAllByAuction(auctionAction.getAuctionEvent());
+    return getAllByAuctionId(auctionAction.getAuctionEvent().getId());
   }
 
   @Override
-  public List<AuctionActionDto> getAllByAuction(AuctionEvent auctionEvent) {
-    List<AuctionAction> list = auctionActionRepository.findByAuctionEvent(auctionEvent);
+  public List<AuctionActionDto> getAllByAuctionId(Long auctionId) throws AuctionEventNotFoundException {
+    Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
+    if (auctionEvent.isEmpty()) {
+      throw new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "] doesn't exist.");
+    }
+    List<AuctionAction> list = auctionActionRepository.findByAuctionEvent(auctionEvent.get());
     List<AuctionActionDto> listDto = AuctionActionDto.from(list);
     return listDto;
   }

@@ -34,7 +34,6 @@ public class AuctionEventController {
     private final AuctionEventService auctionEventService;
     private final AuctionEventRepository auctionEventRepository;
 
-//    @PreAuthorize("hasRole('USER')")
     @PostMapping()
     public ResponseEntity createAuctionEvent(@RequestBody AuctionEventRequest request) throws StartPriceNullException {
         AuctionEventDto auctionEventDto = auctionEventService.save(request);
