@@ -1,8 +1,7 @@
 package com.auction.repository;
 
-import com.auction.web.model.AuctionEvent;
-import com.auction.web.model.User;
-import com.auction.web.model.enums.AuctionStatus;
+import com.auction.model.AuctionEvent;
+import com.auction.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

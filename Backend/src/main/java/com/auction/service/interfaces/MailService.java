@@ -1,8 +1,8 @@
 package com.auction.service.interfaces;
 
-import com.auction.web.model.AuctionAction;
-import com.auction.web.model.AuctionWinner;
-import com.auction.web.model.TokenConfirmation;
+import com.auction.model.AuctionAction;
+import com.auction.model.AuctionWinner;
+import com.auction.model.TokenConfirmation;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;

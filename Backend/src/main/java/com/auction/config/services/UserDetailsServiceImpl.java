@@ -2,7 +2,7 @@ package com.auction.config.services;
 
 import com.auction.config.UserDetailsImpl;
 import com.auction.repository.UserRepository;
-import com.auction.web.model.User;
+import com.auction.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

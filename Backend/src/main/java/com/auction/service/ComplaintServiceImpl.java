@@ -1,15 +1,15 @@
 package com.auction.service;
 
-import com.auction.dto.ComplaintDto;
-import com.auction.dto.request.ComplaintAdminRequest;
-import com.auction.dto.request.ComplaintRequest;
+import com.auction.web.dto.ComplaintDto;
+import com.auction.web.dto.request.ComplaintAdminRequest;
+import com.auction.web.dto.request.ComplaintRequest;
 import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.exception.UserNotFoundException;
-import com.auction.web.model.AuctionEvent;
-import com.auction.web.model.AuctionEventComplaint;
-import com.auction.web.model.AuctionEventComplaintAudit;
-import com.auction.web.model.User;
-import com.auction.web.model.enums.ComplaintStatus;
+import com.auction.model.AuctionEvent;
+import com.auction.model.AuctionEventComplaint;
+import com.auction.model.AuctionEventComplaintAudit;
+import com.auction.model.User;
+import com.auction.model.enums.ComplaintStatus;
 import com.auction.repository.AuctionEventComplaintAuditRepository;
 import com.auction.repository.AuctionEventComplaintRepository;
 import com.auction.repository.AuctionEventRepository;
@@ -38,7 +38,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
   @Override
   @Transactional
-  public ComplaintDto create(ComplaintRequest request) throws AuctionEventNotFoundException, UserNotFoundException {
+  public AuctionEventComplaint create(ComplaintRequest request) throws AuctionEventNotFoundException, UserNotFoundException {
     AuctionEventComplaint auctionEventComplaint = new AuctionEventComplaint();
 
     Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(request.getAuctionEventId());
@@ -58,23 +58,18 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     auctionEventComplaint = complaintRepository.save(auctionEventComplaint);
 
-    ComplaintDto complaintDto = ComplaintDto.from(auctionEventComplaint);
-    return complaintDto;
+    return auctionEventComplaint;
   }
 
   @Override
-  public List<ComplaintDto> getAll() {
+  public List<AuctionEventComplaint> getAll() {
     List<AuctionEventComplaint> list = complaintRepository.findAll();
-    List<ComplaintDto> listDto = new ArrayList<>();
-    for (AuctionEventComplaint complaint : list) {
-      listDto.add(ComplaintDto.from(complaint));
-    }
-    return listDto;
+    return list;
   }
 
   @Override
   @Transactional
-  public ComplaintDto blockAuction(ComplaintAdminRequest request) throws UserNotFoundException {
+  public AuctionEventComplaint blockAuction(ComplaintAdminRequest request) throws UserNotFoundException {
     AuctionEventComplaint complaint = complaintRepository.getById(request.getComplaintId());
     AuctionEventComplaintAudit complaintAudit = new AuctionEventComplaintAudit();
     AuctionEvent auctionEvent = new AuctionEvent();
@@ -100,7 +95,6 @@ public class ComplaintServiceImpl implements ComplaintService {
     complaintAudit.setAuctionEventComplaint(complaint);
     complaintAudit = complaintAuditRepository.save(complaintAudit);
 
-    ComplaintDto complaintDto = ComplaintDto.from(complaint, complaintAudit);
-    return complaintDto;
+    return complaint;
   }
 }

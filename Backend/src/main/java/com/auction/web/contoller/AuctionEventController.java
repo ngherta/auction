@@ -1,12 +1,13 @@
 package com.auction.web.contoller;
 
-import com.auction.dto.AuctionEventDto;
-import com.auction.dto.request.AuctionEventRequest;
+import com.auction.model.mapper.AuctionEventToDtoMapper;
+import com.auction.web.dto.AuctionEventDto;
+import com.auction.web.dto.request.AuctionEventRequest;
 import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.exception.StartPriceNullException;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.service.interfaces.AuctionEventService;
-import com.auction.web.model.AuctionEvent;
+import com.auction.model.AuctionEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -33,22 +34,23 @@ public class AuctionEventController {
 
     private final AuctionEventService auctionEventService;
     private final AuctionEventRepository auctionEventRepository;
+    private final AuctionEventToDtoMapper auctionEventToDtoMapper;
 
     @PostMapping()
     public ResponseEntity createAuctionEvent(@RequestBody AuctionEventRequest request) throws StartPriceNullException {
-        AuctionEventDto auctionEventDto = auctionEventService.save(request);
+        AuctionEvent auctionEvent = auctionEventService.save(request);
 
-        return ResponseEntity.ok(auctionEventDto);
+        return ResponseEntity.ok(auctionEventToDtoMapper.map(auctionEvent));
     }
 
     @GetMapping()
-    public List<AuctionEventDto> getAll() {
-        return auctionEventService.getAll();
+    public ResponseEntity getAll() {
+        return ResponseEntity.ok(auctionEventToDtoMapper.mapList(auctionEventService.getAll()));
     }
 
     @GetMapping("/sort")
-    public List<AuctionEventDto> getAllAuctionByRating() {
-        return auctionEventService.getAllSortByRating();
+    public ResponseEntity getAllAuctionByRating() {
+        return ResponseEntity.ok(auctionEventToDtoMapper.mapList(auctionEventService.getAllSortByRating()));
     }
 
     @MessageMapping("/hello")
@@ -60,19 +62,15 @@ public class AuctionEventController {
 
     @DeleteMapping()
     public ResponseEntity deleteById(Long auctionId) throws AuctionEventNotFoundException {
-        Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
-        if (!auctionEvent.isPresent()) {
-            throw new AuctionEventNotFoundException("Auction event[" + auctionId + "] doesn't exist");
-        }
-        auctionEventService.delete(auctionEvent.get());
+        auctionEventService.deleteById(auctionId);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{auctionId}")
     public ResponseEntity updateById(@PathVariable Long auctionId,
                                      @RequestBody AuctionEventRequest request) throws AuctionEventNotFoundException {
-        AuctionEventDto auctionEventDto = auctionEventService.update(request ,auctionId);
-        return ResponseEntity.ok(auctionEventDto);
+        AuctionEvent auctionEvent = auctionEventService.update(request ,auctionId);
+        return ResponseEntity.ok(auctionEventToDtoMapper.map(auctionEvent));
     }
 
     @PutMapping("/block/{auctionId}")
@@ -82,7 +80,7 @@ public class AuctionEventController {
         if (auctionEvent.isEmpty()) {
             throw new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "doesn't exist.");
         }
-        AuctionEventDto auctionEventDto = AuctionEventDto.from(auctionEventService.blockAuctionEvent(auctionEvent.get()));
+//        AuctionEventDto auctionEventDto = AuctionEventDto.from(auctionEventService.blockAuctionEvent(auctionEvent.get()));
 
 //        ComplaintDto complaintDto = complaintService.blockAuction();
 

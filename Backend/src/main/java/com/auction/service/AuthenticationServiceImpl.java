@@ -2,19 +2,19 @@ package com.auction.service;
 
 import com.auction.config.UserDetailsImpl;
 import com.auction.config.jwt.JwtUtils;
-import com.auction.dto.UserDto;
-import com.auction.dto.request.LoginRequest;
-import com.auction.dto.request.SignupRequest;
-import com.auction.dto.response.JwtResponse;
+import com.auction.model.mapper.UserToDtoMapper;
+import com.auction.web.dto.UserDto;
+import com.auction.web.dto.request.LoginRequest;
+import com.auction.web.dto.request.SignupRequest;
+import com.auction.web.dto.response.JwtResponse;
 import com.auction.exception.SameCredentialsException;
 import com.auction.repository.UserRepository;
 import com.auction.repository.UserRoleRepository;
 import com.auction.service.interfaces.AuthenticationService;
-import com.auction.web.model.Role;
-import com.auction.web.model.User;
-import com.auction.web.model.enums.UserRole;
+import com.auction.model.Role;
+import com.auction.model.User;
+import com.auction.model.enums.UserRole;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -38,6 +38,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   private final PasswordEncoder encoder;
   private final JwtUtils jwtUtils;
   private final TokenConfirmationServiceImpl tokenConfirmationService;
+  private final UserToDtoMapper userToDtoMapper;
 
 
   @Override
@@ -50,7 +51,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
     Optional<User> user = userRepository.findByEmail(loginRequest.getEmail());
-    UserDto userDto = UserDto.from(user.get());
+    UserDto userDto = userToDtoMapper.map(user.get());
     return new JwtResponse(jwt, userDto);
   }
 

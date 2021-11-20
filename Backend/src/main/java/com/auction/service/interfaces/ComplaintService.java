@@ -1,19 +1,20 @@
 package com.auction.service.interfaces;
 
-import com.auction.dto.ComplaintDto;
-import com.auction.dto.request.ComplaintAdminRequest;
-import com.auction.dto.request.ComplaintRequest;
+import com.auction.model.AuctionEventComplaint;
+import com.auction.web.dto.ComplaintDto;
+import com.auction.web.dto.request.ComplaintAdminRequest;
+import com.auction.web.dto.request.ComplaintRequest;
 import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.exception.UserNotFoundException;
 
 import java.util.List;
 
 public interface ComplaintService {
-  ComplaintDto create(ComplaintRequest request) throws AuctionEventNotFoundException, UserNotFoundException;
+  AuctionEventComplaint create(ComplaintRequest request) throws AuctionEventNotFoundException, UserNotFoundException;
 
-  List<ComplaintDto> getAll();
+  List<AuctionEventComplaint> getAll();
 
-  ComplaintDto blockAuction(ComplaintAdminRequest request) throws UserNotFoundException;
+  AuctionEventComplaint blockAuction(ComplaintAdminRequest request) throws UserNotFoundException;
 
 
 }

@@ -1,10 +1,10 @@
 package com.auction.helper;
 
-import com.auction.web.model.AuctionEvent;
+import com.auction.model.AuctionEvent;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.AuctionEventSortService;
-import com.auction.web.model.enums.AuctionStatus;
+import com.auction.model.enums.AuctionStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

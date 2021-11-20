@@ -1,7 +1,7 @@
 package com.auction.service;
 
-import com.auction.web.model.Payment;
-import com.auction.web.model.User;
+import com.auction.model.Payment;
+import com.auction.model.User;
 import com.auction.repository.PaymentRepository;
 import com.auction.service.interfaces.PaymentService;
 import lombok.RequiredArgsConstructor;

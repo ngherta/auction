@@ -1,20 +1,18 @@
 package com.auction.service;
 
-import com.auction.dto.AuctionEventDto;
-import com.auction.dto.request.AuctionEventRequest;
-import com.auction.dto.request.AuctionFinishByFinishPriceRequest;
+import com.auction.web.dto.AuctionEventDto;
+import com.auction.web.dto.request.AuctionEventRequest;
+import com.auction.web.dto.request.AuctionFinishByFinishPriceRequest;
 import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.exception.StartPriceNullException;
 import com.auction.exception.UserNotFoundException;
-import com.auction.web.model.AuctionAction;
-import com.auction.web.model.AuctionCharity;
-import com.auction.web.model.AuctionEvent;
-import com.auction.web.model.AuctionWinner;
-import com.auction.web.model.User;
-import com.auction.web.model.enums.AuctionStatus;
-import com.auction.web.model.enums.AuctionType;
+import com.auction.model.AuctionAction;
+import com.auction.model.AuctionEvent;
+import com.auction.model.AuctionWinner;
+import com.auction.model.User;
+import com.auction.model.enums.AuctionStatus;
+import com.auction.model.enums.AuctionType;
 import com.auction.repository.AuctionActionRepository;
-import com.auction.repository.AuctionCharityRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.AuctionEventSortRepository;
 import com.auction.repository.AuctionWinnerRepository;
@@ -39,7 +37,6 @@ import java.util.Optional;
 public class AuctionEventServiceImpl implements AuctionEventService {
 
     private final AuctionEventRepository auctionEventRepository;
-    private final AuctionCharityRepository auctionCharityRepository;
     private final UserRepository userRepository;
     private final AuctionWinnerRepository auctionWinnerRepository;
     private final AuctionActionRepository auctionActionRepository;
@@ -48,7 +45,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
     @Override
     @Transactional
-    public AuctionEventDto save(AuctionEventRequest request) throws StartPriceNullException {
+    public AuctionEvent save(AuctionEventRequest request) throws StartPriceNullException {
         AuctionEvent auctionEvent = new AuctionEvent();
         auctionEvent.setTitle(request.getTitle());
         auctionEvent.setDescription(request.getDescription());
@@ -61,33 +58,26 @@ public class AuctionEventServiceImpl implements AuctionEventService {
         }
 
         auctionEvent.setStartPrice(request.getStartPrice());
-
         auctionEvent.setFinishPrice(request.getFinishPrice());
-
         auctionEvent.setStatusType(AuctionStatus.EXPECTATION);
-
         auctionEvent.setGenDate(new Date());
-
         auctionEvent.setStartDate(request.getStartDate());
         auctionEvent.setFinishDate(request.getFinishDate());
 
         if (request.getCharityPercent() == 0) {
             auctionEvent = auctionEventRepository.save(auctionEvent);
-            return AuctionEventDto.from(auctionEvent);
+            return auctionEvent;
         }
 
-        AuctionCharity auctionCharity = new AuctionCharity();
         if (request.getCharityPercent() == 0) {
             auctionEvent.setAuctionType(AuctionType.COMMERCIAL);
         }
         else if (request.getCharityPercent() > 0) {
             auctionEvent.setAuctionType(AuctionType.CHARITY);
-            auctionCharity.setAuctionEvent(auctionEvent);
-            auctionCharity.setPercent(request.getCharityPercent());
-            auctionCharity = auctionCharityRepository.save(auctionCharity);
+            auctionEvent.setCharityPercent(request.getCharityPercent());
         }
 
-        return AuctionEventDto.from(auctionEvent, auctionCharity);
+        return auctionEvent;
     }
 
     @Override
@@ -175,48 +165,43 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     }
 
     @Override
-    public List<AuctionEventDto> getAllSortByRating() {
+    public List<AuctionEvent> getAllSortByRating() {
         List<AuctionEventDto> auctionEventDtoList = new ArrayList<>();
         List<AuctionEvent> auctionEventList = auctionEventRepository.getAuctionEventByRating();
 
-        for (AuctionEvent auctionEvent : auctionEventList) {
-            if (auctionEvent.getAuctionType().equals(AuctionType.CHARITY.name())) {
-                AuctionCharity auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionEvent.getId());
-                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent, auctionCharity));
-            }
-            else {
-                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent));
-            }
-        }
+//        for (AuctionEvent auctionEvent : auctionEventList) {
+//            if (auctionEvent.getAuctionType().equals(AuctionType.CHARITY.name())) {
+//                AuctionCharity auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionEvent.getId());
+//                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent, auctionCharity));
+//            }
+//            else {
+//                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent));
+//            }
+//        }
 
-        return auctionEventDtoList;
+        return auctionEventList;
     }
 
     @Override
-    public List<AuctionEventDto> getAll() {
+    public List<AuctionEvent> getAll() {
         List<AuctionEvent> list = auctionEventRepository.findAll();
         List<AuctionEventDto> auctionEventDtoList = new ArrayList<>();
-        for (AuctionEvent auctionEvent : list) {
-            if (auctionEvent.getAuctionType().equals(AuctionType.CHARITY.name())) {
-                AuctionCharity auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionEvent.getId());
-                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent, auctionCharity));
-            }
-            else {
-                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent));
-            }
-        }
+//        for (AuctionEvent auctionEvent : list) {
+//            if (auctionEvent.getAuctionType().equals(AuctionType.CHARITY.name())) {
+//                AuctionCharity auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionEvent.getId());
+//                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent, auctionCharity));
+//            }
+//            else {
+//                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent));
+//            }
+//        }
 
-        return auctionEventDtoList;
+        return list;
     }
 
     @Override
     @Transactional
     public void delete(AuctionEvent auctionEvent) {
-        if (auctionEvent.getAuctionType().equals(AuctionType.CHARITY)) {
-            AuctionCharity auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionEvent.getId());
-            auctionCharityRepository.delete(auctionCharity);
-        }
-
         if (auctionEvent.getStatusType().equals(AuctionStatus.FINISHED)) {
             AuctionWinner auctionWinner = auctionWinnerRepository.findByAuctionEvent(auctionEvent.getId());
             auctionWinnerRepository.delete(auctionWinner);
@@ -227,54 +212,59 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     }
 
     @Override
-    @Transactional
-    public AuctionEventDto update(AuctionEventRequest request, Long auctionId) throws AuctionEventNotFoundException {
+    public void deleteById(Long auctionId) throws AuctionEventNotFoundException {
         Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
-        if (!auctionEvent.isPresent()) {
+        if (auctionEvent.isEmpty()) {
+            throw new AuctionEventNotFoundException("Auction event["+ auctionId + "] doesn't exist.");
+        }
+
+        delete(auctionEvent.get());
+    }
+
+    @Override
+    @Transactional
+    public AuctionEvent update(AuctionEventRequest request, Long auctionId) throws AuctionEventNotFoundException {
+        Optional<AuctionEvent> auctionEventOpt = auctionEventRepository.findById(auctionId);
+        if (!auctionEventOpt.isPresent()) {
             throw new AuctionEventNotFoundException("Auction event[" + auctionId + "] doesn't exist.");
         }
 
-        ///Need to add more exceptions!
-        AuctionType oldAuctionType = auctionEvent.get().getAuctionType();
+        AuctionEvent auctionEvent = auctionEventOpt.get();
 
-        auctionEvent.get().setId(auctionId);
-        auctionEvent.get().setTitle(request.getTitle());
-        auctionEvent.get().setDescription(request.getDescription());
+        ///Need to add more exceptions!
+        AuctionType oldAuctionType = auctionEvent.getAuctionType();
+
+        auctionEvent.setId(auctionId);
+        auctionEvent.setTitle(request.getTitle());
+        auctionEvent.setDescription(request.getDescription());
 
         ///
 
         if (request.getAuctionStatus().equals(AuctionStatus.ACTIVE.name())) {
-            auctionEvent.get().setStatusType(AuctionStatus.ACTIVE);
+            auctionEvent.setStatusType(AuctionStatus.ACTIVE);
         }
         else if(request.getAuctionStatus().equals(AuctionStatus.EXPECTATION.name())) {
-            auctionEvent.get().setStatusType(AuctionStatus.EXPECTATION);
+            auctionEvent.setStatusType(AuctionStatus.EXPECTATION);
         }
 
-        if (request.getCharityPercent() == 0) {
-            auctionEvent = Optional.ofNullable(auctionEventRepository.save(auctionEvent.get()));
-            return AuctionEventDto.from(auctionEvent.get());
+//        if (request.getCharityPercent() == 0) {
+//            auctionEvent = Optional.ofNullable(auctionEventRepository.save(auctionEvent.get()));
+//            return auctionEvent.get();
+//
+        if (oldAuctionType.name().equals(AuctionType.CHARITY.name()) &&
+                !request.getAuctionType().equals(AuctionType.CHARITY.name())) {
+            auctionEvent.setAuctionType(AuctionType.COMMERCIAL);
+        }
+        else if (request.getCharityPercent() > 0 &&
+                auctionEvent.getAuctionType().equals(AuctionType.CHARITY.name())){
+            auctionEvent.setCharityPercent(request.getCharityPercent());
+        }
+        else if (request.getCharityPercent() > 0 &&
+                auctionEvent.getAuctionType().equals(AuctionType.COMMERCIAL.name())){
+            auctionEvent.setCharityPercent(request.getCharityPercent());
         }
 
-        AuctionCharity auctionCharity = new AuctionCharity();
-
-        if (oldAuctionType.name().equals(AuctionType.CHARITY.name()) && !request.getAuctionType().equals(AuctionType.CHARITY.name())) {
-            auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionId);
-            auctionCharityRepository.delete(auctionCharity);
-            auctionEvent.get().setAuctionType(AuctionType.COMMERCIAL);
-        }
-        else if (request.getCharityPercent() > 0 && auctionEvent.get().getAuctionType().equals(AuctionType.CHARITY.name())){
-            auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionId);
-            auctionCharity.setPercent(request.getCharityPercent());
-            auctionCharityRepository.save(auctionCharity);
-        }
-        else if (request.getCharityPercent() > 0 && auctionEvent.get().getAuctionType().equals(AuctionType.COMMERCIAL.name())){
-            auctionCharity = new AuctionCharity();
-            auctionCharity.setPercent(request.getCharityPercent());
-            auctionCharity.setAuctionEvent(auctionEvent.get());
-            auctionCharityRepository.save(auctionCharity);
-        }
-
-        return AuctionEventDto.from(auctionEvent.get(), auctionCharity);
+        return auctionEvent;
     }
 
 

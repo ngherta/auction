@@ -1,7 +1,7 @@
 package com.auction.service;
 
-import com.auction.web.model.AuctionEvent;
-import com.auction.web.model.AuctionEventSort;
+import com.auction.model.AuctionEvent;
+import com.auction.model.AuctionEventSort;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.AuctionEventSortRepository;
 import com.auction.service.interfaces.AuctionEventSortService;

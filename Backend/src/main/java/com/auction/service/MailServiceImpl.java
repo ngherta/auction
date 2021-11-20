@@ -1,9 +1,9 @@
 package com.auction.service;
 
-import com.auction.web.model.AuctionAction;
-import com.auction.web.model.AuctionWinner;
+import com.auction.model.AuctionAction;
+import com.auction.model.AuctionWinner;
 import com.auction.service.interfaces.MailService;
-import com.auction.web.model.TokenConfirmation;
+import com.auction.model.TokenConfirmation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;

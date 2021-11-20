@@ -1,18 +1,17 @@
 package com.auction.web.contoller;
 
-import com.auction.dto.request.ChangePasswordRequest;
-import com.auction.dto.request.DeleteUserRequest;
+import com.auction.model.mapper.UserToDtoMapper;
+import com.auction.web.dto.request.ChangePasswordRequest;
+import com.auction.web.dto.request.DeleteUserRequest;
 import com.auction.exception.TokenConfirmationNotFoundException;
 import com.auction.exception.UserAlreadyEnabledException;
 import com.auction.exception.UserNotFoundException;
 import com.auction.service.interfaces.ResetPasswordService;
 import com.auction.service.interfaces.TokenConfirmationService;
 import com.auction.service.interfaces.UserService;
-import com.auction.web.model.TokenConfirmation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +30,7 @@ public class UserController {
     private final ResetPasswordService resetPasswordService;
     private final UserService userService;
     private final TokenConfirmationService tokenConfirmationService;
+    private final UserToDtoMapper userToDtoMapper;
 
     @PostMapping("/reset/password/email={email}")
     public ResponseEntity resetPasswordByEmail(@PathVariable String email) throws MessagingException, UnsupportedEncodingException {
@@ -58,7 +58,7 @@ public class UserController {
 
     @GetMapping()
     public ResponseEntity getAllUsers() {
-        return ResponseEntity.ok().body(userService.getAll());
+        return ResponseEntity.ok().body(userToDtoMapper.mapList(userService.getAll()));
     }
 
     @DeleteMapping

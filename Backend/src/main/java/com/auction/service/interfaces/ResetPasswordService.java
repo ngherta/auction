@@ -1,8 +1,8 @@
 package com.auction.service.interfaces;
 
-import com.auction.dto.UserDto;
-import com.auction.web.model.ResetPasswordEntity;
-import com.auction.web.model.User;
+import com.auction.web.dto.UserDto;
+import com.auction.model.ResetPasswordEntity;
+import com.auction.model.User;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
@@ -16,5 +16,5 @@ public interface ResetPasswordService {
     void sendVerificationEmail(User user, ResetPasswordEntity resetPassword)
             throws MessagingException, UnsupportedEncodingException;
 
-    UserDto changePasswordAfterReset(String email, String newPassword);
+    User changePasswordAfterReset(String email, String newPassword);
 }

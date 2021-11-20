@@ -1,8 +1,8 @@
 package com.auction.service.interfaces;
 
-import com.auction.dto.request.LoginRequest;
-import com.auction.dto.request.SignupRequest;
-import com.auction.dto.response.JwtResponse;
+import com.auction.web.dto.request.LoginRequest;
+import com.auction.web.dto.request.SignupRequest;
+import com.auction.web.dto.response.JwtResponse;
 import com.auction.exception.SameCredentialsException;
 
 import javax.mail.MessagingException;

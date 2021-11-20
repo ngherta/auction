@@ -1,12 +1,12 @@
 package com.auction.service;
 
-import com.auction.dto.AuctionActionDto;
-import com.auction.dto.request.BetRequest;
+import com.auction.web.dto.AuctionActionDto;
+import com.auction.web.dto.request.BetRequest;
 import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.repository.AuctionEventRepository;
-import com.auction.web.model.AuctionAction;
-import com.auction.web.model.AuctionEvent;
-import com.auction.web.model.User;
+import com.auction.model.AuctionAction;
+import com.auction.model.AuctionEvent;
+import com.auction.model.User;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.service.interfaces.AuctionActionService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class AuctionActionServiceImpl implements AuctionActionService {
 
   @Override
   @Transactional
-  public List<AuctionActionDto> bet(BetRequest request) throws AuctionEventNotFoundException {
+  public List<AuctionAction> bet(BetRequest request) throws AuctionEventNotFoundException {
     AuctionAction auctionAction = new AuctionAction();
     auctionAction.setBet(request.getPrice());
     auctionAction.setDate(new Date());
@@ -42,14 +42,13 @@ public class AuctionActionServiceImpl implements AuctionActionService {
   }
 
   @Override
-  public List<AuctionActionDto> getAllByAuctionId(Long auctionId) throws AuctionEventNotFoundException {
+  public List<AuctionAction> getAllByAuctionId(Long auctionId) throws AuctionEventNotFoundException {
     Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
     if (auctionEvent.isEmpty()) {
       throw new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "] doesn't exist.");
     }
     List<AuctionAction> list = auctionActionRepository.findByAuctionEvent(auctionEvent.get());
-    List<AuctionActionDto> listDto = AuctionActionDto.from(list);
-    return listDto;
+    return list;
   }
 
 }

@@ -1,13 +1,10 @@
 package com.auction.service;
 
-import com.auction.dto.UserDto;
-import com.auction.dto.request.DeleteUserRequest;
-import com.auction.dto.request.RegistrationRequest;
-import com.auction.exception.SameCredentialsException;
+import com.auction.web.dto.UserDto;
+import com.auction.web.dto.request.DeleteUserRequest;
 import com.auction.exception.UserNotFoundException;
-import com.auction.web.model.AuctionEvent;
-import com.auction.web.model.User;
-import com.auction.web.model.enums.UserRole;
+import com.auction.model.AuctionEvent;
+import com.auction.model.User;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.UserRepository;
@@ -18,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,13 +35,9 @@ public class UserServiceImpl implements UserService {
     private AuctionActionRepository auctionActionRepository;
 
     @Override
-    public List<UserDto> getAll() {
+    public List<User> getAll() {
         List<User> list = userRepository.findAll();
-        List<UserDto> listDto = new ArrayList<>();
-        for (User userEntity : list) {
-            listDto.add(UserDto.from(userEntity));
-        }
-        return listDto;
+        return list;
     }
 
     @Override

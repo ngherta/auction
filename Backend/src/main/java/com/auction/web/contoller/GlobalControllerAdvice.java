@@ -1,6 +1,6 @@
 package com.auction.web.contoller;
 
-import com.auction.dto.ErrorDto;
+import com.auction.web.dto.ErrorDto;
 import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.exception.StartPriceNullException;
 import com.auction.exception.TokenConfirmationNotFoundException;

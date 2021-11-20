@@ -1,6 +1,6 @@
 package com.auction.config;
 
-import com.auction.web.model.User;
+import com.auction.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;

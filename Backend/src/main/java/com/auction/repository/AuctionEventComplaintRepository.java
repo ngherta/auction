@@ -1,6 +1,6 @@
 package com.auction.repository;
 
-import com.auction.web.model.AuctionEventComplaint;
+import com.auction.model.AuctionEventComplaint;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

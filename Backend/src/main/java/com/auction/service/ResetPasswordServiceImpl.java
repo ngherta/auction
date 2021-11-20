@@ -1,9 +1,8 @@
 package com.auction.service;
 
-import com.auction.dto.UserDto;
-import com.auction.exception.UserDoesntResetPassword;
-import com.auction.web.model.ResetPasswordEntity;
-import com.auction.web.model.User;
+import com.auction.web.dto.UserDto;
+import com.auction.model.ResetPasswordEntity;
+import com.auction.model.User;
 import com.auction.repository.ResetPasswordRepository;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.ResetPasswordService;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.swing.text.html.Option;
 import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
@@ -50,19 +48,16 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     }
 
     @Override
-    public UserDto changePasswordAfterReset(String email, String newPassword) {
+    public User changePasswordAfterReset(String email, String newPassword) {
         Optional<User> user =  userRepository.findByEmail(email);
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User with email" + email + " doesn't exist.");
         }
 
-
         user.get().setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user.get());
 
-        UserDto userDto = UserDto.from(user.get());
-
-        return userDto;
+        return user.get();
     }
 
     @Override
