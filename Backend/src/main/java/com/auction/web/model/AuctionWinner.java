@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name = "auction_winner")
@@ -35,4 +37,7 @@ public class AuctionWinner {
   private User user;
 
   private Double price;
+
+  @Column(name = "gen_date", nullable = false)
+  private Date genDate = new Date();
 }

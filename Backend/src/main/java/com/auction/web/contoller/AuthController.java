@@ -5,7 +5,7 @@ import com.auction.dto.request.SignupRequest;
 import com.auction.dto.response.JwtResponse;
 import com.auction.dto.response.MessageResponse;
 import com.auction.exception.SameCredentialsException;
-import com.auction.exception.TokenConfirmationNotFound;
+import com.auction.exception.TokenConfirmationNotFoundException;
 import com.auction.exception.UserAlreadyEnabledException;
 import com.auction.service.interfaces.AuthenticationService;
 import com.auction.service.interfaces.TokenConfirmationService;
@@ -44,7 +44,7 @@ public class AuthController {
     }
 
     @PostMapping("/confirm")
-    public ResponseEntity<?> confirm(@Param("code") String code) throws UserAlreadyEnabledException, TokenConfirmationNotFound {
+    public ResponseEntity<?> confirm(@Param("code") String code) throws UserAlreadyEnabledException, TokenConfirmationNotFoundException {
         confirmationService.confirm(code);
         return ResponseEntity.ok("Succes confirmation!");
     }

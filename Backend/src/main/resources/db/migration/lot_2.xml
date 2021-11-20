@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+  <changeSet id="2" author="ngh">
+
+    <createTable tableName="auction">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="title" type="varchar(255)"></column>
+      <column name="type" type="varchar(255)"></column>
+      <column name="description" type="text"></column>
+      <column name="finish_date" type="timestamp"></column>
+      <column name="start_date" type="timestamp"></column>
+      <column name="start_price" type="float8"></column>
+      <column name="finish_price" type="float8"></column>
+      <column name="gen_date" type="timestamp"></column>
+      <column name="status" type="varchar(255)"></column>
+      <column name="gen_user_id" type="int8">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="auction_winner">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="price" type="float8"></column>
+      <column name="auction_id" type="int8">
+        <constraints nullable="false"/>
+      </column>
+      <column name="user_id" type="int8">
+        <constraints nullable="false"/>
+      </column>
+      <column name="gen_date" type="timestamp"></column>
+    </createTable>
+
+    <createTable tableName="auction_img">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="url" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="auction_images">
+      <column name="img_id" type="int8">
+        <constraints nullable="false"/>
+      </column>
+      <column name="auction_id" type="int8">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="auction_action">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="bet" type="float8"></column>
+      <column name="gen_date" type="timestamp"></column>
+      <column name="auction_id" type="int8"></column>
+      <column name="user_id" type="int8"></column>
+    </createTable>
+
+    <createTable tableName="auction_charity">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="percent" type="float8"></column>
+      <column name="auction_id" type="int8"></column>
+    </createTable>
+
+    <rollback>
+
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

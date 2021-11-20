@@ -23,6 +23,6 @@ public class AuctionEventImg {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "url")
+  @Column(name = "url", nullable = false)
   private String url;
 }

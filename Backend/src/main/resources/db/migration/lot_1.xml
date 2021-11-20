@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
   <changeSet id="1" author="ngh">
-    <createTable tableName="user">
+    <createTable tableName="users">
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
@@ -14,13 +14,41 @@
       </column>
       <column name="first_name" type="varchar(255)"></column>
       <column name="last_name" type="varchar(255)"></column>
-      <column name="login" type="varchar(255)">
-        <constraints unique="true"></constraints>
-      </column>
       <column name="password" type="varchar(255)"></column>
       <column name="role" type="varchar(255)"></column>
       <column name="user_rating" type="float8"></column>
+      <column name="enabled" type="bool"></column>
     </createTable>
+
+
+    <createTable tableName="user_roles">
+      <column name="user_id" type="int8">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="role_id" type="int8">
+        <constraints primaryKey="true"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="reset_password">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="code" type="varchar(255)"></column>
+      <column name="enabled" type="bool"></column>
+      <column name="user_id" type="int8"></column>
+
+    </createTable>
+
+    <createTable tableName="roles">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="user_role" type="varchar(20)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
     <rollback>
       <dropTable tableName="user"/>
     </rollback>

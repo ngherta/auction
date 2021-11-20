@@ -1,6 +1,6 @@
 package com.auction.service;
 
-import com.auction.exception.TokenConfirmationNotFound;
+import com.auction.exception.TokenConfirmationNotFoundException;
 import com.auction.exception.UserAlreadyEnabledException;
 import com.auction.repository.TokenConfirmationRepository;
 import com.auction.repository.UserRepository;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -26,10 +25,10 @@ public class TokenConfirmationServiceImpl implements TokenConfirmationService {
   private final MailService mailService;
 
   @Override
-  public void confirm(String confirmation) throws TokenConfirmationNotFound, UserAlreadyEnabledException {
+  public void confirm(String confirmation) throws TokenConfirmationNotFoundException, UserAlreadyEnabledException {
     Optional<TokenConfirmation> tokenConfirmation = tokenConfirmationRepository.findByConfirmation(confirmation);
     if (tokenConfirmation.isEmpty()) {
-      throw new TokenConfirmationNotFound(String.format("TokenConfirmation[%s] not found", confirmation));
+      throw new TokenConfirmationNotFoundException(String.format("TokenConfirmation[%s] not found", confirmation));
     }
 
     User user = tokenConfirmation.get().getUser();

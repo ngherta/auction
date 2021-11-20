@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "auction_table")
+@Table(name = "auction")
 @NoArgsConstructor
 @Data
 public class AuctionEvent {
@@ -67,7 +67,7 @@ public class AuctionEvent {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "auction_images",
-            joinColumns = @JoinColumn(name = "id"),
+            joinColumns = @JoinColumn(name = "img_id"),
             inverseJoinColumns = @JoinColumn(name = "auction_id"))
     private List<AuctionEventImg> images = new ArrayList<>();
 

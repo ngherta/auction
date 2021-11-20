@@ -4,36 +4,39 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-  <changeSet id="3" author="ngh">
-    <createTable tableName="auction_complaint">
+  <changeSet id="5" author="ngh">
+    <createTable tableName="payment">
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="message" type="text"></column>
-      <column name="complaint_status" type="varchar(255)"></column>
-      <column name="auction_id" type="int8">
+      <column name="card_number" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="cvv_code" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="name" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="expiration_date" type="timestamp">
         <constraints nullable="false"/>
       </column>
       <column name="user_id" type="int8">
         <constraints nullable="false"/>
       </column>
-      <column name="gen_date" type="timestamp"></column>
     </createTable>
 
-    <createTable tableName="auction_complaint_audit">
-      <column name="id" type="int8">
+    <createTable tableName="token_confirmation">
+      <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="status" type="int4"></column>
+      <column name="confirmation" type="varchar(255)"></column>
       <column name="gen_date" type="timestamp"></column>
-      <column name="auction_complaint_id" type="int8">
+      <column name="user_id" type="int8">
         <constraints nullable="false"/>
       </column>
-      <column name="user_admin_id" type="int8">
-        <constraints nullable="false"/>
-      </column>
-
     </createTable>
+
     <rollback>
     </rollback>
   </changeSet>

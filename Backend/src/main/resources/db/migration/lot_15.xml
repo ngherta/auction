@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+  <changeSet id="15" author="ngh">
+    <!--  user_roles FK  -->
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_roles" constraintName="fk3naj1dmtvtxxus7k26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_roles" constraintName="fk3naj1dm2vtqxup7k26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="roles" validate="true"/>
+
+    <!--  reset_password FK  -->
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="reset_password" constraintName="f23nqj1dmtvpxxxs7k26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+    <!--  auction_action FK  -->
+    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="auction_action" constraintName="f23nqj1dmwv12xqs7i26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auction" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="auction_action" constraintName="f23nqj1dmwxp2qxs7i26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+
+    <!--  auction FK  -->
+    <addForeignKeyConstraint baseColumnNames="gen_user_id" baseTableName="auction" constraintName="f23nqj1dmwvpqxxs7i26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+
+    <!--  auction_images FK  -->
+    <addForeignKeyConstraint baseColumnNames="img_id" baseTableName="auction_images" constraintName="f23nxj1d2wv5qxxs7i26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auction_img" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="auction_images" constraintName="f23qx21d2nv5qxxs7i26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auction" validate="true"/>
+
+    <!--  auction_charity FK  -->
+    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="auction_charity" constraintName="f23qx21d2nv5qxxs7i26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auction" validate="true"/>
+
+    <!--  auction_complaint FK  -->
+    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="auction_complaint" constraintName="f23nqj1xqwv12xqs7i26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auction" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="auction_complaint" constraintName="f23nqj1dmwxp2qhs7i26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+    <!--  auction_complaint_audit FK  -->
+    <addForeignKeyConstraint baseColumnNames="auction_complaint_id" baseTableName="auction_complaint_audit" constraintName="f23qx21d2n1qsqxxs7i26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auction_complaint" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="user_admin_id" baseTableName="auction_complaint_audit" constraintName="f23qx21d2nv5qxxs7236qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+    <!--  auction_sort FK  -->
+    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="auction_sort" constraintName="f267qxx1d2q1qasqas7i26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auction" validate="true"/>
+
+    <!--  auction_winner FK  -->
+    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="auction_winner" constraintName="f267qxxx123asqjs7i26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auction" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="auction_winner" constraintName="f267qxx1d2q1qasadg226qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+    <!--  payment FK  -->
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="payment" constraintName="f267qxx1d2qxqa32dg22sqcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+    <!--  token_confirmation FK  -->
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="token_confirmation" constraintName="f267qxx1231xasa32dg22sqcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+    <rollback>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

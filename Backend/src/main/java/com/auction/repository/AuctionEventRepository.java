@@ -19,20 +19,20 @@ public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long
   Optional<AuctionEvent> findById(Long id);
 
   @Query(nativeQuery = true, value =
-          "select * from auction_table as a " +
+          "select * from auction as a " +
                   "where a.status = status and a.start_date <= LOCALTIMESTAMP")
   List<AuctionEvent> getListForStartOrFinish(@Param("status") String status);
 
   @Query(nativeQuery = true, value =
           "select a.id, " +
                   "(select count(*) from auction_action aa where aa.auction_id = a.id) as count " +
-                  "from auction_table a " +
+                  "from auction AS a " +
                   "where a.status != 'BLOCKED' " +
                   "order by count")
   List<Object[]> getAuctionEventForSorting();
 
   @Query(nativeQuery = true, value =
-          "SELECT a.* FROM auction_table AS a " +
+          "SELECT a.* FROM auction AS a " +
                   "LEFT JOIN auction_sort AS aa ON a.id = aa.auction_id " +
                   "WHERE a.status != 'BLOCKED' " +
                   "ORDERD BY aa.rating")
@@ -41,7 +41,7 @@ public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long
   List<AuctionEvent> findByUser(User user);
 
   @Query(nativeQuery = true, value =
-        "SELECT a.* FROM auction_table AS a " +
+        "SELECT a.* FROM auction AS a " +
         "WHERE a.status = 'ACTIVE' OR " +
         "a.status = 'FINISHED' AND " +
         "a.title LIKE search " +

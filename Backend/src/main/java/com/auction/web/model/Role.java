@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "user_role")
+@Table(name = "roles")
 @Data
 public class Role implements Serializable {
 
@@ -23,6 +23,6 @@ public class Role implements Serializable {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private UserRole userRole;
 }

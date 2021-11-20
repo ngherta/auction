@@ -37,7 +37,7 @@ public class AuctionAction {
     @Column(name = "bet")
     private Double bet;
 
-    @Column(name = "getDate")
+    @Column(name = "genDate")
     private Date date;
 
 }
