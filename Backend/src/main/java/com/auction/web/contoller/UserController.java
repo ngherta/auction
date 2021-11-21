@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,7 @@ import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
     private final ResetPasswordService resetPasswordService;
     private final UserService userService;
@@ -49,6 +50,18 @@ public class UserController {
         resetPasswordService.changePasswordAfterReset(request.getEmail(), request.getNewPassword());
         return ResponseEntity.ok().build();
     }
+
+    //only for ADMIN
+    @PostMapping("/disable/{userId}")
+    public ResponseEntity disable(@PathVariable("userId") Long userId) throws UserNotFoundException {
+        return ResponseEntity.ok(userToDtoMapper.map(userService.disable(userId)));
+    }
+
+    @PostMapping("/enavle/{userId}")
+    public ResponseEntity enable(@PathVariable("userId") Long userId) throws UserNotFoundException {
+        return ResponseEntity.ok(userToDtoMapper.map(userService.enable(userId)));
+    }
+
 
     @PostMapping("/verify")
     public ResponseEntity verifyUser(@Param("code") String code) throws TokenConfirmationNotFoundException, UserAlreadyEnabledException {

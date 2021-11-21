@@ -1,5 +1,6 @@
 package com.auction.service;
 
+import com.auction.config.jwt.JwtUtils;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.DeleteUserRequest;
 import com.auction.exception.UserNotFoundException;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,41 +25,61 @@ import java.util.Optional;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private AuctionEventService auctionEventService;
-    @Autowired
-    private AuctionEventRepository auctionEventRepository;
-    @Autowired
-    private AuctionActionRepository auctionActionRepository;
+  @Autowired
+  private UserRepository userRepository;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+  @Autowired
+  private AuctionEventService auctionEventService;
+  @Autowired
+  private AuctionEventRepository auctionEventRepository;
+  @Autowired
+  private AuctionActionRepository auctionActionRepository;
+  @Autowired
+  private JwtUtils jwtUtils;
 
-    @Override
-    public List<User> getAll() {
-        List<User> list = userRepository.findAll();
-        return list;
+  @Override
+  public List<User> getAll() {
+    List<User> list = userRepository.findAll();
+    return list;
+  }
+
+  @Override
+  public void deleteUserById(DeleteUserRequest request) throws UserNotFoundException {
+
+    User user = userRepository.findById(request.getUserId())
+            .orElseThrow(() -> new UserNotFoundException("User[" + request.getUserId() + "] doesn't exist!"));
+
+    List<AuctionEvent> auctionEventList = auctionEventRepository.findByUser(user);
+    for (AuctionEvent auctionEvent : auctionEventList) {
+      auctionEventService.delete(auctionEvent);
     }
 
-    @Override
-    public void deleteUserById(DeleteUserRequest request) throws UserNotFoundException {
-        Optional<User> user = userRepository.findById(request.getUserId());
+    auctionActionRepository.deleteAllByUser(user);
 
-        if (!user.isPresent()) {
-            throw new UserNotFoundException("User[" + request.getUserId() + "] doesn't exist.");
-        }
+    //Chat
 
-        List<AuctionEvent> auctionEventList = auctionEventRepository.findByUser(user.get());
-        for (AuctionEvent auctionEvent : auctionEventList) {
-            auctionEventService.delete(auctionEvent);
-        }
+    log.info("Deleting user[" + request.getUserId() + "]");
+    userRepository.delete(user);
+  }
 
-        auctionActionRepository.deleteAllByUser(user.get());
+  @Override
+  @Transactional
+  public User disable(Long userId) throws UserNotFoundException {
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException("User[" + userId + "] doesn't exist!"));
+    user.setEnabled(false);
 
-        //Chat
+    return userRepository.save(user);
+  }
 
-        log.info("Deleting user[" + request.getUserId() + "]");
-        userRepository.delete(user.get());
-    }
+  @Override
+  @Transactional
+  public User enable(Long userId) throws UserNotFoundException {
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException("User[" + userId + "] doesn't exist!"));
+    user.setEnabled(true);
+
+    return userRepository.save(user);
+  }
 }

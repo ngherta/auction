@@ -1,5 +1,7 @@
 package com.auction.web.contoller;
 
+import com.auction.exception.UserNotFoundException;
+import com.auction.exception.UserRoleNotFound;
 import com.auction.web.dto.request.LoginRequest;
 import com.auction.web.dto.request.SignupRequest;
 import com.auction.web.dto.response.JwtResponse;
@@ -32,13 +34,13 @@ public class AuthController {
     private TokenConfirmationService confirmationService;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) throws UserNotFoundException {
         JwtResponse jwtResponse =  authenticationService.authenticateUser(loginRequest);
         return ResponseEntity.ok(jwtResponse);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws SameCredentialsException, MessagingException, UnsupportedEncodingException {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws SameCredentialsException, MessagingException, UnsupportedEncodingException, UserRoleNotFound {
         authenticationService.register(signUpRequest);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

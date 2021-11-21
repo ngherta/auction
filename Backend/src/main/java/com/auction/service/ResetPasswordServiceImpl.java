@@ -29,12 +29,8 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     private final PasswordEncoder passwordEncoder;
 
     public void resetPasswordByEmail (String email) throws MessagingException, UnsupportedEncodingException {
-        Optional<User> userOptional =  userRepository.findByEmail(email);
-        if (userOptional.isEmpty()) {
-            throw new UsernameNotFoundException("User with email" + email + " doesn't exist.");
-        }
-
-        User user = userOptional.get();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User with email[" + email + "] doesn't exist!"));
 
         ResetPasswordEntity resetPassword = new ResetPasswordEntity();
 
@@ -49,15 +45,11 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Override
     public User changePasswordAfterReset(String email, String newPassword) {
-        Optional<User> user =  userRepository.findByEmail(email);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User with email" + email + " doesn't exist.");
-        }
+        User user =  userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User with email" + email + " doesn't exist."));
 
-        user.get().setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user.get());
-
-        return user.get();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        return userRepository.save(user);
     }
 
     @Override

@@ -26,20 +26,18 @@ public class TokenConfirmationServiceImpl implements TokenConfirmationService {
 
   @Override
   public void confirm(String confirmation) throws TokenConfirmationNotFoundException, UserAlreadyEnabledException {
-    Optional<TokenConfirmation> tokenConfirmation = tokenConfirmationRepository.findByConfirmation(confirmation);
-    if (tokenConfirmation.isEmpty()) {
-      throw new TokenConfirmationNotFoundException(String.format("TokenConfirmation[%s] not found", confirmation));
-    }
+    TokenConfirmation tokenConfirmation = tokenConfirmationRepository.findByConfirmation(confirmation)
+            .orElseThrow(() -> new TokenConfirmationNotFoundException(String.format("TokenConfirmation[%s] not found", confirmation)));
 
-    User user = tokenConfirmation.get().getUser();
+    User user = tokenConfirmation.getUser();
 
-    if (!tokenConfirmation.get().getUser().isEnabled()) {
+    if (!tokenConfirmation.getUser().isEnabled()) {
       throw new UserAlreadyEnabledException("User" + user.getId() + "already enabled");
     }
     else {
       user.setEnabled(true);
       userRepository.save(user);
-      tokenConfirmationRepository.delete(tokenConfirmation.get());
+      tokenConfirmationRepository.delete(tokenConfirmation);
     }
   }
 

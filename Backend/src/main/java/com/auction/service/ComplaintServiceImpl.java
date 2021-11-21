@@ -41,17 +41,14 @@ public class ComplaintServiceImpl implements ComplaintService {
   public AuctionEventComplaint create(ComplaintRequest request) throws AuctionEventNotFoundException, UserNotFoundException {
     AuctionEventComplaint auctionEventComplaint = new AuctionEventComplaint();
 
-    Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(request.getAuctionEventId());
-    if (auctionEvent.isEmpty()) {
-      throw new AuctionEventNotFoundException("AuctionEvent[" + request.getAuctionEventId() + "] doesn't exist");
-    }
-    Optional<User> user = userRepository.findById(request.getUserId());
-    if (user.isEmpty()) {
-      throw new UserNotFoundException("User[" + request.getUserId() + "] doesn't exist");
-    }
+    AuctionEvent auctionEvent = auctionEventRepository.findById(request.getAuctionEventId())
+            .orElseThrow(() -> new UserNotFoundException("AuctionEvent[" + request.getAuctionEventId() + "] doesn't exist!"));
 
-    auctionEventComplaint.setUser(user.get());
-    auctionEventComplaint.setAuctionEvent(auctionEvent.get());
+    User user = userRepository.findById(request.getUserId())
+            .orElseThrow(() -> new UserNotFoundException("User[" + request.getUserId() + "] doesn't exist!"));
+
+    auctionEventComplaint.setUser(user);
+    auctionEventComplaint.setAuctionEvent(auctionEvent);
     auctionEventComplaint.setGenDate(new Date());
     auctionEventComplaint.setMessage(request.getMessage());
     auctionEventComplaint.setStatus(ComplaintStatus.WAITING);
@@ -85,12 +82,10 @@ public class ComplaintServiceImpl implements ComplaintService {
       complaintAudit.setComplaintStatus(ComplaintStatus.SATISFIED);
     }
 
-    Optional<User> admin = userRepository.findById(request.getAdminId());
-    if (admin.isEmpty()) {
-      throw new UserNotFoundException("User[" + request.getAdminId() + "] doesn't exist");
-    }
+    User admin = userRepository.findById(request.getAdminId())
+            .orElseThrow(() -> new UserNotFoundException("User[" + request.getAdminId() + "] doesn't exist"));
 
-    complaintAudit.setAdmin(admin.get());
+    complaintAudit.setAdmin(admin);
     complaintAudit.setGenDate(new Date());
     complaintAudit.setAuctionEventComplaint(complaint);
     complaintAudit = complaintAuditRepository.save(complaintAudit);

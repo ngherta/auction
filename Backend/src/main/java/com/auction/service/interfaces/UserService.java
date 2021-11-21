@@ -8,9 +8,12 @@ import java.util.List;
 
 public interface UserService {
 
-//    UserDto saveUser(RegistrationRequest request) throws SameCredentialsException;
+  List<User> getAll();
 
-    List<User> getAll();
+  void deleteUserById(DeleteUserRequest request) throws UserNotFoundException;
 
-    void deleteUserById(DeleteUserRequest request) throws UserNotFoundException;
+  User disable(Long userId) throws UserNotFoundException;
+
+  User enable(Long userId) throws UserNotFoundException;
+
 }

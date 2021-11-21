@@ -43,11 +43,10 @@ public class AuctionActionServiceImpl implements AuctionActionService {
 
   @Override
   public List<AuctionAction> getAllByAuctionId(Long auctionId) throws AuctionEventNotFoundException {
-    Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
-    if (auctionEvent.isEmpty()) {
-      throw new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "] doesn't exist.");
-    }
-    List<AuctionAction> list = auctionActionRepository.findByAuctionEvent(auctionEvent.get());
+    AuctionEvent auctionEvent = auctionEventRepository.findById(auctionId)
+            .orElseThrow(() -> new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "] doesn't exist."));
+
+    List<AuctionAction> list = auctionActionRepository.findByAuctionEvent(auctionEvent);
     return list;
   }
 

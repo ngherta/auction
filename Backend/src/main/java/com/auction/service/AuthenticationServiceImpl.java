@@ -2,6 +2,8 @@ package com.auction.service;
 
 import com.auction.config.UserDetailsImpl;
 import com.auction.config.jwt.JwtUtils;
+import com.auction.exception.UserNotFoundException;
+import com.auction.exception.UserRoleNotFound;
 import com.auction.model.mapper.UserToDtoMapper;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.LoginRequest;
@@ -42,7 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
   @Override
-  public JwtResponse authenticateUser(LoginRequest loginRequest) {
+  public JwtResponse authenticateUser(LoginRequest loginRequest) throws UserNotFoundException {
     Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
     SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -50,13 +52,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-    Optional<User> user = userRepository.findByEmail(loginRequest.getEmail());
-    UserDto userDto = userToDtoMapper.map(user.get());
+    User user = userRepository.findByEmail(loginRequest.getEmail())
+            .orElseThrow(() -> new UserNotFoundException("User with email[" + loginRequest.getEmail() + "] doesn't exist!"));
+    UserDto userDto = userToDtoMapper.map(user);
     return new JwtResponse(jwt, userDto);
   }
 
   @Override
-  public void register(SignupRequest signUpRequest) throws SameCredentialsException, MessagingException, UnsupportedEncodingException {
+  public void register(SignupRequest signUpRequest) throws SameCredentialsException, MessagingException, UnsupportedEncodingException, UserRoleNotFound {
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
       throw new SameCredentialsException("Error: Email is already in use!");
     }
@@ -66,8 +69,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                          encoder.encode(signUpRequest.getPassword()));
 
     Set<Role> roles = new HashSet<>(1);
-    Optional<Role> role = roleRepository.findByUserRole(UserRole.USER);
-    roles.add(role.get());
+    Role role = roleRepository.findByUserRole(UserRole.USER)
+            .orElseThrow(() -> new UserRoleNotFound(UserRole.USER.name() + "doesn't exist."));
+    roles.add(role);
     user.setUserRoles(roles);
     user.setFirstName(signUpRequest.getFirstName());
     user.setLastName(signUpRequest.getLastName());

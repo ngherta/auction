@@ -119,16 +119,13 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
     @Override
     public AuctionEvent blockAuctionEventById(Long auctionId) throws AuctionEventNotFoundException {
-        Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
-        if (auctionEvent.isEmpty()) {
-            throw new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "doesn't exist.");
-        }
-        return blockAuctionEvent(auctionEvent.get());
+        AuctionEvent auctionEvent = auctionEventRepository.findById(auctionId)
+                .orElseThrow(() -> new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "doesn't exist."));
+        return blockAuctionEvent(auctionEvent);
     }
 
     @Override
     public AuctionEvent blockAuctionEvent(AuctionEvent auctionEvent) {
-
         auctionEvent.setStatusType(AuctionStatus.BLOCKED);
         log.info("AuctionEvent[" + auctionEvent.getId() + "] new status - " + AuctionStatus.BLOCKED.name());
         return auctionEventRepository.save(auctionEvent);
@@ -149,25 +146,19 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     @Override
     @Transactional
     public void finishByFinishPrice(AuctionFinishByFinishPriceRequest request) throws AuctionEventNotFoundException, UserNotFoundException {
-        Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(request.getAuctionId());
-        Optional<User> user = userRepository.findById(request.getUserId());
+        AuctionEvent auctionEvent = auctionEventRepository.findById(request.getAuctionId())
+                .orElseThrow(() -> new AuctionEventNotFoundException("Auction event[" + request.getAuctionId() + "doesn't exist"));
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("User[" + request.getUserId() + "] doesn't exist"));
 
-        if (!auctionEvent.isPresent()) {
-            throw new AuctionEventNotFoundException("Auction event[" + request.getAuctionId() + "doesn't exist");
-        }
-
-        if (!user.isPresent()) {
-            throw new UserNotFoundException("User[" + request.getUserId() + "] doesn't exist");
-        }
-
-        auctionEvent.get().setStatusType(AuctionStatus.FINISHED);
-        auctionEventRepository.save(auctionEvent.get());
+        auctionEvent.setStatusType(AuctionStatus.FINISHED);
+        auctionEventRepository.save(auctionEvent);
 
 
         AuctionWinner auctionWinner = new AuctionWinner();
-        auctionWinner.setUser(user.get());
-        auctionWinner.setAuctionEvent(auctionEvent.get());
-        auctionWinner.setPrice(auctionEvent.get().getFinishPrice());
+        auctionWinner.setUser(user);
+        auctionWinner.setAuctionEvent(auctionEvent);
+        auctionWinner.setPrice(auctionEvent.getFinishPrice());
         auctionWinnerRepository.save(auctionWinner);
     }
 
@@ -198,23 +189,16 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
     @Override
     public void deleteById(Long auctionId) throws AuctionEventNotFoundException {
-        Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
-        if (auctionEvent.isEmpty()) {
-            throw new AuctionEventNotFoundException("Auction event["+ auctionId + "] doesn't exist.");
-        }
-
-        delete(auctionEvent.get());
+        AuctionEvent auctionEvent = auctionEventRepository.findById(auctionId)
+                .orElseThrow(() -> new AuctionEventNotFoundException("Auction event["+ auctionId + "] doesn't exist."));
+        delete(auctionEvent);
     }
 
     @Override
     @Transactional
     public AuctionEvent update(AuctionEventRequest request, Long auctionId) throws AuctionEventNotFoundException {
-        Optional<AuctionEvent> auctionEventOpt = auctionEventRepository.findById(auctionId);
-        if (auctionEventOpt.isEmpty()) {
-            throw new AuctionEventNotFoundException("Auction event[" + auctionId + "] doesn't exist.");
-        }
-
-        AuctionEvent auctionEvent = auctionEventOpt.get();
+        AuctionEvent auctionEvent = auctionEventRepository.findById(auctionId)
+                .orElseThrow(() -> new AuctionEventNotFoundException("Auction event[" + auctionId + "] doesn't exist."));
 
         ///Need to add more exceptions!
         AuctionType oldAuctionType = auctionEvent.getAuctionType();
