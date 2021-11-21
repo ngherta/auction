@@ -69,7 +69,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
   @Override
   @Transactional
-  public AuctionEventComplaint blockAuction(ComplaintAdminRequest request) throws UserNotFoundException {
+  public AuctionEventComplaintAudit satisfyComplaint(ComplaintAdminRequest request) throws UserNotFoundException {
     AuctionEventComplaint complaint = complaintRepository.getById(request.getComplaintId());
     AuctionEventComplaintAudit complaintAudit = new AuctionEventComplaintAudit();
     AuctionEvent auctionEvent = new AuctionEvent();
@@ -95,6 +95,6 @@ public class ComplaintServiceImpl implements ComplaintService {
     complaintAudit.setAuctionEventComplaint(complaint);
     complaintAudit = complaintAuditRepository.save(complaintAudit);
 
-    return complaint;
+    return complaintAudit;
   }
 }

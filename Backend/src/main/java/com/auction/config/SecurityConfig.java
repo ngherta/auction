@@ -25,6 +25,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final String ADMIN = "ADMIN";
+    private final String USER = "USER";
+
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -64,11 +67,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/admin/*").hasRole("ADMIN")
-                .antMatchers("/user/*").hasRole("ADMIN")
+                .antMatchers("/admin/*").hasRole(ADMIN)
+                .antMatchers("/user/*").hasAnyRole(USER, ADMIN)
+                .antMatchers("/user/verify/*").permitAll()
                 .antMatchers("/auction/**").permitAll()
                 .antMatchers("/websocket/**").permitAll()
-                .antMatchers("/**").permitAll()
                 .antMatchers("/signup").permitAll()
                 .antMatchers("/signin").permitAll()
                 .anyRequest().authenticated()

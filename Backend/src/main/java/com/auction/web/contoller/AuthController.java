@@ -46,6 +46,6 @@ public class AuthController {
     @PostMapping("/confirm")
     public ResponseEntity<?> confirm(@Param("code") String code) throws UserAlreadyEnabledException, TokenConfirmationNotFoundException {
         confirmationService.confirm(code);
-        return ResponseEntity.ok("Succes confirmation!");
+        return ResponseEntity.ok(new MessageResponse("Success confirmation!"));
     }
 }

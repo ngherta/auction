@@ -65,17 +65,14 @@ public class AuctionEventServiceImpl implements AuctionEventService {
         auctionEvent.setFinishDate(request.getFinishDate());
 
         if (request.getCharityPercent() == 0) {
-            auctionEvent = auctionEventRepository.save(auctionEvent);
-            return auctionEvent;
-        }
-
-        if (request.getCharityPercent() == 0) {
             auctionEvent.setAuctionType(AuctionType.COMMERCIAL);
         }
         else if (request.getCharityPercent() > 0) {
             auctionEvent.setAuctionType(AuctionType.CHARITY);
             auctionEvent.setCharityPercent(request.getCharityPercent());
         }
+
+        auctionEvent = auctionEventRepository.save(auctionEvent);
 
         return auctionEvent;
     }
@@ -121,7 +118,17 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     }
 
     @Override
+    public AuctionEvent blockAuctionEventById(Long auctionId) throws AuctionEventNotFoundException {
+        Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
+        if (auctionEvent.isEmpty()) {
+            throw new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "doesn't exist.");
+        }
+        return blockAuctionEvent(auctionEvent.get());
+    }
+
+    @Override
     public AuctionEvent blockAuctionEvent(AuctionEvent auctionEvent) {
+
         auctionEvent.setStatusType(AuctionStatus.BLOCKED);
         log.info("AuctionEvent[" + auctionEvent.getId() + "] new status - " + AuctionStatus.BLOCKED.name());
         return auctionEventRepository.save(auctionEvent);
@@ -166,36 +173,13 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
     @Override
     public List<AuctionEvent> getAllSortByRating() {
-        List<AuctionEventDto> auctionEventDtoList = new ArrayList<>();
-        List<AuctionEvent> auctionEventList = auctionEventRepository.getAuctionEventByRating();
-
-//        for (AuctionEvent auctionEvent : auctionEventList) {
-//            if (auctionEvent.getAuctionType().equals(AuctionType.CHARITY.name())) {
-//                AuctionCharity auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionEvent.getId());
-//                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent, auctionCharity));
-//            }
-//            else {
-//                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent));
-//            }
-//        }
-
-        return auctionEventList;
+        List<AuctionEvent> list = auctionEventRepository.getAuctionEventByRating();
+        return list;
     }
 
     @Override
     public List<AuctionEvent> getAll() {
         List<AuctionEvent> list = auctionEventRepository.findAll();
-        List<AuctionEventDto> auctionEventDtoList = new ArrayList<>();
-//        for (AuctionEvent auctionEvent : list) {
-//            if (auctionEvent.getAuctionType().equals(AuctionType.CHARITY.name())) {
-//                AuctionCharity auctionCharity = auctionCharityRepository.findByAuctionEvent(auctionEvent.getId());
-//                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent, auctionCharity));
-//            }
-//            else {
-//                auctionEventDtoList.add(AuctionEventDto.from(auctionEvent));
-//            }
-//        }
-
         return list;
     }
 
@@ -209,6 +193,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
         auctionEventSortRepository.deleteAllByAuctionEvent(auctionEvent.getId());
         auctionActionRepository.deleteAllByAuctionEvent(auctionEvent);
+        auctionEventRepository.delete(auctionEvent);
     }
 
     @Override
@@ -225,7 +210,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     @Transactional
     public AuctionEvent update(AuctionEventRequest request, Long auctionId) throws AuctionEventNotFoundException {
         Optional<AuctionEvent> auctionEventOpt = auctionEventRepository.findById(auctionId);
-        if (!auctionEventOpt.isPresent()) {
+        if (auctionEventOpt.isEmpty()) {
             throw new AuctionEventNotFoundException("Auction event[" + auctionId + "] doesn't exist.");
         }
 
@@ -238,8 +223,6 @@ public class AuctionEventServiceImpl implements AuctionEventService {
         auctionEvent.setTitle(request.getTitle());
         auctionEvent.setDescription(request.getDescription());
 
-        ///
-
         if (request.getAuctionStatus().equals(AuctionStatus.ACTIVE.name())) {
             auctionEvent.setStatusType(AuctionStatus.ACTIVE);
         }
@@ -247,10 +230,6 @@ public class AuctionEventServiceImpl implements AuctionEventService {
             auctionEvent.setStatusType(AuctionStatus.EXPECTATION);
         }
 
-//        if (request.getCharityPercent() == 0) {
-//            auctionEvent = Optional.ofNullable(auctionEventRepository.save(auctionEvent.get()));
-//            return auctionEvent.get();
-//
         if (oldAuctionType.name().equals(AuctionType.CHARITY.name()) &&
                 !request.getAuctionType().equals(AuctionType.CHARITY.name())) {
             auctionEvent.setAuctionType(AuctionType.COMMERCIAL);
@@ -266,6 +245,4 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
         return auctionEvent;
     }
-
-
 }

@@ -15,6 +15,20 @@
       <column name="user_role" value="ADMIN"/>
     </insert>
 
+    <insert tableName="users">
+      <column name="id" valueNumeric="9999"></column>
+      <column name="email" value="gherta.nicolai@gmail.com"></column>
+      <column name="first_name" value="Nicolae"></column>
+      <column name="last_name" value="Gherta"></column>
+      <column name="password" value="$2a$10$gfoTKb0N2xjMZvYhVGLODOHNGqfCMsj1o4.DHd3QipsYH/gTAWy7e"></column>
+      <column name="user_rating" value="12"></column>
+      <column name="enabled" value="true"></column>
+    </insert>
+    <insert tableName="user_roles">
+      <column name="user_id" valueNumeric="9999"></column>
+      <column name="role_id" valueNumeric="1"></column>
+    </insert>
+
     <rollback>
     </rollback>
   </changeSet>

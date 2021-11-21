@@ -33,13 +33,11 @@ import java.util.Optional;
 public class AuctionEventController {
 
     private final AuctionEventService auctionEventService;
-    private final AuctionEventRepository auctionEventRepository;
     private final AuctionEventToDtoMapper auctionEventToDtoMapper;
 
     @PostMapping()
     public ResponseEntity createAuctionEvent(@RequestBody AuctionEventRequest request) throws StartPriceNullException {
         AuctionEvent auctionEvent = auctionEventService.save(request);
-
         return ResponseEntity.ok(auctionEventToDtoMapper.map(auctionEvent));
     }
 
@@ -75,16 +73,8 @@ public class AuctionEventController {
 
     @PutMapping("/block/{auctionId}")
     public ResponseEntity block(@PathVariable Long auctionId) throws AuctionEventNotFoundException {
-
-        Optional<AuctionEvent> auctionEvent = auctionEventRepository.findById(auctionId);
-        if (auctionEvent.isEmpty()) {
-            throw new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "doesn't exist.");
-        }
-//        AuctionEventDto auctionEventDto = AuctionEventDto.from(auctionEventService.blockAuctionEvent(auctionEvent.get()));
-
-//        ComplaintDto complaintDto = complaintService.blockAuction();
-
-        return ResponseEntity.ok().build();
+        AuctionEvent auctionEvent = auctionEventService.blockAuctionEventById(auctionId);
+        return ResponseEntity.ok(auctionEventToDtoMapper.map(auctionEvent));
     }
 
     //WEBSOKET

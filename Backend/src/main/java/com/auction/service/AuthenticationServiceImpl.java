@@ -73,6 +73,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     user.setLastName(signUpRequest.getLastName());
     user = userRepository.save(user);
 
-//    tokenConfirmationService.generate(user);
+    tokenConfirmationService.generate(user);
   }
 }

@@ -12,12 +12,4 @@ import lombok.Setter;
 public class ErrorDto {
   String title;
   String errorMessage;
-
-  public static ErrorDto from(String errorMessage,
-                              String title) {
-    ErrorDto result = new ErrorDto();
-    result.setErrorMessage(errorMessage);
-    result.setTitle(title);
-    return result;
-  }
 }

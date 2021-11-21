@@ -2,6 +2,7 @@ package com.auction.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,7 +44,7 @@ public class User {
     private String lastName;
 
     @Column
-    private boolean enabled = true;
+    private boolean enabled = false;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "user_roles",

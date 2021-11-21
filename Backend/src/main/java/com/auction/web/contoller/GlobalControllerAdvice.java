@@ -16,31 +16,31 @@ public class GlobalControllerAdvice {
 
   @ExceptionHandler
   public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException e) {
-    return ResponseEntity.badRequest().body(ErrorDto.from("User doesn't exist!", e.getMessage()));
+    return ResponseEntity.badRequest().body(new ErrorDto("User doesn't exist!", e.getMessage()));
   }
 
   @ExceptionHandler
   public ResponseEntity<?> handleAuctionNotFoundException(AuctionEventNotFoundException e) {
-    return ResponseEntity.badRequest().body(ErrorDto.from("Auction event doesn't exist!", e.getMessage()));
+    return ResponseEntity.badRequest().body(new ErrorDto("Auction event doesn't exist!", e.getMessage()));
   }
 
   @ExceptionHandler
   public ResponseEntity<?> handleStartPriceException(StartPriceNullException e) {
-    return ResponseEntity.badRequest().body(ErrorDto.from("Start price of auction event can't be NULL!", e.getMessage()));
+    return ResponseEntity.badRequest().body(new ErrorDto("Start price of auction event can't be NULL!", e.getMessage()));
   }
 
   @ExceptionHandler
   public ResponseEntity<?> handleTokenConfirmationNotFoundException(TokenConfirmationNotFoundException e) {
-    return ResponseEntity.badRequest().body(ErrorDto.from("Token confirmation doesn't exist!", e.getMessage()));
+    return ResponseEntity.badRequest().body(new ErrorDto("Token confirmation doesn't exist!", e.getMessage()));
   }
 
   @ExceptionHandler
   public ResponseEntity<?> handleUserAlreadyEnabledException(UserAlreadyEnabledException e) {
-    return ResponseEntity.badRequest().body(ErrorDto.from("User already enabled!", e.getMessage()));
+    return ResponseEntity.badRequest().body(new ErrorDto("User already enabled!", e.getMessage()));
   }
 
   @ExceptionHandler
   public ResponseEntity<?> handleUserDoesntResetPasswordException(UserDoesntResetPassword e) {
-    return ResponseEntity.badRequest().body(ErrorDto.from("User doesn't reset password!", e.getMessage()));
+    return ResponseEntity.badRequest().body(new ErrorDto("User doesn't reset password!", e.getMessage()));
   }
 }

@@ -1,6 +1,7 @@
 package com.auction.service.interfaces;
 
 import com.auction.model.AuctionEventComplaint;
+import com.auction.model.AuctionEventComplaintAudit;
 import com.auction.web.dto.ComplaintDto;
 import com.auction.web.dto.request.ComplaintAdminRequest;
 import com.auction.web.dto.request.ComplaintRequest;
@@ -14,7 +15,5 @@ public interface ComplaintService {
 
   List<AuctionEventComplaint> getAll();
 
-  AuctionEventComplaint blockAuction(ComplaintAdminRequest request) throws UserNotFoundException;
-
-
+  AuctionEventComplaintAudit satisfyComplaint(ComplaintAdminRequest request) throws UserNotFoundException;
 }

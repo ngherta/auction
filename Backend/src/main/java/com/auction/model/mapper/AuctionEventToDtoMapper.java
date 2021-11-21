@@ -2,14 +2,17 @@ package com.auction.model.mapper;
 
 import com.auction.model.AuctionEvent;
 import com.auction.web.dto.AuctionEventDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Component
 public class AuctionEventToDtoMapper implements Mapper<AuctionEvent, AuctionEventDto>{
+
+  private final UserToDtoMapper userToDtoMapper;
 
   @Override
   public AuctionEventDto map(AuctionEvent entity) {
@@ -21,7 +24,7 @@ public class AuctionEventToDtoMapper implements Mapper<AuctionEvent, AuctionEven
             .auctionType(entity.getAuctionType())
             .startPrice(entity.getStartPrice())
             .finishPrice(entity.getFinishPrice())
-            .user(entity.getUser())
+            .user(userToDtoMapper.map(entity.getUser()))
             .startDate(entity.getStartDate())
             .finishDate(entity.getFinishDate())
             .genDate(entity.getGenDate())

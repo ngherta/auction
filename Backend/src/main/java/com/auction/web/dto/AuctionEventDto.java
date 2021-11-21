@@ -26,7 +26,7 @@ public class AuctionEventDto {
     private AuctionType auctionType;
     private Double startPrice;
     private Double finishPrice;
-    private User user;
+    private UserDto user;
     private Date startDate;
     private Date finishDate;
     private Date genDate;

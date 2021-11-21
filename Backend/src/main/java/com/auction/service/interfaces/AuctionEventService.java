@@ -24,6 +24,8 @@ public interface AuctionEventService {
 
   List<AuctionEvent> getAll();
 
+  AuctionEvent blockAuctionEventById(Long auctionId) throws AuctionEventNotFoundException;
+
   void delete(AuctionEvent auctionEvent);
 
   void deleteById(Long auctionId) throws AuctionEventNotFoundException;

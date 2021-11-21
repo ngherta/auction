@@ -1,6 +1,8 @@
 package com.auction.web.contoller;
 
+import com.auction.config.jwt.JwtUtils;
 import com.auction.exception.AuctionEventNotFoundException;
+import com.auction.model.mapper.AuctionActionToDtoMapper;
 import com.auction.service.interfaces.AuctionActionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuctionActionContoller {
 
   private final AuctionActionService auctionActionService;
+  private final AuctionActionToDtoMapper auctionActionToDtoMapper;
 
   @GetMapping("/{auctionId}")
   public ResponseEntity getByAuctionId(@PathVariable Long auctionId) throws AuctionEventNotFoundException {
-
-    return ResponseEntity.ok(auctionActionService.getAllByAuctionId(auctionId));
+    return ResponseEntity.ok(auctionActionToDtoMapper.mapList(auctionActionService.getAllByAuctionId(auctionId)));
   }
+
+  //create method for betting using websocket
 }
