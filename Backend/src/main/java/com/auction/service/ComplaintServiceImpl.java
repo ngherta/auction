@@ -1,33 +1,30 @@
 package com.auction.service;
 
-import com.auction.model.mapper.ComplaintAuditToDtoMapper;
-import com.auction.model.mapper.ComplaintToDtoMapper;
-import com.auction.web.dto.ComplaintAuditDto;
-import com.auction.web.dto.ComplaintDto;
-import com.auction.web.dto.request.ComplaintAdminRequest;
-import com.auction.web.dto.request.ComplaintRequest;
-import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.exception.UserNotFoundException;
 import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionEventComplaint;
 import com.auction.model.AuctionEventComplaintAudit;
 import com.auction.model.User;
 import com.auction.model.enums.ComplaintStatus;
+import com.auction.model.mapper.ComplaintAuditToDtoMapper;
+import com.auction.model.mapper.ComplaintToDtoMapper;
 import com.auction.repository.AuctionEventComplaintAuditRepository;
 import com.auction.repository.AuctionEventComplaintRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.ComplaintService;
+import com.auction.web.dto.ComplaintAuditDto;
+import com.auction.web.dto.ComplaintDto;
+import com.auction.web.dto.request.ComplaintAdminRequest;
+import com.auction.web.dto.request.ComplaintRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -64,6 +61,7 @@ public class ComplaintServiceImpl implements ComplaintService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<ComplaintDto> getAll() {
     List<AuctionEventComplaint> list = complaintRepository.findAll();
     return complaintToDtoMapper.mapList(list);

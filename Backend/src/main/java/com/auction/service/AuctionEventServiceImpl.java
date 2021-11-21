@@ -1,9 +1,5 @@
 package com.auction.service;
 
-import com.auction.model.mapper.AuctionEventToDtoMapper;
-import com.auction.web.dto.AuctionEventDto;
-import com.auction.web.dto.request.AuctionEventRequest;
-import com.auction.web.dto.request.AuctionFinishByFinishPriceRequest;
 import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.exception.StartPriceNullException;
 import com.auction.exception.UserNotFoundException;
@@ -13,6 +9,7 @@ import com.auction.model.AuctionWinner;
 import com.auction.model.User;
 import com.auction.model.enums.AuctionStatus;
 import com.auction.model.enums.AuctionType;
+import com.auction.model.mapper.AuctionEventToDtoMapper;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.AuctionEventSortRepository;
@@ -20,17 +17,19 @@ import com.auction.repository.AuctionWinnerRepository;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.MailService;
+import com.auction.web.dto.AuctionEventDto;
+import com.auction.web.dto.request.AuctionEventRequest;
+import com.auction.web.dto.request.AuctionFinishByFinishPriceRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
-import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -112,6 +111,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void sendEmailToParticipants(AuctionEvent auctionEvent, AuctionWinner auctionWinner) throws MessagingException, UnsupportedEncodingException {
         List<AuctionAction> list = auctionActionRepository.getAllByAuctionGroupByUser(auctionEvent.getId(), auctionWinner.getUser().getId());
         if (!list.isEmpty()) {
@@ -120,6 +120,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AuctionEventDto blockAuctionEventById(Long auctionId) {
         AuctionEvent auctionEvent = auctionEventRepository.findById(auctionId)
                 .orElseThrow(() -> new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "doesn't exist."));
@@ -127,6 +128,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     }
 
     @Override
+    @Transactional
     public AuctionEvent blockAuctionEvent(AuctionEvent auctionEvent) {
         auctionEvent.setStatusType(AuctionStatus.BLOCKED);
         log.info("AuctionEvent[" + auctionEvent.getId() + "] new status - " + AuctionStatus.BLOCKED.name());
@@ -134,12 +136,14 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void search(String message) {
         int limit = 5;
         auctionEventRepository.search(message, limit);
     }
 
     @Override
+    @Transactional
     public void changeStatusToStart(List<AuctionEvent> list) {
         list.stream().forEach(e -> e.setStatusType(AuctionStatus.ACTIVE));
         auctionEventRepository.saveAll(list);
@@ -165,12 +169,14 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<AuctionEventDto> getAllSortByRating() {
         List<AuctionEvent> list = auctionEventRepository.getAuctionEventByRating();
         return auctionEventToDtoMapper.mapList(list);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<AuctionEventDto> getAll() {
         List<AuctionEvent> list = auctionEventRepository.findAll();
         return auctionEventToDtoMapper.mapList(list);

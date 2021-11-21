@@ -1,27 +1,22 @@
 package com.auction.service;
 
-import com.auction.config.jwt.JwtUtils;
-import com.auction.model.mapper.UserToDtoMapper;
-import com.auction.web.dto.UserDto;
-import com.auction.web.dto.request.DeleteUserRequest;
 import com.auction.exception.UserNotFoundException;
 import com.auction.model.AuctionEvent;
 import com.auction.model.User;
+import com.auction.model.mapper.UserToDtoMapper;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.UserService;
+import com.auction.web.dto.UserDto;
+import com.auction.web.dto.request.DeleteUserRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -35,14 +30,15 @@ public class UserServiceImpl implements UserService {
   private final UserToDtoMapper userToDtoMapper;
 
   @Override
+  @Transactional(readOnly = true)
   public List<UserDto> getAll() {
     List<User> list = userRepository.findAll();
     return userToDtoMapper.mapList(list);
   }
 
   @Override
+  @Transactional
   public void deleteUserById(DeleteUserRequest request) {
-
     User user = userRepository.findById(request.getUserId())
             .orElseThrow(() -> new UserNotFoundException("User[" + request.getUserId() + "] doesn't exist!"));
 

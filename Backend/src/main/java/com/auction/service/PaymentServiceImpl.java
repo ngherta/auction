@@ -7,6 +7,7 @@ import com.auction.service.interfaces.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class PaymentServiceImpl implements PaymentService {
   private final PaymentRepository paymentRepository;
 
   @Override
+  @Transactional(readOnly = true)
   public void checkPayment(User user) {
     List<Payment> list = paymentRepository.findAllByUser(user);
     if (list.isEmpty()) {

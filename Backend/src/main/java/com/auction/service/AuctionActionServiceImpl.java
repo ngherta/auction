@@ -1,24 +1,22 @@
 package com.auction.service;
 
-import com.auction.model.mapper.AuctionActionToDtoMapper;
-import com.auction.web.dto.AuctionActionDto;
-import com.auction.web.dto.request.BetRequest;
 import com.auction.exception.AuctionEventNotFoundException;
-import com.auction.repository.AuctionEventRepository;
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
 import com.auction.model.User;
+import com.auction.model.mapper.AuctionActionToDtoMapper;
 import com.auction.repository.AuctionActionRepository;
+import com.auction.repository.AuctionEventRepository;
 import com.auction.service.interfaces.AuctionActionService;
+import com.auction.web.dto.AuctionActionDto;
+import com.auction.web.dto.request.BetRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -45,6 +43,7 @@ public class AuctionActionServiceImpl implements AuctionActionService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<AuctionActionDto> getAllByAuctionId(Long auctionId) {
     AuctionEvent auctionEvent = auctionEventRepository.findById(auctionId)
             .orElseThrow(() -> new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "] doesn't exist."));

@@ -23,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
@@ -43,6 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
   @Override
+  @Transactional
   public JwtResponse authenticateUser(LoginRequest loginRequest) {
     Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
@@ -58,6 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   }
 
   @Override
+  @Transactional
   public void register(SignupRequest signUpRequest) throws MessagingException, UnsupportedEncodingException {
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
       throw new SameCredentialsException("Error: Email is already in use!");

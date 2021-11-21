@@ -13,6 +13,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -28,6 +29,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     private final ResetPasswordRepository resetPasswordRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public void resetPasswordByEmail (String email) throws MessagingException, UnsupportedEncodingException {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User with email[" + email + "] doesn't exist!"));
@@ -44,6 +46,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     }
 
     @Override
+    @Transactional
     public User changePasswordAfterReset(String email, String newPassword) {
         User user =  userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User with email" + email + " doesn't exist."));
@@ -84,6 +87,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     }
 
     @Override
+    @Transactional
     public boolean verify(String verificationCode) {
         ResetPasswordEntity resetPassword = resetPasswordRepository.findByCode(verificationCode);
 
