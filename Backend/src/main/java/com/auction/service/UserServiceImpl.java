@@ -1,6 +1,7 @@
 package com.auction.service;
 
 import com.auction.config.jwt.JwtUtils;
+import com.auction.model.mapper.UserToDtoMapper;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.DeleteUserRequest;
 import com.auction.exception.UserNotFoundException;
@@ -11,6 +12,7 @@ import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.UserService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,30 +24,24 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-  @Autowired
-  private UserRepository userRepository;
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-  @Autowired
-  private AuctionEventService auctionEventService;
-  @Autowired
-  private AuctionEventRepository auctionEventRepository;
-  @Autowired
-  private AuctionActionRepository auctionActionRepository;
-  @Autowired
-  private JwtUtils jwtUtils;
+  private final UserRepository userRepository;
+  private final AuctionEventService auctionEventService;
+  private final AuctionEventRepository auctionEventRepository;
+  private final AuctionActionRepository auctionActionRepository;
+  private final UserToDtoMapper userToDtoMapper;
 
   @Override
-  public List<User> getAll() {
+  public List<UserDto> getAll() {
     List<User> list = userRepository.findAll();
-    return list;
+    return userToDtoMapper.mapList(list);
   }
 
   @Override
-  public void deleteUserById(DeleteUserRequest request) throws UserNotFoundException {
+  public void deleteUserById(DeleteUserRequest request) {
 
     User user = userRepository.findById(request.getUserId())
             .orElseThrow(() -> new UserNotFoundException("User[" + request.getUserId() + "] doesn't exist!"));
@@ -65,21 +61,21 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public User disable(Long userId) throws UserNotFoundException {
+  public UserDto disable(Long userId) {
     User user = userRepository.findById(userId)
             .orElseThrow(() -> new UserNotFoundException("User[" + userId + "] doesn't exist!"));
     user.setEnabled(false);
 
-    return userRepository.save(user);
+    return userToDtoMapper.map(userRepository.save(user));
   }
 
   @Override
   @Transactional
-  public User enable(Long userId) throws UserNotFoundException {
+  public UserDto enable(Long userId) {
     User user = userRepository.findById(userId)
             .orElseThrow(() -> new UserNotFoundException("User[" + userId + "] doesn't exist!"));
     user.setEnabled(true);
 
-    return userRepository.save(user);
+    return userToDtoMapper.map(userRepository.save(user));
   }
 }

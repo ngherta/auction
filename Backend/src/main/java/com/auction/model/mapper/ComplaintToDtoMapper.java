@@ -3,8 +3,10 @@ package com.auction.model.mapper;
 import com.auction.model.AuctionEventComplaint;
 import com.auction.web.dto.ComplaintDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Component
 public class ComplaintToDtoMapper implements Mapper<AuctionEventComplaint, ComplaintDto>{
 
   private final AuctionEventToDtoMapper auctionEventToDtoMapper;

@@ -5,6 +5,11 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
   <changeSet id="1" author="ngh">
+    <createSequence sequenceName="hibernate_sequence"
+                    incrementBy="1"
+                    maxValue="9223372036854775807"
+                    minValue="1000"/>
+
     <createTable tableName="users">
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>

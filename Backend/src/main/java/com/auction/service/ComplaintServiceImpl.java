@@ -1,5 +1,8 @@
 package com.auction.service;
 
+import com.auction.model.mapper.ComplaintAuditToDtoMapper;
+import com.auction.model.mapper.ComplaintToDtoMapper;
+import com.auction.web.dto.ComplaintAuditDto;
 import com.auction.web.dto.ComplaintDto;
 import com.auction.web.dto.request.ComplaintAdminRequest;
 import com.auction.web.dto.request.ComplaintRequest;
@@ -35,10 +38,12 @@ public class ComplaintServiceImpl implements ComplaintService {
   private final UserRepository userRepository;
   private final AuctionEventRepository auctionEventRepository;
   private final AuctionEventService auctionEventService;
+  private final ComplaintToDtoMapper complaintToDtoMapper;
+  private final ComplaintAuditToDtoMapper complaintAuditToDtoMapper;
 
   @Override
   @Transactional
-  public AuctionEventComplaint create(ComplaintRequest request) throws AuctionEventNotFoundException, UserNotFoundException {
+  public ComplaintDto create(ComplaintRequest request) {
     AuctionEventComplaint auctionEventComplaint = new AuctionEventComplaint();
 
     AuctionEvent auctionEvent = auctionEventRepository.findById(request.getAuctionEventId())
@@ -55,18 +60,18 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     auctionEventComplaint = complaintRepository.save(auctionEventComplaint);
 
-    return auctionEventComplaint;
+    return complaintToDtoMapper.map(auctionEventComplaint);
   }
 
   @Override
-  public List<AuctionEventComplaint> getAll() {
+  public List<ComplaintDto> getAll() {
     List<AuctionEventComplaint> list = complaintRepository.findAll();
-    return list;
+    return complaintToDtoMapper.mapList(list);
   }
 
   @Override
   @Transactional
-  public AuctionEventComplaintAudit satisfyComplaint(ComplaintAdminRequest request) throws UserNotFoundException {
+  public ComplaintAuditDto satisfyComplaint(ComplaintAdminRequest request) {
     AuctionEventComplaint complaint = complaintRepository.getById(request.getComplaintId());
     AuctionEventComplaintAudit complaintAudit = new AuctionEventComplaintAudit();
     AuctionEvent auctionEvent = new AuctionEvent();
@@ -90,6 +95,6 @@ public class ComplaintServiceImpl implements ComplaintService {
     complaintAudit.setAuctionEventComplaint(complaint);
     complaintAudit = complaintAuditRepository.save(complaintAudit);
 
-    return complaintAudit;
+    return complaintAuditToDtoMapper.map(complaintAudit);
   }
 }

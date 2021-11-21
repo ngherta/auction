@@ -44,7 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
   @Override
-  public JwtResponse authenticateUser(LoginRequest loginRequest) throws UserNotFoundException {
+  public JwtResponse authenticateUser(LoginRequest loginRequest) {
     Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
     SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -59,7 +59,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   }
 
   @Override
-  public void register(SignupRequest signUpRequest) throws SameCredentialsException, MessagingException, UnsupportedEncodingException, UserRoleNotFound {
+  public void register(SignupRequest signUpRequest) throws MessagingException, UnsupportedEncodingException {
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
       throw new SameCredentialsException("Error: Email is already in use!");
     }

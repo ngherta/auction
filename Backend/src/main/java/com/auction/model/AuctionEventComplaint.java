@@ -1,9 +1,13 @@
 package com.auction.model;
 
 import com.auction.model.enums.ComplaintStatus;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Column;
@@ -21,22 +25,18 @@ import java.util.Date;
 
 @Entity
 @Table(name = "auction_complaint")
+@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
-@Data
-public class AuctionEventComplaint {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
+@AllArgsConstructor
+public class AuctionEventComplaint extends AbstractEntity{
   @ManyToOne
-  @EqualsAndHashCode.Exclude
-  @ToString.Exclude
   @JoinColumn(name = "auction_id", nullable = false, updatable = false)
   private AuctionEvent auctionEvent;
 
   @ManyToOne
-  @EqualsAndHashCode.Exclude
-  @ToString.Exclude
   @JoinColumn(name = "user_id", nullable = false, updatable = false)
   private User user;
 

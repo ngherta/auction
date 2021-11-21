@@ -22,23 +22,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/complaint")
 public class ComplaintContoller {
   private final ComplaintService complaintService;
-  private final ComplaintToDtoMapper complaintToDtoMapper;
-  private final ComplaintAuditToDtoMapper complaintAuditToDtoMapper;
 
   @GetMapping
   public ResponseEntity getAll(){
-    return ResponseEntity.ok(complaintToDtoMapper.mapList(complaintService.getAll()));
+    return ResponseEntity.ok(complaintService.getAll());
   }
 
   @PostMapping("/admin")
-  public ResponseEntity satisfyComplaint(@RequestBody ComplaintAdminRequest request) throws UserNotFoundException {
-    return ResponseEntity.ok(complaintAuditToDtoMapper
-                                     .map(complaintService.satisfyComplaint(request)));
+  public ResponseEntity satisfyComplaint(@RequestBody ComplaintAdminRequest request) {
+    return ResponseEntity.ok(complaintService.satisfyComplaint(request));
   }
 
   @PostMapping
-  public ResponseEntity create(@RequestBody ComplaintRequest request) throws UserNotFoundException, AuctionEventNotFoundException {
-    return ResponseEntity.ok(complaintToDtoMapper
-                                     .map(complaintService.create(request)));
+  public ResponseEntity create(@RequestBody ComplaintRequest request) {
+    return ResponseEntity.ok(complaintService.create(request));
   }
 }

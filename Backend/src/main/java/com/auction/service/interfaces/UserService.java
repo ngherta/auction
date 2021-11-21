@@ -2,18 +2,19 @@ package com.auction.service.interfaces;
 
 import com.auction.exception.UserNotFoundException;
 import com.auction.model.User;
+import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.DeleteUserRequest;
 
 import java.util.List;
 
 public interface UserService {
 
-  List<User> getAll();
+  List<UserDto> getAll();
 
-  void deleteUserById(DeleteUserRequest request) throws UserNotFoundException;
+  void deleteUserById(DeleteUserRequest request);
 
-  User disable(Long userId) throws UserNotFoundException;
+  UserDto disable(Long userId);
 
-  User enable(Long userId) throws UserNotFoundException;
+  UserDto enable(Long userId);
 
 }

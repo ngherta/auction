@@ -8,7 +8,7 @@ import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 
 public interface TokenConfirmationService {
-  void confirm(String confirmation) throws TokenConfirmationNotFoundException, UserAlreadyEnabledException;
+  void confirm(String confirmation);
 
   void generate(User user) throws MessagingException, UnsupportedEncodingException;
 }

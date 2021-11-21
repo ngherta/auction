@@ -25,7 +25,7 @@ public class TokenConfirmationServiceImpl implements TokenConfirmationService {
   private final MailService mailService;
 
   @Override
-  public void confirm(String confirmation) throws TokenConfirmationNotFoundException, UserAlreadyEnabledException {
+  public void confirm(String confirmation) {
     TokenConfirmation tokenConfirmation = tokenConfirmationRepository.findByConfirmation(confirmation)
             .orElseThrow(() -> new TokenConfirmationNotFoundException(String.format("TokenConfirmation[%s] not found", confirmation)));
 

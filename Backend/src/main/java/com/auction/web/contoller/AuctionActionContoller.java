@@ -19,11 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuctionActionContoller {
 
   private final AuctionActionService auctionActionService;
-  private final AuctionActionToDtoMapper auctionActionToDtoMapper;
 
   @GetMapping("/{auctionId}")
-  public ResponseEntity getByAuctionId(@PathVariable Long auctionId) throws AuctionEventNotFoundException {
-    return ResponseEntity.ok(auctionActionToDtoMapper.mapList(auctionActionService.getAllByAuctionId(auctionId)));
+  public ResponseEntity getByAuctionId(@PathVariable Long auctionId) {
+    return ResponseEntity.ok(auctionActionService.getAllByAuctionId(auctionId));
   }
 
   //create method for betting using websocket

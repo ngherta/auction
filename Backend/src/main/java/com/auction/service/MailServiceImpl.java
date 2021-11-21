@@ -27,7 +27,6 @@ public class MailServiceImpl implements MailService {
   @Override
   public void sendEmailToAuctionWinner(AuctionWinner auctionWinner)
           throws MessagingException, UnsupportedEncodingException {
-    String siteURL = "http://localhost:8080/";
     String toAddress = auctionWinner.getUser().getEmail();
     String fromAddress = "gherta.nicolai@gmail.com";
     String senderName = "LOT";
@@ -87,7 +86,6 @@ public class MailServiceImpl implements MailService {
   @Override
   public void sendEmailToAuctionParticipant(List<AuctionAction> listOfAuctionAction)
           throws MessagingException, UnsupportedEncodingException {
-    String siteURL = "http://localhost:8080/";
     String fromAddress = "gherta.nicolai@gmail.com";
     String senderName = "LOT";
     String subject = "Auction - " + listOfAuctionAction.get(0).getAuctionEvent().getTitle();

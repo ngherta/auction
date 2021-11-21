@@ -2,9 +2,13 @@ package com.auction.model;
 
 import com.auction.model.enums.AuctionStatus;
 import com.auction.model.enums.AuctionType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Type;
 
@@ -29,14 +33,13 @@ import java.util.List;
 
 @Entity
 @Table(name = "auction")
+@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
-@Data
-public class AuctionEvent {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+@AllArgsConstructor
+public class AuctionEvent extends AbstractEntity{
     @Column
     private String title;
 
@@ -59,8 +62,6 @@ public class AuctionEvent {
     private Double finishPrice;
 
     @ManyToOne
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     @JoinColumn(name = "genUser_id", nullable = false, updatable = false)
     private User user;
 

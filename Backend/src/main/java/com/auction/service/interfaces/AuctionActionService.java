@@ -8,7 +8,7 @@ import com.auction.exception.AuctionEventNotFoundException;
 import java.util.List;
 
 public interface AuctionActionService {
-  List<AuctionAction> bet(BetRequest request) throws AuctionEventNotFoundException;
+  List<AuctionActionDto> bet(BetRequest request);
 
-  List<AuctionAction> getAllByAuctionId(Long auctioId) throws AuctionEventNotFoundException;
+  List<AuctionActionDto> getAllByAuctionId(Long auctioId);
 }

@@ -11,7 +11,7 @@ import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 
 public interface AuthenticationService {
-    JwtResponse authenticateUser(LoginRequest loginRequest) throws UserNotFoundException;
+    JwtResponse authenticateUser(LoginRequest loginRequest);
 
-    void register(SignupRequest signUpRequest) throws SameCredentialsException, MessagingException, UnsupportedEncodingException, UserRoleNotFound;
+    void register(SignupRequest signUpRequest) throws MessagingException, UnsupportedEncodingException;
 }

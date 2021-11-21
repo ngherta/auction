@@ -1,7 +1,12 @@
 package com.auction.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.Column;
@@ -23,13 +28,13 @@ import java.util.Set;
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "email")
         })
-@Data
+@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@AllArgsConstructor
+public class User extends AbstractEntity{
 
     @Column
     private String email;

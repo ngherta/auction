@@ -1,5 +1,6 @@
 package com.auction.service;
 
+import com.auction.model.mapper.AuctionActionToDtoMapper;
 import com.auction.web.dto.AuctionActionDto;
 import com.auction.web.dto.request.BetRequest;
 import com.auction.exception.AuctionEventNotFoundException;
@@ -27,27 +28,29 @@ public class AuctionActionServiceImpl implements AuctionActionService {
   private final AuctionActionRepository auctionActionRepository;
   private final EntityManager entityManager;
   private final AuctionEventRepository auctionEventRepository;
+  private final AuctionActionToDtoMapper auctionActionToDtoMapper;
 
   @Override
   @Transactional
-  public List<AuctionAction> bet(BetRequest request) throws AuctionEventNotFoundException {
-    AuctionAction auctionAction = new AuctionAction();
-    auctionAction.setBet(request.getPrice());
-    auctionAction.setDate(new Date());
-    auctionAction.setUser(entityManager.getReference(User.class, request.getUserId()));
-    auctionAction.setAuctionEvent(entityManager.getReference(AuctionEvent.class, request.getAuctionId()));
+  public List<AuctionActionDto> bet(BetRequest request) {
+    AuctionAction auctionAction = AuctionAction.builder()
+            .bet(request.getPrice())
+            .auctionEvent(entityManager.getReference(AuctionEvent.class, request.getAuctionId()))
+            .user(entityManager.getReference(User.class, request.getUserId()))
+            .build();
+
     auctionAction = auctionActionRepository.save(auctionAction);
     //Check transaction, if last auctionAction exists in list
     return getAllByAuctionId(auctionAction.getAuctionEvent().getId());
   }
 
   @Override
-  public List<AuctionAction> getAllByAuctionId(Long auctionId) throws AuctionEventNotFoundException {
+  public List<AuctionActionDto> getAllByAuctionId(Long auctionId) {
     AuctionEvent auctionEvent = auctionEventRepository.findById(auctionId)
             .orElseThrow(() -> new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "] doesn't exist."));
 
     List<AuctionAction> list = auctionActionRepository.findByAuctionEvent(auctionEvent);
-    return list;
+    return auctionActionToDtoMapper.mapList(list);
   }
 
 }

@@ -33,22 +33,20 @@ import java.util.Optional;
 public class AuctionEventController {
 
     private final AuctionEventService auctionEventService;
-    private final AuctionEventToDtoMapper auctionEventToDtoMapper;
 
     @PostMapping()
-    public ResponseEntity createAuctionEvent(@RequestBody AuctionEventRequest request) throws StartPriceNullException {
-        AuctionEvent auctionEvent = auctionEventService.save(request);
-        return ResponseEntity.ok(auctionEventToDtoMapper.map(auctionEvent));
+    public ResponseEntity createAuctionEvent(@RequestBody AuctionEventRequest request) {
+        return ResponseEntity.ok(auctionEventService.save(request));
     }
 
     @GetMapping()
     public ResponseEntity getAll() {
-        return ResponseEntity.ok(auctionEventToDtoMapper.mapList(auctionEventService.getAll()));
+        return ResponseEntity.ok(auctionEventService.getAll());
     }
 
     @GetMapping("/sort")
     public ResponseEntity getAllAuctionByRating() {
-        return ResponseEntity.ok(auctionEventToDtoMapper.mapList(auctionEventService.getAllSortByRating()));
+        return ResponseEntity.ok(auctionEventService.getAllSortByRating());
     }
 
     @MessageMapping("/hello")
@@ -59,22 +57,20 @@ public class AuctionEventController {
     }
 
     @DeleteMapping()
-    public ResponseEntity deleteById(Long auctionId) throws AuctionEventNotFoundException {
+    public ResponseEntity deleteById(Long auctionId) {
         auctionEventService.deleteById(auctionId);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{auctionId}")
     public ResponseEntity updateById(@PathVariable Long auctionId,
-                                     @RequestBody AuctionEventRequest request) throws AuctionEventNotFoundException {
-        AuctionEvent auctionEvent = auctionEventService.update(request ,auctionId);
-        return ResponseEntity.ok(auctionEventToDtoMapper.map(auctionEvent));
+                                     @RequestBody AuctionEventRequest request) {
+        return ResponseEntity.ok(auctionEventService.update(request ,auctionId));
     }
 
     @PutMapping("/block/{auctionId}")
-    public ResponseEntity block(@PathVariable Long auctionId) throws AuctionEventNotFoundException {
-        AuctionEvent auctionEvent = auctionEventService.blockAuctionEventById(auctionId);
-        return ResponseEntity.ok(auctionEventToDtoMapper.map(auctionEvent));
+    public ResponseEntity block(@PathVariable Long auctionId) {
+        return ResponseEntity.ok(auctionEventService.blockAuctionEventById(auctionId));
     }
 
     //WEBSOKET

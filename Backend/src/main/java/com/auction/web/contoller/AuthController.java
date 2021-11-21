@@ -11,6 +11,7 @@ import com.auction.exception.TokenConfirmationNotFoundException;
 import com.auction.exception.UserAlreadyEnabledException;
 import com.auction.service.interfaces.AuthenticationService;
 import com.auction.service.interfaces.TokenConfirmationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
@@ -27,26 +28,26 @@ import java.io.UnsupportedEncodingException;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping()
+@RequiredArgsConstructor
 public class AuthController {
-    @Autowired
-    private AuthenticationService authenticationService;
-    @Autowired
-    private TokenConfirmationService confirmationService;
+
+    private final AuthenticationService authenticationService;
+    private final TokenConfirmationService confirmationService;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) throws UserNotFoundException {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         JwtResponse jwtResponse =  authenticationService.authenticateUser(loginRequest);
         return ResponseEntity.ok(jwtResponse);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws SameCredentialsException, MessagingException, UnsupportedEncodingException, UserRoleNotFound {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws MessagingException, UnsupportedEncodingException {
         authenticationService.register(signUpRequest);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
     @PostMapping("/confirm")
-    public ResponseEntity<?> confirm(@Param("code") String code) throws UserAlreadyEnabledException, TokenConfirmationNotFoundException {
+    public ResponseEntity<?> confirm(@Param("code") String code) {
         confirmationService.confirm(code);
         return ResponseEntity.ok(new MessageResponse("Success confirmation!"));
     }

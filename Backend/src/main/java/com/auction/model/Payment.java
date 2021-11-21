@@ -1,7 +1,12 @@
 package com.auction.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Column;
@@ -16,12 +21,13 @@ import java.util.Date;
 
 @Entity
 @Table(name = "payment")
-@Data
-public class Payment {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
+@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Payment extends AbstractEntity{
   @Column(name = "card_number", nullable = false)
   private String cardNumber;
 
@@ -35,8 +41,6 @@ public class Payment {
   private String name;
 
   @ManyToOne
-  @EqualsAndHashCode.Exclude
-  @ToString.Exclude
   @JoinColumn(name = "user_id", nullable = false, updatable = false)
   private User user;
 }
