@@ -88,7 +88,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
             AuctionWinner auctionWinner = new AuctionWinner();
             auctionWinner.setAuctionEvent(event);
 
-            AuctionAction auctionAction = auctionActionRepository.getWinnerAuctionAction(event.getId());
+            AuctionAction auctionAction = auctionActionRepository.getLastAuctionActionByAuctionEventOrderByBetDesc(event);
             auctionWinner.setUser(auctionAction.getUser());
             auctionWinner.setPrice(auctionAction.getBet());
 
