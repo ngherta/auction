@@ -3,7 +3,7 @@ package com.auction.service;
 import com.auction.config.UserDetailsImpl;
 import com.auction.config.jwt.JwtUtils;
 import com.auction.exception.UserNotFoundException;
-import com.auction.exception.UserRoleNotFound;
+import com.auction.exception.UserRoleNotFoundException;
 import com.auction.model.mapper.UserToDtoMapper;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.LoginRequest;
@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -70,7 +69,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     Set<Role> roles = new HashSet<>(1);
     Role role = roleRepository.findByUserRole(UserRole.USER)
-            .orElseThrow(() -> new UserRoleNotFound(UserRole.USER.name() + "doesn't exist."));
+            .orElseThrow(() -> new UserRoleNotFoundException(UserRole.USER.name() + "doesn't exist."));
     roles.add(role);
     user.setUserRoles(roles);
     user.setFirstName(signUpRequest.getFirstName());

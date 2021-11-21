@@ -12,14 +12,6 @@ import java.util.List;
 
 @Repository
 public interface AuctionActionRepository extends JpaRepository<AuctionAction, Long> {
-
-//  @Query(nativeQuery = true, value =
-//          "SELECT * FROM auction_action AS aa " +
-//          "WHERE aa.auctionEvent = auctionId " +
-//          "ORDER BY aa.bet DESC " +
-//          "LIMIT 1")
-//  AuctionAction getWinnerAuctionAction(@Param("auctionId")Long auctionId);
-
   AuctionAction getLastAuctionActionByAuctionEventOrderByBetDesc(AuctionEvent auctionEvent);
 
   List<AuctionAction> findByAuctionEvent(AuctionEvent auctionEvent);
