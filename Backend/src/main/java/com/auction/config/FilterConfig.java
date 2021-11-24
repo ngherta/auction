@@ -12,7 +12,7 @@ import javax.servlet.Filter;
 @Configuration
 public class FilterConfig {
 
-  private static final String DEFAULT_FILTER_URL = "/rest/*";
+  private static final String DEFAULT_FILTER_URL = "/*";
 
   @Bean
   public FilterRegistrationBean<RequestResponseLoggingFilter> requestResponseLoggingFilterBean() {

@@ -80,6 +80,6 @@ public class AuctionEvent extends AbstractEntity{
     @Column
     private Date finishDate;
 
-    @Column
+    @Column(name = "gen_date")
     private Date genDate;
 }

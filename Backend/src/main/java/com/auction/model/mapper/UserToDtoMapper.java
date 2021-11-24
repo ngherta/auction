@@ -4,8 +4,9 @@ import com.auction.model.User;
 import com.auction.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class UserToDtoMapper implements Mapper<User, UserDto> {
 

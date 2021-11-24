@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -50,11 +51,11 @@ public class MailServiceImpl implements MailService {
     content = content.replace("[[URL]]", auctionUrl);
 
     helper.setText(content, true);
-
     mailSender.send(message);
   }
 
   @Override
+  @Async("threadPoolTaskExecutor")
   public void sendConfirmation(TokenConfirmation confirmation) throws MessagingException, UnsupportedEncodingException {
     String toAddress = confirmation.getUser().getEmail();
     String fromAddress = "gherta.nicolai@gmail.com";
@@ -79,7 +80,6 @@ public class MailServiceImpl implements MailService {
     content = content.replace("[[URL]]", verifyURL);
 
     helper.setText(content, true);
-
     mailSender.send(message);
   }
 

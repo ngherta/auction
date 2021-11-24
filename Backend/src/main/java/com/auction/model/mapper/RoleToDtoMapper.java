@@ -3,8 +3,9 @@ package com.auction.model.mapper;
 import com.auction.model.Role;
 import com.auction.web.dto.RoleDto;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class RoleToDtoMapper implements Mapper<Role, RoleDto> {
 
   @Override

@@ -4,9 +4,10 @@ import com.auction.model.AuctionEventComplaintAudit;
 import com.auction.web.dto.ComplaintAuditDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-@Component
+@Service
 public class ComplaintAuditToDtoMapper implements Mapper<AuctionEventComplaintAudit, ComplaintAuditDto>{
   private final ComplaintToDtoMapper complaintToDtoMapper;
   private final UserToDtoMapper userToDtoMapper;

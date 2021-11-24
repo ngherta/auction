@@ -5,12 +5,13 @@ import com.auction.web.dto.AuctionActionDto;
 import com.auction.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Component
+@Service
 public class AuctionActionToDtoMapper implements Mapper<AuctionAction, AuctionActionDto>{
 
   private final UserToDtoMapper userToDtoMapper;
