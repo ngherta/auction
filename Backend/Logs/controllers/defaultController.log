@@ -1,0 +1,46 @@
+27-11-2021 09:30:49.491 [] INFO  o.s.b.SpringApplicationBannerPrinter.print - 
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+[32m :: Spring Boot :: [39m              [2m (v2.5.5)[0;39m
+
+
+27-11-2021 09:39:33.453 [] INFO  o.s.b.SpringApplicationBannerPrinter.print - 
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+[32m :: Spring Boot :: [39m              [2m (v2.5.5)[0;39m
+
+
+27-11-2021 09:43:14.730 [] INFO  o.s.b.SpringApplicationBannerPrinter.print - 
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+[32m :: Spring Boot :: [39m              [2m (v2.5.5)[0;39m
+
+
+27-11-2021 09:43:27.483 [anonymousUser] INFO  c.a.c.l.TransactionLoggingFilter.doFilter - Starting transaction for request: [/actuator]
+27-11-2021 09:43:27.526 [anonymousUser] INFO  c.a.c.l.TransactionLoggingFilter.doFilter - Committing transaction for request: [/actuator]
+27-11-2021 09:46:55.052 [] INFO  o.s.b.SpringApplicationBannerPrinter.print - 
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+[32m :: Spring Boot :: [39m              [2m (v2.5.5)[0;39m
+
+
+27-11-2021 09:48:38.500 [anonymousUser] INFO  c.a.c.l.TransactionLoggingFilter.doFilter - Starting transaction for request: [/actuator]
+27-11-2021 09:48:38.553 [anonymousUser] INFO  c.a.c.l.TransactionLoggingFilter.doFilter - Committing transaction for request: [/actuator]
+27-11-2021 09:48:50.792 [anonymousUser] INFO  c.a.c.l.TransactionLoggingFilter.doFilter - Starting transaction for request: [/actuator/health]
+27-11-2021 09:48:56.340 [anonymousUser] INFO  c.a.c.l.TransactionLoggingFilter.doFilter - Committing transaction for request: [/actuator/health]
