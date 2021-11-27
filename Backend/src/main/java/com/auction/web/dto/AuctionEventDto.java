@@ -2,9 +2,13 @@ package com.auction.web.dto;
 
 import com.auction.model.enums.AuctionStatus;
 import com.auction.model.enums.AuctionType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -22,9 +26,9 @@ public class AuctionEventDto {
     private Double startPrice;
     private Double finishPrice;
     private UserDto user;
-    private Date startDate;
-    private Date finishDate;
-    private Date genDate;
+    private LocalDateTime startDate;
+    private LocalDateTime finishDate;
+    private LocalDateTime genDate;
     private Double charityPercent;
     private List<String> images;
 }

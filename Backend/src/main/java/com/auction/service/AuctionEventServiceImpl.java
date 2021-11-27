@@ -61,7 +61,6 @@ public class AuctionEventServiceImpl implements AuctionEventService {
         auctionEvent.setStartPrice(request.getStartPrice());
         auctionEvent.setFinishPrice(request.getFinishPrice());
         auctionEvent.setStatusType(AuctionStatus.EXPECTATION);
-        auctionEvent.setGenDate(new Date());
         auctionEvent.setStartDate(request.getStartDate());
         auctionEvent.setFinishDate(request.getFinishDate());
 

@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -32,7 +33,7 @@ public class Payment extends AbstractEntity{
   private String cardNumber;
 
   @Column(name = "expiration_date", nullable = false)
-  private Date expirationDate;
+  private LocalDateTime expirationDate;
 
   @Column(name = "cvv_code", nullable = false)
   private String cvv;

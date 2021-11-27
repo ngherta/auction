@@ -1,7 +1,5 @@
 package com.auction.web.dto;
 
-import com.auction.model.AuctionEventComplaint;
-import com.auction.model.AuctionEventComplaintAudit;
 import com.auction.model.enums.ComplaintStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,5 +20,5 @@ public class ComplaintDto {
   private UserDto user;
   private String message;
   private ComplaintStatus status;
-  private Date genDate;
+  private LocalDateTime genDate;
 }

@@ -2,13 +2,8 @@ package com.auction.model.mapper;
 
 import com.auction.model.AuctionAction;
 import com.auction.web.dto.AuctionActionDto;
-import com.auction.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -23,7 +18,7 @@ public class AuctionActionToDtoMapper implements Mapper<AuctionAction, AuctionAc
             .user(userToDtoMapper.map(entity.getUser()))
             .auctionEvent(entity.getAuctionEvent().getId())
             .bid(entity.getBet())
-            .date(entity.getDate())
+            .date(entity.getGenDate())
             .build();
     return auctionActionDto;
   }

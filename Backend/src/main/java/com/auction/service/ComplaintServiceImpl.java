@@ -23,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +53,6 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     auctionEventComplaint.setUser(user);
     auctionEventComplaint.setAuctionEvent(auctionEvent);
-    auctionEventComplaint.setGenDate(new Date());
     auctionEventComplaint.setMessage(request.getMessage());
     auctionEventComplaint.setStatus(ComplaintStatus.WAITING);
 
@@ -89,7 +90,6 @@ public class ComplaintServiceImpl implements ComplaintService {
             .orElseThrow(() -> new UserNotFoundException("User[" + request.getAdminId() + "] doesn't exist"));
 
     complaintAudit.setAdmin(admin);
-    complaintAudit.setGenDate(new Date());
     complaintAudit.setAuctionEventComplaint(complaint);
     complaintAudit = complaintAuditRepository.save(complaintAudit);
 

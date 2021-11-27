@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,5 +22,5 @@ public class AuctionActionDto {
   private Long auctionEvent;
   private UserDto user;
   private Double bid;
-  private Date date;
+  private LocalDateTime date;
 }

@@ -3,22 +3,17 @@ package com.auction.model;
 import com.auction.model.enums.ComplaintStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "auction_complaint_audit")
@@ -41,6 +36,6 @@ public class AuctionEventComplaintAudit extends AbstractEntity{
   private ComplaintStatus complaintStatus;
 
   @Column(name = "gen_date")
-  private Date genDate;
+  private LocalDateTime genDate = LocalDateTime.now();
 
 }
