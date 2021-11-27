@@ -8,13 +8,8 @@ import com.auction.web.dto.request.DeleteUserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
@@ -27,19 +22,21 @@ public class UserController {
     private final UserService userService;
     private final TokenConfirmationService tokenConfirmationService;
 
-    @PostMapping("/reset/password/email={email}")
-    public ResponseEntity resetPasswordByEmail(@PathVariable String email) throws MessagingException, UnsupportedEncodingException {
-        resetPasswordService.resetPasswordByEmail(email);
+    @PostMapping("/reset/password")
+    public ResponseEntity resetPasswordByToken()
+            throws MessagingException, UnsupportedEncodingException {
+        String token= ":s";
+        resetPasswordService.resetPasswordByToken(token);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/reset/password/code={code}")
-    public ResponseEntity resetPasswordConfirm(@PathVariable String code) {
+    @PostMapping("/reset/password/confirm")
+    public ResponseEntity resetPasswordConfirm(@RequestParam("code") String code) {
         resetPasswordService.verify(code);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/reset/password")
+    @PostMapping("/update/password")
     public ResponseEntity setNewPasswordAfterReset(@RequestBody ChangePasswordRequest request) {
         resetPasswordService.changePasswordAfterReset(request.getEmail(), request.getNewPassword());
         return ResponseEntity.ok().build();
@@ -51,14 +48,14 @@ public class UserController {
         return ResponseEntity.ok(userService.disable(userId));
     }
 
-    @PostMapping("/enavle/{userId}")
+    @PostMapping("/enable/{userId}")
     public ResponseEntity enable(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(userService.enable(userId));
     }
 
 
     @PostMapping("/verify")
-    public ResponseEntity verifyUser(@Param("code") String code) {
+    public ResponseEntity verifyUser(@RequestParam("code") String code) {
         tokenConfirmationService.confirm(code);
         return ResponseEntity.ok("Email confirmed!");
     }

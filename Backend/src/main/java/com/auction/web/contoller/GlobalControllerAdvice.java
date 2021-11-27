@@ -1,19 +1,7 @@
 package com.auction.web.contoller;
 
-import com.auction.exception.ExpiredJwtCustomException;
-import com.auction.exception.IllegalArgumentCustomException;
-import com.auction.exception.MalformedJwtCustomException;
-import com.auction.exception.SameCredentialsException;
-import com.auction.exception.SignatureCustomException;
-import com.auction.exception.UnsupportedJwtCustomException;
-import com.auction.exception.UserRoleNotFoundException;
+import com.auction.exception.*;
 import com.auction.web.dto.ErrorDto;
-import com.auction.exception.AuctionEventNotFoundException;
-import com.auction.exception.StartPriceNullException;
-import com.auction.exception.TokenConfirmationNotFoundException;
-import com.auction.exception.UserAlreadyEnabledException;
-import com.auction.exception.UserDoesntResetPassword;
-import com.auction.exception.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -84,5 +72,10 @@ public class GlobalControllerAdvice {
   @ExceptionHandler
   public ResponseEntity<?> handleUserRoleNotFoundException(UserRoleNotFoundException e) {
     return ResponseEntity.badRequest().body(new ErrorDto("User role doesn't exist!", e.getMessage()));
+  }
+
+  @ExceptionHandler
+  public ResponseEntity<?> handleUserDoesntHavePermissionException(UserDoesntHavePermissionException e) {
+    return ResponseEntity.badRequest().body(new ErrorDto("User doesn't have access!", e.getMessage()));
   }
 }

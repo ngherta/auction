@@ -11,7 +11,7 @@ public interface ResetPasswordService {
 
     boolean verify(String verificationCode);
 
-    void resetPasswordByEmail(String email) throws MessagingException, UnsupportedEncodingException;
+    void resetPasswordByToken(String email) throws MessagingException, UnsupportedEncodingException;
 
     void sendVerificationEmail(User user, ResetPasswordEntity resetPassword)
             throws MessagingException, UnsupportedEncodingException;

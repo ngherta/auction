@@ -49,13 +49,6 @@ public class AuctionEventController {
         return ResponseEntity.ok(auctionEventService.getAllSortByRating());
     }
 
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public String greeting(String message) throws Exception {
-        Thread.sleep(1000); // simulated delay
-        return "Hello, " + HtmlUtils.htmlEscape(message + "xq");
-    }
-
     @DeleteMapping()
     public ResponseEntity deleteById(Long auctionId) {
         auctionEventService.deleteById(auctionId);
@@ -71,13 +64,5 @@ public class AuctionEventController {
     @PutMapping("/block/{auctionId}")
     public ResponseEntity block(@PathVariable Long auctionId) {
         return ResponseEntity.ok(auctionEventService.blockAuctionEventById(auctionId));
-    }
-
-    //WEBSOKET
-    @MessageMapping("/searching")
-    @SendTo("/topic/search")
-    public String search(String message) throws Exception {
-        auctionEventService.search(message);
-        return "Hello, " + HtmlUtils.htmlEscape(message + "xq");
     }
 }

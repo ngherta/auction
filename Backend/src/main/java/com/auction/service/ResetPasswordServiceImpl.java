@@ -1,5 +1,7 @@
 package com.auction.service;
 
+import com.auction.config.jwt.JwtUtils;
+import com.auction.exception.UserDoesntHavePermissionException;
 import com.auction.web.dto.UserDto;
 import com.auction.model.ResetPasswordEntity;
 import com.auction.model.User;
@@ -28,14 +30,18 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     private final JavaMailSender mailSender;
     private final ResetPasswordRepository resetPasswordRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
 
     @Transactional
-    public void resetPasswordByEmail (String email) throws MessagingException, UnsupportedEncodingException {
+    public void resetPasswordByToken(String token) throws MessagingException, UnsupportedEncodingException {
+        String email = jwtUtils.getUserNameFromJwtToken(token);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User with email[" + email + "] doesn't exist!"));
 
         ResetPasswordEntity resetPassword = new ResetPasswordEntity();
 
+        user.setEnabled(false);
+        user = userRepository.save(user);
         String randomCode = RandomString.make(64);
         resetPassword.setCode(randomCode);
         resetPassword.setEnabled(false);
@@ -52,6 +58,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
                 .orElseThrow(() -> new UsernameNotFoundException("User with email" + email + " doesn't exist."));
 
         user.setPassword(passwordEncoder.encode(newPassword));
+        user.setEnabled(true);
         return userRepository.save(user);
     }
 

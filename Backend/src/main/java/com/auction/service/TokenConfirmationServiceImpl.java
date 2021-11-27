@@ -31,8 +31,8 @@ public class TokenConfirmationServiceImpl implements TokenConfirmationService {
 
     User user = tokenConfirmation.getUser();
 
-    if (!tokenConfirmation.getUser().isEnabled()) {
-      throw new UserAlreadyEnabledException("User" + user.getId() + "already enabled");
+    if (tokenConfirmation.getUser().isEnabled()) {
+      throw new UserAlreadyEnabledException("User" + user.getId() + "already enabled!");
     }
     else {
       user.setEnabled(true);
