@@ -9,8 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 
@@ -22,10 +24,10 @@ public class UserController {
     private final UserService userService;
     private final TokenConfirmationService tokenConfirmationService;
 
+//    @PreAuthorize("hasRole('USER')")
     @PostMapping("/reset/password")
-    public ResponseEntity resetPasswordByToken()
+    public ResponseEntity resetPasswordByToken(@RequestHeader("Authorization") String token)
             throws MessagingException, UnsupportedEncodingException {
-        String token= ":s";
         resetPasswordService.resetPasswordByToken(token);
         return ResponseEntity.ok().build();
     }
