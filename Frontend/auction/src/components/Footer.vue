@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import Icon from "@/components/svg/Icon";
+import Icon from "@/components/Icon";
 
 export default {
   name: "Footer",
