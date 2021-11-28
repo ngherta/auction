@@ -18,7 +18,7 @@ public class AuctionActionToDtoMapper implements Mapper<AuctionAction, AuctionAc
             .user(userToDtoMapper.map(entity.getUser()))
             .auctionEvent(entity.getAuctionEvent().getId())
             .bid(entity.getBet())
-            .date(entity.getGenDate())
+            .genDate(entity.getGenDate())
             .build();
     return auctionActionDto;
   }

@@ -15,6 +15,7 @@
 	<description>JTOM project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
+		<spring-boot-admin-starter-client.version>2.4.1</spring-boot-admin-starter-client.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -28,7 +29,7 @@
 		<dependency>
 			<groupId>de.codecentric</groupId>
 			<artifactId>spring-boot-admin-starter-client</artifactId>
-			<version>2.2.2</version>
+			<version>${spring-boot-admin-starter-client.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -80,6 +80,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/enable").hasRole(ADMIN)
                 .antMatchers("/users/*").hasAnyRole(USER, ADMIN)
                 .antMatchers("/*").permitAll()
+                .antMatchers("/actuator").permitAll()
+                .antMatchers("/actuator/*").permitAll()
+                .antMatchers("/instances").permitAll()
+                .antMatchers("/instances/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

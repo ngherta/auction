@@ -1,6 +1,5 @@
 package com.auction.web.dto;
 
-import com.auction.model.AuctionAction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,9 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,5 +18,5 @@ public class AuctionActionDto {
   private Long auctionEvent;
   private UserDto user;
   private Double bid;
-  private LocalDateTime date;
+  private LocalDateTime genDate;
 }
