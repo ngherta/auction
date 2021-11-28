@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import RegisterPage from '../components/Register'
+import LoginPage from '../components/Login'
 
 Vue.use(Router);
 
@@ -9,6 +10,7 @@ export const router = new Router({
     mode: 'history',
     routes: [
         { path: '/register', component: RegisterPage },
+        { path: '/login', component: LoginPage},
 
         // otherwise redirect to home
         { path: '*', redirect: '/' }
