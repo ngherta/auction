@@ -1,5 +1,5 @@
 <template>
-  <header class="footer">
+  <footer class="footer">
     <div class="container">
       <p>{{footerDescription}}</p>
     </div>
@@ -10,13 +10,23 @@
       <a href="#">
         <Icon name = 'instagram'></Icon>
       </a>
-      <a href="#">
+      <a onclick="" href="#">
         <Icon name = 'facebook'></Icon>
       </a>
       <p>Copyright 2021, LOT.<br>
         All rights reserved.</p>
     </div>
-  </header>
+    <div>
+      <p>
+        <Icon name = 'email'></Icon>
+        info@lot.md</p>
+      <p>
+        <Icon name = 'phone'></Icon>
+        068777999</p>
+      <p><Icon name = 'place'></Icon>
+        Moldova, Chisinau</p>
+    </div>
+  </footer>
 </template>
 
 <script>
