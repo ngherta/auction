@@ -35,6 +35,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuctionEventServiceImpl implements AuctionEventService {
 
+
     private final AuctionEventRepository auctionEventRepository;
     private final UserRepository userRepository;
     private final AuctionWinnerRepository auctionWinnerRepository;

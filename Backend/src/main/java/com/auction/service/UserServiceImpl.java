@@ -23,6 +23,7 @@ import java.util.List;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
+
   private final UserRepository userRepository;
   private final AuctionEventService auctionEventService;
   private final AuctionEventRepository auctionEventRepository;
