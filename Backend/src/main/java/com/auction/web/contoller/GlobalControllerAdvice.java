@@ -35,7 +35,7 @@ public class GlobalControllerAdvice {
   }
 
   @ExceptionHandler
-  public ResponseEntity<?> handleUserDoesntResetPasswordException(UserDoesntResetPassword e) {
+  public ResponseEntity<?> handleUserDoesntResetPasswordException(UserDoesntResetPasswordException e) {
     return ResponseEntity.badRequest().body(new ErrorDto("User doesn't reset password!", e.getMessage()));
   }
 

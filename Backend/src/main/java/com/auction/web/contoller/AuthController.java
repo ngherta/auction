@@ -21,7 +21,7 @@ import java.io.UnsupportedEncodingException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping()
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

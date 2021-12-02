@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/bids")
+@RequestMapping("/api/bids")
 public class AuctionActionContoller {
 
   private final AuctionActionService auctionActionService;

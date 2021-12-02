@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/complaint")
+@RequestMapping("/api/complaint")
 public class ComplaintContoller {
   private final ComplaintService complaintService;
 

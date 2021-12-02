@@ -29,7 +29,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/auction")
+@RequestMapping("/api/auction")
 public class AuctionEventController {
 
     private final AuctionEventService auctionEventService;

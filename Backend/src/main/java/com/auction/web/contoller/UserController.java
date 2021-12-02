@@ -18,13 +18,13 @@ import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
     private final ResetPasswordService resetPasswordService;
     private final UserService userService;
     private final TokenConfirmationService tokenConfirmationService;
 
-//    @PreAuthorize("hasRole('USER')")
+//  @PreAuthorize("hasRole('USER')")
     @PostMapping("/reset/password")
     public ResponseEntity resetPasswordByToken(@RequestHeader("Authorization") String token)
             throws MessagingException, UnsupportedEncodingException {
@@ -70,7 +70,6 @@ public class UserController {
     @DeleteMapping
     public ResponseEntity deleteUser(@RequestBody DeleteUserRequest request) {
         userService.deleteUserById(request);
-
         return ResponseEntity.ok().build();
     }
 }
