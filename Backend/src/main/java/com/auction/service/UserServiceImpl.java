@@ -23,7 +23,6 @@ import java.util.List;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-
   private final UserRepository userRepository;
   private final AuctionEventService auctionEventService;
   private final AuctionEventRepository auctionEventRepository;
@@ -40,8 +39,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public void deleteUserById(DeleteUserRequest request) {
-    User user = userRepository.findById(request.getUserId())
-            .orElseThrow(() -> new UserNotFoundException("User[" + request.getUserId() + "] doesn't exist!"));
+    User user = findById(request.getUserId());
 
     List<AuctionEvent> auctionEventList = auctionEventRepository.findByUser(user);
     for (AuctionEvent auctionEvent : auctionEventList) {
@@ -59,8 +57,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public UserDto disable(Long userId) {
-    User user = userRepository.findById(userId)
-            .orElseThrow(() -> new UserNotFoundException("User[" + userId + "] doesn't exist!"));
+    User user = findById(userId);
     user.setEnabled(false);
 
     return userToDtoMapper.map(userRepository.save(user));
@@ -69,10 +66,16 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public UserDto enable(Long userId) {
-    User user = userRepository.findById(userId)
-            .orElseThrow(() -> new UserNotFoundException("User[" + userId + "] doesn't exist!"));
+    User user = findById(userId);
     user.setEnabled(true);
 
     return userToDtoMapper.map(userRepository.save(user));
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public User findById(Long id) {
+    return userRepository.findById(id)
+            .orElseThrow(() -> new UserNotFoundException("User[" + id + "] doesn't exist"));
   }
 }

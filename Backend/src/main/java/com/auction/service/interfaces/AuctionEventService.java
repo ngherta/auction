@@ -39,4 +39,6 @@ public interface AuctionEventService {
   void search(String message);
 
   void changeStatusToStart(List<AuctionEvent> list);
+
+  public AuctionEvent findById(Long id);
 }

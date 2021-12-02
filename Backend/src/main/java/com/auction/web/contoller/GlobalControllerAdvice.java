@@ -78,4 +78,9 @@ public class GlobalControllerAdvice {
   public ResponseEntity<?> handleUserDoesntHavePermissionException(UserDoesntHavePermissionException e) {
     return ResponseEntity.badRequest().body(new ErrorDto("User doesn't have access!", e.getMessage()));
   }
+
+  @ExceptionHandler
+  public ResponseEntity<?> handleUserDoesntHavePaymentException(UserDoesntHavePaymentException e) {
+    return ResponseEntity.badRequest().body(new ErrorDto("User didn't add payment method!", e.getMessage()));
+  }
 }

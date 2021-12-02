@@ -2,7 +2,6 @@ package com.auction.service;
 
 import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.exception.StartPriceNullException;
-import com.auction.exception.UserNotFoundException;
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionWinner;
@@ -14,9 +13,9 @@ import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.AuctionEventSortRepository;
 import com.auction.repository.AuctionWinnerRepository;
-import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.MailService;
+import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.request.AuctionEventRequest;
 import com.auction.web.dto.request.AuctionFinishByFinishPriceRequest;
@@ -37,7 +36,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
 
     private final AuctionEventRepository auctionEventRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final AuctionWinnerRepository auctionWinnerRepository;
     private final AuctionActionRepository auctionActionRepository;
     private final AuctionEventSortRepository auctionEventSortRepository;
@@ -51,7 +50,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
         auctionEvent.setTitle(request.getTitle());
         auctionEvent.setDescription(request.getDescription());
 
-        User user = userRepository.findById(request.getUserId()).get();
+        User user = userService.findById(request.getUserId());
         auctionEvent.setUser(user);
 
         if (request.getStartPrice() == null) {
@@ -121,8 +120,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     @Override
     @Transactional(readOnly = true)
     public AuctionEventDto blockAuctionEventById(Long auctionId) {
-        AuctionEvent auctionEvent = auctionEventRepository.findById(auctionId)
-                .orElseThrow(() -> new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "doesn't exist."));
+        AuctionEvent auctionEvent = findById(auctionId);
         return auctionEventToDtoMapper.map(blockAuctionEvent(auctionEvent));
     }
 
@@ -151,10 +149,8 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     @Override
     @Transactional
     public void finishByFinishPrice(AuctionFinishByFinishPriceRequest request) {
-        AuctionEvent auctionEvent = auctionEventRepository.findById(request.getAuctionId())
-                .orElseThrow(() -> new AuctionEventNotFoundException("Auction event[" + request.getAuctionId() + "doesn't exist"));
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new UserNotFoundException("User[" + request.getUserId() + "] doesn't exist"));
+        AuctionEvent auctionEvent = findById(request.getAuctionId());
+        User user = userService.findById(request.getUserId());
 
         auctionEvent.setStatusType(AuctionStatus.FINISHED);
         auctionEventRepository.save(auctionEvent);
@@ -196,16 +192,14 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
     @Override
     public void deleteById(Long auctionId) {
-        AuctionEvent auctionEvent = auctionEventRepository.findById(auctionId)
-                .orElseThrow(() -> new AuctionEventNotFoundException("Auction event["+ auctionId + "] doesn't exist."));
+        AuctionEvent auctionEvent = findById(auctionId);
         delete(auctionEvent);
     }
 
     @Override
     @Transactional
     public AuctionEventDto update(AuctionEventRequest request, Long auctionId) {
-        AuctionEvent auctionEvent = auctionEventRepository.findById(auctionId)
-                .orElseThrow(() -> new AuctionEventNotFoundException("Auction event[" + auctionId + "] doesn't exist."));
+        AuctionEvent auctionEvent = findById(auctionId);
 
         ///Need to add more exceptions!
         AuctionType oldAuctionType = auctionEvent.getAuctionType();
@@ -233,7 +227,13 @@ public class AuctionEventServiceImpl implements AuctionEventService {
                 auctionEvent.getAuctionType().equals(AuctionType.COMMERCIAL.name())){
             auctionEvent.setCharityPercent(request.getCharityPercent());
         }
-
         return auctionEventToDtoMapper.map(auctionEvent);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public AuctionEvent findById(Long id) {
+        return auctionEventRepository.findById(id)
+                .orElseThrow(() -> new AuctionEventNotFoundException("Auction event[" + id + "] doesn't exist."));
     }
 }

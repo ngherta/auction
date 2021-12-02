@@ -14,6 +14,7 @@ import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.ComplaintService;
+import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.ComplaintAuditDto;
 import com.auction.web.dto.ComplaintDto;
 import com.auction.web.dto.request.ComplaintAdminRequest;
@@ -32,6 +33,7 @@ public class ComplaintServiceImpl implements ComplaintService {
   private final AuctionEventComplaintRepository complaintRepository;
   private final AuctionEventComplaintAuditRepository complaintAuditRepository;
   private final UserRepository userRepository;
+  private final UserService userService;
   private final AuctionEventRepository auctionEventRepository;
   private final AuctionEventService auctionEventService;
   private final ComplaintToDtoMapper complaintToDtoMapper;
@@ -42,11 +44,9 @@ public class ComplaintServiceImpl implements ComplaintService {
   public ComplaintDto create(ComplaintRequest request) {
     AuctionEventComplaint auctionEventComplaint = new AuctionEventComplaint();
 
-    AuctionEvent auctionEvent = auctionEventRepository.findById(request.getAuctionEventId())
-            .orElseThrow(() -> new UserNotFoundException("AuctionEvent[" + request.getAuctionEventId() + "] doesn't exist!"));
+    AuctionEvent auctionEvent = auctionEventService.findById(request.getUserId());
 
-    User user = userRepository.findById(request.getUserId())
-            .orElseThrow(() -> new UserNotFoundException("User[" + request.getUserId() + "] doesn't exist!"));
+    User user = userService.findById(request.getUserId());
 
     auctionEventComplaint.setUser(user);
     auctionEventComplaint.setAuctionEvent(auctionEvent);
@@ -83,8 +83,7 @@ public class ComplaintServiceImpl implements ComplaintService {
       complaintAudit.setComplaintStatus(ComplaintStatus.SATISFIED);
     }
 
-    User admin = userRepository.findById(request.getAdminId())
-            .orElseThrow(() -> new UserNotFoundException("User[" + request.getAdminId() + "] doesn't exist"));
+    User admin = userService.findById(request.getAdminId());
 
     complaintAudit.setAdmin(admin);
     complaintAudit.setAuctionEventComplaint(complaint);

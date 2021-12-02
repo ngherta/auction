@@ -1,6 +1,5 @@
 package com.auction.service.interfaces;
 
-import com.auction.exception.UserNotFoundException;
 import com.auction.model.User;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.DeleteUserRequest;
@@ -17,4 +16,5 @@ public interface UserService {
 
   UserDto enable(Long userId);
 
+  User findById(Long id);
 }
