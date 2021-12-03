@@ -2,6 +2,7 @@ package com.auction.model;
 
 import com.auction.model.enums.AuctionStatus;
 import com.auction.model.enums.AuctionType;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -9,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
+import org.thymeleaf.standard.expression.Each;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,18 +29,19 @@ import java.util.List;
 
 @Entity
 @Table(name = "auction")
+//NGH TODO: remove it
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//TODO: could remove it?
 @AllArgsConstructor
 public class AuctionEvent extends AbstractEntity{
     @Column
     private String title;
 
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "description")
     private String description;
 
     @Column(name = "status")
@@ -55,10 +58,11 @@ public class AuctionEvent extends AbstractEntity{
     @Column
     private Double finishPrice;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genUser_id", nullable = false, updatable = false)
     private User user;
 
+    //TODO: could be manyToOne
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "auction_images",
             joinColumns = @JoinColumn(name = "img_id"),

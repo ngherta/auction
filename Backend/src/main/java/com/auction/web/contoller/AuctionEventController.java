@@ -1,17 +1,10 @@
 package com.auction.web.contoller;
 
-import com.auction.model.mapper.AuctionEventToDtoMapper;
+import com.auction.service.interfaces.AuctionEventService;
 import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.request.AuctionEventRequest;
-import com.auction.exception.AuctionEventNotFoundException;
-import com.auction.exception.StartPriceNullException;
-import com.auction.repository.AuctionEventRepository;
-import com.auction.service.interfaces.AuctionEventService;
-import com.auction.model.AuctionEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.HtmlUtils;
 
-import java.util.List;
-import java.util.Optional;
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,13 +24,13 @@ import java.util.Optional;
 public class AuctionEventController {
 
     private final AuctionEventService auctionEventService;
-
-    @PostMapping()
-    public ResponseEntity createAuctionEvent(@RequestBody AuctionEventRequest request) {
+    //NGH
+    @PostMapping
+    public ResponseEntity createAuctionEvent(@RequestBody @Valid AuctionEventRequest request) {
         return ResponseEntity.ok(auctionEventService.save(request));
     }
-
-    @GetMapping()
+//TODO: pageable
+    @GetMapping
     public ResponseEntity getAll() {
         return ResponseEntity.ok(auctionEventService.getAll());
     }
@@ -49,14 +40,14 @@ public class AuctionEventController {
         return ResponseEntity.ok(auctionEventService.getAllSortByRating());
     }
 
-    @DeleteMapping()
-    public ResponseEntity deleteById(Long auctionId) {
+    @DeleteMapping
+    public ResponseEntity<Void> deleteById(Long auctionId) {
         auctionEventService.deleteById(auctionId);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{auctionId}")
-    public ResponseEntity updateById(@PathVariable Long auctionId,
+    public ResponseEntity<AuctionEventDto> updateById(@PathVariable Long auctionId,
                                      @RequestBody AuctionEventRequest request) {
         return ResponseEntity.ok(auctionEventService.update(request ,auctionId));
     }

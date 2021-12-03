@@ -8,7 +8,7 @@ import com.auction.model.AuctionWinner;
 import com.auction.model.User;
 import com.auction.model.enums.AuctionStatus;
 import com.auction.model.enums.AuctionType;
-import com.auction.model.mapper.AuctionEventToDtoMapper;
+import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.AuctionEventSortRepository;
@@ -32,7 +32,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class AuctionEventServiceImpl implements AuctionEventService {
+class AuctionEventServiceImpl implements AuctionEventService {
 
 
     private final AuctionEventRepository auctionEventRepository;
@@ -41,7 +41,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     private final AuctionActionRepository auctionActionRepository;
     private final AuctionEventSortRepository auctionEventSortRepository;
     private final MailService mailService;
-    private final AuctionEventToDtoMapper auctionEventToDtoMapper;
+    private final Mapper<AuctionEvent, AuctionEventDto> auctionEventToDtoMapper;
 
     @Override
     @Transactional
@@ -52,10 +52,6 @@ public class AuctionEventServiceImpl implements AuctionEventService {
 
         User user = userService.findById(request.getUserId());
         auctionEvent.setUser(user);
-
-        if (request.getStartPrice() == null) {
-            throw new StartPriceNullException("Start price is null");
-        }
 
         auctionEvent.setStartPrice(request.getStartPrice());
         auctionEvent.setFinishPrice(request.getFinishPrice());
@@ -181,7 +177,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     @Transactional
     public void delete(AuctionEvent auctionEvent) {
         if (auctionEvent.getStatusType().equals(AuctionStatus.FINISHED)) {
-            AuctionWinner auctionWinner = auctionWinnerRepository.findByAuctionEvent(auctionEvent.getId());
+            AuctionWinner auctionWinner = auctionWinnerRepository.findByAuctionEventId(auctionEvent.getId());
             auctionWinnerRepository.delete(auctionWinner);
         }
 
@@ -191,6 +187,7 @@ public class AuctionEventServiceImpl implements AuctionEventService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long auctionId) {
         AuctionEvent auctionEvent = findById(auctionId);
         delete(auctionEvent);

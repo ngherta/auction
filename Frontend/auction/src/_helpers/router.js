@@ -1,10 +1,10 @@
-import Vue from 'vue';
+// import Vue from 'vue';
 import Router from 'vue-router';
 
 import RegisterPage from '../components/Register'
 import LoginPage from '../components/Login'
 
-Vue.use(Router);
+// Vue.use(Router);
 
 export const router = new Router({
     mode: 'history',

@@ -6,6 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @ControllerAdvice
 public class GlobalControllerAdvice {
 
@@ -82,5 +86,18 @@ public class GlobalControllerAdvice {
   @ExceptionHandler
   public ResponseEntity<?> handleUserDoesntHavePaymentException(UserDoesntHavePaymentException e) {
     return ResponseEntity.badRequest().body(new ErrorDto("User didn't add payment method!", e.getMessage()));
+  }
+
+  @ExceptionHandler(AuctionRuntimeException.class)
+  public ResponseEntity<ErrorDto> handleRuntimeException(AuctionRuntimeException e) {
+    return ResponseEntity.badRequest().body(new ErrorDto(e.getMessage()));
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<List<ErrorDto>> handleConstraintViolationException(ConstraintViolationException e) {
+    return ResponseEntity.badRequest().body(e.getConstraintViolations()
+                                                    .stream()
+                                                    .map(error -> new ErrorDto(error.getMessage()))
+                                                    .collect(Collectors.toList()));
   }
 }

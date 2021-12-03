@@ -8,9 +8,6 @@ import javax.validation.constraints.NotEmpty;
 public class RegistrationRequest {
 
     @NotEmpty
-    private String login;
-
-    @NotEmpty
     private String password;
 
     @NotEmpty

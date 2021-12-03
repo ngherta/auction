@@ -29,7 +29,7 @@ public class AuthController {
     private final TokenConfirmationService confirmationService;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         JwtResponse jwtResponse =  authenticationService.authenticateUser(loginRequest);
         return ResponseEntity.ok(jwtResponse);
     }

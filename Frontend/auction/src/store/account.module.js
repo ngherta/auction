@@ -64,13 +64,13 @@ const mutations = {
         state.status = {};
         state.user = null;
     },
-    registerRequest(state, user) {
+    registerRequest(state) {
         state.status = { registering: true };
     },
-    registerSuccess(state, user) {
+    registerSuccess(state) {
         state.status = {};
     },
-    registerFailure(state, error) {
+    registerFailure(state) {
         state.status = {};
     }
 };

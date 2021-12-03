@@ -29,12 +29,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ComplaintServiceImpl implements ComplaintService {
+class ComplaintServiceImpl implements ComplaintService {
   private final AuctionEventComplaintRepository complaintRepository;
   private final AuctionEventComplaintAuditRepository complaintAuditRepository;
-  private final UserRepository userRepository;
   private final UserService userService;
-  private final AuctionEventRepository auctionEventRepository;
   private final AuctionEventService auctionEventService;
   private final ComplaintToDtoMapper complaintToDtoMapper;
   private final ComplaintAuditToDtoMapper complaintAuditToDtoMapper;
@@ -72,11 +70,11 @@ public class ComplaintServiceImpl implements ComplaintService {
     AuctionEventComplaintAudit complaintAudit = new AuctionEventComplaintAudit();
     AuctionEvent auctionEvent = new AuctionEvent();
     //exception
-    if (request.getStatus().equals(ComplaintStatus.REJECTED)) {
+    if (request.getStatus().equals(ComplaintStatus.REJECTED.name())) {
       complaint.setStatus(ComplaintStatus.REJECTED);
       complaintAudit.setComplaintStatus(ComplaintStatus.REJECTED);
     }
-    else if(request.getStatus().equals(ComplaintStatus.SATISFIED)) {
+    else if(request.getStatus().equals(ComplaintStatus.SATISFIED.name())) {
       complaint.setStatus(ComplaintStatus.SATISFIED);
       auctionEvent = auctionEventService.blockAuctionEvent(auctionEvent);
       complaint.setAuctionEvent(auctionEvent);

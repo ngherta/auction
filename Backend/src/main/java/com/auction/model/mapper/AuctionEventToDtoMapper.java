@@ -1,7 +1,9 @@
 package com.auction.model.mapper;
 
 import com.auction.model.AuctionEvent;
+import com.auction.model.User;
 import com.auction.web.dto.AuctionEventDto;
+import com.auction.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -10,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Service
-public class AuctionEventToDtoMapper implements Mapper<AuctionEvent, AuctionEventDto>{
+@Component
+class AuctionEventToDtoMapper implements Mapper<AuctionEvent, AuctionEventDto>{
 
-  private final UserToDtoMapper userToDtoMapper;
+  private final Mapper<User, UserDto> userToDtoMapper;
 
   @Override
   public AuctionEventDto map(AuctionEvent entity) {
@@ -32,7 +34,7 @@ public class AuctionEventToDtoMapper implements Mapper<AuctionEvent, AuctionEven
             .charityPercent(entity.getCharityPercent())
             .build();
     List<String> images = new ArrayList<>();
-    entity.getImages().stream().map(e -> images.add(e.getUrl()));
+    entity.getImages().forEach(e -> images.add(e.getUrl()));
     auctionEventDto.setImages(images);
 
     return auctionEventDto;

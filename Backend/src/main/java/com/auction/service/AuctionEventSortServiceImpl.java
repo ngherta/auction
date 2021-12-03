@@ -1,5 +1,6 @@
 package com.auction.service;
 
+import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionEventSort;
 import com.auction.repository.AuctionEventRepository;
@@ -19,11 +20,10 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class AuctionEventSortServiceImpl implements AuctionEventSortService {
+class AuctionEventSortServiceImpl implements AuctionEventSortService {
 
   private final AuctionEventSortRepository auctionEventSortRepository;
   private final AuctionEventRepository auctionEventRepository;
-  private final EntityManager entityManager;
 
   @Override
   @Transactional
@@ -45,7 +45,9 @@ public class AuctionEventSortServiceImpl implements AuctionEventSortService {
       if (auctionEventSortCheck.isPresent()) {
         auctionEventSort = auctionEventSortCheck.get();
       } else {
-        AuctionEvent auctionEvent = entityManager.getReference(AuctionEvent.class, auctionIdBig.longValue());
+        AuctionEvent auctionEvent = auctionEventRepository.findById(auctionIdBig.longValue())
+                .orElseThrow(() ->
+                                     new AuctionEventNotFoundException("AuctionEvent[" + auctionIdBig.longValue() + "] doesn't exist!!"));
         auctionEventSort.setAuctionEvent(auctionEvent);
       }
 
