@@ -21,7 +21,22 @@
           <router-link to="/home" class="nav-link text-center">ABOUT US</router-link>
         </li>
 
-        <li class="nav-item dropdown">
+        <!-- For Tablet Mobile. if(resizeForDevice) === true -->
+        <li v-if="resizeForDevice" class="nav-item">
+          <router-link to="/home" v-if="currentUser" class="nav-link text-center">My profile</router-link>
+        </li>
+        <li v-if="resizeForDevice" class="nav-item">
+          <button v-on:click="logOut" v-if="currentUser" class="nav-link text-center">Logout</button>
+        </li>
+        <li v-if="resizeForDevice" class="nav-item">
+          <router-link to="/register" v-if="!currentUser" class="nav-link text-center">Register</router-link>
+        </li>
+        <li v-if="resizeForDevice" class="nav-item">
+          <router-link to="/login" v-if="!currentUser" class="nav-link text-center">Login</router-link>
+        </li>
+
+
+        <li v-if="$windowWidth > 992" class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="asdffff" id="navbarDropdownProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             MY PROFILE
           </a>
@@ -34,7 +49,7 @@
             <router-link to="/home" class="dropdown-item">Something else here</router-link>
           </div>
         </li>
-<!--        <li class="nav-item">-->
+        <!--        <li class="nav-item">-->
 <!--          <a class="nav-link disabled" href="#">Disabled</a>-->
 <!--        </li>-->
       </ul>
@@ -43,8 +58,24 @@
 </template>
 
 <script>
+import { useWindowSize } from 'vue-window-size';
+
 export default {
+  setup() {
+    const { width, height } = useWindowSize();
+    return {
+      windowWidth: width,
+      windowHeight : height
+    };
+  },
   name: "Header",
+  data() {
+    return {
+      $windowWidth: this.windowWidth,
+    };
+  },
+
+
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
@@ -61,6 +92,14 @@ export default {
     logOut() {
       this.$store.dispatch('auth/logout');
       this.$router.push('/login');
+    },
+    resizeForDevice() {
+      if (this.windowWidth <= 992 ) {
+        return true;
+      }
+      else {
+        return false;
+      }
     }
   }
 };

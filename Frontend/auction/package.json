@@ -19,6 +19,7 @@
     "vee-validate": "^4.3.5",
     "vue": "^3.0.0",
     "vue-router": "^4.0.6",
+    "vue-window-size": "^1.1.2",
     "vuex": "^4.0.0",
     "yup": "^0.32.9"
   },
