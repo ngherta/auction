@@ -1,21 +1,8 @@
 package com.auction.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "auction_sort")
@@ -23,12 +10,13 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class AuctionEventSort extends AbstractEntity{
   @OneToOne
   @JoinColumn(name = "auction_id", nullable = false, updatable = false)
   private AuctionEvent auctionEvent;
 
+  @Column(name = "sort_rating")
   private Long sortRating;
 }

@@ -3,7 +3,7 @@ package com.auction.service;
 import com.auction.exception.UserNotFoundException;
 import com.auction.model.AuctionEvent;
 import com.auction.model.User;
-import com.auction.model.mapper.UserToDtoMapper;
+import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.UserRepository;
@@ -13,6 +13,9 @@ import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.DeleteUserRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,19 +24,20 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class UserServiceImpl implements UserService {
+class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final AuctionEventService auctionEventService;
   private final AuctionEventRepository auctionEventRepository;
   private final AuctionActionRepository auctionActionRepository;
-  private final UserToDtoMapper userToDtoMapper;
+  private final Mapper<User, UserDto> userToDtoMapper;
 
   @Override
   @Transactional(readOnly = true)
-  public List<UserDto> getAll() {
-    List<User> list = userRepository.findAll();
-    return userToDtoMapper.mapList(list);
+  public Page<UserDto> get(int page, int perPage) {
+    Pageable pageable = PageRequest.of(page - 1, perPage);
+
+    return userRepository.findAll(pageable).map(userToDtoMapper::map);
   }
 
   @Override

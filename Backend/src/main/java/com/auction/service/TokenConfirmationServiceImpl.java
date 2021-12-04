@@ -18,7 +18,7 @@ import java.io.UnsupportedEncodingException;
 
 @Service
 @AllArgsConstructor
-public class TokenConfirmationServiceImpl implements TokenConfirmationService {
+class TokenConfirmationServiceImpl implements TokenConfirmationService {
   private final UserRepository userRepository;
   private final TokenConfirmationRepository tokenConfirmationRepository;
   private final MailService mailService;
@@ -44,10 +44,11 @@ public class TokenConfirmationServiceImpl implements TokenConfirmationService {
   @Override
   @Transactional
   public void generate(User user) throws MessagingException, UnsupportedEncodingException {
-    String randomCode = RandomString.make(64);
-    TokenConfirmation confirmation = new TokenConfirmation();
-    confirmation.setConfirmation(randomCode);
-    confirmation.setUser(user);
+    TokenConfirmation confirmation = TokenConfirmation.builder()
+            .confirmation(RandomString.make(64))
+            .user(user)
+            .build();
+
     confirmation = tokenConfirmationRepository.save(confirmation);
     mailService.sendConfirmation(confirmation);
   }

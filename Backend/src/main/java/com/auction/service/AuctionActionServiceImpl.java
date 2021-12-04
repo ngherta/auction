@@ -4,7 +4,7 @@ import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
 import com.auction.model.User;
-import com.auction.model.mapper.AuctionActionToDtoMapper;
+import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.service.interfaces.AuctionActionService;
@@ -21,12 +21,12 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class AuctionActionServiceImpl implements AuctionActionService {
+class AuctionActionServiceImpl implements AuctionActionService {
 
   private final AuctionActionRepository auctionActionRepository;
   private final EntityManager entityManager;
   private final AuctionEventRepository auctionEventRepository;
-  private final AuctionActionToDtoMapper auctionActionToDtoMapper;
+  private final Mapper<AuctionAction, AuctionActionDto> auctionActionToDtoMapper;
 
   @Override
   @Transactional

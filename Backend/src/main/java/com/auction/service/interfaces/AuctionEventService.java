@@ -8,6 +8,7 @@ import com.auction.exception.StartPriceNullException;
 import com.auction.exception.UserNotFoundException;
 import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionWinner;
+import org.springframework.data.domain.Page;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
@@ -22,7 +23,7 @@ public interface AuctionEventService {
 
   List<AuctionEventDto> getAllSortByRating();
 
-  List<AuctionEventDto> getAll();
+  Page<AuctionEventDto> get(int page, int perPage);
 
   AuctionEventDto blockAuctionEventById(Long auctionId);
 

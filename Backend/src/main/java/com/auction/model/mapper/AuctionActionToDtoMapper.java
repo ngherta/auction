@@ -1,15 +1,17 @@
 package com.auction.model.mapper;
 
 import com.auction.model.AuctionAction;
+import com.auction.model.User;
 import com.auction.web.dto.AuctionActionDto;
+import com.auction.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
-@Service
-public class AuctionActionToDtoMapper implements Mapper<AuctionAction, AuctionActionDto>{
+@Component
+class AuctionActionToDtoMapper implements Mapper<AuctionAction, AuctionActionDto>{
 
-  private final UserToDtoMapper userToDtoMapper;
+  private final Mapper<User, UserDto> userToDtoMapper;
 
   @Override
   public AuctionActionDto map(AuctionAction entity) {

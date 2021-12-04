@@ -1,8 +1,5 @@
 package com.auction.web.contoller;
 
-import com.auction.config.jwt.JwtUtils;
-import com.auction.exception.AuctionEventNotFoundException;
-import com.auction.model.mapper.AuctionActionToDtoMapper;
 import com.auction.service.interfaces.AuctionActionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @CrossOrigin("*")
 @RequestMapping("/api/bids")
-public class AuctionActionContoller {
+public class AuctionActionController {
 
   private final AuctionActionService auctionActionService;
 

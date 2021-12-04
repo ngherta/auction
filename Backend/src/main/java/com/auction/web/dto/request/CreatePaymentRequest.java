@@ -16,17 +16,4 @@ public class CreatePaymentRequest {
     private String cvv;
     private String name;
     private Long userId;
-
-    @JsonCreator
-    public CreatePaymentRequest(@JsonProperty String cardNumber,
-                                @JsonProperty LocalDateTime expirationDate,
-                                @JsonProperty String cvv,
-                                @JsonProperty String name,
-                                @JsonProperty Long userId) {
-        this.cardNumber = cardNumber;
-        this.expirationDate = expirationDate;
-        this.cvv = cvv;
-        this.name = name;
-        this.userId = userId;
-    }
 }

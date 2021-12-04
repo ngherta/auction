@@ -1,6 +1,5 @@
 package com.auction.service;
 
-import com.auction.exception.UserNotFoundException;
 import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionEventComplaint;
 import com.auction.model.AuctionEventComplaintAudit;
@@ -10,8 +9,6 @@ import com.auction.model.mapper.ComplaintAuditToDtoMapper;
 import com.auction.model.mapper.ComplaintToDtoMapper;
 import com.auction.repository.AuctionEventComplaintAuditRepository;
 import com.auction.repository.AuctionEventComplaintRepository;
-import com.auction.repository.AuctionEventRepository;
-import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.ComplaintService;
 import com.auction.service.interfaces.UserService;
@@ -40,16 +37,16 @@ class ComplaintServiceImpl implements ComplaintService {
   @Override
   @Transactional
   public ComplaintDto create(ComplaintRequest request) {
-    AuctionEventComplaint auctionEventComplaint = new AuctionEventComplaint();
-
     AuctionEvent auctionEvent = auctionEventService.findById(request.getUserId());
 
     User user = userService.findById(request.getUserId());
 
-    auctionEventComplaint.setUser(user);
-    auctionEventComplaint.setAuctionEvent(auctionEvent);
-    auctionEventComplaint.setMessage(request.getMessage());
-    auctionEventComplaint.setStatus(ComplaintStatus.WAITING);
+    AuctionEventComplaint auctionEventComplaint = AuctionEventComplaint.builder()
+            .user(user)
+            .auctionEvent(auctionEvent)
+            .message(request.getMessage())
+            .status(ComplaintStatus.WAITING)
+            .build();
 
     auctionEventComplaint = complaintRepository.save(auctionEventComplaint);
 
@@ -67,26 +64,30 @@ class ComplaintServiceImpl implements ComplaintService {
   @Transactional
   public ComplaintAuditDto satisfyComplaint(ComplaintAdminRequest request) {
     AuctionEventComplaint complaint = complaintRepository.getById(request.getComplaintId());
-    AuctionEventComplaintAudit complaintAudit = new AuctionEventComplaintAudit();
-    AuctionEvent auctionEvent = new AuctionEvent();
-    //exception
+    ComplaintStatus complaintStatus = complaint.getStatus();
+    AuctionEvent auctionEvent = complaint.getAuctionEvent();
+
     if (request.getStatus().equals(ComplaintStatus.REJECTED.name())) {
       complaint.setStatus(ComplaintStatus.REJECTED);
-      complaintAudit.setComplaintStatus(ComplaintStatus.REJECTED);
+      complaintStatus = ComplaintStatus.REJECTED;
     }
     else if(request.getStatus().equals(ComplaintStatus.SATISFIED.name())) {
       complaint.setStatus(ComplaintStatus.SATISFIED);
       auctionEvent = auctionEventService.blockAuctionEvent(auctionEvent);
       complaint.setAuctionEvent(auctionEvent);
-      complaintAudit.setComplaintStatus(ComplaintStatus.SATISFIED);
+      complaintStatus = ComplaintStatus.SATISFIED;
     }
 
     User admin = userService.findById(request.getAdminId());
 
-    complaintAudit.setAdmin(admin);
-    complaintAudit.setAuctionEventComplaint(complaint);
-    complaintAudit = complaintAuditRepository.save(complaintAudit);
+    AuctionEventComplaintAudit audit = AuctionEventComplaintAudit.builder()
+            .admin(admin)
+            .complaintStatus(complaintStatus)
+            .auctionEventComplaint(complaint)
+            .build();
 
-    return complaintAuditToDtoMapper.map(complaintAudit);
+    audit = complaintAuditRepository.save(audit);
+
+    return complaintAuditToDtoMapper.map(audit);
   }
 }

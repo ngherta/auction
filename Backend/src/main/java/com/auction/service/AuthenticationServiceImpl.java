@@ -4,7 +4,9 @@ import com.auction.config.UserDetailsImpl;
 import com.auction.config.jwt.JwtUtils;
 import com.auction.exception.UserNotFoundException;
 import com.auction.exception.UserRoleNotFoundException;
+import com.auction.model.mapper.Mapper;
 import com.auction.model.mapper.UserToDtoMapper;
+import com.auction.service.interfaces.TokenConfirmationService;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.LoginRequest;
 import com.auction.web.dto.request.SignupRequest;
@@ -32,15 +34,15 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class AuthenticationServiceImpl implements AuthenticationService {
+class AuthenticationServiceImpl implements AuthenticationService {
 
   private final AuthenticationManager authenticationManager;
   private final UserRepository userRepository;
   private final UserRoleRepository roleRepository;
   private final PasswordEncoder encoder;
   private final JwtUtils jwtUtils;
-  private final TokenConfirmationServiceImpl tokenConfirmationService;
-  private final UserToDtoMapper userToDtoMapper;
+  private final TokenConfirmationService tokenConfirmationService;
+  private final Mapper<User, UserDto> userToDtoMapper;
 
 
   @Override

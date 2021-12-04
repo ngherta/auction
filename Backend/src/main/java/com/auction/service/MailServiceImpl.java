@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class MailServiceImpl implements MailService {
+class MailServiceImpl implements MailService {
 
   private final static String siteURL = "http://localhost:8080/";
 

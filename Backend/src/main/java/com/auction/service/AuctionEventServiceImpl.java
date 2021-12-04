@@ -1,7 +1,6 @@
 package com.auction.service;
 
 import com.auction.exception.AuctionEventNotFoundException;
-import com.auction.exception.StartPriceNullException;
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionWinner;
@@ -21,6 +20,9 @@ import com.auction.web.dto.request.AuctionEventRequest;
 import com.auction.web.dto.request.AuctionFinishByFinishPriceRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +36,6 @@ import java.util.List;
 @RequiredArgsConstructor
 class AuctionEventServiceImpl implements AuctionEventService {
 
-
     private final AuctionEventRepository auctionEventRepository;
     private final UserService userService;
     private final AuctionWinnerRepository auctionWinnerRepository;
@@ -46,18 +47,17 @@ class AuctionEventServiceImpl implements AuctionEventService {
     @Override
     @Transactional
     public AuctionEventDto save(AuctionEventRequest request) {
-        AuctionEvent auctionEvent = new AuctionEvent();
-        auctionEvent.setTitle(request.getTitle());
-        auctionEvent.setDescription(request.getDescription());
-
         User user = userService.findById(request.getUserId());
-        auctionEvent.setUser(user);
-
-        auctionEvent.setStartPrice(request.getStartPrice());
-        auctionEvent.setFinishPrice(request.getFinishPrice());
-        auctionEvent.setStatusType(AuctionStatus.EXPECTATION);
-        auctionEvent.setStartDate(request.getStartDate());
-        auctionEvent.setFinishDate(request.getFinishDate());
+        AuctionEvent auctionEvent = AuctionEvent.builder()
+                .title(request.getTitle())
+                .description(request.getDescription())
+                .user(user)
+                .startPrice(request.getStartPrice())
+                .finishPrice(request.getFinishPrice())
+                .statusType(AuctionStatus.EXPECTATION)
+                .startDate(request.getStartDate())
+                .finishDate(request.getFinishDate())
+        .build();
 
         if (request.getCharityPercent() == 0) {
             auctionEvent.setAuctionType(AuctionType.COMMERCIAL);
@@ -78,12 +78,12 @@ class AuctionEventServiceImpl implements AuctionEventService {
         List<AuctionWinner> listOfWinners = new ArrayList<>();
 
         for (AuctionEvent event : list) {
-            AuctionWinner auctionWinner = new AuctionWinner();
-            auctionWinner.setAuctionEvent(event);
-
             AuctionAction auctionAction = auctionActionRepository.getLastAuctionActionByAuctionEventOrderByBetDesc(event);
-            auctionWinner.setUser(auctionAction.getUser());
-            auctionWinner.setPrice(auctionAction.getBet());
+            AuctionWinner auctionWinner = AuctionWinner.builder()
+                    .auctionEvent(event)
+                    .user(auctionAction.getUser())
+                    .price(auctionAction.getBet())
+                    .build();
 
             listOfWinners.add(auctionWinner);
             log.info("User[" + auctionAction.getUser() + "] won auctionEvent[" + event.getId() + "]");
@@ -152,10 +152,12 @@ class AuctionEventServiceImpl implements AuctionEventService {
         auctionEventRepository.save(auctionEvent);
 
 
-        AuctionWinner auctionWinner = new AuctionWinner();
-        auctionWinner.setUser(user);
-        auctionWinner.setAuctionEvent(auctionEvent);
-        auctionWinner.setPrice(auctionEvent.getFinishPrice());
+        AuctionWinner auctionWinner = AuctionWinner.builder()
+                .user(user)
+                .auctionEvent(auctionEvent)
+                .price(auctionEvent.getFinishPrice())
+                .build();
+
         auctionWinnerRepository.save(auctionWinner);
     }
 
@@ -168,9 +170,10 @@ class AuctionEventServiceImpl implements AuctionEventService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<AuctionEventDto> getAll() {
-        List<AuctionEvent> list = auctionEventRepository.findAll();
-        return auctionEventToDtoMapper.mapList(list);
+    public Page<AuctionEventDto> get(int page, int perPage) {
+        Pageable pageable = PageRequest.of(page - 1, perPage);
+
+        return auctionEventRepository.findAll(pageable).map(auctionEventToDtoMapper::map);
     }
 
     @Override

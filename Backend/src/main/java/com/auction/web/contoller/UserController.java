@@ -6,13 +6,9 @@ import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.request.ChangePasswordRequest;
 import com.auction.web.dto.request.DeleteUserRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 
@@ -62,9 +58,10 @@ public class UserController {
         return ResponseEntity.ok("Email confirmed!");
     }
 
-    @GetMapping()
-    public ResponseEntity getAllUsers() {
-        return ResponseEntity.ok().body(userService.getAll());
+    @GetMapping
+    public ResponseEntity getAllUsers(@RequestParam(defaultValue = "1") int page,
+                                      @RequestParam(defaultValue = "10") int perPage) {
+        return ResponseEntity.ok().body(userService.get(page, perPage));
     }
 
     @DeleteMapping

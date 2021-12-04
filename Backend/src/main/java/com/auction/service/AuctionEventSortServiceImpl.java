@@ -34,13 +34,16 @@ class AuctionEventSortServiceImpl implements AuctionEventSortService {
 
 
     for (int i = 0; i < listOfObj.size(); i++) {
-      AuctionEventSort auctionEventSort = new AuctionEventSort();
       Object objectTmp[] = listOfObj.get(i);
 
       BigInteger auctionIdBig = (BigInteger) objectTmp[0];
       BigInteger ratingBig = (BigInteger) objectTmp[1];
       Optional<AuctionEventSort> auctionEventSortCheck;
       auctionEventSortCheck = auctionEventSortRepository.findById(auctionIdBig.longValue());
+
+      AuctionEventSort auctionEventSort = AuctionEventSort.builder()
+              .sortRating(ratingBig.longValue())
+              .build();
 
       if (auctionEventSortCheck.isPresent()) {
         auctionEventSort = auctionEventSortCheck.get();
@@ -50,8 +53,6 @@ class AuctionEventSortServiceImpl implements AuctionEventSortService {
                                      new AuctionEventNotFoundException("AuctionEvent[" + auctionIdBig.longValue() + "] doesn't exist!!"));
         auctionEventSort.setAuctionEvent(auctionEvent);
       }
-
-      auctionEventSort.setSortRating(ratingBig.longValue());
 
       auctionEventSortList.add(auctionEventSort);
     }

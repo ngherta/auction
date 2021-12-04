@@ -13,12 +13,4 @@ public class ComplaintAdminRequest {
   private Long complaintId;
   private String status;
 
-  @JsonCreator
-  public ComplaintAdminRequest(@JsonProperty Long adminId,
-                               @JsonProperty Long complaintId,
-                               @JsonProperty String status) {
-    this.adminId = adminId;
-    this.complaintId = complaintId;
-    this.status = status;
-  }
 }

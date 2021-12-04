@@ -1,8 +1,6 @@
 package com.auction.exception;
 
-import javassist.NotFoundException;
-
-public class UserNotFoundException extends RuntimeException {
+public class UserNotFoundException extends AuctionRuntimeException {
 
   public UserNotFoundException(String message) {
     super(message);

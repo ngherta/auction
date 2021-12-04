@@ -19,10 +19,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class PaymentServiceImpl implements PaymentService {
+class PaymentServiceImpl implements PaymentService {
 
   private final PaymentRepository paymentRepository;
-  private final UserRepository userRepository;
   private final UserService userService;
 
   @Override

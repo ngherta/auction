@@ -1,16 +1,21 @@
 package com.auction.model.mapper;
 
+import com.auction.model.AuctionEventComplaint;
 import com.auction.model.AuctionEventComplaintAudit;
+import com.auction.model.User;
 import com.auction.web.dto.ComplaintAuditDto;
+import com.auction.web.dto.ComplaintDto;
+import com.auction.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-@Service
+@Component
 public class ComplaintAuditToDtoMapper implements Mapper<AuctionEventComplaintAudit, ComplaintAuditDto>{
-  private final ComplaintToDtoMapper complaintToDtoMapper;
-  private final UserToDtoMapper userToDtoMapper;
+
+  private final Mapper<AuctionEventComplaint, ComplaintDto> complaintToDtoMapper;
+  private final Mapper<User, UserDto> userToDtoMapper;
 
   @Override
   public ComplaintAuditDto map(AuctionEventComplaintAudit entity) {

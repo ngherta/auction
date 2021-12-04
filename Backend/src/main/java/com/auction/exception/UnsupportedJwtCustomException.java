@@ -1,6 +1,6 @@
 package com.auction.exception;
 
-public class UnsupportedJwtCustomException extends RuntimeException{
+public class UnsupportedJwtCustomException extends AuctionRuntimeException{
 
   public UnsupportedJwtCustomException(String message) {
     super(message);

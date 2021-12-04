@@ -13,12 +13,4 @@ public class ComplaintRequest {
   private Long userId;
   private String message;
 
-  @JsonCreator
-  public ComplaintRequest(@JsonProperty Long userId,
-                          @JsonProperty Long auctionEventId,
-                          @JsonProperty String message) {
-    this.userId = userId;
-    this.auctionEventId = auctionEventId;
-    this.message = message;
-  }
 }

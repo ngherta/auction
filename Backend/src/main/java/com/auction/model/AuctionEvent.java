@@ -12,17 +12,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.thymeleaf.standard.expression.Each;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +25,6 @@ import java.util.List;
 @Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-//TODO: could remove it?
 @AllArgsConstructor
 public class AuctionEvent extends AbstractEntity{
     @Column
@@ -62,8 +51,7 @@ public class AuctionEvent extends AbstractEntity{
     @JoinColumn(name = "genUser_id", nullable = false, updatable = false)
     private User user;
 
-    //TODO: could be manyToOne
-    @ManyToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "auction_images",
             joinColumns = @JoinColumn(name = "img_id"),
             inverseJoinColumns = @JoinColumn(name = "auction_id"))

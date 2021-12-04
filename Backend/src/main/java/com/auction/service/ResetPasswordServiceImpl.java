@@ -24,7 +24,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ResetPasswordServiceImpl implements ResetPasswordService {
+class ResetPasswordServiceImpl implements ResetPasswordService {
 
     private final UserRepository userRepository;
     private final JavaMailSender mailSender;
@@ -33,19 +33,21 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     private final JwtUtils jwtUtils;
 
     @Transactional
+    @Override
     public void resetPasswordByToken(String token) throws MessagingException, UnsupportedEncodingException {
         String email = jwtUtils.getUserNameFromJwtToken(token);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User with email[" + email + "] doesn't exist!"));
 
-        ResetPasswordEntity resetPassword = new ResetPasswordEntity();
-
         user.setEnabled(false);
         user = userRepository.save(user);
-        String randomCode = RandomString.make(64);
-        resetPassword.setCode(randomCode);
-        resetPassword.setEnabled(false);
-        resetPassword.setUser(user);
+
+        ResetPasswordEntity resetPassword = ResetPasswordEntity.builder()
+                .enabled(false)
+                .code(RandomString.make(64))
+                .user(user)
+                .build();
+
         resetPasswordRepository.save(resetPassword);
 
         sendVerificationEmail(user, resetPassword);
