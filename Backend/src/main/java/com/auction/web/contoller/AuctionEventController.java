@@ -11,7 +11,6 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("*")
 @RequestMapping("/api/auction")
 public class AuctionEventController {
 

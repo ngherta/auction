@@ -1,37 +1,39 @@
 <template>
-  <footer class="footer">
-    <div class="container">
+  <footer class="footer row">
+    <div class="container col-sm">
       <p>{{footerDescription}}</p>
     </div>
-    <div>
-      <a href="#">
-        <Icon name = 'twitter'></Icon>
-      </a>
-      <a href="#">
-        <Icon name = 'instagram'></Icon>
-      </a>
-      <a onclick="" href="#">
-        <Icon name = 'facebook'></Icon>
-      </a>
-      <p>Copyright 2021, LOT.<br>
-        All rights reserved.</p>
+    <div class="col-sm">
+     <div class="col-sm">
+       <a href="#">
+         <Icon name = 'twitter'></Icon>
+       </a>
+       <a href="#">
+         <Icon name = 'instagram'></Icon>
+       </a>
+       <a href="#">
+         <Icon name = 'facebook'></Icon>
+       </a>
+     </div>
+      <span class="text-center">Copyright 2021, LOT.<br>
+        All rights reserved.</span>
     </div>
-    <div>
-      <p>
+    <div class="col-sm m-auto">
+      <span>
         <Icon name = 'email'></Icon>
-        info@lot.md</p>
-      <p>
+        info@lot.md</span>
+      <span>
         <Icon name = 'phone'></Icon>
-        068777999</p>
-      <p><Icon name = 'place'></Icon>
-        Moldova, Chisinau</p>
+        068777999</span>
+      <span>
+        <Icon name = 'place'></Icon>
+        Moldova, Chisinau</span>
     </div>
   </footer>
 </template>
 
 <script>
-import Icon from "@/components/Icon";
-
+import Icon from "./Icon"
 export default {
   name: "Footer",
   components: {Icon},

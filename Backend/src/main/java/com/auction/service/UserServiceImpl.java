@@ -11,7 +11,7 @@ import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.DeleteUserRequest;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,12 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
-  private final AuctionEventService auctionEventService;
+//  private final AuctionEventService auctionEventService;
   private final AuctionEventRepository auctionEventRepository;
   private final AuctionActionRepository auctionActionRepository;
   private final Mapper<User, UserDto> userToDtoMapper;
@@ -47,7 +47,7 @@ class UserServiceImpl implements UserService {
 
     List<AuctionEvent> auctionEventList = auctionEventRepository.findByUser(user);
     for (AuctionEvent auctionEvent : auctionEventList) {
-      auctionEventService.delete(auctionEvent);
+//      auctionEventService.delete(auctionEvent);
     }
 
     auctionActionRepository.deleteAllByUser(user);
@@ -79,7 +79,7 @@ class UserServiceImpl implements UserService {
   @Override
   @Transactional(readOnly = true)
   public User findById(Long id) {
-    return userRepository.findById(id)
+     return userRepository.findById(id)
             .orElseThrow(() -> new UserNotFoundException("User[" + id + "] doesn't exist"));
   }
 }

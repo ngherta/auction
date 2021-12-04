@@ -16,12 +16,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
-        // securedEnabled = true,
-        // jsr250Enabled = true,
+         securedEnabled = true,
+         jsr250Enabled = true,
         prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -55,9 +58,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(false);
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors().and()
                 .httpBasic().disable()
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
@@ -71,11 +87,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/users/verify").permitAll()
                 .antMatchers("/api/users/update/password").permitAll()
                 .antMatchers("/api/users/reset/password").permitAll()
-//                .antMatchers("/users/reset/password").hasAnyRole(USER)
+//                .antMatchers("/api/users/reset/password").hasAnyRole(USER)
                 .antMatchers("/api/auction/**").permitAll()
                 .antMatchers("/api/websocket/**").permitAll()
-                .antMatchers("/api/signup").permitAll()
-                .antMatchers("/api/signin").permitAll()
+                .antMatchers("/api/auth/signup").permitAll()
+                .antMatchers("/api/auth/signin").permitAll()
                 .antMatchers("/api/users/disable").hasRole(ADMIN)
                 .antMatchers("/api/users/enable").hasRole(ADMIN)
                 .antMatchers("/api/users/*").hasAnyRole(USER, ADMIN)
