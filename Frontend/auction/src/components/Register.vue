@@ -121,6 +121,8 @@ export default {
           this.message = data.message;
           this.successful = true;
           this.loading = false;
+          this.$router.push("/login");
+
         },
         (error) => {
           this.message =

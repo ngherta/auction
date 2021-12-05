@@ -1,7 +1,5 @@
 package com.auction.service.interfaces;
 
-import com.auction.exception.TokenConfirmationNotFoundException;
-import com.auction.exception.UserAlreadyEnabledException;
 import com.auction.model.User;
 
 import javax.mail.MessagingException;

@@ -183,9 +183,10 @@ class AuctionEventServiceImpl implements AuctionEventService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<AuctionEventDto> getAllSortByRating() {
-        List<AuctionEvent> list = auctionEventRepository.getAuctionEventByRating();
-        return auctionEventToDtoMapper.mapList(list);
+    public Page<AuctionEventDto> getAllSortByRating(int page, int perPage) {
+        Pageable pageable = PageRequest.of(page - 1, perPage);
+
+        return auctionEventRepository.getAuctionEventByRating(pageable).map(auctionEventToDtoMapper::map);
     }
 
     @Override

@@ -3,9 +3,11 @@ package com.auction.web.contoller;
 import com.auction.service.interfaces.ResetPasswordService;
 import com.auction.service.interfaces.TokenConfirmationService;
 import com.auction.service.interfaces.UserService;
+import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.ChangePasswordRequest;
 import com.auction.web.dto.request.DeleteUserRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,52 +22,48 @@ public class UserController {
     private final UserService userService;
     private final TokenConfirmationService tokenConfirmationService;
 
-//  @PreAuthorize("hasRole('USER')")
     @PostMapping("/reset/password")
-    public ResponseEntity resetPasswordByToken(@RequestHeader("Authorization") String token)
+    public ResponseEntity<Void> resetPasswordByToken(@RequestHeader("Authorization") String token)
             throws MessagingException, UnsupportedEncodingException {
         resetPasswordService.resetPasswordByToken(token);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/reset/password/confirm")
-    public ResponseEntity resetPasswordConfirm(@RequestParam("code") String code) {
+    public ResponseEntity<Void> resetPasswordConfirm(@RequestParam("code") String code) {
         resetPasswordService.verify(code);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/update/password")
-    public ResponseEntity setNewPasswordAfterReset(@RequestBody ChangePasswordRequest request) {
+    public ResponseEntity<Void> setNewPasswordAfterReset(@RequestBody ChangePasswordRequest request) {
         resetPasswordService.changePasswordAfterReset(request.getEmail(), request.getNewPassword());
         return ResponseEntity.ok().build();
     }
 
-    //only for ADMIN
     @PostMapping("/disable/{userId}")
-    public ResponseEntity disable(@PathVariable("userId") Long userId) {
+    public ResponseEntity<UserDto> disable(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(userService.disable(userId));
     }
 
     @PostMapping("/enable/{userId}")
-    public ResponseEntity enable(@PathVariable("userId") Long userId) {
+    public ResponseEntity<UserDto> enable(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(userService.enable(userId));
     }
 
-
-    @PostMapping("/verify")
-    public ResponseEntity verifyUser(@RequestParam("code") String code) {
-        tokenConfirmationService.confirm(code);
-        return ResponseEntity.ok("Email confirmed!");
-    }
-
     @GetMapping
-    public ResponseEntity getAllUsers(@RequestParam(defaultValue = "1") int page,
-                                      @RequestParam(defaultValue = "10") int perPage) {
+    public ResponseEntity<Page<UserDto>> getAllUsers(@RequestParam(defaultValue = "1") int page,
+                                                     @RequestParam(defaultValue = "10") int perPage) {
         return ResponseEntity.ok().body(userService.get(page, perPage));
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDto> getUser(Long userId) {
+        return ResponseEntity.ok(userService.getById(userId));
+    }
+
     @DeleteMapping
-    public ResponseEntity deleteUser(@RequestBody DeleteUserRequest request) {
+    public ResponseEntity<Void> deleteUser(@RequestBody DeleteUserRequest request) {
         userService.deleteUserById(request);
         return ResponseEntity.ok().build();
     }

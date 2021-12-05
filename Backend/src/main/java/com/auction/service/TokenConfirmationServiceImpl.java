@@ -13,9 +13,6 @@ import net.bytebuddy.utility.RandomString;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
-
 @Service
 @AllArgsConstructor
 class TokenConfirmationServiceImpl implements TokenConfirmationService {
@@ -43,13 +40,13 @@ class TokenConfirmationServiceImpl implements TokenConfirmationService {
 
   @Override
   @Transactional
-  public void generate(User user) throws MessagingException, UnsupportedEncodingException {
+  public void generate(User user) {
     TokenConfirmation confirmation = TokenConfirmation.builder()
             .confirmation(RandomString.make(64))
             .user(user)
             .build();
 
     confirmation = tokenConfirmationRepository.save(confirmation);
-    mailService.sendConfirmation(confirmation);
+    mailService.sendEmailConfirmation(confirmation);
   }
 }

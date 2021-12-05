@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface MailService {
 
+  void sendEmailConfirmation(TokenConfirmation tokenConfirmation);
+
   void sendEmailToAuctionParticipant(List<AuctionAction> listOfAuctionAction) throws MessagingException, UnsupportedEncodingException;
 
   void sendEmailToAuctionWinner (AuctionWinner auctionWinner) throws MessagingException, UnsupportedEncodingException;
-
-  void sendConfirmation(TokenConfirmation confirmation) throws MessagingException, UnsupportedEncodingException;
 }

@@ -27,7 +27,6 @@ import java.util.List;
 class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
-//  private final AuctionEventService auctionEventService;
   private final AuctionEventRepository auctionEventRepository;
   private final AuctionActionRepository auctionActionRepository;
   private final Mapper<User, UserDto> userToDtoMapper;
@@ -81,5 +80,12 @@ class UserServiceImpl implements UserService {
   public User findById(Long id) {
      return userRepository.findById(id)
             .orElseThrow(() -> new UserNotFoundException("User[" + id + "] doesn't exist"));
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public UserDto getById(Long userId) {
+    User user = findById(userId);
+    return userToDtoMapper.map(user);
   }
 }

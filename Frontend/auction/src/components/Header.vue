@@ -22,16 +22,16 @@
         </li>
 
         <!-- For Tablet Mobile. if(resizeForDevice) === true -->
-        <li v-if="resizeForDevice" class="nav-item">
+        <li v-if="!resizeForDevice" class="nav-item">
           <router-link to="/home" v-if="currentUser" class="nav-link text-center">My profile</router-link>
         </li>
-        <li v-if="resizeForDevice" class="nav-item">
+        <li v-if="!resizeForDevice" class="nav-item">
           <button v-on:click="logOut" v-if="currentUser" class="nav-link text-center">Logout</button>
         </li>
-        <li v-if="resizeForDevice" class="nav-item">
+        <li v-if="!resizeForDevice" class="nav-item">
           <router-link to="/register" v-if="!currentUser" class="nav-link text-center">Register</router-link>
         </li>
-        <li v-if="resizeForDevice" class="nav-item">
+        <li v-if="!resizeForDevice" class="nav-item">
           <router-link to="/login" v-if="!currentUser" class="nav-link text-center">Login</router-link>
         </li>
 

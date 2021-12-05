@@ -1,13 +1,10 @@
 package com.auction.service.interfaces;
 
+import com.auction.model.AuctionEvent;
+import com.auction.model.AuctionWinner;
 import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.request.AuctionEventRequest;
 import com.auction.web.dto.request.AuctionFinishByFinishPriceRequest;
-import com.auction.exception.AuctionEventNotFoundException;
-import com.auction.exception.StartPriceNullException;
-import com.auction.exception.UserNotFoundException;
-import com.auction.model.AuctionEvent;
-import com.auction.model.AuctionWinner;
 import org.springframework.data.domain.Page;
 
 import javax.mail.MessagingException;
@@ -21,7 +18,7 @@ public interface AuctionEventService {
 
   void finishByFinishPrice(AuctionFinishByFinishPriceRequest request);
 
-  List<AuctionEventDto> getAllSortByRating();
+  Page<AuctionEventDto> getAllSortByRating(int page, int perPage);
 
   Page<AuctionEventDto> get(int page, int perPage);
 
