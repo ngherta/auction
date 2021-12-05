@@ -156,7 +156,6 @@ export default {
   width: 20%;
 }
 
-
 .error-feedback {
   color: red;
 }
