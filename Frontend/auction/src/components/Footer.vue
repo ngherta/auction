@@ -18,14 +18,14 @@
       <span class="text-center">Copyright 2021, LOT.<br>
         All rights reserved.</span>
     </div>
-    <div class="col-sm m-auto">
-      <span>
+    <div class="col-sm m-auto row flex-column">
+      <span class="col">
         <Icon name = 'email'></Icon>
         info@lot.md</span>
-      <span>
+      <span class="col">
         <Icon name = 'phone'></Icon>
         068777999</span>
-      <span>
+      <span class="col">
         <Icon name = 'place'></Icon>
         Moldova, Chisinau</span>
     </div>

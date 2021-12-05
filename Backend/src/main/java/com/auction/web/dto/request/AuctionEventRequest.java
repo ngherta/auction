@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -23,5 +24,5 @@ public class AuctionEventRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm")
     private LocalDateTime finishDate;
     private Double charityPercent;
-    private Set<String> images;
+    private List<String> images;
 }

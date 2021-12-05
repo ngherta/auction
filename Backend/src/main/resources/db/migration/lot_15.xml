@@ -22,8 +22,7 @@
 
 
     <!--  auction_images FK  -->
-    <addForeignKeyConstraint baseColumnNames="img_id" baseTableName="auction_images" constraintName="f23nxj1d2wv5qxxs7i26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auction_img" validate="true"/>
-    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="auction_images" constraintName="f23qx21d2nv5qxxs7i26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auction" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="auction_event_id" baseTableName="auction_event_images" constraintName="f23nxj1d2wv5qxxs7i26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auction" validate="true"/>
 
     <!--  auction_complaint FK  -->
     <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="auction_complaint" constraintName="f23nqj1xqwv12xqs7i26qcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auction" validate="true"/>

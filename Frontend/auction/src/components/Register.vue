@@ -7,11 +7,11 @@
   <div class="container-lg container-border">
     <div class="container">
       <div class="row">
-        <div class="col-sm border-bottom  p-1">
+        <div class="col-sm border-bottom border-info p-1">
           <router-link to="/register" class="nav-link text-center">SIGN UP</router-link>
         </div>
         <div class="line"></div>
-        <div class="col-sm border-bottom border-info p-1">
+        <div class="col-sm border-bottom p-1">
           <router-link to="/login" class="nav-link text-center">SIGN IN</router-link>
         </div>
       </div>

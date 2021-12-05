@@ -9,10 +9,18 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
-import org.thymeleaf.standard.expression.Each;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +59,8 @@ public class AuctionEvent extends AbstractEntity{
     @JoinColumn(name = "genUser_id", nullable = false, updatable = false)
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "auction_images",
-            joinColumns = @JoinColumn(name = "img_id"),
-            inverseJoinColumns = @JoinColumn(name = "auction_id"))
-    private List<AuctionEventImg> images = new ArrayList<>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> images;
 
     @Column
     private Double charityPercent;
@@ -67,5 +72,5 @@ public class AuctionEvent extends AbstractEntity{
     private LocalDateTime finishDate;
 
     @Column(name = "gen_date")
-    private LocalDateTime genDate = LocalDateTime.now();
+    private LocalDateTime genDate;
 }

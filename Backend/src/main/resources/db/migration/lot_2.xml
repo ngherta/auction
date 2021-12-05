@@ -39,20 +39,11 @@
       <column name="gen_date" type="timestamp"></column>
     </createTable>
 
-    <createTable tableName="auction_img">
-      <column name="id" type="bigserial">
-        <constraints primaryKey="true" nullable="false"/>
-      </column>
-      <column name="url" type="varchar(255)">
+    <createTable tableName="auction_event_images">
+      <column name="auction_event_id" type="int8">
         <constraints nullable="false"/>
       </column>
-    </createTable>
-
-    <createTable tableName="auction_images">
-      <column name="img_id" type="int8">
-        <constraints nullable="false"/>
-      </column>
-      <column name="auction_id" type="int8">
+      <column name="images" type="varchar(255)">
         <constraints nullable="false"/>
       </column>
     </createTable>

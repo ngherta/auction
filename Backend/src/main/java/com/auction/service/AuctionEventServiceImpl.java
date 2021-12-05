@@ -20,6 +20,7 @@ import com.auction.web.dto.request.AuctionEventRequest;
 import com.auction.web.dto.request.AuctionFinishByFinishPriceRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,9 +47,24 @@ class AuctionEventServiceImpl implements AuctionEventService {
     private final MailService mailService;
     private final Mapper<AuctionEvent, AuctionEventDto> auctionEventToDtoMapper;
 
+    private void checkDateForAuction(AuctionEventRequest request) {
+        if(request.getStartDate().isBefore(LocalDateTime.now())) {
+            throw new DateTimeException("Start date should be before" + LocalDateTime.now());
+        }
+        else if(request.getFinishDate().isBefore(LocalDateTime.now())) {
+            throw new DateTimeException("Finish date should be before" + LocalDateTime.now());
+        }
+
+        if(request.getStartDate().isAfter(request.getFinishDate())) {
+            throw new DateTimeException("Start date should be before Finish date!");
+        }
+    }
+
     @Override
     @Transactional
     public AuctionEventDto save(AuctionEventRequest request) {
+        checkDateForAuction(request);
+
         User user = userService.findById(request.getUserId());
         AuctionEvent auctionEvent = AuctionEvent.builder()
                 .title(request.getTitle())
@@ -57,6 +75,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
                 .statusType(AuctionStatus.EXPECTATION)
                 .startDate(request.getStartDate())
                 .finishDate(request.getFinishDate())
+                .genDate(LocalDateTime.now())
         .build();
 
         if (request.getCharityPercent() == 0) {
@@ -67,6 +86,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
             auctionEvent.setCharityPercent(request.getCharityPercent());
         }
 
+        auctionEvent.setImages(request.getImages());
         auctionEvent = auctionEventRepository.save(auctionEvent);
 
         return auctionEventToDtoMapper.map(auctionEvent);
@@ -220,11 +240,11 @@ class AuctionEventServiceImpl implements AuctionEventService {
             auctionEvent.setAuctionType(AuctionType.COMMERCIAL);
         }
         else if (request.getCharityPercent() > 0 &&
-                auctionEvent.getAuctionType().equals(AuctionType.CHARITY.name())){
+                auctionEvent.getAuctionType().equals(AuctionType.CHARITY)){
             auctionEvent.setCharityPercent(request.getCharityPercent());
         }
         else if (request.getCharityPercent() > 0 &&
-                auctionEvent.getAuctionType().equals(AuctionType.COMMERCIAL.name())){
+                auctionEvent.getAuctionType().equals(AuctionType.COMMERCIAL)){
             auctionEvent.setCharityPercent(request.getCharityPercent());
         }
         return auctionEventToDtoMapper.map(auctionEvent);
