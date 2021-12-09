@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("http://localhost:8081")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/complaint")

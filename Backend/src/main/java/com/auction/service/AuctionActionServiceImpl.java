@@ -1,13 +1,18 @@
 package com.auction.service;
 
+import com.auction.config.jwt.JwtUtils;
 import com.auction.exception.AuctionEventNotFoundException;
+import com.auction.exception.UserNotFoundException;
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
 import com.auction.model.User;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
+import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.AuctionActionService;
+import com.auction.service.interfaces.AuctionEventService;
+import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionActionDto;
 import com.auction.web.dto.request.BetRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,22 +29,29 @@ import java.util.List;
 class AuctionActionServiceImpl implements AuctionActionService {
 
   private final AuctionActionRepository auctionActionRepository;
-  private final EntityManager entityManager;
+  private final Mapper<AuctionAction, AuctionActionDto> auctionActionDtoMapper;
   private final AuctionEventRepository auctionEventRepository;
+  private final AuctionEventService auctionEventService;
   private final Mapper<AuctionAction, AuctionActionDto> auctionActionToDtoMapper;
+  private final UserRepository userRepository;
+  private final UserService userService;
+
 
   @Override
   @Transactional
-  public List<AuctionActionDto> bet(BetRequest request) {
-    AuctionAction auctionAction = AuctionAction.builder()
-            .bet(request.getPrice())
-            .auctionEvent(entityManager.getReference(AuctionEvent.class, request.getAuctionId()))
-            .user(entityManager.getReference(User.class, request.getUserId()))
-            .build();
+  public AuctionActionDto bet(Double bet, Long auctionId, Long userId) {
+    User user = userService.findById(userId);
 
-    auctionAction = auctionActionRepository.save(auctionAction);
-    //Check transaction, if last auctionAction exists in list
-    return getAllByAuctionId(auctionAction.getAuctionEvent().getId());
+    AuctionEvent auctionEvent = auctionEventService.findById(auctionId);
+    log.info("UserId : " + user.getId(), "; AuctionEvent " + auctionId);
+
+    AuctionAction auctionAction = AuctionAction.builder()
+        .auctionEvent(auctionEvent)
+        .user(user)
+        .bet(bet)
+        .build();
+
+    return auctionActionToDtoMapper.map(auctionActionRepository.save(auctionAction));
   }
 
   @Override

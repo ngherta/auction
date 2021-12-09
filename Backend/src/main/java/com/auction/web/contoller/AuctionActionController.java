@@ -4,6 +4,7 @@ import com.auction.service.interfaces.AuctionActionService;
 import com.auction.web.dto.AuctionActionDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@CrossOrigin("http://localhost:8081")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/bids")
