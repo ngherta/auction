@@ -1,27 +1,25 @@
 package com.auction.service;
 
-import com.auction.config.jwt.JwtUtils;
 import com.auction.exception.AuctionEventNotFoundException;
-import com.auction.exception.UserNotFoundException;
+import com.auction.exception.WrongBetException;
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
 import com.auction.model.User;
+import com.auction.model.enums.AuctionStatus;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
-import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.AuctionActionService;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionActionDto;
-import com.auction.web.dto.request.BetRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -29,21 +27,20 @@ import java.util.List;
 class AuctionActionServiceImpl implements AuctionActionService {
 
   private final AuctionActionRepository auctionActionRepository;
-  private final Mapper<AuctionAction, AuctionActionDto> auctionActionDtoMapper;
   private final AuctionEventRepository auctionEventRepository;
   private final AuctionEventService auctionEventService;
   private final Mapper<AuctionAction, AuctionActionDto> auctionActionToDtoMapper;
-  private final UserRepository userRepository;
   private final UserService userService;
 
 
   @Override
   @Transactional
   public AuctionActionDto bet(Double bet, Long auctionId, Long userId) {
-    User user = userService.findById(userId);
-
     AuctionEvent auctionEvent = auctionEventService.findById(auctionId);
-    log.info("UserId : " + user.getId(), "; AuctionEvent " + auctionId);
+    checkBet(auctionEvent, bet);
+
+    User user = userService.findById(userId);
+    log.info("UserId : {}; AuctionEvent : {}", user.getId(), auctionId);
 
     AuctionAction auctionAction = AuctionAction.builder()
         .auctionEvent(auctionEvent)
@@ -52,6 +49,23 @@ class AuctionActionServiceImpl implements AuctionActionService {
         .build();
 
     return auctionActionToDtoMapper.map(auctionActionRepository.save(auctionAction));
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public void checkBet(AuctionEvent auctionEvent, Double bet) {
+    if (!auctionEvent.getStatusType().equals(AuctionStatus.ACTIVE)) {
+      throw new WrongBetException("Auction["+ auctionEvent.getId() +"] has status " + auctionEvent.getStatusType());
+    }
+
+    Optional<AuctionAction> action = auctionActionRepository.getLastAuctionActionByAuctionEventOrderByBetDesc(auctionEvent);
+
+    if (action.isEmpty()) return;
+
+    double betDifference = 100 - (bet * 100 / action.get().getBet());
+    if (betDifference < 5.0) {
+      throw new WrongBetException("Bet should be 5 percent higher!");
+    }
   }
 
   @Override

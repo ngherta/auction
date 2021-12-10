@@ -1,14 +1,14 @@
 package com.auction.service.interfaces;
 
-import com.auction.model.AuctionAction;
+import com.auction.model.AuctionEvent;
 import com.auction.web.dto.AuctionActionDto;
-import com.auction.web.dto.request.BetRequest;
-import com.auction.exception.AuctionEventNotFoundException;
 
 import java.util.List;
 
 public interface AuctionActionService {
-  List<AuctionActionDto> bet(BetRequest request);
+  AuctionActionDto bet(Double bet, Long auctionId, Long userId);
 
-  List<AuctionActionDto> getAllByAuctionId(Long auctioId);
+  List<AuctionActionDto> getAllByAuctionId(Long auctionId);
+
+  void checkBet(AuctionEvent auctionEvent, Double bet);
 }
