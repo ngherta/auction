@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+  <changeSet id="7" author="ngh">
+    <createTable tableName="chat_auction">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="auction_id" type="int8">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+
+    <createTable tableName="chat_user">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="user_first" type="int8">
+        <constraints nullable="false" />
+      </column>
+      <column name="user_second" type="int8">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+
+    <createTable tableName="chat_user_message">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="message" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="sender" type="int8">
+        <constraints nullable="false"/>
+      </column>
+      <column name="chat_room" type="int8">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="chat_auction_message">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="message" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="sender" type="int8">
+        <constraints nullable="false"/>
+      </column>
+      <column name="chat_room" type="int8">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <rollback>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>
