@@ -1,13 +1,15 @@
 import { createWebHistory, createRouter } from "vue-router";
-import Home from "./components/Home.vue";
-import Login from "./components/Login.vue";
-import Register from "./components/Register.vue";
-import WebSocketGreetings from "@/components/WebSocketGreetings";
+import Home from "./views/Home.vue";
+import Login from "./views/Login.vue";
+import Register from "./views/Register.vue";
+import WebSocketGreetings from "./views/WebSocketGreetings";
+import UploadFiles from "./views/UploadFiles";
+import ProfileUserTable from "./views/profile/admin/UserTable"
 // lazy-loaded
-const Profile = () => import("./components/Profile.vue")
-const BoardAdmin = () => import("./components/BoardAdmin.vue")
-const BoardModerator = () => import("./components/BoardModerator.vue")
-const BoardUser = () => import("./components/BoardUser.vue")
+const Profile = () => import("./views/Profile.vue")
+const BoardAdmin = () => import("./views/BoardAdmin.vue")
+const BoardModerator = () => import("./views/BoardModerator.vue")
+const BoardUser = () => import("./views/BoardUser.vue")
 
 const routes = [
   {
@@ -28,6 +30,10 @@ const routes = [
     component: Register,
   },
   {
+    path: "/images",
+    component: UploadFiles,
+  },
+  {
     path: "/websocket",
     component: WebSocketGreetings,
   },
@@ -36,6 +42,10 @@ const routes = [
     name: "profile",
     // lazy-loaded
     component: Profile,
+  },
+  {
+    path: "/profile/usertable",
+    component: ProfileUserTable,
   },
   {
     path: "/admin",
