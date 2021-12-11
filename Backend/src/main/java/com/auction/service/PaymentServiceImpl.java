@@ -1,11 +1,9 @@
 package com.auction.service;
 
 import com.auction.exception.UserDoesntHavePaymentException;
-import com.auction.exception.UserNotFoundException;
 import com.auction.model.Payment;
 import com.auction.model.User;
 import com.auction.repository.PaymentRepository;
-import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.PaymentService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.request.CreatePaymentRequest;

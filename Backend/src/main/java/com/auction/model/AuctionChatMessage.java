@@ -22,14 +22,7 @@ import javax.persistence.Table;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class AuctionChatMessage extends AbstractEntity{
-  @Column(name = "message")
-  private String message;
-
-  @ManyToOne
-  @JoinColumn(name = "sender", updatable = false, nullable = false)
-  private User sender;
-
+public class AuctionChatMessage extends ChatMessage{
   @ManyToOne
   @JoinColumn(name = "chat_room", updatable = false, nullable = false)
   private AuctionChat auctionChat;
