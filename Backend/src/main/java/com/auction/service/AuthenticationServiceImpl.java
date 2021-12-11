@@ -17,6 +17,7 @@ import com.auction.web.dto.request.LoginRequest;
 import com.auction.web.dto.request.SignupRequest;
 import com.auction.web.dto.response.JwtResponse;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,6 +33,7 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 class AuthenticationServiceImpl implements AuthenticationService {
 
   private final AuthenticationManager authenticationManager;
@@ -76,6 +78,8 @@ class AuthenticationServiceImpl implements AuthenticationService {
     user.setFirstName(signUpRequest.getFirstName());
     user.setLastName(signUpRequest.getLastName());
     user = userRepository.save(user);
+
+    log.info("New user register {}", user);
 
     tokenConfirmationService.generate(user);
   }

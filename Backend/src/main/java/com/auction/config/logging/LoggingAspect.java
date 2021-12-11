@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 public class LoggingAspect {
 
   private static final String CONTROLLER_CLASS_MDC_KEY = "controller";
+  private static final String SERVICE_CLASS_MDC_KEY = "service";
+
 
   @Pointcut("within(@org.springframework.web.bind.annotation.RestController *) && execution(* *(..))")
   public void anyControllerAction() {
@@ -44,7 +46,7 @@ public class LoggingAspect {
 
   @After("anyServiceAction()")
   public void afterAnyService() {
-    MDC.remove(CONTROLLER_CLASS_MDC_KEY);
+    MDC.remove(SERVICE_CLASS_MDC_KEY);
   }
 
   protected void beforeAny(@NonNull JoinPoint joinPoint) {

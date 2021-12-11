@@ -8,7 +8,6 @@ import com.auction.web.dto.ComplaintDto;
 import com.auction.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Component
@@ -19,7 +18,7 @@ public class ComplaintToDtoMapper implements Mapper<AuctionEventComplaint, Compl
 
   @Override
   public ComplaintDto map(AuctionEventComplaint entity) {
-    ComplaintDto complaintDto = ComplaintDto.builder()
+    return ComplaintDto.builder()
             .id(entity.getId())
             .user(userToDtoMapper.map(entity.getUser()))
             .auctionEvent(auctionEventToDtoMapper.map(entity.getAuctionEvent()))
@@ -27,8 +26,6 @@ public class ComplaintToDtoMapper implements Mapper<AuctionEventComplaint, Compl
             .message(entity.getMessage())
             .status(entity.getStatus())
             .build();
-
-    return complaintDto;
   }
 
 }
