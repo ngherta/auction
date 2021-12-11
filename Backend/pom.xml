@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<spring-boot-admin-starter-client.version>2.4.1</spring-boot-admin-starter-client.version>
+		<springfox-swagger.version>2.9.2</springfox-swagger.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -126,6 +127,16 @@
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${springfox-swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${springfox-swagger.version}</version>
 		</dependency>
 	</dependencies>
 
