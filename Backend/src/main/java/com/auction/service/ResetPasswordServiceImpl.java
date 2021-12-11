@@ -1,8 +1,6 @@
 package com.auction.service;
 
 import com.auction.config.jwt.JwtUtils;
-import com.auction.exception.UserDoesntHavePermissionException;
-import com.auction.web.dto.UserDto;
 import com.auction.model.ResetPasswordEntity;
 import com.auction.model.User;
 import com.auction.repository.ResetPasswordRepository;
@@ -20,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

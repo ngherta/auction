@@ -2,7 +2,9 @@ package com.auction.web.contoller;
 
 import com.auction.exception.*;
 import com.auction.web.dto.ErrorDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
         ComplaintController.class,
         WebSocketController.class
 })
+@Slf4j
 public class GlobalControllerAdvice {
 
   @ExceptionHandler(AuctionRuntimeException.class)
@@ -30,6 +33,18 @@ public class GlobalControllerAdvice {
     return ResponseEntity.badRequest().body(e.getConstraintViolations()
                                                     .stream()
                                                     .map(error -> new ErrorDto(error.getMessage()))
+                                                    .collect(Collectors.toList()));
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<List<ErrorDto>> handleNotValidException(MethodArgumentNotValidException e) {
+    log.info(e.getMessage());
+    log.info(e.getLocalizedMessage());
+    log.info(e.getFieldErrors().toString());
+
+    return ResponseEntity.badRequest().body(e.getFieldErrors()
+                                                    .stream()
+                                                    .map(error -> new ErrorDto(error.getDefaultMessage()))
                                                     .collect(Collectors.toList()));
   }
 }

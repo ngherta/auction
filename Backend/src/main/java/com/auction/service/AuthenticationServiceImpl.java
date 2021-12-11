@@ -1,7 +1,6 @@
 package com.auction.service;
 
 import com.auction.config.jwt.JwtUtils;
-import com.auction.exception.SameCredentialsException;
 import com.auction.exception.UserNotFoundException;
 import com.auction.exception.UserRoleNotFoundException;
 import com.auction.model.Role;
@@ -12,6 +11,7 @@ import com.auction.repository.UserRepository;
 import com.auction.repository.UserRoleRepository;
 import com.auction.service.interfaces.AuthenticationService;
 import com.auction.service.interfaces.TokenConfirmationService;
+import com.auction.validator.UserValidator;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.LoginRequest;
 import com.auction.web.dto.request.SignupRequest;
@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -43,6 +44,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
   private final JwtUtils jwtUtils;
   private final TokenConfirmationService tokenConfirmationService;
   private final Mapper<User, UserDto> userToDtoMapper;
+  private final List<UserValidator> validators;
 
 
   @Override
@@ -62,9 +64,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
   @Override
   @Transactional
   public void register(SignupRequest signUpRequest) throws MessagingException, UnsupportedEncodingException {
-    if (Boolean.TRUE.equals(userRepository.existsByEmail(signUpRequest.getEmail()))) {
-      throw new SameCredentialsException("Error: Email is already in use!");
-    }
+    validators.forEach(validator -> validator.validate(signUpRequest));
 
     // Create new user's account
     User user = new User(signUpRequest.getEmail(),

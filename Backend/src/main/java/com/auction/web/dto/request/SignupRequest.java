@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -19,9 +20,9 @@ public class SignupRequest {
   @Size(min = 6, max = 40)
   private String password;
 
-  @NotBlank
+  @NotBlank(message = "User should have firstName")
   private String firstName;
 
-  @NotBlank
+  @NotNull
   private String lastName;
 }

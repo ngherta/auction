@@ -9,15 +9,23 @@ import com.auction.web.dto.request.DeleteUserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.MessagingException;
+import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 
+@CrossOrigin("http://localhost:8081")
 @RestController
-@CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
@@ -39,7 +47,7 @@ public class UserController {
     }
 
     @PostMapping("/update/password")
-    public ResponseEntity<Void> setNewPasswordAfterReset(@RequestBody ChangePasswordRequest request) {
+    public ResponseEntity<Void> setNewPasswordAfterReset(@Valid @RequestBody ChangePasswordRequest request) {
         resetPasswordService.changePasswordAfterReset(request.getEmail(), request.getNewPassword());
         return ResponseEntity.ok().build();
     }
@@ -66,7 +74,7 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteUser(@RequestBody DeleteUserRequest request) {
+    public ResponseEntity<Void> deleteUser(@Valid @RequestBody DeleteUserRequest request) {
         userService.deleteUserById(request);
         return ResponseEntity.ok().build();
     }

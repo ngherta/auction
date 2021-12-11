@@ -1,10 +1,12 @@
 <template>
-  <div id="app">
-    <Header/>
-    <div class="container">
-      <router-view />
+  <div id="app" >
+    <div class="d-flex flex-column page">
+      <Header class="flex-shrink-0"/>
+      <div class="container content">
+        <router-view />
+      </div>
+      <Footer class="flex-shrink-0 mt-auto"/>
     </div>
-    <Footer/>
   </div>
 </template>
 
@@ -29,5 +31,13 @@ export default {
 body {
   font-family: 'Nanum Gothic', sans-serif;
   font-size: 20px;
+}
+
+content {
+  flex: 1 0 auto;
+}
+
+.page {
+  min-height: 100vh;
 }
 </style>

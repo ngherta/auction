@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin("http://localhost:8081")
@@ -24,12 +25,12 @@ public class ComplaintController {
   }
 
   @PostMapping("/answer")
-  public ResponseEntity<ComplaintAuditDto> satisfyComplaint(@RequestBody ComplaintAdminRequest request) {
+  public ResponseEntity<ComplaintAuditDto> satisfyComplaint(@Valid @RequestBody ComplaintAdminRequest request) {
     return ResponseEntity.ok(complaintService.satisfyComplaint(request));
   }
 
   @PostMapping
-  public ResponseEntity<ComplaintDto> create(@RequestBody ComplaintRequest request) {
+  public ResponseEntity<ComplaintDto> create(@Valid @RequestBody ComplaintRequest request) {
     return ResponseEntity.ok(complaintService.create(request));
   }
 }
