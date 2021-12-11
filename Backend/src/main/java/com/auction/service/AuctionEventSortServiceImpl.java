@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -33,9 +32,7 @@ class AuctionEventSortServiceImpl implements AuctionEventSortService {
     List<Object[]> listOfObj = auctionEventRepository.getAuctionEventForSorting();
 
 
-    for (int i = 0; i < listOfObj.size(); i++) {
-      Object objectTmp[] = listOfObj.get(i);
-
+    for (Object[] objectTmp : listOfObj) {
       BigInteger auctionIdBig = (BigInteger) objectTmp[0];
       BigInteger ratingBig = (BigInteger) objectTmp[1];
       Optional<AuctionEventSort> auctionEventSortCheck;
@@ -47,7 +44,8 @@ class AuctionEventSortServiceImpl implements AuctionEventSortService {
 
       if (auctionEventSortCheck.isPresent()) {
         auctionEventSort = auctionEventSortCheck.get();
-      } else {
+      }
+      else {
         AuctionEvent auctionEvent = auctionEventRepository.findById(auctionIdBig.longValue())
                 .orElseThrow(() ->
                                      new AuctionEventNotFoundException("AuctionEvent[" + auctionIdBig.longValue() + "] doesn't exist!!"));

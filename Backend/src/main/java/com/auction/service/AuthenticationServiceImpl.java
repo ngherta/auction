@@ -1,23 +1,21 @@
 package com.auction.service;
 
-import com.auction.config.UserDetailsImpl;
 import com.auction.config.jwt.JwtUtils;
+import com.auction.exception.SameCredentialsException;
 import com.auction.exception.UserNotFoundException;
 import com.auction.exception.UserRoleNotFoundException;
+import com.auction.model.Role;
+import com.auction.model.User;
+import com.auction.model.enums.UserRole;
 import com.auction.model.mapper.Mapper;
-import com.auction.model.mapper.UserToDtoMapper;
+import com.auction.repository.UserRepository;
+import com.auction.repository.UserRoleRepository;
+import com.auction.service.interfaces.AuthenticationService;
 import com.auction.service.interfaces.TokenConfirmationService;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.LoginRequest;
 import com.auction.web.dto.request.SignupRequest;
 import com.auction.web.dto.response.JwtResponse;
-import com.auction.exception.SameCredentialsException;
-import com.auction.repository.UserRepository;
-import com.auction.repository.UserRoleRepository;
-import com.auction.service.interfaces.AuthenticationService;
-import com.auction.model.Role;
-import com.auction.model.User;
-import com.auction.model.enums.UserRole;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -53,8 +51,6 @@ class AuthenticationServiceImpl implements AuthenticationService {
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtils.generateJwtToken(authentication);
 
-    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
     User user = userRepository.findByEmail(loginRequest.getEmail())
             .orElseThrow(() -> new UserNotFoundException("User with email[" + loginRequest.getEmail() + "] doesn't exist!"));
     UserDto userDto = userToDtoMapper.map(user);
@@ -64,7 +60,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
   @Override
   @Transactional
   public void register(SignupRequest signUpRequest) throws MessagingException, UnsupportedEncodingException {
-    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+    if (Boolean.TRUE.equals(userRepository.existsByEmail(signUpRequest.getEmail()))) {
       throw new SameCredentialsException("Error: Email is already in use!");
     }
 
