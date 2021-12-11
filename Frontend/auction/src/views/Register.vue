@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <div class="container p-5">
+    <div class="container-lg p-5">
       <Form @submit="handleRegister" :validation-schema="schema">
         <div v-if="!successful">
           <div class="mb-3">

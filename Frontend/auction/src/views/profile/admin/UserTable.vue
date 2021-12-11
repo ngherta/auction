@@ -6,7 +6,7 @@
       :rowData="rowData"
       :animateRows="true"
       :animateColumns="true"
-
+      :pagination=true
   >
   </ag-grid-vue>
 </template>

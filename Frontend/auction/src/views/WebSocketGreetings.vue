@@ -76,34 +76,58 @@
 <script>
 import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
+import BettingService from "../services/betting.service"
 export default {
   name: "websockets",
   data() {
     return {
       received_messages: [],
       send_message: null,
-      connected: false
+      connected: false,
     };
   },
   methods: {
+    getUser() {
+      return JSON.parse(localStorage.getItem('user'));
+    },
     send() {
       console.log("Send message:" + this.send_message);
       if (this.stompClient && this.stompClient.connected) {
-        const msg = { name: this.send_message };
-        console.log(JSON.stringify(msg));
-        this.stompClient.send("/app/hello", JSON.stringify(msg), {});
+        console.log(this.send_message);
+        this.stompClient.send("/app/hello",  JSON.stringify({'auctionId': String(1006), 'userId': this.getUser().userDto.id, 'bet' : String(this.send_message)}));
       }
     },
     connect() {
-      this.socket = new SockJS("http://localhost:8080/gs-guide-websocket");
+      this.socket = new SockJS("http://localhost:8080/websocket");
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
           {},
           frame => {
             this.connected = true;
-            console.log(frame);
-            this.stompClient.subscribe("/topic/greetings", tick => {
-              this.received_messages.push(JSON.parse(JSON.parse(tick.body).body).name);
+            console.log("NGH" + frame);
+            // this.received_messages = BettingService.getBidsForByAuction(1006);
+
+            BettingService.getBidsForByAuction(1006).then(
+                  (response) => {
+                    this.received_messages = response.data;
+                  },
+                  (error) => {
+                    this.content =
+                        (error.response &&
+                            error.response.data &&
+                            error.response.data.message) ||
+                        error.message ||
+                        error.toString();
+                  }
+              );
+
+            console.log("qq" + this.received_messages);
+            let x = 1006;
+            console.log("auctionTest: this.getUser().userDto.id = " + this.getUser().userDto.id + "| x = " + x);
+            this.stompClient.subscribe("/user/" + x + "/queue/messages", tick => {
+              console.log("tick.body = " + tick.body);
+              this.received_messages.push(JSON.parse(tick.body));
+              console.log(tick)
             });
           },
           error => {
@@ -120,7 +144,7 @@ export default {
     },
     tickleConnection() {
       this.connected ? this.disconnect() : this.connect();
-    }
+    },
   },
   mounted() {
     // this.connect();
