@@ -12,6 +12,7 @@ import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.AuctionEventSortRepository;
 import com.auction.repository.AuctionWinnerRepository;
+import com.auction.service.interfaces.AuctionChatService;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.MailService;
 import com.auction.service.interfaces.UserService;
@@ -20,7 +21,6 @@ import com.auction.web.dto.request.AuctionEventRequest;
 import com.auction.web.dto.request.AuctionFinishByFinishPriceRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +33,7 @@ import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -40,11 +41,12 @@ import java.util.List;
 class AuctionEventServiceImpl implements AuctionEventService {
 
     private final AuctionEventRepository auctionEventRepository;
-    private final UserService userService;
     private final AuctionWinnerRepository auctionWinnerRepository;
     private final AuctionActionRepository auctionActionRepository;
     private final AuctionEventSortRepository auctionEventSortRepository;
+    private final UserService userService;
     private final MailService mailService;
+    private final AuctionChatService auctionChatService;
     private final Mapper<AuctionEvent, AuctionEventDto> auctionEventToDtoMapper;
 
     private void checkDateForAuction(AuctionEventRequest request) {
@@ -89,6 +91,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
         auctionEvent.setImages(request.getImages());
         auctionEvent = auctionEventRepository.save(auctionEvent);
 
+        auctionChatService.create(auctionEvent);
         return auctionEventToDtoMapper.map(auctionEvent);
     }
 
@@ -98,15 +101,20 @@ class AuctionEventServiceImpl implements AuctionEventService {
         List<AuctionWinner> listOfWinners = new ArrayList<>();
 
         for (AuctionEvent event : list) {
-            AuctionAction auctionAction = auctionActionRepository.getLastAuctionActionByAuctionEventOrderByBetDesc(event);
+            Optional<AuctionAction> auctionAction = auctionActionRepository.getLastAuctionActionByAuctionEventOrderByBetDesc(event);
+            if (auctionAction.isEmpty()) {
+                break;
+                //0 bet
+            }
+            AuctionAction action = auctionAction.get();
             AuctionWinner auctionWinner = AuctionWinner.builder()
                     .auctionEvent(event)
-                    .user(auctionAction.getUser())
-                    .price(auctionAction.getBet())
+                    .user(action.getUser())
+                    .price(action.getBet())
                     .build();
 
             listOfWinners.add(auctionWinner);
-            log.info("User[" + auctionAction.getUser() + "] won auctionEvent[" + event.getId() + "]");
+            log.info("User[" + action.getUser() + "] won auctionEvent[" + event.getId() + "]");
 
             event.setStatusType(AuctionStatus.FINISHED);
             log.info("AuctionEvent [" + event.getId() + "] set new status - FINISHED.");
@@ -158,7 +166,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
     @Override
     @Transactional
     public void changeStatusToStart(List<AuctionEvent> list) {
-        list.stream().forEach(e -> e.setStatusType(AuctionStatus.ACTIVE));
+        list.forEach(e -> e.setStatusType(AuctionStatus.ACTIVE));
         auctionEventRepository.saveAll(list);
     }
 
@@ -205,7 +213,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
             auctionWinnerRepository.delete(auctionWinner);
         }
 
-        auctionEventSortRepository.deleteAllByAuctionEvent(auctionEvent.getId());
+        auctionEventSortRepository.deleteAllByAuctionEvent(auctionEvent);
         auctionActionRepository.deleteAllByAuctionEvent(auctionEvent);
         auctionEventRepository.delete(auctionEvent);
     }

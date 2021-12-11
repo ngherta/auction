@@ -2,7 +2,11 @@ package com.auction.model.mapper;
 
 import com.auction.model.UserChatMessage;
 import com.auction.web.dto.ChatMessageDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@RequiredArgsConstructor
+@Component
 public class ChatUserMessageToDtoMapper implements Mapper<UserChatMessage, ChatMessageDto>{
 
   @Override

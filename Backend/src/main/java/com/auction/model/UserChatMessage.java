@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,14 +21,7 @@ import javax.persistence.Table;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class UserChatMessage extends AbstractEntity{
-  @Column(name = "message")
-  private String message;
-
-  @ManyToOne
-  @JoinColumn(name = "sender", updatable = false, nullable = false)
-  private User sender;
-
+public class UserChatMessage extends ChatMessage{
   @ManyToOne
   @JoinColumn(name = "chat_room", updatable = false, nullable = false)
   private UserChat userChat;

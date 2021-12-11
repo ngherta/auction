@@ -1,8 +1,16 @@
 package com.auction.service.interfaces;
 
+import com.auction.model.AuctionChat;
+import com.auction.model.AuctionEvent;
+import com.auction.web.dto.ChatMessageDto;
 import com.auction.web.dto.request.ChatMessageRequest;
 
-public interface AuctionChatService {
-  void send(ChatMessageRequest request);
+import java.util.List;
 
+public interface AuctionChatService {
+  ChatMessageDto send(ChatMessageRequest request);
+
+  void create(AuctionEvent auctionEvent);
+
+  List<ChatMessageDto> getAllByChat (AuctionChat room);
 }
