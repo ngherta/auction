@@ -3,14 +3,21 @@ package com.auction.web.contoller;
 import com.auction.exception.*;
 import com.auction.web.dto.ErrorDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ControllerAdvice
+@RestControllerAdvice(basePackageClasses = {
+        AuctionActionController.class,
+        AuctionEventController.class,
+        AuthController.class,
+        UserController.class,
+        ComplaintController.class,
+        WebSocketController.class
+})
 public class GlobalControllerAdvice {
 
   @ExceptionHandler(AuctionRuntimeException.class)

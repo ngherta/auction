@@ -3,6 +3,7 @@ package com.auction.service;
 import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionEventSort;
+import com.auction.projection.AuctionEventSortProjection;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.AuctionEventSortRepository;
 import com.auction.service.interfaces.AuctionEventSortService;
@@ -29,12 +30,12 @@ class AuctionEventSortServiceImpl implements AuctionEventSortService {
   public void sortAuctionEvent() {
     List<AuctionEventSort> auctionEventSortList = new ArrayList<>();
 
-    List<Object[]> listOfObj = auctionEventRepository.getAuctionEventForSorting();
+    List<AuctionEventSortProjection> list = auctionEventRepository.getAuctionEventForSorting();
 
 
-    for (Object[] objectTmp : listOfObj) {
-      BigInteger auctionIdBig = (BigInteger) objectTmp[0];
-      BigInteger ratingBig = (BigInteger) objectTmp[1];
+    for (AuctionEventSortProjection e : list) {
+      BigInteger auctionIdBig = e.getAuctionId();
+      BigInteger ratingBig = e.getCount();
       Optional<AuctionEventSort> auctionEventSortCheck;
       auctionEventSortCheck = auctionEventSortRepository.findById(auctionIdBig.longValue());
 
