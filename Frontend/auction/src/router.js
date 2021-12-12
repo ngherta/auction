@@ -5,6 +5,7 @@ import Register from "./views/Register.vue";
 import WebSocketGreetings from "./views/WebSocketGreetings";
 import UploadFiles from "./views/UploadFiles";
 import ProfileUserTable from "./views/profile/admin/UserTable"
+import AuctionPage from "@/views/AuctionPage";
 // lazy-loaded
 const Profile = () => import("./views/Profile.vue")
 const BoardAdmin = () => import("./views/BoardAdmin.vue")
@@ -48,6 +49,10 @@ const routes = [
     component: ProfileUserTable,
   },
   {
+    path: "/auction/:id",
+    component: AuctionPage,
+  },
+  {
     path: "/admin",
     name: "admin",
     // lazy-loaded
@@ -76,7 +81,7 @@ const router = createRouter({
 //   const publicPages = ['/login', '/register', '/home'];
 //   const authRequired = !publicPages.includes(to.path);
 //   const loggedIn = localStorage.getItem('user');
-
+//
 //   // trying to access a restricted page + not logged in
 //   // redirect to login page
 //   if (authRequired && !loggedIn) {

@@ -38,5 +38,7 @@ public interface AuctionEventService {
 
   void changeStatusToStart(List<AuctionEvent> list);
 
-  public AuctionEvent findById(Long id);
+  AuctionEvent findById(Long id);
+
+  AuctionEventDto getById(Long auctionId);
 }

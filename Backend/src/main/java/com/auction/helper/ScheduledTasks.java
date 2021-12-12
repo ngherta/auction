@@ -38,7 +38,7 @@ public class ScheduledTasks {
     List<AuctionEvent> list = auctionEventRepository.getListForStartOrFinish(AuctionStatus.EXPECTATION.name());
     log.info("Try to find auction events to start it.");
     if (!list.isEmpty()) {
-      list.stream().forEach(e -> log.info("Found auction events for starting - auctionEvent[{}]", e.getId()));
+      list.forEach(e -> log.info("Found auction events for starting - auctionEvent[{}]", e.getId()));
       auctionEventService.changeStatusToStart(list);
     }
   }

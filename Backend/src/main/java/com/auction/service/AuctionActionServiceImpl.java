@@ -37,6 +37,7 @@ class AuctionActionServiceImpl implements AuctionActionService {
   @Transactional
   public AuctionActionDto bet(Double bet, Long auctionId, Long userId) {
     AuctionEvent auctionEvent = auctionEventService.findById(auctionId);
+
     checkBet(auctionEvent, bet);
 
     User user = userService.findById(userId);
@@ -58,11 +59,11 @@ class AuctionActionServiceImpl implements AuctionActionService {
       throw new WrongBetException("Auction["+ auctionEvent.getId() +"] has status " + auctionEvent.getStatusType());
     }
 
-    Optional<AuctionAction> action = auctionActionRepository.getLastAuctionActionByAuctionEventOrderByBetDesc(auctionEvent);
+    Optional<AuctionAction> action = auctionActionRepository.findTopByAuctionEventOrderByBetDesc(auctionEvent);
 
     if (action.isEmpty()) return;
 
-    double betDifference = 100 - (bet * 100 / action.get().getBet());
+    double betDifference = (bet * 100 / action.get().getBet()) - 100;
     if (betDifference < 5.0) {
       throw new WrongBetException("Bet should be 5 percent higher!");
     }

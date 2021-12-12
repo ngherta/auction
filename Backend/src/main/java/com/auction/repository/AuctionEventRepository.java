@@ -3,6 +3,7 @@ package com.auction.repository;
 import com.auction.model.AuctionEvent;
 import com.auction.model.User;
 import com.auction.model.enums.AuctionStatus;
+import com.auction.projection.AuctionEventSortProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,12 +24,12 @@ public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long
   List<AuctionEvent> findByStatusTypeAndStartDateLessThanEqual(AuctionStatus status, LocalDateTime dateTime);
 
   @Query(nativeQuery = true, value =
-          "select a.id, " +
+          "select a.id as auctionId, " +
                   "(select count(*) from auction_action aa where aa.auction_id = a.id) as count " +
                   "from auction AS a " +
                   "where a.status != 'BLOCKED' " +
                   "order by count")
-  List<Object[]> getAuctionEventForSorting();
+  List<AuctionEventSortProjection> getAuctionEventForSorting();
 
   @Query(nativeQuery = true, value =
           "SELECT a.* FROM auction AS a " +

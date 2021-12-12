@@ -6,13 +6,18 @@ import com.auction.web.dto.request.BetRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -23,16 +28,19 @@ public class WebSocketController {
   private final AuctionActionService auctionActionService;
   private final SimpMessagingTemplate messagingTemplate;
 
-  @MessageMapping("/hello")
-//  @SendTo("/topic/betting")
-  public void greeting(BetRequest betRequest) {
+  @MessageMapping("/betting/{auctionId}")
+  public String betting(@DestinationVariable("auctionId") Long auctionId, @Valid BetRequest betRequest) {
     log.info(betRequest.toString());
-    log.info("token = {}, auctionId = {}, net {}", betRequest.getUserId(), betRequest.getAuctionId(), betRequest.getBet());
     AuctionActionDto dto = auctionActionService.bet(betRequest.getBet(),
                                                     betRequest.getAuctionId(),
                                                     betRequest.getUserId());
-    messagingTemplate.convertAndSendToUser(
-            betRequest.getAuctionId().toString(),"/queue/messages",
-            dto);
+    messagingTemplate.convertAndSend("/betting/" + auctionId, dto);
+    return null;
+  }
+
+  @MessageExceptionHandler
+  @SendToUser("/betting/errors")
+  public String handleException(Throwable exception) {
+    return exception.getMessage();
   }
 }

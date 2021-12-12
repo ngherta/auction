@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <router-link to="/home" class="m-auto">
-      <img class="img-logo m-auto" src="../assets/logo.jpg" alt="Logo">
+  <div class="d-flex align-content-center text-center">
+    <router-link to="/home" >
+      <img class="img-logo" src="../assets/logo.jpg" alt="Logo">
     </router-link>
   </div>
   <div class="container-lg container-border">
@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <div class="container-lg p-5">
+    <div class="container register-form">
       <Form @submit="handleRegister" :validation-schema="schema">
         <div v-if="!successful">
           <div class="mb-3">
@@ -150,6 +150,36 @@ export default {
   top: 14px;
   background: #2d2d2d;
   opacity: .1;
+}
+
+@media only screen and (min-width: 576px){
+  .register-form {
+    padding: 1rem 1rem;
+  }
+}
+
+@media only screen and (min-width: 768px){
+  .register-form {
+    padding: 1rem 1rem;
+  }
+}
+
+@media only screen and (min-width: 992px){
+  .register-form {
+    padding: 1rem 11rem;
+  }
+}
+
+@media only screen and (min-width: 1200px){
+  .register-form {
+    padding: 1rem 11rem;
+  }
+}
+
+@media only screen and (min-width: 1400px){
+  .register-form {
+    padding: 1rem 11rem;
+  }
 }
 
 .img-logo {

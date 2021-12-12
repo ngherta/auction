@@ -1,6 +1,6 @@
 package com.auction.validator;
 
-import com.auction.exception.SameCredentialsException;
+import com.auction.exception.EmailAlreadyExistException;
 import com.auction.repository.UserRepository;
 import com.auction.web.dto.request.SignupRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ public class EmailAlreadyExistValidator implements UserValidator{
   @Override
   public void validate(SignupRequest request) {
     if (Boolean.TRUE.equals(userRepository.existsByEmail(request.getEmail()))) {
-      throw new SameCredentialsException("Error: Email is already in use!");
+      throw new EmailAlreadyExistException("Email is already in use!");
     }
   }
 }

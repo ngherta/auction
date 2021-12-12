@@ -1,36 +1,38 @@
 <template>
-  <footer class="container">
-    <div class="footer row">
-      <div class="container col-sm">
+  <footer class="flex-lg-wrap pl-5 pr-5 footer pt-4 pb-4">
+    <div class="container-fluid footer row m-auto">
+      <div class="col-sm d-flex m-auto">
         <p>{{footerDescription}}</p>
       </div>
-      <div class="col-sm">
-        <div class="col-sm">
-          <a href="#">
+      <div class="col-sm d-flex flex-column justify-content-center">
+        <div class="ml-auto mr-auto">
+          <a class="mr-1" href="#">
             <Icon name = 'twitter'></Icon>
           </a>
-          <a href="#">
+          <a class="mr-1" href="#">
             <Icon name = 'instagram'></Icon>
           </a>
           <a href="#">
             <Icon name = 'facebook'></Icon>
           </a>
         </div>
-        <span class="text-center">Copyright 2021, LOT.<br>
+        <span class="text-center pt-3">Copyright 2021, LOT.<br>
         All rights reserved.</span>
       </div>
-      <div class="col-sm m-auto row flex-column">
-      <span class="col">
-        <Icon name = 'email'></Icon>
-        info@lot.md</span>
-        <span class="col">
-        <Icon name = 'phone'></Icon>
-        068777999</span>
-        <span class="col">
-        <Icon name = 'place'></Icon>
-        Moldova, Chisinau</span>
+        <div class="col d-flex">
+          <div class="d-flex m-auto flex-column justify-content-center">
+            <span class="pb-3">
+            <Icon name = 'email'></Icon>
+          info@lot.md</span>
+            <span class="pb-3">
+            <Icon name = 'phone'></Icon>
+          068777999</span>
+            <span>
+            <Icon name = 'place'></Icon>
+          Moldova, Chisinau</span>
+          </div>
+        </div>
       </div>
-    </div>
   </footer>
 </template>
 
@@ -51,5 +53,7 @@ export default {
 </script>
 
 <style scoped>
-
+.footer {
+  background-color: #E8EDEF;
+}
 </style>

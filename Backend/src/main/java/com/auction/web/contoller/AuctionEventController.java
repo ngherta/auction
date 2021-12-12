@@ -28,7 +28,7 @@ public class AuctionEventController {
     private final AuctionEventService auctionEventService;
 
     @PostMapping
-    public ResponseEntity<AuctionEventDto> createAuctionEvent(@RequestBody @Valid AuctionEventRequest request) {
+    public ResponseEntity<AuctionEventDto> createAuctionEvent(@Valid @RequestBody AuctionEventRequest request) {
         return ResponseEntity.ok(auctionEventService.save(request));
     }
 
@@ -50,9 +50,14 @@ public class AuctionEventController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/{auctionId}")
+    public ResponseEntity<AuctionEventDto> getById(@PathVariable Long auctionId) {
+        return ResponseEntity.ok(auctionEventService.getById(auctionId));
+    }
+
     @PutMapping("/{auctionId}")
     public ResponseEntity<AuctionEventDto> updateById(@PathVariable Long auctionId,
-                                                      @RequestBody AuctionEventRequest request) {
+                                                      @Valid @RequestBody AuctionEventRequest request) {
         return ResponseEntity.ok(auctionEventService.update(request ,auctionId));
     }
 

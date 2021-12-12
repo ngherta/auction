@@ -1,9 +1,8 @@
 package com.auction.projection;
 
-import java.math.BigInteger;
 
 public interface AuctionEventSortProjection {
-  BigInteger getCount();
+  Long getCount();
 
-  BigInteger getAuctionId();
+  Long getAuctionId();
 }

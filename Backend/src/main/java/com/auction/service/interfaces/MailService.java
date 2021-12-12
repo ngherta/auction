@@ -2,7 +2,9 @@ package com.auction.service.interfaces;
 
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionWinner;
+import com.auction.model.ResetPasswordEntity;
 import com.auction.model.TokenConfirmation;
+import com.auction.model.User;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
@@ -15,4 +17,6 @@ public interface MailService {
   void sendEmailToAuctionParticipant(List<AuctionAction> listOfAuctionAction) throws MessagingException, UnsupportedEncodingException;
 
   void sendEmailToAuctionWinner (AuctionWinner auctionWinner) throws MessagingException, UnsupportedEncodingException;
+
+  void sendEmailForResetPassword(User user, ResetPasswordEntity resetPassword);
 }

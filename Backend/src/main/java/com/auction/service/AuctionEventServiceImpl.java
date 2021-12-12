@@ -101,7 +101,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
         List<AuctionWinner> listOfWinners = new ArrayList<>();
 
         for (AuctionEvent event : list) {
-            Optional<AuctionAction> auctionAction = auctionActionRepository.getLastAuctionActionByAuctionEventOrderByBetDesc(event);
+            Optional<AuctionAction> auctionAction = auctionActionRepository.findTopByAuctionEventOrderByBetDesc(event);
             if (auctionAction.isEmpty()) {
                 break;
                 //0 bet
@@ -264,5 +264,11 @@ class AuctionEventServiceImpl implements AuctionEventService {
     public AuctionEvent findById(Long id) {
         return auctionEventRepository.findById(id)
                 .orElseThrow(() -> new AuctionEventNotFoundException("Auction event[" + id + "] doesn't exist."));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public AuctionEventDto getById(Long auctionId) {
+        return auctionEventToDtoMapper.map(findById(auctionId));
     }
 }

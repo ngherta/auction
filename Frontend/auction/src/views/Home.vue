@@ -46,7 +46,7 @@ export default {
     };
   },
   mounted() {
-    AuctionService.getAuctions().then(
+    AuctionService.getAuctions(15, null).then(
         (response) => {
           this.auctions = response.data.content;
           console.log(response.data);

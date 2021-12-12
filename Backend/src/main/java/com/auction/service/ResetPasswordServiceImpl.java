@@ -5,33 +5,28 @@ import com.auction.model.ResetPasswordEntity;
 import com.auction.model.User;
 import com.auction.repository.ResetPasswordRepository;
 import com.auction.repository.UserRepository;
+import com.auction.service.interfaces.MailService;
 import com.auction.service.interfaces.ResetPasswordService;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.io.UnsupportedEncodingException;
 
 @Service
 @RequiredArgsConstructor
 class ResetPasswordServiceImpl implements ResetPasswordService {
 
     private final UserRepository userRepository;
-    private final JavaMailSender mailSender;
     private final ResetPasswordRepository resetPasswordRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
+    private final MailService mailService;
 
     @Transactional
     @Override
-    public void resetPasswordByToken(String token) throws MessagingException, UnsupportedEncodingException {
+    public void resetPasswordByToken(String token) {
         String email = jwtUtils.getUserNameFromJwtToken(token);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User with email[" + email + "] doesn't exist!"));
@@ -47,7 +42,7 @@ class ResetPasswordServiceImpl implements ResetPasswordService {
 
         resetPasswordRepository.save(resetPassword);
 
-        sendVerificationEmail(user, resetPassword);
+        mailService.sendEmailForResetPassword(user, resetPassword);
     }
 
     @Override
@@ -59,37 +54,6 @@ class ResetPasswordServiceImpl implements ResetPasswordService {
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setEnabled(true);
         return userRepository.save(user);
-    }
-
-    @Override
-    public void sendVerificationEmail(User user, ResetPasswordEntity resetPassword)
-            throws MessagingException, UnsupportedEncodingException {
-        String siteURL = "http://localhost:8080/";
-        String toAddress = user.getEmail();
-        String fromAddress = "gherta.nicolai@gmail.co";
-        String senderName = "Film-manager";
-        String subject = "Please reset your password";
-        String content = "Dear [[name]],<br>"
-                + "Please click the link below to reset your password:<br>"
-                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
-                + "Thank you,<br>"
-                + "Your company name.";
-
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-
-        helper.setFrom(fromAddress, senderName);
-        helper.setTo(toAddress);
-        helper.setSubject(subject);
-
-        content = content.replace("[[name]]", user.getFirstName() + " " + user.getLastName());
-        String verifyURL = siteURL + "users/reset-password-check/"+ user.getId() +"?code=" + resetPassword.getCode();
-
-        content = content.replace("[[URL]]", verifyURL);
-
-        helper.setText(content, true);
-
-        mailSender.send(message);
     }
 
     @Override

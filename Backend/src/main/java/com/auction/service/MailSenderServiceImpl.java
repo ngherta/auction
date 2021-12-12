@@ -2,6 +2,7 @@ package com.auction.service;
 
 import com.auction.service.interfaces.MailSenderService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -13,6 +14,7 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 class MailSenderServiceImpl implements MailSenderService {
 
   @Value("${spring.mail.username}")
@@ -22,19 +24,25 @@ class MailSenderServiceImpl implements MailSenderService {
 
 
   @Override
-  public void sendEmailNotification(String subject, String templateName, String... toEmails) throws MessagingException {
+  public void sendEmailNotification(String subject, String templateName, String... toEmails) {
     MimeMessage message = crateHtmlMessage(templateName, subject, toEmails);
     emailSender.send(message);
   }
 
-  private MimeMessage crateHtmlMessage(String templateName, String subject, String... toEmails) throws MessagingException {
+  private MimeMessage crateHtmlMessage(String templateName, String subject, String... toEmails) {
 
     MimeMessage message = emailSender.createMimeMessage();
-    MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-    messageHelper.setFrom(from);
-    messageHelper.setTo(toEmails);
-    messageHelper.setSubject(subject);
-    messageHelper.setText(templateName, true);
+    MimeMessageHelper messageHelper = null;
+    try {
+      messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+      messageHelper.setFrom(from);
+      messageHelper.setTo(toEmails);
+      messageHelper.setSubject(subject);
+      messageHelper.setText(templateName, true);
+    }
+    catch (MessagingException e) {
+      log.info(e.getMessage());
+    }
     return message;
   }
 }

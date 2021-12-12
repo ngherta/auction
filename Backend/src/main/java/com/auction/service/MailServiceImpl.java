@@ -2,13 +2,14 @@ package com.auction.service;
 
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionWinner;
+import com.auction.model.ResetPasswordEntity;
 import com.auction.model.TokenConfirmation;
+import com.auction.model.User;
 import com.auction.service.interfaces.MailSenderService;
 import com.auction.service.interfaces.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,27 @@ class MailServiceImpl implements MailService {
       emailSenderService.sendEmailNotification("Email confirmation", templateName, tokenConfirmation.getUser().getEmail());
     } catch (MessagingException e) {
       e.printStackTrace();
+    }
+  }
+
+  @Override
+  @Transactional
+  @Async
+  public void sendEmailForResetPassword(User user, ResetPasswordEntity resetPassword) {
+    String sign = "Lot Team";
+    String userName = user.getFirstName() + " " + user.getLastName();
+    String link = url + "/users*****" + resetPassword.getCode();
+
+    Context context = new Context();
+    context.setVariable("sign",sign);
+    context.setVariable("userName", userName);
+    context.setVariable("link", link);
+    context.setVariable("logo","images/logo.png");
+    String templateName = templateEngine.process("forgotPasswordTemplate.html", context);
+    try {
+      emailSenderService.sendEmailNotification("Reset password", templateName, user.getEmail());
+    } catch (MessagingException e) {
+      log.info(e.getMessage());
     }
   }
 

@@ -6,18 +6,21 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Data
 public class AuctionEventRequest {
 
-    @NotNull()
+    @NotNull
     private String title;
     private String description;
+    @NotNull
     private String auctionType;
+    @NotNull
     private String auctionStatus;
+    @NotNull
     private Double startPrice;
     private Double finishPrice;
+    @NotNull
     private Long userId;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm")
     private LocalDateTime startDate;

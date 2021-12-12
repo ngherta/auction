@@ -11,6 +11,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/vue-fontawesome": "^3.0.0-3",
+    "@popperjs/core": "^2.11.0",
     "ag-grid-community": "^26.2.0",
     "ag-grid-vue": "^26.2.0",
     "ag-grid-vue3": "26.0.0",

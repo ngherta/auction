@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface AuctionActionRepository extends JpaRepository<AuctionAction, Long> {
 
-  Optional<AuctionAction> getLastAuctionActionByAuctionEventOrderByBetDesc(AuctionEvent auctionEvent);
+  Optional<AuctionAction> findTopByAuctionEventOrderByBetDesc(AuctionEvent auctionEvent);
 
   List<AuctionAction> findByAuctionEvent(AuctionEvent auctionEvent);
 
@@ -25,14 +25,6 @@ public interface AuctionActionRepository extends JpaRepository<AuctionAction, Lo
           "GROUP BY aa.user_id ")
   List<AuctionAction> getAllByAuctionGroupByUser(@Param("auctionId") Long auctionId,
                                                  @Param("userWinnerId") Long userWinnerId);
-
-//  @Query(nativeQuery = true, value =
-//          "SELECT * FROM auction_action as aa " +
-//          "WHERE aa.auction_id = auctionId " +
-//          "ORDER BY aa.id DESC"
-//  )
-//  List<AuctionAction> checkPossibilityToBet(@Param("auctionId") Long auctionId,
-//                                            @Param("userId") Long userId);
 
   void deleteAllByAuctionEvent(AuctionEvent auctionEvent);
 

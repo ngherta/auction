@@ -7,7 +7,6 @@ import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.UserRepository;
-import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.DeleteUserRequest;
@@ -51,7 +50,7 @@ class UserServiceImpl implements UserService {
 
     auctionActionRepository.deleteAllByUser(user);
 
-    //Chat
+
 
     log.info("Deleting user[" + request.getUserId() + "]");
     userRepository.delete(user);

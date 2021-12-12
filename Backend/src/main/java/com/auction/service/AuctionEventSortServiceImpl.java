@@ -31,25 +31,25 @@ class AuctionEventSortServiceImpl implements AuctionEventSortService {
     List<AuctionEventSort> auctionEventSortList = new ArrayList<>();
 
     List<AuctionEventSortProjection> list = auctionEventRepository.getAuctionEventForSorting();
-
+    if (list.isEmpty()) return;
 
     for (AuctionEventSortProjection e : list) {
-      BigInteger auctionIdBig = e.getAuctionId();
-      BigInteger ratingBig = e.getCount();
-      Optional<AuctionEventSort> auctionEventSortCheck;
-      auctionEventSortCheck = auctionEventSortRepository.findById(auctionIdBig.longValue());
+      log.info("NGH - sort: auctionIdBig = " + e.getAuctionId());
+      log.info("NGH - sort: count = " + e.getCount());
+
+      Optional<AuctionEventSort> auctionEventSortCheck = auctionEventSortRepository.findById(e.getAuctionId());
 
       AuctionEventSort auctionEventSort = AuctionEventSort.builder()
-              .sortRating(ratingBig.longValue())
+              .sortRating(e.getCount())
               .build();
 
       if (auctionEventSortCheck.isPresent()) {
         auctionEventSort = auctionEventSortCheck.get();
       }
       else {
-        AuctionEvent auctionEvent = auctionEventRepository.findById(auctionIdBig.longValue())
+        AuctionEvent auctionEvent = auctionEventRepository.findById(e.getAuctionId())
                 .orElseThrow(() ->
-                                     new AuctionEventNotFoundException("AuctionEvent[" + auctionIdBig.longValue() + "] doesn't exist!!"));
+                                     new AuctionEventNotFoundException("AuctionEvent[" + e.getAuctionId() + "] doesn't exist!!"));
         auctionEventSort.setAuctionEvent(auctionEvent);
       }
 

@@ -8,8 +8,7 @@
 
     <!-- create a form that will not submit to a server but will prevent submit and
     use the upload function as a handle-->
-    <p>Preset = jhjwl2sq</p>
-    <form v-on:submit.prevent="upload">
+    <form v-on:submit.prevent="uploadService">
       <!-- bind cloud-name to the input -->
       <label for="cloudname-input">Cloud Name:</label>
       <input id="cloudname-input" v-model="cloudName" placeholder="Enter cloud_name from dashboard" />
@@ -27,6 +26,8 @@
       />
       <!-- submit button is disabled until a file is selected -->
       <button type="submit" :disabled="filesSelected < 1">Upload</button>
+      <button type="submit" :disabled="filesSelected < 1">Upload NGH</button>
+
     </form>
 
     <!-- display uploaded image if successful -->
@@ -47,6 +48,8 @@
 
 <script>
 import axios from "axios";
+import ImageService from "@/services/image.service";
+
 export default {
   name: "CloudinaryUpload",
   data() {
@@ -98,6 +101,24 @@ export default {
       this.formData.append("upload_preset", this.preset);
       this.formData.append("tags", this.tags); // Optional - add tag for image admin in Cloudinary
       this.formData.append("file", this.fileContents);
+    },
+    uploadService(){
+      let reader = new FileReader();
+      ImageService.upload(reader.result).then(
+          (data) => {
+            this.results.push(data)
+          },
+          (error) => {
+            this.message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            this.successful = false;
+            this.loading = false;
+          }
+      );
     },
     // function to handle form submit
     upload() {
