@@ -5,6 +5,7 @@ import com.auction.exception.ExpiredJwtCustomException;
 import com.auction.exception.IllegalArgumentCustomException;
 import com.auction.exception.MalformedJwtCustomException;
 import com.auction.exception.SignatureCustomException;
+import com.auction.model.User;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -32,6 +33,15 @@ public class JwtUtils {
 
     return Jwts.builder()
             .setSubject((userPrincipal.getUsername()))
+            .setIssuedAt(new Date())
+            .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+            .signWith(SignatureAlgorithm.HS512, jwtSecret)
+            .compact();
+  }
+
+  public String refreshToken(User user) {
+    return Jwts.builder()
+            .setSubject((user.getEmail()))
             .setIssuedAt(new Date())
             .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
             .signWith(SignatureAlgorithm.HS512, jwtSecret)

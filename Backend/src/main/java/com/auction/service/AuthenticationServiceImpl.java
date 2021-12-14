@@ -22,6 +22,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,4 +84,19 @@ class AuthenticationServiceImpl implements AuthenticationService {
 
     tokenConfirmationService.generate(user);
   }
+
+  @Override
+  public JwtResponse refreshToken(String token) {
+    String email = jwtUtils.getUserNameFromJwtToken(token);
+
+    User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new UsernameNotFoundException("User with email" + email + "doesn't exist!"));
+    String refreshToken = jwtUtils.refreshToken(user);
+    UserDto userDto = userToDtoMapper.map(user);
+
+    log.info("Token for user[{}] refreshed", user.getId());
+    return new JwtResponse(refreshToken, userDto);
+  }
+
+
 }

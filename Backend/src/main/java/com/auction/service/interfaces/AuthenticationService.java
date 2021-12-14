@@ -11,4 +11,6 @@ public interface AuthenticationService {
     JwtResponse authenticateUser(LoginRequest loginRequest);
 
     void register(SignupRequest signUpRequest) throws MessagingException, UnsupportedEncodingException;
+
+    JwtResponse refreshToken(String token);
 }
