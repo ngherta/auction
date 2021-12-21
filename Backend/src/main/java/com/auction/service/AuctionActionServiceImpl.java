@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,10 +45,11 @@ class AuctionActionServiceImpl implements AuctionActionService {
     log.info("UserId : {}; AuctionEvent : {}", user.getId(), auctionId);
 
     AuctionAction auctionAction = AuctionAction.builder()
-        .auctionEvent(auctionEvent)
-        .user(user)
-        .bet(bet)
-        .build();
+            .auctionEvent(auctionEvent)
+            .user(user)
+            .bet(bet)
+            .genDate(LocalDateTime.now())
+            .build();
 
     return auctionActionToDtoMapper.map(auctionActionRepository.save(auctionAction));
   }
@@ -55,8 +57,12 @@ class AuctionActionServiceImpl implements AuctionActionService {
   @Override
   @Transactional(readOnly = true)
   public void checkBet(AuctionEvent auctionEvent, Double bet) {
-    if (!auctionEvent.getStatusType().equals(AuctionStatus.ACTIVE)) {
-      throw new WrongBetException("Auction["+ auctionEvent.getId() +"] has status " + auctionEvent.getStatusType());
+    if (auctionEvent.getStatusType() != (AuctionStatus.ACTIVE)) {
+      throw new WrongBetException("Auction[" + auctionEvent.getId() + "] has status " + auctionEvent.getStatusType());
+    }
+
+    if (auctionEvent.getStartPrice() > bet) {
+      throw new WrongBetException("Bet should be higher than Start Price!");
     }
 
     Optional<AuctionAction> action = auctionActionRepository.findTopByAuctionEventOrderByBetDesc(auctionEvent);

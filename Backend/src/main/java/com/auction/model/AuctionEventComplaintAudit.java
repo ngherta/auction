@@ -31,6 +31,6 @@ public class AuctionEventComplaintAudit extends AbstractEntity{
   private ComplaintStatus complaintStatus;
 
   @Column(name = "gen_date")
-  private LocalDateTime genDate = LocalDateTime.now();
+  private LocalDateTime genDate;
 
 }

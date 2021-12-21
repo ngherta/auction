@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -26,9 +25,9 @@ public class AuctionEventDto {
     private Double startPrice;
     private Double finishPrice;
     private UserDto user;
-    private LocalDateTime startDate;
-    private LocalDateTime finishDate;
-    private LocalDateTime genDate;
+    private String startDate;
+    private String finishDate;
+    private String genDate;
     private Double charityPercent;
     private List<String> images;
 }

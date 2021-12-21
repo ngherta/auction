@@ -26,5 +26,5 @@ public class AuctionWinner extends AbstractEntity{
   private Double price;
 
   @Column(name = "gen_date", nullable = false)
-  private LocalDateTime genDate = LocalDateTime.now();
+  private LocalDateTime genDate;
 }

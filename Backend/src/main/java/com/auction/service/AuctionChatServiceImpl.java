@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -39,6 +40,7 @@ class AuctionChatServiceImpl implements AuctionChatService {
 
     AuctionChatMessage message = AuctionChatMessage.builder()
             .auctionChat(room)
+            .genDate(LocalDateTime.now())
             .build();
     message.setSender(sender);
     message.setMessage(request.getMessage());
@@ -46,13 +48,23 @@ class AuctionChatServiceImpl implements AuctionChatService {
   }
 
   @Override
+  @Transactional
   public void create(AuctionEvent auctionEvent) {
     AuctionChat room = new AuctionChat(auctionEvent);
     auctionChatRepository.save(room);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<ChatMessageDto> getAllByChat(AuctionChat chat) {
     return auctionChatMessageMapper.mapList(auctionChatMessageRepository.findByAuctionChat(chat));
+  }
+
+  @Override
+  @Transactional
+  public void deleteByAuction(AuctionEvent auctionEvent) {
+    AuctionChat auctionChat = auctionChatRepository.findByAuctionEvent(auctionEvent)
+            .orElseThrow(() -> new ChatRoomNotFoundException("AuctionChat for auctionEvent[" + auctionEvent.getId() + "] doesn't exist!"));
+    auctionChatRepository.delete(auctionChat);
   }
 }

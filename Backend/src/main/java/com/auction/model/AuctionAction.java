@@ -26,5 +26,5 @@ public class AuctionAction extends AbstractEntity {
     private Double bet;
 
     @Column(name = "gen_date")
-    private LocalDateTime genDate = LocalDateTime.now();
+    private LocalDateTime genDate;
 }

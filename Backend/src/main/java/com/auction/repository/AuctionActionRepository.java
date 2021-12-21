@@ -20,9 +20,10 @@ public interface AuctionActionRepository extends JpaRepository<AuctionAction, Lo
 
   @Query(nativeQuery = true, value =
           "SELECT * FROM auction_action AS aa " +
-          "WHERE aa.auction_id = auctionId AND " +
-          "aa.user_id != userWinnerId " +
-          "GROUP BY aa.user_id ")
+          "WHERE aa.auction_id = :auctionId AND " +
+          "aa.user_id != :userWinnerId " +
+          "GROUP BY aa.user_id," +
+                  " aa.id ")
   List<AuctionAction> getAllByAuctionGroupByUser(@Param("auctionId") Long auctionId,
                                                  @Param("userWinnerId") Long userWinnerId);
 

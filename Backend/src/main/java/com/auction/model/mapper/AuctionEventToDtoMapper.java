@@ -7,6 +7,8 @@ import com.auction.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
+
 @RequiredArgsConstructor
 @Component
 class AuctionEventToDtoMapper implements Mapper<AuctionEvent, AuctionEventDto>{
@@ -25,9 +27,9 @@ class AuctionEventToDtoMapper implements Mapper<AuctionEvent, AuctionEventDto>{
             .startPrice(entity.getStartPrice())
             .finishPrice(entity.getFinishPrice())
             .user(userToDtoMapper.map(entity.getUser()))
-            .startDate(entity.getStartDate())
-            .finishDate(entity.getFinishDate())
-            .genDate(entity.getGenDate())
+            .startDate(entity.getStartDate().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")))
+            .finishDate(entity.getFinishDate().format(DateTimeFormatter.ofPattern("dd-MM-yy hh:mm")))
+            .genDate(entity.getGenDate().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")))
             .charityPercent(entity.getCharityPercent())
             .images(entity.getImages())
             .build();

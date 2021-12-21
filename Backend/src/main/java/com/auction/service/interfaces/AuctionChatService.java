@@ -13,4 +13,6 @@ public interface AuctionChatService {
   void create(AuctionEvent auctionEvent);
 
   List<ChatMessageDto> getAllByChat (AuctionChat room);
+
+  void deleteByAuction(AuctionEvent auctionEvent);
 }

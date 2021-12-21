@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface AuctionChatRepository extends JpaRepository<AuctionChat, Long> {
 
   Optional<AuctionChat> findByAuctionEvent(AuctionEvent auctionEvent);
+
+  void deleteAllByAuctionEvent(AuctionEvent auctionEvent);
 }

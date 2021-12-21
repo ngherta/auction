@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,10 +33,8 @@ class AuctionEventSortServiceImpl implements AuctionEventSortService {
     if (list.isEmpty()) return;
 
     for (AuctionEventSortProjection e : list) {
-      log.info("NGH - sort: auctionIdBig = " + e.getAuctionId());
-      log.info("NGH - sort: count = " + e.getCount());
-
-      Optional<AuctionEventSort> auctionEventSortCheck = auctionEventSortRepository.findById(e.getAuctionId());
+      Optional<AuctionEventSort> auctionEventSortCheck =
+              auctionEventSortRepository.findById(e.getAuctionId());
 
       AuctionEventSort auctionEventSort = AuctionEventSort.builder()
               .sortRating(e.getCount())
@@ -45,6 +42,7 @@ class AuctionEventSortServiceImpl implements AuctionEventSortService {
 
       if (auctionEventSortCheck.isPresent()) {
         auctionEventSort = auctionEventSortCheck.get();
+        auctionEventSort.setSortRating(e.getCount());
       }
       else {
         AuctionEvent auctionEvent = auctionEventRepository.findById(e.getAuctionId())

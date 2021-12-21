@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -46,6 +47,7 @@ class ComplaintServiceImpl implements ComplaintService {
             .auctionEvent(auctionEvent)
             .message(request.getMessage())
             .status(ComplaintStatus.WAITING)
+            .genDate(LocalDateTime.now())
             .build();
 
     auctionEventComplaint = complaintRepository.save(auctionEventComplaint);
@@ -67,11 +69,11 @@ class ComplaintServiceImpl implements ComplaintService {
     ComplaintStatus complaintStatus = complaint.getStatus();
     AuctionEvent auctionEvent = complaint.getAuctionEvent();
 
-    if (request.getStatus().equals(ComplaintStatus.REJECTED.name())) {
+    if (request.getStatus() == ComplaintStatus.REJECTED) {
       complaint.setStatus(ComplaintStatus.REJECTED);
       complaintStatus = ComplaintStatus.REJECTED;
     }
-    else if(request.getStatus().equals(ComplaintStatus.SATISFIED.name())) {
+    else if(request.getStatus() == ComplaintStatus.SATISFIED) {
       complaint.setStatus(ComplaintStatus.SATISFIED);
       auctionEvent = auctionEventService.blockAuctionEvent(auctionEvent);
       complaint.setAuctionEvent(auctionEvent);
@@ -84,6 +86,7 @@ class ComplaintServiceImpl implements ComplaintService {
             .admin(admin)
             .complaintStatus(complaintStatus)
             .auctionEventComplaint(complaint)
+            .genDate(LocalDateTime.now())
             .build();
 
     audit = complaintAuditRepository.save(audit);
