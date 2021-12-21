@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+  <property name="now" value="now()" dbms="postgresql"/>
+
+  <changeSet id="9" author="ngh">
+    <insert tableName="auction">
+      <column name="id" valueNumeric="9999"></column>
+      <column name="title" value="Nike Air Jordan 1"></column>
+      <column name="type" value="COMMERCIAL"></column>
+      <column name="description" value="Best shoes!"></column>
+      <column name="finish_date" valueDate="CURRENT_TIMESTAMP()"></column>
+      <column name="start_date" valueDate="CURRENT_TIMESTAMP()+1"></column>
+      <column name="start_price" value="2.0"></column>
+      <column name="finish_price" value="100.0"></column>
+      <column name="gen_date" valueDate="CURRENT_TIMESTAMP()"></column>
+      <column name="status" value="EXPECTATION"></column>
+      <column name="charity_percent" value="0"></column>
+      <column name="gen_user_id" value="9999"></column>
+    </insert>
+
+    <insert tableName="chat_auction">
+      <column name="id" valueNumeric="9994"></column>
+      <column name="auction_id" value="9999"></column>
+    </insert>
+
+    <insert tableName="auction_event_images">
+      <column name="auction_event_id" valueNumeric="9999"></column>
+      <column name="images" value="https://cdn-images.farfetch-contents.com/13/15/76/97/13157697_21516295_600.jpg"></column>
+    </insert>
+
+
+    <insert tableName="auction_event_images">
+      <column name="auction_event_id" valueNumeric="9999"></column>
+      <column name="images" value="https://i.simpalsmedia.com/999.md/BoardImages/900x900/1a299eee976120209ed3c9cb8b047dd8.jpg"></column>
+    </insert>
+
+    <rollback>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

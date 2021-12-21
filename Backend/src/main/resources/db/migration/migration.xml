@@ -4,12 +4,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-  <include  file="db/migration/lot_1.xml"/>
-  <include  file="db/migration/lot_2.xml"/>
-  <include  file="db/migration/lot_3.xml"/>
-  <include  file="db/migration/lot_4.xml"/>
-  <include  file="db/migration/lot_5.xml"/>
-  <include  file="db/migration/lot_6.xml"/>
-  <include  file="db/migration/lot_7.xml"/>
-  <include  file="db/migration/lot_15.xml"/>
+  <include file="db/migration/lot_1.xml"/>
+  <include file="db/migration/lot_2.xml"/>
+  <include file="db/migration/lot_3.xml"/>
+  <include file="db/migration/lot_4.xml"/>
+  <include file="db/migration/lot_5.xml"/>
+  <include file="db/migration/lot_6.xml"/>
+  <include file="db/migration/lot_7.xml"/>
+  <include file="db/migration/lot_8.xml"/>
+  <include file="db/migration/lot_9.xml"/>
+  <include file="db/migration/lot_15.xml"/>
 </databaseChangeLog>

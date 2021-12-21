@@ -39,6 +39,7 @@
       <column name="chat_room" type="int8">
         <constraints nullable="false"/>
       </column>
+      <column name="gen_date" type="timestamp"></column>
     </createTable>
 
     <createTable tableName="chat_auction_message">
@@ -54,6 +55,7 @@
       <column name="chat_room" type="int8">
         <constraints nullable="false"/>
       </column>
+      <column name="gen_date" type="timestamp"></column>
     </createTable>
 
     <rollback>

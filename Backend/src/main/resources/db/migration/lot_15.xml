@@ -60,6 +60,9 @@
     <addForeignKeyConstraint baseColumnNames="sender" baseTableName="chat_auction_message" constraintName="f26qqsk2123asd123xasdghg22sqcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     <addForeignKeyConstraint baseColumnNames="chat_room" baseTableName="chat_auction_message" constraintName="qsdf267qxx1alkh23xmsdghg22sqcpm83i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="chat_auction" validate="true"/>
 
+    <!--  notification FK  -->
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="notification" constraintName="f26qqsk2123asd123xasdghg22sxcqm86i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
 
     <rollback>
     </rollback>

@@ -13,13 +13,13 @@
       <column name="title" type="varchar(255)"></column>
       <column name="type" type="varchar(255)"></column>
       <column name="description" type="text"></column>
-      <column name="finish_date" type="timestamp"></column>
       <column name="start_date" type="timestamp"></column>
+      <column name="finish_date" type="timestamp"></column>
       <column name="start_price" type="float8"></column>
       <column name="finish_price" type="float8"></column>
-      <column name="gen_date" type="timestamp"></column>
       <column name="status" type="varchar(255)"></column>
       <column name="charity_percent" type="float8"></column>
+      <column name="gen_date" type="timestamp"></column>
       <column name="gen_user_id" type="int8">
         <constraints nullable="false"/>
       </column>
