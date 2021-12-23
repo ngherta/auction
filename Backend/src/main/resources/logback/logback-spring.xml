@@ -23,6 +23,8 @@
     </rollingPolicy>
   </appender>
 
+<!--  -->
+
   <appender name="FILES-CONTROLLERS" class="ch.qos.logback.classic.sift.SiftingAppender">
     <discriminator>
       <key>controller</key>
@@ -42,6 +44,34 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
           <fileNamePattern>
             ${LOG_HOME}/controllers/archived_controller_logs/${controller}_%d{dd-MM-yyyy}_%i.log
+          </fileNamePattern>
+          <maxFileSize>250MB</maxFileSize>
+          <maxHistory>14</maxHistory>
+          <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+      </appender>
+    </sift>
+  </appender>
+
+  <appender name="FILES-LISTENERS" class="ch.qos.logback.classic.sift.SiftingAppender">
+    <discriminator>
+      <key>listener</key>
+      <defaultValue>defaultListener</defaultValue>
+    </discriminator>
+
+    <sift>
+      <appender name="LISTENER-${listener}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/listener/${listener}.log</file>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+          <Pattern>
+            %d{dd-MM-yyyy HH:mm:ss.SSS} [%X{email}] %-5level %class{36}.%M - %msg%n
+          </Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+          <fileNamePattern>
+            ${LOG_HOME}/listener/archived_controller_logs/${listener}_%d{dd-MM-yyyy}_%i.log
           </fileNamePattern>
           <maxFileSize>250MB</maxFileSize>
           <maxHistory>14</maxHistory>
@@ -95,9 +125,14 @@
     <appender-ref ref="FILES-SERVICES"/>
   </logger>
 
+  <logger name="com.auction.listener" additivity="false" level="INFO">
+    <appender-ref ref="FILES-LISTENERS"/>
+  </logger>
+
   <logger name="org.springframework.boot.SpringApplication" level="INFO" additivity="false">
     <appender-ref ref="REQUESTS_FOR_FILE"/>
     <appender-ref ref="FILES-CONTROLLERS"/>
     <appender-ref ref="FILES-SERVICES"/>
+    <appender-ref ref="FILES-LISTENERS"/>
   </logger>
 </configuration>
