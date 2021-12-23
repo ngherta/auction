@@ -3,6 +3,7 @@ package com.auction.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,18 +32,11 @@ public class User extends AbstractEntity{
     @Column
     private String lastName;
 
+    @Column(name = "birthday")
+    private LocalDate birthday;
+
     @Column
     private boolean enabled = false;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", userRating=" + userRating +
-                '}';
-    }
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "user_roles",

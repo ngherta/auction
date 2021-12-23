@@ -58,7 +58,7 @@ class MailServiceImpl implements MailService {
   public void sendEmailForResetPassword(User user, ResetPasswordEntity resetPassword) {
     String sign = "Lot Team";
     String userName = user.getFirstName() + " " + user.getLastName();
-    String link = url + "/users*****" + resetPassword.getCode();
+    String link = url + "/user/update/password/" + resetPassword.getCode();
 
     Context context = new Context();
     context.setVariable("sign",sign);

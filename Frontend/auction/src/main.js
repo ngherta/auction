@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import {FontAwesomeIcon} from './plugins/font-awesome';
 import VueSocialSharing from 'vue-social-sharing';
 import VueConst from 'vue-const';
+import Datepicker from 'vue3-datepicker';
 
 
 createApp(App)
@@ -14,6 +15,7 @@ createApp(App)
     .use(store)
     .use(VueSocialSharing)
     .use(VueConst)
+    .component("Datepicker", Datepicker)
     .component("font-awesome-icon", FontAwesomeIcon)
     .mount("#app");
 
