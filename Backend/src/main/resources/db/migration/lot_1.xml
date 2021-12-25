@@ -22,6 +22,7 @@
       <column name="password" type="varchar(255)"></column>
       <column name="user_rating" type="float8"></column>
       <column name="enabled" type="bool"></column>
+      <column name="birthday" type="date"></column>
     </createTable>
 
 

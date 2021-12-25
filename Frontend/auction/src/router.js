@@ -1,16 +1,18 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Home from "./views/Home.vue";
-import Login from "./views/Login.vue";
-import Register from "./views/Register.vue";
+import Login from "./views/auth/LoginPage.vue";
+import Register from "./views/auth/RegisterPage.vue";
 import WebSocketGreetings from "./views/WebSocketGreetings";
 import UploadFiles from "./views/UploadFiles";
 import ProfileUserTable from "./views/profile/admin/UserTable"
 import AuctionPage from "@/views/AuctionPage";
+import CreateAuctionPage from "@/views/CreateAuctionPage";
+import NotFoundPage from "@/views/NotFoundPage";
+import ForgotPasswordPage from "@/views/auth/ForgotPasswordPage";
+import ChangePasswordPage from "@/views/auth/ChangePasswordPage";
+import Actuator from "@/components/Actuator";
 // lazy-loaded
 const Profile = () => import("./views/Profile.vue")
-const BoardAdmin = () => import("./views/BoardAdmin.vue")
-const BoardModerator = () => import("./views/BoardModerator.vue")
-const BoardUser = () => import("./views/BoardUser.vue")
 
 const routes = [
   {
@@ -25,6 +27,10 @@ const routes = [
   {
     path: "/login",
     component: Login,
+  },
+  {
+    path: "/password/reset",
+    component: ForgotPasswordPage,
   },
   {
     path: "/register",
@@ -49,26 +55,24 @@ const routes = [
     component: ProfileUserTable,
   },
   {
+    path: "/error",
+    component: NotFoundPage,
+  },
+  {
     path: "/auction/:id",
     component: AuctionPage,
   },
   {
-    path: "/admin",
-    name: "admin",
-    // lazy-loaded
-    component: BoardAdmin,
+    path: "/auction/create",
+    component: CreateAuctionPage,
   },
   {
-    path: "/mod",
-    name: "moderator",
-    // lazy-loaded
-    component: BoardModerator,
+    path: "/user/update/password/:id",
+    component: ChangePasswordPage
   },
   {
-    path: "/user",
-    name: "user",
-    // lazy-loaded
-    component: BoardUser,
+    path: "/actuator",
+    component: Actuator
   },
 ];
 

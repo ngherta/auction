@@ -65,6 +65,9 @@ import router from "@/router";
 
 export default {
   name: "Header",
+  props: {
+    msg: String
+  },
   data() {
     return {
       $windowWidth: this.windowWidth,
