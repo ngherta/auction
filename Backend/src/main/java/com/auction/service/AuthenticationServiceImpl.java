@@ -10,6 +10,7 @@ import com.auction.model.mapper.Mapper;
 import com.auction.repository.UserRepository;
 import com.auction.repository.UserRoleRepository;
 import com.auction.service.interfaces.AuthenticationService;
+import com.auction.service.interfaces.NotificationService;
 import com.auction.service.interfaces.TokenConfirmationService;
 import com.auction.validator.UserValidator;
 import com.auction.web.dto.UserDto;
@@ -44,6 +45,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
   private final PasswordEncoder encoder;
   private final JwtUtils jwtUtils;
   private final TokenConfirmationService tokenConfirmationService;
+  private final NotificationService notificationService;
   private final Mapper<User, UserDto> userToDtoMapper;
   private final List<UserValidator> validators;
 
@@ -73,15 +75,18 @@ class AuthenticationServiceImpl implements AuthenticationService {
 
     Set<Role> roles = new HashSet<>(1);
     Role role = roleRepository.findByUserRole(UserRole.USER)
-            .orElseThrow(() -> new UserRoleNotFoundException(UserRole.USER.name() + "doesn't exist."));
+            .orElseThrow(() -> new UserRoleNotFoundException(UserRole.USER.name() + " doesn't exist."));
     roles.add(role);
     user.setUserRoles(roles);
     user.setFirstName(signUpRequest.getFirstName());
     user.setLastName(signUpRequest.getLastName());
+    user.setBirthday(signUpRequest.getBirthday());
+    user.setEnabled(true);
     user = userRepository.save(user);
 
     log.info("New user register {}", user);
 
+    notificationService.createDefaultNotificationsForUser(user);
     tokenConfirmationService.generate(user);
   }
 
