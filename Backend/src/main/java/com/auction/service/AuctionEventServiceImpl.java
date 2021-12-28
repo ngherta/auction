@@ -9,12 +9,14 @@ import com.auction.model.enums.AuctionStatus;
 import com.auction.model.enums.AuctionType;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionActionRepository;
+import com.auction.repository.AuctionChatRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.AuctionEventSortRepository;
 import com.auction.repository.AuctionWinnerRepository;
 import com.auction.service.interfaces.AuctionChatService;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.MailService;
+import com.auction.service.interfaces.NotificationSenderService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.request.AuctionEventRequest;
@@ -43,6 +45,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
     private final AuctionEventRepository auctionEventRepository;
     private final AuctionWinnerRepository auctionWinnerRepository;
     private final AuctionActionRepository auctionActionRepository;
+    private final NotificationSenderService notificationSenderService;
     private final AuctionEventSortRepository auctionEventSortRepository;
     private final UserService userService;
     private final MailService mailService;
@@ -92,6 +95,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
         auctionEvent = auctionEventRepository.save(auctionEvent);
 
         auctionChatService.create(auctionEvent);
+        notificationSenderService.sendNotificationOfCreatingAuction(auctionEvent);
         return auctionEventToDtoMapper.map(auctionEvent);
     }
 
@@ -124,6 +128,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
             log.info("Finish to send email to winner");
 
             log.info("Start to send email to participants " + event.getTitle());
+//            notificationSenderService.sendNotificationOfCreatingAuction();
             sendEmailToParticipants(event, auctionWinner);
             log.info("Finish to send email to participants");
         }
@@ -209,10 +214,12 @@ class AuctionEventServiceImpl implements AuctionEventService {
     @Transactional
     public void delete(AuctionEvent auctionEvent) {
         if (auctionEvent.getStatusType().equals(AuctionStatus.FINISHED)) {
-            AuctionWinner auctionWinner = auctionWinnerRepository.findByAuctionEventId(auctionEvent.getId());
+            AuctionWinner auctionWinner = auctionWinnerRepository.findByAuctionEvent(auctionEvent)
+                    .orElseThrow(() -> new AuctionEventNotFoundException("Winner for auction[" + auctionEvent.getId() + "] not found!"));
             auctionWinnerRepository.delete(auctionWinner);
         }
 
+        auctionChatService.deleteByAuction(auctionEvent);
         auctionEventSortRepository.deleteAllByAuctionEvent(auctionEvent);
         auctionActionRepository.deleteAllByAuctionEvent(auctionEvent);
         auctionEventRepository.delete(auctionEvent);
@@ -270,5 +277,15 @@ class AuctionEventServiceImpl implements AuctionEventService {
     @Transactional(readOnly = true)
     public AuctionEventDto getById(Long auctionId) {
         return auctionEventToDtoMapper.map(findById(auctionId));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<AuctionEventDto> findAuctionsByCategory(Long categoryId,
+                                                        int page,
+                                                        int perPage) {
+        Pageable pageable = PageRequest.of(page - 1, perPage);
+
+        return auctionEventRepository.findByCategory(categoryId, pageable).map(auctionEventToDtoMapper::map);
     }
 }

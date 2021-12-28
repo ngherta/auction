@@ -25,44 +25,51 @@ import javax.validation.Valid;
 @RequestMapping("/api/auction")
 public class AuctionEventController {
 
-    private final AuctionEventService auctionEventService;
+  private final AuctionEventService auctionEventService;
 
-    @PostMapping
-    public ResponseEntity<AuctionEventDto> createAuctionEvent(@Valid @RequestBody AuctionEventRequest request) {
-        return ResponseEntity.ok(auctionEventService.save(request));
-    }
+  @PostMapping
+  public ResponseEntity<AuctionEventDto> createAuctionEvent(@Valid @RequestBody AuctionEventRequest request) {
+    return ResponseEntity.ok(auctionEventService.save(request));
+  }
 
-    @GetMapping
-    public ResponseEntity<Page<AuctionEventDto>> getAll(@RequestParam(defaultValue = "1") int page,
-                                                        @RequestParam(defaultValue = "10") int perPage) {
-        return ResponseEntity.ok(auctionEventService.get(page, perPage));
-    }
+  @GetMapping
+  public ResponseEntity<Page<AuctionEventDto>> getAll(@RequestParam(defaultValue = "1") int page,
+                                                      @RequestParam(defaultValue = "10") int perPage) {
+    return ResponseEntity.ok(auctionEventService.get(page, perPage));
+  }
 
-    @GetMapping("/sort")
-    public ResponseEntity<Page<AuctionEventDto>> getAllAuctionByRating(@RequestParam(defaultValue = "1") int page,
-                                                                       @RequestParam(defaultValue = "10") int perPage) {
-        return ResponseEntity.ok(auctionEventService.getAllSortByRating(page, perPage));
-    }
+  @GetMapping("/sort")
+  public ResponseEntity<Page<AuctionEventDto>> getAllAuctionByRating(@RequestParam(defaultValue = "1") int page,
+                                                                     @RequestParam(defaultValue = "10") int perPage) {
+    return ResponseEntity.ok(auctionEventService.getAllSortByRating(page, perPage));
+  }
 
-    @DeleteMapping("/{auctionId}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long auctionId) {
-        auctionEventService.deleteById(auctionId);
-        return ResponseEntity.ok().build();
-    }
+  @DeleteMapping("/{auctionId}")
+  public ResponseEntity<Void> deleteById(@PathVariable Long auctionId) {
+    auctionEventService.deleteById(auctionId);
+    return ResponseEntity.ok().build();
+  }
 
-    @GetMapping("/{auctionId}")
-    public ResponseEntity<AuctionEventDto> getById(@PathVariable Long auctionId) {
-        return ResponseEntity.ok(auctionEventService.getById(auctionId));
-    }
+  @GetMapping("/{auctionId}")
+  public ResponseEntity<AuctionEventDto> getById(@PathVariable Long auctionId) {
+    return ResponseEntity.ok(auctionEventService.getById(auctionId));
+  }
 
-    @PutMapping("/{auctionId}")
-    public ResponseEntity<AuctionEventDto> updateById(@PathVariable Long auctionId,
-                                                      @Valid @RequestBody AuctionEventRequest request) {
-        return ResponseEntity.ok(auctionEventService.update(request ,auctionId));
-    }
+  @PutMapping("/{auctionId}")
+  public ResponseEntity<AuctionEventDto> updateById(@PathVariable Long auctionId,
+                                                    @Valid @RequestBody AuctionEventRequest request) {
+    return ResponseEntity.ok(auctionEventService.update(request, auctionId));
+  }
 
-    @PutMapping("/block/{auctionId}")
-    public ResponseEntity<AuctionEventDto> block(@PathVariable Long auctionId) {
-        return ResponseEntity.ok(auctionEventService.blockAuctionEventById(auctionId));
-    }
+  @PutMapping("/block/{auctionId}")
+  public ResponseEntity<AuctionEventDto> block(@PathVariable Long auctionId) {
+    return ResponseEntity.ok(auctionEventService.blockAuctionEventById(auctionId));
+  }
+
+  @GetMapping("/category/{subCategoryId}")
+  public ResponseEntity<Page<AuctionEventDto>> getAuctionsByCategory(@PathVariable Long subCategoryId,
+                                                                     @RequestParam(defaultValue = "1") int page,
+                                                                     @RequestParam(defaultValue = "10") int perPage) {
+    return ResponseEntity.ok(auctionEventService.findAuctionsByCategory(subCategoryId, page, perPage));
+  }
 }

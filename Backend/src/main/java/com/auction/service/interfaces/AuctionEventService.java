@@ -41,4 +41,6 @@ public interface AuctionEventService {
   AuctionEvent findById(Long id);
 
   AuctionEventDto getById(Long auctionId);
+
+  Page<AuctionEventDto> findAuctionsByCategory(Long categoryId, int page, int perPage);
 }

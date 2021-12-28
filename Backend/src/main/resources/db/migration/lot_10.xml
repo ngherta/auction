@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+  <changeSet id="10" author="ngh">
+    <createTable tableName="category">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="category" type="varchar(50)">
+        <constraints unique="true"></constraints>
+      </column>
+    </createTable>
+
+    <createTable tableName="sub_category">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="category_id" type="int8">
+      </column>
+      <column name="category" type="varchar(50)">
+        <constraints unique="true"></constraints>
+      </column>
+    </createTable>
+
+
+    <createTable tableName="auction_category">
+      <column name="auction_id" type="int8">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="sub_category_id" type="int8">
+        <constraints primaryKey="true"/>
+      </column>
+    </createTable>
+
+    <rollback>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

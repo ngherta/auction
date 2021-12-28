@@ -63,6 +63,12 @@
     <!--  notification FK  -->
     <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="notification" constraintName="f26qqsk2123asd123xasdghg22sxcqm86i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
 
+    <!--  category FK  -->
+    <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="sub_category" constraintName="f26qqsk212asas244xasdghg22shdsmqqi" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="category" validate="true"/>
+
+    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="auction_category" constraintName="f26qqsk2123asx133xqsdghg22sxcqm86i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auction" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="sub_category_id" baseTableName="auction_category" constraintName="f26qqsk212asas244xasdghg22sxcqm86i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="sub_category" validate="true"/>
+
 
     <rollback>
     </rollback>

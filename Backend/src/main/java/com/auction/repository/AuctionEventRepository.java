@@ -18,7 +18,7 @@ import java.util.List;
 public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long> {
   @Query(nativeQuery = true, value =
           "select * from auction as a " +
-                  "where a.status = status and a.start_date <= LOCALTIMESTAMP")
+                  "where a.status = :status and a.start_date <= LOCALTIMESTAMP")
   List<AuctionEvent> getListForStartOrFinish(@Param("status") String status);
 
   List<AuctionEvent> findByStatusTypeAndStartDateLessThanEqual(AuctionStatus status, LocalDateTime dateTime);
@@ -35,7 +35,7 @@ public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long
           "SELECT a.* FROM auction AS a " +
                   "LEFT JOIN auction_sort AS aa ON a.id = aa.auction_id " +
                   "WHERE a.status != 'BLOCKED' " +
-                  "ORDERD BY aa.rating")
+                  "ORDER BY aa.rating")
   Page<AuctionEvent> getAuctionEventByRating(Pageable pageable);
 
 
@@ -45,8 +45,15 @@ public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long
         "SELECT a.* FROM auction AS a " +
         "WHERE a.status = 'ACTIVE' OR " +
         "a.status = 'FINISHED' AND " +
-        "a.title LIKE search " +
-        "LIMIT rows")
+        "a.title LIKE :search " +
+        "LIMIT :rows")
   List<AuctionEvent> search(@Param("search") String message,
                             @Param("rows") int limit);
+
+  @Query(nativeQuery = true, value = "" +
+          "SELECT ae.* FROM auction AS ae " +
+          "WHERE ae.id IN ( SELECT ac.auction_id FROM auction_category AS ac " +
+          "WHERE ac.sub_category_id = :subCategoryId) " +
+          "")
+  Page<AuctionEvent> findByCategory(Long subCategoryId, Pageable pageable);
 }

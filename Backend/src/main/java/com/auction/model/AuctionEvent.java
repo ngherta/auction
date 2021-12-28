@@ -17,10 +17,14 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "auction")
@@ -70,4 +74,10 @@ public class AuctionEvent extends AbstractEntity{
 
     @Column(name = "gen_date")
     private LocalDateTime genDate;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "auction_category",
+            joinColumns = @JoinColumn(name = "auction_id"),
+            inverseJoinColumns = @JoinColumn(name = "sub_category_id"))
+    private Set<SubCategory> categories = new HashSet<>();
 }

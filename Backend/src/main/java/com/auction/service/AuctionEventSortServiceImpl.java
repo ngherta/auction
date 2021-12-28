@@ -34,7 +34,7 @@ class AuctionEventSortServiceImpl implements AuctionEventSortService {
 
     for (AuctionEventSortProjection e : list) {
       Optional<AuctionEventSort> auctionEventSortCheck =
-              auctionEventSortRepository.findById(e.getAuctionId());
+              auctionEventSortRepository.findByAuctionEventId(e.getAuctionId());
 
       AuctionEventSort auctionEventSort = AuctionEventSort.builder()
               .sortRating(e.getCount())

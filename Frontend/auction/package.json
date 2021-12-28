@@ -6,13 +6,15 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit -w"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/vue-fontawesome": "^3.0.0-3",
     "@popperjs/core": "^2.11.0",
+    "@types/vue-select": "^3.16.0",
+    "@vue/cli-plugin-unit-jest": "^4.5.10",
     "ag-grid-community": "^26.2.0",
     "ag-grid-vue": "^26.2.0",
     "ag-grid-vue3": "26.0.0",
@@ -32,6 +34,7 @@
     "vue-material": "^1.0.0-beta-15",
     "vue-property-decorator": "^8.0.0",
     "vue-router": "^4.0.6",
+    "vue-select": "^3.16.0",
     "vue-social-sharing": "^4.0.0-alpha4",
     "vue-window-size": "^1.1.2",
     "vue3-datepicker": "^0.3.1",
@@ -44,10 +47,12 @@
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
+    "@vue/test-utils": "^2.0.0-rc.18",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0",
     "typescript": "~3.9.3",
+    "vue-jest": "^5.0.0-alpha.10",
     "vuejs-progress-bar": "^1.1.1"
   },
   "browserslist": [
