@@ -9,11 +9,12 @@
     "test:unit": "vue-cli-service test:unit -w"
   },
   "dependencies": {
+    "@ag-grid-community/csv-export": "^26.2.0",
+    "@ag-grid-enterprise/excel-export": "^26.2.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/vue-fontawesome": "^3.0.0-3",
     "@popperjs/core": "^2.11.0",
-    "@types/vue-select": "^3.16.0",
     "@vue/cli-plugin-unit-jest": "^4.5.10",
     "ag-grid-community": "^26.2.0",
     "ag-grid-vue": "^26.2.0",
@@ -34,7 +35,6 @@
     "vue-material": "^1.0.0-beta-15",
     "vue-property-decorator": "^8.0.0",
     "vue-router": "^4.0.6",
-    "vue-select": "^3.16.0",
     "vue-social-sharing": "^4.0.0-alpha4",
     "vue-window-size": "^1.1.2",
     "vue3-datepicker": "^0.3.1",
@@ -43,12 +43,15 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.16.5",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/test-utils": "^2.0.0-rc.18",
+    "@vue/vue3-jest": "^27.0.0-alpha.4",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^27.4.5",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0",
     "typescript": "~3.9.3",
