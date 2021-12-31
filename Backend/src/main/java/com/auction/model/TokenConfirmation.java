@@ -23,5 +23,5 @@ public class TokenConfirmation extends AbstractEntity{
   private String confirmation;
 
   @Column(name = "gen_date")
-  private LocalDateTime genDate = LocalDateTime.now();
+  private LocalDateTime genDate;
 }

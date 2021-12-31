@@ -8,10 +8,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "chat_user_message")
@@ -25,5 +27,8 @@ public class UserChatMessage extends ChatMessage{
   @ManyToOne
   @JoinColumn(name = "chat_room", updatable = false, nullable = false)
   private UserChat userChat;
+
+  @Column(name = "genDate")
+  private LocalDateTime genDate;
 }
 

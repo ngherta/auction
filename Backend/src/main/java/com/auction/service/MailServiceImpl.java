@@ -48,7 +48,7 @@ class MailServiceImpl implements MailService {
     try {
       emailSenderService.sendEmailNotification("Email confirmation", templateName, tokenConfirmation.getUser().getEmail());
     } catch (MessagingException e) {
-      e.printStackTrace();
+      log.info("Message sender exception: message[{}], cause[{}]", e.getMessage(),e.getCause());
     }
   }
 

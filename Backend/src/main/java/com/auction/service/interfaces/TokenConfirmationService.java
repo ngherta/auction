@@ -9,4 +9,6 @@ public interface TokenConfirmationService {
   void confirm(String confirmation);
 
   void generate(User user) throws MessagingException, UnsupportedEncodingException;
+
+  void deleteUnconfirmedUsers();
 }

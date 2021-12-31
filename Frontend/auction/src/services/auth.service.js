@@ -10,11 +10,8 @@ class AuthService {
         password: user.password
       })
       .then(response => {
-        console.log(response);
         if (response.data.token) {
           localStorage.setItem('user', JSON.stringify(response.data));
-          console.log(response.data.token);
-          console.log(JSON.stringify(response.data));
         }
 
         return response.data;
@@ -30,7 +27,8 @@ class AuthService {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      password: user.password
+      password: user.password,
+      birthday: user.birthday,
     });
   }
 }
