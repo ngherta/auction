@@ -12,6 +12,7 @@ import com.auction.repository.UserRoleRepository;
 import com.auction.service.interfaces.AuthenticationService;
 import com.auction.service.interfaces.NotificationService;
 import com.auction.service.interfaces.TokenConfirmationService;
+import com.auction.service.interfaces.UserService;
 import com.auction.validator.UserValidator;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.LoginRequest;
@@ -41,8 +42,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
 
   private final AuthenticationManager authenticationManager;
   private final UserRepository userRepository;
-  private final UserRoleRepository roleRepository;
-  private final PasswordEncoder encoder;
+  private final UserService userService;
   private final JwtUtils jwtUtils;
   private final TokenConfirmationService tokenConfirmationService;
   private final NotificationService notificationService;
@@ -69,20 +69,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
   public void register(SignupRequest signUpRequest) throws MessagingException, UnsupportedEncodingException {
     validators.forEach(validator -> validator.validate(signUpRequest));
 
-    // Create new user's account
-    User user = new User(signUpRequest.getEmail(),
-                         encoder.encode(signUpRequest.getPassword()));
-
-    Set<Role> roles = new HashSet<>(1);
-    Role role = roleRepository.findByUserRole(UserRole.USER)
-            .orElseThrow(() -> new UserRoleNotFoundException(UserRole.USER.name() + " doesn't exist."));
-    roles.add(role);
-    user.setUserRoles(roles);
-    user.setFirstName(signUpRequest.getFirstName());
-    user.setLastName(signUpRequest.getLastName());
-    user.setBirthday(signUpRequest.getBirthday());
-    user.setEnabled(true);
-    user = userRepository.save(user);
+    User user = userService.create(signUpRequest);
 
     log.info("New user register {}", user);
 

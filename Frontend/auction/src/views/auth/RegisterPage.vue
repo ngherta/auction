@@ -92,7 +92,12 @@ export default {
   },
   data() {
     const schema = yup.object().shape({
-      username: yup
+      firstName: yup
+          .string()
+          .required("Username is required!")
+          .min(3, "Must be at least 3 characters!")
+          .max(20, "Must be maximum 20 characters!"),
+      lastName: yup
           .string()
           .required("Username is required!")
           .min(3, "Must be at least 3 characters!")
@@ -107,6 +112,9 @@ export default {
           .required("Password is required!")
           .min(6, "Must be at least 6 characters!")
           .max(40, "Must be maximum 40 characters!"),
+      birthday: yup
+          .string()
+          .required("Birthday is required!")
     });
 
     return {
@@ -123,7 +131,7 @@ export default {
   },
   mounted() {
     if (this.loggedIn) {
-      this.$router.push("/profile");
+      this.$router.push("/home");
     }
   },
   methods: {

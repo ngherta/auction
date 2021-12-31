@@ -1,22 +1,18 @@
 <template>
-  <div class="d-flex align-content-center text-center">
-    <router-link to="/home" >
-      <img class="img-logo" src="../assets/logo.jpg" alt="Logo">
-    </router-link>
-  </div>
-  <div class="container-lg container-border">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm border-bottom p-1">
-          <router-link to="/register" class="nav-link text-center">SIGN UP</router-link>
-        </div>
-        <div class="line"></div>
-        <div class="col-sm border-bottom border-info p-1">
-          <router-link to="/login" class="nav-link text-center">SIGN IN</router-link>
+  <Main_Logo class="mt-5 mb-5"></Main_Logo>
+    <div class="container border mb-4">
+      <div class="container p-0">
+        <div class="row">
+          <div class="col-sm border-bottom p-0">
+            <router-link to="/register" class="nav-link text-center list-group-item list-group-item-action">SIGN UP</router-link>
+          </div>
+          <div class="line"></div>
+          <div class="col-sm border-bottom border-info p-0">
+            <router-link to="/login" class="nav-link text-center list-group-item list-group-item-action">SIGN IN</router-link>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="container register-form">
+    <div class="container register-form pt-5 pb-5">
       <Form @submit="handleLogin" :validation-schema="schema">
         <div v-if="!successful">
           <div class="mb-3">
@@ -41,6 +37,9 @@
           </div>
         </div>
       </Form>
+      <div class="d-flex justify-content-center mt-3">
+        <router-link to="/password/reset">Forgot password?</router-link>
+      </div>
 
       <div
           v-if="message"
@@ -56,6 +55,7 @@
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
+import Main_Logo from "@/components/Main_Logo";
 
 export default {
   name: "Login",
@@ -63,6 +63,7 @@ export default {
     Form,
     Field,
     ErrorMessage,
+    Main_Logo,
   },
   data() {
     const schema = yup.object().shape({
@@ -71,6 +72,7 @@ export default {
     });
 
     return {
+      successful: false,
       loading: false,
       message: "",
       schema,
@@ -112,26 +114,23 @@ export default {
 
 
 <style scoped>
-.line {
-  content: " ";
-  height: 25px;
-  width: 2px;
-  position: absolute;
-  right: 0px;
-  top: 14px;
-  background: #2d2d2d;
-  opacity: .1;
-}
-
 @media only screen and (min-width: 576px){
   .register-form {
     padding: 1rem 1rem;
+  }
+
+  .line {
+    display: block;
   }
 }
 
 @media only screen and (min-width: 768px){
   .register-form {
     padding: 1rem 1rem;
+  }
+
+  .line {
+    display: block;
   }
 }
 
@@ -153,9 +152,22 @@ export default {
   }
 }
 
-.img-logo {
-  width: 20%;
+.nav-link {
+  font-size: 1.5rem;
+  border: 0;
 }
+
+.line {
+  content: " ";
+  height: 30px;
+  width: 1px;
+  position: relative;
+  right: 0px;
+  top: 14px;
+  background: #dee2e6;
+}
+
+
 
 .error-feedback {
   color: red;

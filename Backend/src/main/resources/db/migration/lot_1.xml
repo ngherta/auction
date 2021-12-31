@@ -23,6 +23,8 @@
       <column name="user_rating" type="float8"></column>
       <column name="enabled" type="bool"></column>
       <column name="birthday" type="date"></column>
+      <column name="gen_date" type="timestamp"></column>
+
     </createTable>
 
 

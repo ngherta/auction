@@ -237,7 +237,6 @@ class AuctionEventServiceImpl implements AuctionEventService {
     public AuctionEventDto update(AuctionEventRequest request, Long auctionId) {
         AuctionEvent auctionEvent = findById(auctionId);
 
-        ///Need to add more exceptions!
         AuctionType oldAuctionType = auctionEvent.getAuctionType();
 
         auctionEvent.setId(auctionId);
@@ -287,5 +286,15 @@ class AuctionEventServiceImpl implements AuctionEventService {
         Pageable pageable = PageRequest.of(page - 1, perPage);
 
         return auctionEventRepository.findByCategory(categoryId, pageable).map(auctionEventToDtoMapper::map);
+    }
+
+    @Override
+    public List<AuctionEventDto> findAll() {
+        return auctionEventToDtoMapper.mapList(auctionEventRepository.findAll());
+    }
+
+    @Override
+    public List<AuctionEvent> getListForStartOrFinish(AuctionStatus status) {
+        return auctionEventRepository.getListForStartOrFinish(status.name());
     }
 }

@@ -2,6 +2,7 @@ package com.auction.service.interfaces;
 
 import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionWinner;
+import com.auction.model.enums.AuctionStatus;
 import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.request.AuctionEventRequest;
 import com.auction.web.dto.request.AuctionFinishByFinishPriceRequest;
@@ -43,4 +44,8 @@ public interface AuctionEventService {
   AuctionEventDto getById(Long auctionId);
 
   Page<AuctionEventDto> findAuctionsByCategory(Long categoryId, int page, int perPage);
+
+  List<AuctionEventDto> findAll();
+
+  List<AuctionEvent> getListForStartOrFinish(AuctionStatus status);
 }

@@ -23,7 +23,6 @@
           :rowData="rowData"
           :modules="modules"
           :paginationPageSize="paginationPageSize"
-          :suppressPaginationPanel="true"
           :editType="this.editType"
           :suppressClickEdit="this.suppressClickEdit"
       ></ag-grid-vue>
@@ -35,11 +34,11 @@
 import "@ag-grid-community/core/dist/styles/ag-grid.css";
 import "@ag-grid-community/core/dist/styles/ag-theme-alpine.css";
 import {AgGridVue} from "ag-grid-vue3";
-import UserService from "../../../services/user.service";
+import AuctionService from "../../../services/auction.service"
 import {ExcelExportModule} from '@ag-grid-enterprise/excel-export';
 
 export default {
-  name: "UserTable",
+  name: "AuctionTable",
   components: {
     AgGridVue,
   },
@@ -73,22 +72,13 @@ export default {
       return eGui;
     },
     creatLink(params) {
-      let link = document.createElement('a');
-      link.href = 'http://localhost:8081/user/' + params.data.id;
-      link.innerText = params.data.email;
+      let link = document.createElement('router-link');
+      link.href = 'http://localhost:8081/auction/' + params.data.id;
+      link.innerText = params.data.title;
       link.addEventListener('click', (e) => {
         e.preventDefault();
       });
       return link;
-      // return 'Value is **' + params.value.email + '**';
-    },
-    reRenderUserStatus(params) {
-      if (params.data.enabled == true) {
-        return 'Enabled';
-      }
-      else if (params.data.enabled == false) {
-        return 'Disabled'
-      }
     },
     onCellClicked(params) {
 // Handle click event for action cells
@@ -108,31 +98,20 @@ export default {
 
         if (action === 'delete') {
           console.log("NGH - DELETE");
-          UserService.delete(params.data.id).then(
+          AuctionService.delete(params.data.id).then(
               () => {
                 params.api.applyTransaction({
                   remove: [params.node.data],
                 });
               },
               (error) => {
-                this.rowData = error.message();
+                this.rowData = error.error;
               }
           );
         }
 
         if (action === 'update') {
-          console.log(params);
-          console.log(params.node.data.enabled);
-          console.log(params.node.data.enabled == "Disabled");
-          if (params.node.data.enabled == "Enabled") {
-            params.node.data.enabled = true;
-            console.log("Hello")
-          }
-          else if (params.node.data.enabled == "Disabled") {
-            console.log("ENter")
-            params.node.data.enabled = false;
-          }
-          UserService.update(params.node.data).then(
+          AuctionService.update(params.node.data).then(
               () => {
                 params.api.stopEditing(false);
               },
@@ -167,9 +146,10 @@ export default {
     },
 
     onGridReady() {
-      UserService.getAllUsers().then(
+      AuctionService.getAll().then(
           (response) => {
-            this.rowData = response.data.content;
+            this.rowData = response.data;
+            console.log(this.rowData);
           },
           (error) => {
             this.rowData =
@@ -191,7 +171,7 @@ export default {
       defaultColDef: null,
       rowData: null,
       modules: [ExcelExportModule],
-      paginationPageSize: 25
+      paginationPageSize: 5
     };
   },
   beforeMount() {
@@ -199,19 +179,17 @@ export default {
     this.editType = 'fullRow';
     this.suppressClickEdit = true;
     this.columnDefs = [
-      {field: 'id', minWidth: 150, sortable: true, filter: true},
-      {field: 'firstName', minWidth: 90, sortable: true, filter: true},
-      {field: 'lastName', minWidth: 90, sortable: true, filter: true},
-      {field: 'email', minWidth: 90, sortable: true, filter: true,
-        cellRenderer: this.creatLink},
-      {field: 'birthday', minWidth: 90, sortable: true, filter: true},
-      {field: 'enabled', minWidth: 90, sortable: true, filter: true,
-        cellRenderer: this.reRenderUserStatus,
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: ['Enabled', 'Disabled'],
-        },},
-
+      {headerName: 'Id',field: 'id', sortable: true, filter: true},
+      {headerName: 'Title',field: 'title', sortable: true, filter: true,
+        cellRenderer: this.creatLink
+      },
+      {headerName: 'Description',field: 'description', sortable: true, filter: true},
+      {headerName: 'Status',field: 'statusType', sortable: true, filter: true,},
+      {headerName: 'Charity Percent' ,field: 'charityPercent', sortable: true, filter: true},
+      {headerName: 'Start price',field: 'startPrice', sortable: true, filter: true},
+      {headerName: 'Finish price',field: 'finishPrice', sortable: true, filter: true},
+      {headerName: 'Start date',field: 'startDate', sortable: true, filter: true},
+      {headerName: 'Finish date',field: 'finishDate', sortable: true, filter: true},
       {
         headerName: 'action',
         minWidth: 150,
@@ -230,3 +208,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+</style>

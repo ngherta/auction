@@ -4,6 +4,7 @@ import com.auction.model.AuctionEvent;
 import com.auction.model.User;
 import com.auction.model.enums.AuctionStatus;
 import com.auction.projection.AuctionEventSortProjection;
+import com.auction.projection.CategoryCountProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -56,4 +57,23 @@ public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long
           "WHERE ac.sub_category_id = :subCategoryId) " +
           "")
   Page<AuctionEvent> findByCategory(Long subCategoryId, Pageable pageable);
+
+
+  @Query(nativeQuery = true, value = "" +
+          "SELECT sc.category AS name, " +
+          "       count(ac.auction_id) AS count " +
+          "FROM auction_category AS ac " +
+          "         LEFT JOIN sub_category sc on ac.sub_category_id = sc.id " +
+          "         LEFT JOIN category c on sc.category_id = c.id " +
+          "GROUP BY sc.category ")
+  List<CategoryCountProjection> getCountPerSubCategory();
+
+  @Query(nativeQuery = true, value = "" +
+          "SELECT c.category AS name, " +
+          "       count(ac.auction_id) AS count " +
+          "FROM auction_category AS ac " +
+          "         LEFT JOIN sub_category sc on ac.sub_category_id = sc.id " +
+          "         LEFT JOIN category c on sc.category_id = c.id " +
+          "GROUP BY c.category ")
+  List<CategoryCountProjection> getCountPerCategory();
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin("http://localhost:8081")
 @RestController
@@ -36,6 +37,11 @@ public class AuctionEventController {
   public ResponseEntity<Page<AuctionEventDto>> getAll(@RequestParam(defaultValue = "1") int page,
                                                       @RequestParam(defaultValue = "10") int perPage) {
     return ResponseEntity.ok(auctionEventService.get(page, perPage));
+  }
+
+  @GetMapping("/all")
+  public ResponseEntity<List<AuctionEventDto>> getAll() {
+    return ResponseEntity.ok(auctionEventService.findAll());
   }
 
   @GetMapping("/sort")

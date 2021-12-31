@@ -1,10 +1,12 @@
 package com.auction.helper;
 
+import com.auction.cache.UserSessionCache;
 import com.auction.model.AuctionEvent;
-import com.auction.repository.AuctionEventRepository;
+import com.auction.model.enums.AuctionStatus;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.AuctionEventSortService;
-import com.auction.model.enums.AuctionStatus;
+import com.auction.service.interfaces.NotificationSenderService;
+import com.auction.service.interfaces.TokenConfirmationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @Slf4j
@@ -20,12 +23,14 @@ import java.util.List;
 public class ScheduledTasks {
 
   private final AuctionEventService auctionEventService;
-  private final AuctionEventRepository auctionEventRepository;
   private final AuctionEventSortService auctionEventSortService;
+  private final UserSessionCache userServiceCache;
+  private final NotificationSenderService notificationService;
+  private final TokenConfirmationService tokenConfirmationService;
 
   @Scheduled(cron = "0 0/1 * * * ?")
   public void checkEventForFinish() throws MessagingException, UnsupportedEncodingException {
-    List<AuctionEvent> list = auctionEventRepository.getListForStartOrFinish(AuctionStatus.ACTIVE.name());
+    List<AuctionEvent> list = auctionEventService.getListForStartOrFinish(AuctionStatus.ACTIVE);
     log.info("Try to find auction events to finish it.");
     if (!list.isEmpty()) {
       log.info("Found auction events for finishing.");
@@ -33,9 +38,19 @@ public class ScheduledTasks {
     }
   }
 
+  @Scheduled(fixedDelay = 2000)
+  public void getActiveUser() {
+    Set<String> activeUsers = userServiceCache.getActiveUsers();
+  }
+
+  @Scheduled(fixedDelay = 60000)
+  public void deleteUnconfirmedUsers() {
+    tokenConfirmationService.deleteUnconfirmedUsers();
+  }
+
   @Scheduled(cron = "0 0/1 * * * ?")
   public void checkEventForStart() {
-    List<AuctionEvent> list = auctionEventRepository.getListForStartOrFinish(AuctionStatus.EXPECTATION.name());
+    List<AuctionEvent> list = auctionEventService.getListForStartOrFinish(AuctionStatus.EXPECTATION);
     log.info("Try to find auction events to start it.");
     if (!list.isEmpty()) {
       list.forEach(e -> log.info("Found auction events for starting - auctionEvent[{}]", e.getId()));

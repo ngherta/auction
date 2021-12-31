@@ -28,8 +28,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/betting/", "/queue/");
+        config.enableSimpleBroker("/betting/", "/notification");
         config.setApplicationDestinationPrefixes("/app");
+        config.setUserDestinationPrefix("/notification");
     }
 
     @Override
@@ -46,7 +47,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                             ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
                             HttpSession session = servletRequest.getServletRequest().getSession();
                             attributes.put("sessionId", session.getId());
-                            log.info(session.getId() + " : NGH - session");
                         }
                         return true;
                     }}).withSockJS();

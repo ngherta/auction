@@ -76,7 +76,6 @@
 <script>
 import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
-import BettingService from "../services/betting.service"
 export default {
   name: "websockets",
   data() {
@@ -101,30 +100,14 @@ export default {
       this.socket = new SockJS("http://localhost:8080/websocket");
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
-          {},
+          {"username" : this.getUser().userDto.id},
           frame => {
             this.connected = true;
             console.log("NGH" + frame);
             // this.received_messages = BettingService.getBidsForByAuction(1006);
 
-            BettingService.getBidsForByAuction(1006).then(
-                  (response) => {
-                    this.received_messages = response.data;
-                  },
-                  (error) => {
-                    this.content =
-                        (error.response &&
-                            error.response.data &&
-                            error.response.data.message) ||
-                        error.message ||
-                        error.toString();
-                  }
-              );
-
             console.log("qq" + this.received_messages);
-            let x = 1006;
-            console.log("auctionTest: this.getUser().userDto.id = " + this.getUser().userDto.id + "| x = " + x);
-            this.stompClient.subscribe("/user/" + x + "/queue/messages", tick => {
+            this.stompClient.subscribe("/notification/" + this.getUser().userDto.id + "/secured/user", tick => {
               console.log("tick.body = " + tick.body);
               this.received_messages.push(JSON.parse(tick.body));
               console.log(tick)
@@ -138,7 +121,13 @@ export default {
     },
     disconnect() {
       if (this.stompClient) {
-        this.stompClient.disconnect();
+        this.stompClient.disconnect(
+            frame => {
+              console.log(frame);
+            },
+            {"username" : this.getUser().userDto.id},
+            {"username" : 4}
+        );
       }
       this.connected = false;
     },

@@ -4,13 +4,16 @@ import Login from "./views/auth/LoginPage.vue";
 import Register from "./views/auth/RegisterPage.vue";
 import WebSocketGreetings from "./views/WebSocketGreetings";
 import UploadFiles from "./views/UploadFiles";
-import ProfileUserTable from "./views/profile/admin/UserTable"
 import AuctionPage from "@/views/AuctionPage";
 import CreateAuctionPage from "@/views/CreateAuctionPage";
 import NotFoundPage from "@/views/NotFoundPage";
 import ForgotPasswordPage from "@/views/auth/ForgotPasswordPage";
 import ChangePasswordPage from "@/views/auth/ChangePasswordPage";
 import Actuator from "@/components/Actuator";
+import UserTable from "@/views/profile/admin/UserTable";
+import AuctionTable from "@/views/profile/admin/AuctionTable";
+import Chart from "@/views/profile/admin/Chart";
+import TopCategories from "@/views/profile/admin/TopCategories";
 // lazy-loaded
 const Profile = () => import("./views/Profile.vue")
 
@@ -51,10 +54,6 @@ const routes = [
     component: Profile,
   },
   {
-    path: "/profile/usertable",
-    component: ProfileUserTable,
-  },
-  {
     path: "/error",
     component: NotFoundPage,
   },
@@ -73,6 +72,22 @@ const routes = [
   {
     path: "/actuator",
     component: Actuator
+  },
+  {
+    path: "/table/user",
+    component: UserTable
+  },
+  {
+    path:"/table/auction",
+    component: AuctionTable,
+  },
+  {
+    path:"/chart",
+    component: Chart,
+  },
+  {
+    path:"/bar",
+    component: TopCategories,
   },
 ];
 
