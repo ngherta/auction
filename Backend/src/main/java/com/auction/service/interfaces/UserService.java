@@ -10,7 +10,7 @@ public interface UserService {
 
   Page<UserDto> get(int page, int perPage);
 
-  void deleteUserById(Long userId);
+  void deleteById(Long userId);
 
   UserDto disable(Long userId);
 

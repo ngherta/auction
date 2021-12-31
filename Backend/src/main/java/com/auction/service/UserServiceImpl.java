@@ -64,7 +64,7 @@ class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public void deleteUserById(Long userId) {
+  public void deleteById(Long userId) {
     delete(findById(userId));
   }
 
