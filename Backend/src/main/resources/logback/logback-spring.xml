@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration scan="true" scanPeriod="30 seconds">
   <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
   <variable name="LOG_HOME" value="./Logs}"/>
@@ -113,11 +113,7 @@
     <appender-ref ref="REQUESTS_FOR_FILE"/>
   </logger>
 
-  <logger name="com.auction.web.contoller" additivity="false" level="INFO">
-    <appender-ref ref="FILES-CONTROLLERS"/>
-  </logger>
-
-  <logger name="com.auction.config.logging.TransactionLoggingFilter" additivity="false" level="INFO">
+  <logger name="com.auction.web.controller" additivity="false" level="INFO">
     <appender-ref ref="FILES-CONTROLLERS"/>
   </logger>
 

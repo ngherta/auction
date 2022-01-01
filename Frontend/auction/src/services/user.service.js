@@ -4,17 +4,11 @@ import authHeader from './auth-header';
 const API_URL = 'http://localhost:8080/api/users/';
 
 export class UserService {
-    isAdmin() {
-        console.log(this.getUser().userDto);
-        return true;
-    }
-
     getUserBoard() {
         return axios.get(API_URL + 'user', {headers: authHeader()});
     }
 
     update(user) {
-        console.log("NGH-service = lastName: " + user.lastName);
         return axios.put(API_URL, {
             id: user.id,
             email: user.email,
