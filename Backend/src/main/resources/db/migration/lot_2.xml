@@ -36,6 +36,7 @@
       <column name="user_id" type="int8">
         <constraints nullable="false"/>
       </column>
+      <column name="payment_order_id" type="int8"></column>
       <column name="gen_date" type="timestamp"></column>
     </createTable>
 

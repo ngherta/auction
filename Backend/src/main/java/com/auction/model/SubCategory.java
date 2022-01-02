@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class SubCategory extends AbstractEntity{
+public class SubCategory extends AbstractEntity {
 
   @ManyToOne
   @JoinColumn(name = "category_id", nullable = false, updatable = false)

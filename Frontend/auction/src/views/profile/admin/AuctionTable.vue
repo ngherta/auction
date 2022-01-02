@@ -179,17 +179,18 @@ export default {
     this.editType = 'fullRow';
     this.suppressClickEdit = true;
     this.columnDefs = [
-      {headerName: 'Id',field: 'id', sortable: true, filter: true},
-      {headerName: 'Title',field: 'title', sortable: true, filter: true,
+      {headerName: 'Id', field: 'id', sortable: true, filter: true},
+      {
+        headerName: 'Title', field: 'title', sortable: true, filter: true,
         cellRenderer: this.creatLink
       },
-      {headerName: 'Description',field: 'description', sortable: true, filter: true},
-      {headerName: 'Status',field: 'statusType', sortable: true, filter: true,},
-      {headerName: 'Charity Percent' ,field: 'charityPercent', sortable: true, filter: true},
-      {headerName: 'Start price',field: 'startPrice', sortable: true, filter: true},
-      {headerName: 'Finish price',field: 'finishPrice', sortable: true, filter: true},
-      {headerName: 'Start date',field: 'startDate', sortable: true, filter: true},
-      {headerName: 'Finish date',field: 'finishDate', sortable: true, filter: true},
+      {headerName: 'Description', field: 'description', sortable: true, filter: true},
+      {headerName: 'Status', field: 'statusType', sortable: true, filter: true,},
+      {headerName: 'Charity Percent', field: 'charityPercent', sortable: true, filter: true},
+      {headerName: 'Start price', field: 'startPrice', sortable: true, filter: true},
+      {headerName: 'Finish price', field: 'finishPrice', sortable: true, filter: true},
+      {headerName: 'Start date', field: 'startDate', sortable: true, filter: true},
+      {headerName: 'Finish date', field: 'finishDate', sortable: true, filter: true},
       {
         headerName: 'action',
         minWidth: 150,

@@ -9,7 +9,7 @@ module.exports = {
         // '^.+\\.vue$': 'vue-jest',
         '^.+\\.vue$': '@vue/vue3-jest',
 
-        '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
+        '.+\\.(styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
         // '^.+\\.jsx?$': 'babel-jest'
         '^.+\\.[t|j]sx?$': 'babel-jest',
     },
@@ -20,9 +20,9 @@ module.exports = {
         'jest-serializer-vue'
     ],
     transformIgnorePatterns: [
+        'node_modules/(?!(ag-grid-community)/)',
         'node_modules/(?!(ag-grid-vue)/)',
         'node_modules/(?!(ag-grid-vue3)/)',
-        'node_modules/(?!(@ag-grid-community)/)'
     ],
     testMatch: [
         '**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)'

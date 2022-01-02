@@ -9,19 +9,18 @@ import com.auction.model.enums.AuctionStatus;
 import com.auction.model.enums.AuctionType;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionActionRepository;
-import com.auction.repository.AuctionChatRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.AuctionEventSortRepository;
 import com.auction.repository.AuctionWinnerRepository;
 import com.auction.service.interfaces.AuctionChatService;
 import com.auction.service.interfaces.AuctionEventService;
+import com.auction.service.interfaces.AuctionWinnerService;
 import com.auction.service.interfaces.MailService;
 import com.auction.service.interfaces.NotificationSenderService;
 import com.auction.service.interfaces.PaymentService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.request.AuctionEventRequest;
-import com.auction.web.dto.request.AuctionFinishByFinishPriceRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -46,6 +45,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
     private final AuctionEventRepository auctionEventRepository;
     private final AuctionWinnerRepository auctionWinnerRepository;
     private final AuctionActionRepository auctionActionRepository;
+    private final AuctionWinnerService auctionWinnerService;
     private final NotificationSenderService notificationSenderService;
     private final AuctionEventSortRepository auctionEventSortRepository;
     private final UserService userService;
@@ -167,9 +167,9 @@ class AuctionEventServiceImpl implements AuctionEventService {
 
     @Override
     @Transactional(readOnly = true)
-    public void search(String message) {
+    public List<AuctionEventDto> search(String message) {
         int limit = 5;
-        auctionEventRepository.search(message, limit);
+        return auctionEventToDtoMapper.mapList(auctionEventRepository.search(message, limit));
     }
 
     @Override
@@ -179,23 +179,17 @@ class AuctionEventServiceImpl implements AuctionEventService {
         auctionEventRepository.saveAll(list);
     }
 
+    @Transactional
+    public AuctionEvent finish(AuctionEvent auctionEvent) {
+        auctionEvent.setStatusType(AuctionStatus.FINISHED);
+        return auctionEventRepository.save(auctionEvent);
+    }
+
     @Override
     @Transactional
-    public void finishByFinishPrice(AuctionFinishByFinishPriceRequest request) {
-        AuctionEvent auctionEvent = findById(request.getAuctionId());
-        User user = userService.findById(request.getUserId());
-
-        auctionEvent.setStatusType(AuctionStatus.FINISHED);
-        auctionEventRepository.save(auctionEvent);
-
-
-        AuctionWinner auctionWinner = AuctionWinner.builder()
-                .user(user)
-                .auctionEvent(auctionEvent)
-                .price(auctionEvent.getFinishPrice())
-                .build();
-
-        auctionWinnerRepository.save(auctionWinner);
+    public void finishByFinishPrice(AuctionEvent auctionEvent, User user) {
+        auctionEvent = finish(auctionEvent);
+        auctionWinnerService.createForFinishPrice(auctionEvent, user);
     }
 
     @Override

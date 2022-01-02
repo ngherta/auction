@@ -25,6 +25,10 @@ public class AuctionWinner extends AbstractEntity{
   @Column(name = "price")
   private Double price;
 
+  @OneToOne
+  @JoinColumn(name = "payment_order_id")
+  private PaymentOrder paymentOrder;
+
   @Column(name = "gen_date", nullable = false)
   private LocalDateTime genDate;
 }

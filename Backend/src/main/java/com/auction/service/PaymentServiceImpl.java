@@ -4,9 +4,12 @@ import com.auction.exception.PaymentNotFound;
 import com.auction.model.AuctionWinner;
 import com.auction.model.PaymentOrder;
 import com.auction.model.enums.PaymentStatus;
+import com.auction.model.mapper.Mapper;
 import com.auction.repository.PaymentOrderRepository;
 import com.auction.service.interfaces.PaymentService;
 import com.auction.service.interfaces.PaypalService;
+import com.auction.service.interfaces.UserService;
+import com.auction.web.dto.PaymentOrderDto;
 import com.paypal.api.payments.Payment;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -21,6 +24,8 @@ class PaymentServiceImpl implements PaymentService {
 
   private final PaymentOrderRepository paymentOrderRepository;
   private final PaypalService paypalService;
+  private final UserService userService;
+  private final Mapper<PaymentOrder, PaymentOrderDto> paymentOrderDtoMapper;
 
   @Override
   @Transactional

@@ -42,7 +42,11 @@ class AuctionActionServiceImpl implements AuctionActionService {
     checkBet(auctionEvent, bet);
 
     User user = userService.findById(userId);
-    log.info("UserId : {}; AuctionEvent : {}", user.getId(), auctionId);
+
+    if (auctionEvent.getFinishPrice() != null && auctionEvent.getFinishPrice() <= bet) {
+      auctionEventService.finishByFinishPrice(auctionEvent, user);
+      bet = auctionEvent.getFinishPrice();
+    }
 
     AuctionAction auctionAction = AuctionAction.builder()
             .auctionEvent(auctionEvent)
