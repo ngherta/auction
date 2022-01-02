@@ -1,51 +1,68 @@
 package com.auction.service;
 
-import com.auction.exception.UserDoesntHavePaymentException;
-import com.auction.model.Payment;
-import com.auction.model.User;
-import com.auction.repository.PaymentRepository;
+import com.auction.exception.PaymentNotFound;
+import com.auction.model.AuctionWinner;
+import com.auction.model.PaymentOrder;
+import com.auction.model.enums.PaymentStatus;
+import com.auction.repository.PaymentOrderRepository;
 import com.auction.service.interfaces.PaymentService;
-import com.auction.service.interfaces.UserService;
-import com.auction.web.dto.request.CreatePaymentRequest;
+import com.auction.service.interfaces.PaypalService;
+import com.paypal.api.payments.Payment;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 class PaymentServiceImpl implements PaymentService {
 
-  private final PaymentRepository paymentRepository;
-  private final UserService userService;
+  private final PaymentOrderRepository paymentOrderRepository;
+  private final PaypalService paypalService;
 
   @Override
-  @Transactional(readOnly = true)
-  public boolean checkPayment(User user) {
-    List<Payment> list = paymentRepository.findAllByUser(user);
-    if (list.isEmpty()) {
-      throw new UserDoesntHavePaymentException("User[" + user.getId() + "] doesn't have payment method!");
+  @Transactional
+  @SneakyThrows
+  public void createPaymentForAuction(AuctionWinner auctionWinner) {
+    PaymentOrder paymentOrder = PaymentOrder.builder()
+            .auctionEvent(auctionWinner.getAuctionEvent())
+            .description("Description of payment")
+            .price(auctionWinner.getPrice())
+            .currency("USD")
+            .method("paypal")
+            .user(auctionWinner.getUser())
+            .intent("sale")
+            .build();
+
+    Payment payment = paypalService.createPayment(paymentOrder);
+    paymentOrder.setPaymentId(payment.getId());
+
+    String link = paypalService.getLink(payment);
+
+    if (link != null) {
+      paymentOrder.setLink(link);
+      paymentOrder.setStatus(PaymentStatus.CREATED);
     }
-    return true;
+
+    paymentOrderRepository.save(paymentOrder);
   }
 
   @Override
   @Transactional
-  public void create(CreatePaymentRequest request) {
-    Payment payment = Payment.builder()
-            .cardNumber(request.getCardNumber())
-            .cvv(request.getCvv())
-            .expirationDate(request.getExpirationDate())
-            .name(request.getName())
-            .build();
+  @SneakyThrows
+  public void execute(String paymentId, String payerId) {
+    Payment payment = paypalService.executePayment(paymentId, payerId);
+    System.out.println(payment.toJSON());
 
-    User user = userService.findById(request.getUserId());
+    PaymentOrder paymentOrder = paymentOrderRepository.findByPaymentId(paymentId)
+            .orElseThrow(() -> new PaymentNotFound("Payment order[" + paymentId + "] doesn't exist!"));
 
-    payment.setUser(user);
-
-    paymentRepository.save(payment);
+    if (payment.getState().equals("completed") || payment.getState().equals("approved")) {
+      System.out.println("Payment executed!");
+      paymentOrder.setStatus(PaymentStatus.COMPLETED);
+      paymentOrderRepository.save(paymentOrder);
+    }
   }
 }

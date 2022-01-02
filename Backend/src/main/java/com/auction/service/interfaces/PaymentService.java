@@ -1,10 +1,9 @@
 package com.auction.service.interfaces;
 
-import com.auction.model.User;
-import com.auction.web.dto.request.CreatePaymentRequest;
+import com.auction.model.AuctionWinner;
 
 public interface PaymentService {
-  boolean checkPayment(User user);
+  void createPaymentForAuction(AuctionWinner auctionWinner);
 
-  void create(CreatePaymentRequest request);
+  void execute(String paymentId, String payerId);
 }

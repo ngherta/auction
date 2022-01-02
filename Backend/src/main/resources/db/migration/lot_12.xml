@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+  <changeSet id="12" author="ngh">
+    <createTable tableName="payment_order">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="method" type="varchar(50)"></column>
+      <column name="currency" type="varchar(20)"></column>
+      <column name="price" type="float"></column>
+      <column name="description" type="varchar(255)"></column>
+      <column name="intent" type="varchar(255)"></column>
+      <column name="link" type="varchar(255)"></column>
+      <column name="status" type="varchar(30)"></column>
+      <column name="payment_id" type="varchar(255)"></column>
+      <column name="user_id" type="int8"></column>
+      <column name="auction_id" type="int8"></column>
+    </createTable>
+
+    <insert tableName="auction_action">
+      <column name="id" valueNumeric="9555"></column>
+      <column name="bet" valueNumeric="10"></column>
+      <column name="gen_date" valueDate="current_timestamp()"></column>
+      <column name="auction_id" valueNumeric="9999"></column>
+      <column name="user_id" valueNumeric="9999"></column>
+    </insert>
+
+    <rollback>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

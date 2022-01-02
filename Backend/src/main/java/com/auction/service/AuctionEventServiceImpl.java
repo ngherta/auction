@@ -17,6 +17,7 @@ import com.auction.service.interfaces.AuctionChatService;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.MailService;
 import com.auction.service.interfaces.NotificationSenderService;
+import com.auction.service.interfaces.PaymentService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.request.AuctionEventRequest;
@@ -51,6 +52,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
     private final MailService mailService;
     private final AuctionChatService auctionChatService;
     private final Mapper<AuctionEvent, AuctionEventDto> auctionEventToDtoMapper;
+    private final PaymentService paymentService;
 
     private void checkDateForAuction(AuctionEventRequest request) {
         if(request.getStartDate().isBefore(LocalDateTime.now())) {
@@ -122,6 +124,8 @@ class AuctionEventServiceImpl implements AuctionEventService {
 
             event.setStatusType(AuctionStatus.FINISHED);
             log.info("AuctionEvent [" + event.getId() + "] set new status - FINISHED.");
+
+            paymentService.createPaymentForAuction(auctionWinner);
 
             log.info("Start to send email to winner " + auctionWinner.getUser().getEmail());
             mailService.sendEmailToAuctionWinner(auctionWinner);
