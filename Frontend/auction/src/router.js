@@ -15,6 +15,7 @@ import AuctionTable from "@/views/profile/admin/AuctionTable";
 import Chart from "@/views/profile/admin/Chart";
 import TopCategories from "@/views/profile/admin/TopCategories";
 import Logging from "@/views/profile/admin/Logging";
+import CreateNewCategory from "@/views/profile/admin/CreateNewCategory";
 // lazy-loaded
 const Profile = () => import("./views/Profile.vue")
 
@@ -93,6 +94,10 @@ const routes = [
   {
     path:"/logging",
     component: Logging,
+  },
+  {
+    path: "/category/create",
+    component: CreateNewCategory,
   },
 ];
 

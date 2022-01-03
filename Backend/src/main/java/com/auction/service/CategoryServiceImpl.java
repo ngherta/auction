@@ -11,6 +11,7 @@ import com.auction.repository.SubCategoryRepository;
 import com.auction.service.interfaces.CategoryService;
 import com.auction.web.dto.CategoryDto;
 import com.auction.web.dto.request.CreateCategoryRequest;
+import com.auction.web.dto.response.CategoriesResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,15 +29,14 @@ class CategoryServiceImpl implements CategoryService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<CategoryDto> getCategoriesForCreateAuction() {
+  public List<CategoriesResponse> getCategoriesForCreateAuction() {
     List<Category> categories = categoryRepository.findAll();
-    List<CategoryDto> categoryDtos = new ArrayList<>();
+    List<CategoriesResponse> responseList = new ArrayList<>();
     for (Category category : categories) {
-      categoryDtos.add(categoryDtoMapper.map(category));
-      categoryDtos.addAll(subCategoryDtoMapper
-                                  .mapList(getSubCategory(category)));
+      responseList.add(new CategoriesResponse(categoryDtoMapper.map(category),
+                                              subCategoryDtoMapper.mapList(getSubCategory(category))));
     }
-    return categoryDtos;
+    return responseList;
   }
 
   @Override
@@ -45,6 +45,24 @@ class CategoryServiceImpl implements CategoryService {
     List<CategoryDto> list = new ArrayList<>();
     requests.stream().forEach(e -> list.add(create(e)));
     return list;
+  }
+
+  @Override
+  @Transactional
+  public void deleteSubCategory(Long id) {
+    SubCategory subCategory = subCategoryRepository.findById(id)
+            .orElseThrow(() -> new CategoryNotFound("SubCategory[" + id + "] not found!"));
+
+    subCategoryRepository.delete(subCategory);
+  }
+
+  @Override
+  @Transactional
+  public void deleteCategory(Long id) {
+    Category category = categoryRepository.findById(id)
+            .orElseThrow(() -> new CategoryNotFound("Category[" + id + "] not found!"));
+
+    categoryRepository.delete(category);
   }
 
   @Override

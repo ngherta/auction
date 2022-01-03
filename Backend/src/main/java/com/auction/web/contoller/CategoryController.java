@@ -3,6 +3,7 @@ package com.auction.web.contoller;
 import com.auction.service.interfaces.CategoryService;
 import com.auction.web.dto.CategoryDto;
 import com.auction.web.dto.request.CreateCategoryRequest;
+import com.auction.web.dto.response.CategoriesResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,7 +23,7 @@ public class CategoryController {
   private final CategoryService categoryService;
 
   @GetMapping
-  public ResponseEntity<List<CategoryDto>> getCategories() {
+  public ResponseEntity<List<CategoriesResponse>> getCategories() {
     return ResponseEntity.ok(categoryService.getCategoriesForCreateAuction());
   }
 

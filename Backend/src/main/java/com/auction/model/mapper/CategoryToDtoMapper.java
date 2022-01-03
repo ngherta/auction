@@ -12,7 +12,7 @@ public class CategoryToDtoMapper implements Mapper<Category, CategoryDto>{
   public CategoryDto map(Category entity) {
     return CategoryDto.builder()
             .id(entity.getId())
-            .category(entity.getCategory())
+            .categoryName(entity.getCategory())
             .type("CATEGORY")
             .build();
   }

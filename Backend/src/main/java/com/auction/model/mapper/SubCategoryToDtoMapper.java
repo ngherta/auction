@@ -12,7 +12,7 @@ public class SubCategoryToDtoMapper implements Mapper<SubCategory, CategoryDto>{
   public CategoryDto map(SubCategory entity) {
     return CategoryDto.builder()
             .id(entity.getId())
-            .category(entity.getSubCategoryName())
+            .categoryName(entity.getSubCategoryName())
             .type("SUB_CATEGORY")
             .build();
   }
