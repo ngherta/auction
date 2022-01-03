@@ -13,6 +13,8 @@
       <Footer class="flex-shrink-0 mt-auto"/>
     </div>
   </div>
+  <button @click="showAlert">Hello world</button>
+  <notifications />
 </template>
 
 <script>
@@ -31,6 +33,12 @@ export default {
     };
   },
   methods: {
+    showAlert() {
+      this.$notify({
+        title: "Important message",
+        text: "Hello user!",
+      });
+    },
     getUser() {
       return JSON.parse(localStorage.getItem('user'));
     },

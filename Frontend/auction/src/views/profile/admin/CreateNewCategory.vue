@@ -4,6 +4,7 @@
       <li v-for="(item,index) in data" :key="index" class="">
         {{ item.mainCategory.categoryName }}
         <form class="">
+          <button type="button" v-on:click="createNewSubCategory">Update</button>
           <div class="form-group">
             <label class="text-gray-600 font-semibold text-lg" hidden>Create new subcategory</label>
             <div
@@ -66,9 +67,14 @@
 
 <script>
 import CategoryService from '../../../services/category.service'
+// import {Form, Field} from "vee-validate";
 
 export default {
   name: "CreateNewCategory",
+  components:{
+    // Form,
+    // Field,
+  },
   data() {
     return {
       data: [],
@@ -76,6 +82,41 @@ export default {
     }
   },
   methods: {
+    initButtons(response) {
+      this.subcategoryFields = [];
+      for (let i = 0; i < response.length; i++) {
+        let id = response[i].mainCategory.id;
+        this.subcategoryFields.push(
+            {subCategory: "", categoryId: id}
+        )
+      }
+    },
+    createNewSubCategory() {
+      console.log(this.subcategoryFields);
+      let subCategory = [];
+      for (let i = 0; i < this.subcategoryFields.length; i++) {
+        if (this.subcategoryFields[i].subCategory != '' &&
+            this.subcategoryFields[i].subCategory != undefined &&
+            this.subcategoryFields[i].categoryId != null) {
+          subCategory.push({
+            name: this.subcategoryFields[i].subCategory,
+            type: 'SUB_CATEGORY',
+            mainCategoryId: this.subcategoryFields[i].categoryId
+          });
+        }
+      }
+      console.log(subCategory);
+      CategoryService.createNewCategory(subCategory).then(
+          (response) => {
+            this.data = response.data;
+            console.log(this.data)
+            this.initButtons(response.data);
+          },
+          (error) => {
+            console.log(error);
+          }
+      );
+    },
     addField(value, fieldType, mainCategoryId) {
       console.log(mainCategoryId);
       fieldType.push(
@@ -94,12 +135,7 @@ export default {
           (response) => {
             this.data = response.data;
             console.log(response.data);
-            for (let i = 0; i < response.data.length; i++) {
-              let id = response.data[i].mainCategory.id;
-              this.subcategoryFields.push(
-                  {subCategory: "", categoryId: id}
-              )
-            }
+            this.initButtons(response.data);
           }
       )
     }

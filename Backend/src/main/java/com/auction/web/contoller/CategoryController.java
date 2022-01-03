@@ -28,8 +28,9 @@ public class CategoryController {
   }
 
   @PostMapping
-  public ResponseEntity<List<CategoryDto>> createNewCategory(@RequestBody List<CreateCategoryRequest> requests) {
-    return ResponseEntity.ok(categoryService.create(requests));
+  public ResponseEntity<List<CategoriesResponse>> createNewCategory(@RequestBody List<CreateCategoryRequest> requests) {
+    categoryService.create(requests);
+    return ResponseEntity.ok(categoryService.getCategoriesForCreateAuction());
   }
 
 }
