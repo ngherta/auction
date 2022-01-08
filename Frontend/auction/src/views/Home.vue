@@ -35,31 +35,32 @@
         </div>
       </div>
     </div>
+    <div class="d-flex mt-5 mb-5">
+      <router-link to="/auctions" class="badge badge-pill badge-info m-auto text-uppercase">Show more</router-link>
+    </div>
   </div>
 </template>
 
 <script>
 import AuctionService from '../services/auction.service';
+
 export default {
   name: "Home",
   data() {
     return {
-      auctions : ""
+      auctions: ""
     };
   },
   mounted() {
     AuctionService.getAuctions(15, null).then(
         (response) => {
           this.auctions = response.data.content;
-          console.log(response.data);
         },
         (error) => {
-          this.content =
-              (error.response &&
-                  error.response.data &&
-                  error.response.data.message) ||
-              error.message ||
-              error.toString();
+          this.$notify({
+            text: error.message,
+            type: 'error'
+          });
         }
     );
   },

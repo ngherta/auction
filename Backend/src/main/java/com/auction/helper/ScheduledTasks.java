@@ -30,7 +30,7 @@ public class ScheduledTasks {
 
   @Scheduled(cron = "0 0/1 * * * ?")
   public void checkEventForFinish() throws MessagingException, UnsupportedEncodingException {
-    List<AuctionEvent> list = auctionEventService.getListForStartOrFinish(AuctionStatus.ACTIVE);
+    List<AuctionEvent> list = auctionEventService.getListForFinish(AuctionStatus.ACTIVE);
     log.info("Try to find auction events to finish it.");
     if (!list.isEmpty()) {
       log.info("Found auction events for finishing.");
@@ -50,7 +50,7 @@ public class ScheduledTasks {
 
   @Scheduled(cron = "0 0/1 * * * ?")
   public void checkEventForStart() {
-    List<AuctionEvent> list = auctionEventService.getListForStartOrFinish(AuctionStatus.EXPECTATION);
+    List<AuctionEvent> list = auctionEventService.getListForStart(AuctionStatus.EXPECTATION);
     log.info("Try to find auction events to start it.");
     if (!list.isEmpty()) {
       list.forEach(e -> log.info("Found auction events for starting - auctionEvent[{}]", e.getId()));

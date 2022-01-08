@@ -19,7 +19,10 @@ class NotificationService {
                     return this.stompClient.subscribe("/notification/" + UserService.getUser().userDto.id + "/secured/user");
                 },
                 error => {
-                    console.log(error);
+                    this.$notify({
+                        text: error.message,
+                        type: 'error'
+                    });
                     this.error = error;
                 }
             );

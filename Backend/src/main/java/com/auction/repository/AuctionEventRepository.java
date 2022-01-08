@@ -3,11 +3,13 @@ package com.auction.repository;
 import com.auction.model.AuctionEvent;
 import com.auction.model.User;
 import com.auction.model.enums.AuctionStatus;
+import com.auction.model.mapper.Mapper;
 import com.auction.projection.AuctionEventSortProjection;
 import com.auction.projection.CategoryCountProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -16,13 +18,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long> {
+public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long>,
+        JpaSpecificationExecutor<AuctionEvent> {
   @Query(nativeQuery = true, value =
           "select * from auction as a " +
-                  "where a.status = :status and a.start_date <= LOCALTIMESTAMP")
-  List<AuctionEvent> getListForStartOrFinish(@Param("status") String status);
+                  "where a.status = :status and a.start_date >= LOCALTIMESTAMP")
+  List<AuctionEvent> getListForStart(@Param("status") String status);
 
-  List<AuctionEvent> findByStatusTypeAndStartDateLessThanEqual(AuctionStatus status, LocalDateTime dateTime);
+  @Query(nativeQuery = true, value =
+          "select * from auction as a " +
+                  "where a.status = :status and a.finish_date >= LOCALTIMESTAMP")
+  List<AuctionEvent> getListForFinish(@Param("status") String status);
 
   @Query(nativeQuery = true, value =
           "select a.id as auctionId, " +
@@ -43,20 +49,17 @@ public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long
   List<AuctionEvent> findByUser(User user);
 
   @Query(nativeQuery = true, value =
-        "SELECT a.* FROM auction AS a " +
-        "WHERE a.status = 'ACTIVE' OR " +
-        "a.status = 'FINISHED' AND " +
-        "a.title LIKE :search " +
-        "LIMIT :rows")
-  List<AuctionEvent> search(@Param("search") String message,
-                            @Param("rows") int limit);
+          "SELECT a.* FROM auction AS a " +
+                  "WHERE a.status in " +
+                  "AND a.title LIKE %:search%")
+  Page<AuctionEvent> search(@Param("search") String message,
+                            Pageable pageable);
 
   @Query(nativeQuery = true, value = "" +
           "SELECT ae.* FROM auction AS ae " +
           "WHERE ae.id IN ( SELECT ac.auction_id FROM auction_category AS ac " +
-          "WHERE ac.sub_category_id = :subCategoryId) " +
-          "")
-  Page<AuctionEvent> findByCategory(Long subCategoryId, Pageable pageable);
+          "WHERE ac.sub_category_id = :subCategoryId )")
+  Page<AuctionEvent> findByCategory(@Param("subCategoryId") Long subCategoryId, Pageable pageable);
 
 
   @Query(nativeQuery = true, value = "" +

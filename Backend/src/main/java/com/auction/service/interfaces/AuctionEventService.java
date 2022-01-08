@@ -21,7 +21,7 @@ public interface AuctionEventService {
 
   Page<AuctionEventDto> getAllSortByRating(int page, int perPage);
 
-  Page<AuctionEventDto> get(int page, int perPage);
+  Page<AuctionEventDto> get(int page, int perPage, List<Long> subCategoryIds);
 
   AuctionEventDto blockAuctionEventById(Long auctionId);
 
@@ -35,7 +35,7 @@ public interface AuctionEventService {
 
   AuctionEvent blockAuctionEvent(AuctionEvent auctionEvent);
 
-  List<AuctionEventDto> search(String message);
+  Page<AuctionEventDto> search(String message, int page, int perPage);
 
   void changeStatusToStart(List<AuctionEvent> list);
 
@@ -47,5 +47,7 @@ public interface AuctionEventService {
 
   List<AuctionEventDto> findAll();
 
-  List<AuctionEvent> getListForStartOrFinish(AuctionStatus status);
+  List<AuctionEvent> getListForStart(AuctionStatus status);
+
+  List<AuctionEvent> getListForFinish(AuctionStatus status);
 }

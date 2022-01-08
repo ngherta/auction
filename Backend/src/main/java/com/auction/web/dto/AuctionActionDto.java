@@ -18,5 +18,5 @@ public class AuctionActionDto {
   private Long auctionEvent;
   private UserDto user;
   private Double bid;
-  private LocalDateTime genDate;
+  private String genDate;
 }

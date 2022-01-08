@@ -13,7 +13,6 @@
       <Footer class="flex-shrink-0 mt-auto"/>
     </div>
   </div>
-  <button @click="showAlert">Hello world</button>
   <notifications />
 </template>
 
@@ -33,12 +32,6 @@ export default {
     };
   },
   methods: {
-    showAlert() {
-      this.$notify({
-        title: "Important message",
-        text: "Hello user!",
-      });
-    },
     getUser() {
       return JSON.parse(localStorage.getItem('user'));
     },
@@ -64,8 +57,10 @@ export default {
               });
             },
             error => {
-              console.log(error);
-              this.connected = false;
+              this.$notify({
+                text: error.message,
+                type: 'error'
+              });              this.connected = false;
             }
         );
       }

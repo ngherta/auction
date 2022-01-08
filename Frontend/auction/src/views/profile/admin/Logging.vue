@@ -87,7 +87,10 @@ export default {
             this.status[loggerName] = this.selectedStatus[loggerName];
           },
           (error) => {
-            console.log(error);
+            this.$notify({
+              text: error.message,
+              type: 'error'
+            });
           }
       )
       console.log(loggerName + " : " + logLevel);

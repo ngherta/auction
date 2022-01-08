@@ -27,8 +27,23 @@ class AuctionsService {
         });
     }
 
-    getAll() {
-        return axios.get(API_URL + "all");
+    getAll(page, perPage) {
+        return axios.get(API_URL, {
+            params: {
+                page: page,
+                perPage: perPage
+            }
+        });
+    }
+
+    search(text, page, perPage) {
+        return axios.get(API_URL + 'search', {
+            params: {
+                page: page,
+                perPage: perPage,
+                text: text
+            }
+        })
     }
 }
 

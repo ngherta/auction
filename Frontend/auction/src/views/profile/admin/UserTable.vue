@@ -137,8 +137,10 @@ export default {
                 params.api.stopEditing(false);
               },
               (error) => {
-                console.log(error)
-                this.rowData = error.error;
+                this.$notify({
+                  text: error.message,
+                  type: 'error'
+                });
               }
           );
         }
@@ -172,12 +174,10 @@ export default {
             this.rowData = response.data.content;
           },
           (error) => {
-            this.rowData =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString();
+            this.$notify({
+              text: error.message,
+              type: 'error'
+            });
           }
       );
     },

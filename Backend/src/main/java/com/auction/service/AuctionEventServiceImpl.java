@@ -12,6 +12,8 @@ import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.AuctionEventSortRepository;
 import com.auction.repository.AuctionWinnerRepository;
+import com.auction.repository.specification.AuctionEventSpecification;
+import com.auction.repository.specification.SearchCriteria;
 import com.auction.service.interfaces.AuctionChatService;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.AuctionWinnerService;
@@ -167,9 +169,12 @@ class AuctionEventServiceImpl implements AuctionEventService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<AuctionEventDto> search(String message) {
-        int limit = 5;
-        return auctionEventToDtoMapper.mapList(auctionEventRepository.search(message, limit));
+    public Page<AuctionEventDto> search(String message, int page, int perPage) {
+        Pageable pageable = PageRequest.of(page - 1, perPage);
+        AuctionEventSpecification specification = new AuctionEventSpecification(new SearchCriteria("title", ":", message, true));
+
+//        return auctionEventRepository.search(message, pageable, specification).map(auctionEventToDtoMapper::map);
+        return auctionEventRepository.findAll(specification, pageable).map(auctionEventToDtoMapper::map);
     }
 
     @Override
@@ -202,10 +207,23 @@ class AuctionEventServiceImpl implements AuctionEventService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<AuctionEventDto> get(int page, int perPage) {
+    public Page<AuctionEventDto> get(int page,
+                                     int perPage,
+                                     List<Long> subCategoryIds) {
         Pageable pageable = PageRequest.of(page - 1, perPage);
 
-        return auctionEventRepository.findAll(pageable).map(auctionEventToDtoMapper::map);
+        Page<AuctionEventDto> auctionEventDtos = null;
+        if (subCategoryIds.size() == 1231231) {
+//            auctionEventDtos = auctionEventRepository
+//                    .findAllAndFilter(subCategoryIds, pageable)
+//                    .map(auctionEventToDtoMapper::map);
+        }
+        else {
+            auctionEventDtos = auctionEventRepository
+                    .findAll(pageable)
+                    .map(auctionEventToDtoMapper::map);
+        }
+        return auctionEventDtos;
     }
 
     @Override
@@ -287,12 +305,20 @@ class AuctionEventServiceImpl implements AuctionEventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<AuctionEventDto> findAll() {
         return auctionEventToDtoMapper.mapList(auctionEventRepository.findAll());
     }
 
     @Override
-    public List<AuctionEvent> getListForStartOrFinish(AuctionStatus status) {
-        return auctionEventRepository.getListForStartOrFinish(status.name());
+    @Transactional(readOnly = true)
+    public List<AuctionEvent> getListForFinish(AuctionStatus status) {
+        return auctionEventRepository.getListForFinish(status.name());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AuctionEvent> getListForStart(AuctionStatus status) {
+        return auctionEventRepository.getListForStart(status.name());
     }
 }

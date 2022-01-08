@@ -7,18 +7,21 @@ import com.auction.model.AuctionEvent;
 import com.auction.model.User;
 import com.auction.model.enums.AuctionStatus;
 import com.auction.model.mapper.Mapper;
+import com.auction.projection.LastBidProjection;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.service.interfaces.AuctionActionService;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionActionDto;
+import com.auction.web.dto.response.LastBidResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,6 +90,35 @@ class AuctionActionServiceImpl implements AuctionActionService {
 
     List<AuctionAction> list = auctionActionRepository.findByAuctionEvent(auctionEvent);
     return auctionActionToDtoMapper.mapList(list);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<LastBidResponse> getLastBidForAuction(List<Long> listOfAuctionsIds) {
+    List<LastBidProjection> listOfProjections = getLasBidsFromId(listOfAuctionsIds);
+    List<LastBidResponse> response = new ArrayList<>();
+    listOfProjections.forEach(e -> response.add(LastBidResponse.builder()
+                         .auctionId(e.getAuctionId())
+                         .bid(getLastBidFromListById(listOfProjections, e.getAuctionId()))
+                         .build()));
+    return response;
+  }
+
+  @Transactional(readOnly = true)
+  @Override
+  public List<LastBidProjection> getLasBidsFromId(List<Long> auctionIds) {
+    return auctionActionRepository.getLastBidByAuctionIds(auctionIds);
+  }
+
+  private Double getLastBidFromListById(List<LastBidProjection> list, Long auctionId) {
+    Double maxBid = 0D;
+    for (LastBidProjection bid : list) {
+      if (bid.getAuctionId().longValue() == auctionId) {
+        maxBid = bid.getLastBid();
+        break;
+      }
+    }
+    return maxBid;
   }
 
 }

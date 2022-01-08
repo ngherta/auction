@@ -30,7 +30,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/betting/", "/notification");
         config.setApplicationDestinationPrefixes("/app");
-        config.setUserDestinationPrefix("/notification");
+//        config.setUserDestinationPrefix("/notification");
     }
 
     @Override

@@ -128,6 +128,12 @@ export default {
 </script>
 
 <style scoped>
+@media only screen and (max-width: 576px) {
+  .img-logo {
+    width: 15%;
+  }
+}
+
 @media only screen and (min-width: 576px) {
   .img-logo {
     width: 15%;

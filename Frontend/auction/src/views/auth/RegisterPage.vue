@@ -112,9 +112,9 @@ export default {
           .required("Password is required!")
           .min(6, "Must be at least 6 characters!")
           .max(40, "Must be maximum 40 characters!"),
-      birthday: yup
-          .string()
-          .required("Birthday is required!")
+      // birthday: yup
+      //     .string()
+      //     .required("Birthday is required!")
     });
 
     return {

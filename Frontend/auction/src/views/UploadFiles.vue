@@ -109,12 +109,10 @@ export default {
             this.results.push(data)
           },
           (error) => {
-            this.message =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString();
+            this.$notify({
+              text: error.message,
+              type: 'error'
+            });
             this.successful = false;
             this.loading = false;
           }

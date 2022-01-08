@@ -3,6 +3,7 @@ package com.auction.repository;
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
 import com.auction.model.User;
+import com.auction.projection.LastBidProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,6 +27,14 @@ public interface AuctionActionRepository extends JpaRepository<AuctionAction, Lo
                   " aa.id ")
   List<AuctionAction> getAllByAuctionGroupByUser(@Param("auctionId") Long auctionId,
                                                  @Param("userWinnerId") Long userWinnerId);
+
+  @Query(nativeQuery = true, value = "" +
+          "SELECT MAX(aa.bet) AS lastBid, " +
+          "aa.auction_id AS auctionId " +
+          "FROM auction_action aa " +
+          "WHERE aa.auction_id in :auctionIds " +
+          "GROUP BY aa.auction_id ")
+  List<LastBidProjection> getLastBidByAuctionIds(List<Long> auctionIds);
 
   void deleteAllByAuctionEvent(AuctionEvent auctionEvent);
 

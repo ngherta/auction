@@ -53,8 +53,10 @@ export default {
             this.MemoryUsed = response.data.measurements[0].value;
           },
           (error) => {
-            this.content =
-                console.log(error)
+            this.$notify({
+              text: error.message,
+              type: 'error'
+            });
           })
 
       ActuatorService.getActuatorMetrics("system.cpu.count").then(
@@ -62,8 +64,10 @@ export default {
             this.NumberOfProcessors = response.data.measurements[0].value;
           },
           (error) => {
-            this.content =
-                console.log(error)
+            this.$notify({
+              text: error.message,
+              type: 'error'
+            });
           })
 
       ActuatorService.getActuatorMetrics("http.server.requests").then(
@@ -73,8 +77,10 @@ export default {
             this.HttpRequestMax = response.data.measurements[2].value;
           },
           (error) => {
-            this.content =
-                console.log(error)
+            this.$notify({
+              text: error.message,
+              type: 'error'
+            });
           })
 
       ActuatorService.getActuatorMetrics("process.uptime").then(
@@ -117,8 +123,10 @@ export default {
             };
           },
           (error) => {
-            this.content =
-                console.log(error)
+            this.$notify({
+              text: error.message,
+              type: 'error'
+            });
           }
       )
     }

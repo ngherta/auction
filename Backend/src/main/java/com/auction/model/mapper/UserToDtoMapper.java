@@ -7,6 +7,8 @@ import com.auction.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
+
 @Component
 @RequiredArgsConstructor
 public class UserToDtoMapper implements Mapper<User, UserDto> {
@@ -21,7 +23,9 @@ public class UserToDtoMapper implements Mapper<User, UserDto> {
       userDto.setFirstName(entity.getFirstName());
       userDto.setLastName(entity.getLastName());
       userDto.setEnabled(entity.isEnabled());
-      userDto.setBirthday(entity.getBirthday());
+      if (entity.getBirthday() != null) {
+        userDto.setBirthday(entity.getBirthday().format(DateTimeFormatter.ofPattern("dd-MM-yy")));
+      }
       userDto.setUserRole(roleToDtoMapper.mapSet(entity.getUserRoles()));
 
       return userDto;

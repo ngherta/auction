@@ -19,7 +19,7 @@ public class UserDto {
     private String email;
     private String firstName;
     private String lastName;
-    private LocalDate birthday;
+    private String birthday;
     private Set<RoleDto> userRole;
     private Boolean enabled;
 }
