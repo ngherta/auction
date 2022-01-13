@@ -30,6 +30,11 @@
   <svg v-else-if="name === 'place'" xmlns="http://www.w3.org/2000/svg" :width="21" :height="30" viewBox="0 0 21 30">
     <path id="Icon-place" data-name="Icon material-place" d="M18,3A10.492,10.492,0,0,0,7.5,13.5C7.5,21.375,18,33,18,33S28.5,21.375,28.5,13.5A10.492,10.492,0,0,0,18,3Zm0,14.25a3.75,3.75,0,1,1,3.75-3.75A3.751,3.751,0,0,1,18,17.25Z" transform="translate(-7.5 -3)"/>
   </svg>
+
+  <svg v-else-if="name === 'row'" xmlns="http://www.w3.org/2000/svg" width="13.999" height="8.009" viewBox="0 0 13.999 8.009">
+    <path id="Icon_ionic-ios-arrow-up" data-name="Icon ionic-ios-arrow-up" d="M13.187,13.666l5.291,5.306a1,1,0,0,0,1.412-1.419l-6-6.007a1,1,0,0,0-1.379-.029L6.479,17.545a1,1,0,0,0,1.412,1.419Z" transform="translate(-6.185 -11.255)"/>
+  </svg>
+
 </template>
 
 <script>

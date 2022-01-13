@@ -106,7 +106,7 @@ const routes = [
     component: AuctionsPage,
   },
   {
-    path: "/auctions/search/:text",
+    path: "/auctions/:filter",
     component: AuctionsPage,
   },
 ];

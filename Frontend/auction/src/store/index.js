@@ -3,6 +3,7 @@ import { auth } from "./auth.module";
 import { auctions } from "./auctions.module";
 import { notification } from "./notification.module"
 import { users } from "./users.module"
+import { image } from "./image.module";
 
 const store = createStore({
   modules: {
@@ -10,6 +11,7 @@ const store = createStore({
     auctions,
     notification,
     users,
+    image,
   },
 });
 

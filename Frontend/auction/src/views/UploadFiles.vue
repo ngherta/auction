@@ -1,20 +1,8 @@
 <template>
   <div class="cl-upload">
-    <!-- supply h2 heading -->
-    <h2>Upload an Image to Cloudinary</h2>
-<!--    <div v-show="showProgress">-->
-<!--      <progress-bar :options="options" :value="progress" />-->
-<!--    </div>-->
-
     <!-- create a form that will not submit to a server but will prevent submit and
     use the upload function as a handle-->
-    <form v-on:submit.prevent="uploadService">
-      <!-- bind cloud-name to the input -->
-      <label for="cloudname-input">Cloud Name:</label>
-      <input id="cloudname-input" v-model="cloudName" placeholder="Enter cloud_name from dashboard" />
-      <!-- bind preset to the input -->
-      <label for="preset-input">Preset:</label>
-      <input id="preset-input" v-model="preset" placeholder="Enter preset from upload settings" />
+    <form v-on:submit.prevent="upload">
       <!-- allow the user to select an image file and when they have selected it call a function
       to handle this event-->
       <label for="file-input">Upload:</label>
@@ -26,21 +14,19 @@
       />
       <!-- submit button is disabled until a file is selected -->
       <button type="submit" :disabled="filesSelected < 1">Upload</button>
-      <button type="submit" :disabled="filesSelected < 1">Upload NGH</button>
-
     </form>
 
     <!-- display uploaded image if successful -->
     <div v-if="results">
-      <section v-for="result in results" :key="result" >
-        <img :src="result.secure_url" :alt="result.public_id" />
+      <section v-for="result in results" :key="result">
+        <img :src="result.secure_url" :alt="result.public_id"/>
       </section>
     </div>
 
     <!-- display errors if not successful -->
     <section>
       <ul v-if="errors.length > 0">
-        <li v-for="(error,index) in errors" :key="index">{{error}}</li>
+        <li v-for="(error,index) in errors" :key="index">{{ error }}</li>
       </ul>
     </section>
   </div>
@@ -48,7 +34,6 @@
 
 <script>
 import axios from "axios";
-import ImageService from "@/services/image.service";
 
 export default {
   name: "CloudinaryUpload",
@@ -77,8 +62,8 @@ export default {
       errors: [],
       file: null,
       filesSelected: 0,
-      cloudName: "",
-      preset: "",
+      cloudName: "dxn6dcenz",
+      preset: "jhjwl2sq",
       tags: "browser-upload",
       progress: 0,
       showProgress: false,
@@ -90,33 +75,17 @@ export default {
   methods: {
     // function to handle file info obtained from local
     // file system and set the file state
-    handleFileChange: function(event) {
+    handleFileChange: function (event) {
       console.log("handlefilechange", event.target.files);
       //returns an array of files even though multiple not used
       this.file = event.target.files[0];
       this.filesSelected = event.target.files.length;
     },
-    prepareFormData: function() {
+    prepareFormData: function () {
       this.formData = new FormData();
       this.formData.append("upload_preset", this.preset);
       this.formData.append("tags", this.tags); // Optional - add tag for image admin in Cloudinary
       this.formData.append("file", this.fileContents);
-    },
-    uploadService(){
-      let reader = new FileReader();
-      ImageService.upload(reader.result).then(
-          (data) => {
-            this.results.push(data)
-          },
-          (error) => {
-            this.$notify({
-              text: error.message,
-              type: 'error'
-            });
-            this.successful = false;
-            this.loading = false;
-          }
-      );
     },
     // function to handle form submit
     upload() {
@@ -134,7 +103,7 @@ export default {
       // attach listener to be called when data from file
       reader.addEventListener(
           "load",
-          function() {
+          function () {
             this.fileContents = reader.result;
             this.prepareFormData();
             let cloudinaryUploadURL = `https://api.cloudinary.com/v1_1/${this.cloudName}/upload`;
@@ -142,7 +111,7 @@ export default {
               url: cloudinaryUploadURL,
               method: "POST",
               data: this.formData,
-              onUploadProgress: function(progressEvent) {
+              onUploadProgress: function (progressEvent) {
                 console.log("progress", progressEvent);
                 this.progress = Math.round(
                     (progressEvent.loaded * 100.0) / progressEvent.total
@@ -165,7 +134,7 @@ export default {
                 })
                 .finally(() => {
                   setTimeout(
-                      function() {
+                      function () {
                         this.showProgress = false;
                       }.bind(this),
                       1000
@@ -194,10 +163,12 @@ form {
   max-width: 500px;
   padding: 1em;
 }
+
 form input {
   background: #fff;
   border: 1px solid #9c9c9c;
 }
+
 form button {
   background-color: blue;
   color: white;
@@ -207,52 +178,64 @@ form button {
   width: 100%;
   border: 0;
 }
+
 form button:hover {
   background: gold;
   color: black;
 }
+
 label {
   padding: 0.5em 0.5em 0.5em 0;
 }
+
 input {
   padding: 0.7em;
   margin-bottom: 0.5rem;
 }
+
 input:focus {
   outline: 3px solid gold;
 }
+
 @media (min-width: 400px) {
   form {
     grid-template-columns: 150px 1fr;
     grid-gap: 16px;
   }
+
   label {
     text-align: right;
     grid-column: 1 / 2;
   }
+
   input,
   button {
     grid-column: 2 / 3;
   }
 }
+
 button {
   background-color: blue;
   color: white;
   font-weight: bold;
   border-radius: 10px;
 }
+
 button:focus {
   outline: none;
 }
+
 form button:disabled,
 form button[disabled] {
   border: 1px solid #999999;
   background-color: #cccccc;
   color: #666666;
 }
+
 section {
   margin: 10px 0;
 }
+
 img {
   max-width: 300px;
   height: auto;

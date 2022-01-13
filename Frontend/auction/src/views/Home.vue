@@ -58,7 +58,7 @@ export default {
         },
         (error) => {
           this.$notify({
-            text: error.message,
+            text: error.response.data.errorMessage,
             type: 'error'
           });
         }

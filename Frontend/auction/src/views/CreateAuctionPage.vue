@@ -21,19 +21,19 @@
           </div>
           <div class="mb-3 col-4">
             <label for="category">CATEGORY:</label>
-<!--            <v-select-->
-<!--                placeholder="Choose a category"-->
-<!--                label="category"-->
-<!--                :options="categories"-->
-<!--                :selectable="(option) => option.type == 'SUB_CATEGORY'"-->
-<!--            />-->
+            <!--            <v-select-->
+            <!--                placeholder="Choose a category"-->
+            <!--                label="category"-->
+            <!--                :options="categories"-->
+            <!--                :selectable="(option) => option.type == 'SUB_CATEGORY'"-->
+            <!--            />-->
             <select class="custom-select">
               <option v-for="category in categories"
                       :key="category.id"
                       value={{category.id}}
                       :disabled="category.type == 'CATEGORY'"
                       v-bind:class="{ category: category.type == 'CATEGORY' }">
-                {{ category.category }}
+                {{ category.name }}
               </option>
             </select>
           </div>
@@ -59,6 +59,7 @@
               Create
             </button>
           </div>
+          <UploadFiles v-bind="imagesData"/>
         </div>
       </Form>
     </div>
@@ -67,10 +68,9 @@
 
 <script>
 import {ErrorMessage, Field, Form} from "vee-validate";
-// import vSelect from "vue-select";
-// import "vue-select/dist/vue-select.css";
 import * as yup from "yup";
 import CategoryService from "../services/category.service"
+import UploadFiles from "../views/UploadFiles";
 
 export default {
   name: "CreateAuctionPage",
@@ -78,17 +78,19 @@ export default {
     Form,
     Field,
     ErrorMessage,
-    // vSelect,
+    UploadFiles,
   },
   data() {
     const schema = yup.object().shape({});
     return {
       successful: false,
+      imagesData : [],
       loading: false,
       message: "",
       schema,
       isCheckedFinishPrice: true,
-      categories: []
+      categories: [],
+      timer: null
     };
   },
   methods: {
@@ -101,13 +103,34 @@ export default {
     getCategories() {
       CategoryService.getCategoriesForCreateAuction().then(
           (response) => {
-            console.log(response.data);
-            this.categories = response.data;
+            this.prepareCategories(response.data);
           }
       )
+    },
+    prepareCategories(categories) {
+      console.log(categories);
+      console.log(this.categories);
+      for (let i = 0; i < categories.length; i++) {
+        this.categories.push({
+          id: categories[i].mainCategory.id,
+          type: categories[i].mainCategory.type,
+          name: categories[i].mainCategory.categoryName
+        });
+        for (let q = 0; q < categories[i].listSubCategories.length; q++) {
+          this.categories.push({
+            id: categories[i].listSubCategories[q].id,
+            type: categories[i].listSubCategories[q].type,
+            name: categories[i].listSubCategories[q].categoryName
+          });
+        }
+        console.log(this.categories);
+      }
     }
   },
   mounted() {
+    this.timer = setInterval(() => {
+      console.log(UploadFiles.data());
+    }, 1000),
     this.getCategories();
   }
 }
