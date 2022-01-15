@@ -28,4 +28,6 @@ public interface CategoryService {
   void deleteSubCategory(Long id);
 
   void deleteCategory(Long id);
+
+  List<SubCategory> getSubCategoriesByIds(List<Long> subCategoryIds);
 }

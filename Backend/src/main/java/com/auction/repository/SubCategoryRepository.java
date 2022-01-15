@@ -11,7 +11,7 @@ import java.util.List;
 public interface SubCategoryRepository extends JpaRepository<SubCategory, Long> {
   List<SubCategory> findByCategory(Category category);
 
-
+  List<SubCategory> findByIdIn(List<Long> ids);
 //  List<SubCategory> findByCategoryId(Long categoryId);
 
   boolean existsByCategoryAndSubCategoryName(Category category, String subCategoryName);

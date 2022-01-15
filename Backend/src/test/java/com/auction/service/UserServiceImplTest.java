@@ -19,12 +19,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
-
-import java.time.LocalDate;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -72,7 +71,7 @@ class UserServiceImplTest {
   }
 
   @Test
-  void createNewUser_returnsNewUser() {
+  void create_whenInvoked_returnNewUser() {
     when(roleRepository.findByUserRole(any(UserRole.class))).thenReturn(java.util.Optional.ofNullable(role));
     when(userRepository.save(any(User.class))).thenReturn(user);
 
@@ -90,8 +89,22 @@ class UserServiceImplTest {
   }
 
   @Test
-  void test() {
-    int x = 4;
-    assertThat(x).isEqualTo(4);
+  void disable_whenInvoked_returnDisabledUser() {
+    user.setEnabled(true);
+    when(userRepository.findById(any(Long.class))).thenReturn(java.util.Optional.ofNullable(user));
+    when(userRepository.save(any(User.class))).thenReturn(user);
+
+    userService.disable(user.getId());
+    assertThat(user.isEnabled()).isFalse();
+  }
+
+  @Test
+  void enable_whenInvoked_returnEnabledUser() {
+    user.setEnabled(false);
+    when(userRepository.findById(any(Long.class))).thenReturn(java.util.Optional.ofNullable(user));
+    when(userRepository.save(any(User.class))).thenReturn(user);
+
+    userService.enable(user.getId());
+    assertThat(user.isEnabled()).isTrue();
   }
 }

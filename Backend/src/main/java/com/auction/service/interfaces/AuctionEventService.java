@@ -21,7 +21,7 @@ public interface AuctionEventService {
 
   Page<AuctionEventDto> getAllSortByRating(int page, int perPage);
 
-  Page<AuctionEventDto> get(int page, int perPage, List<Long> subCategoryIds);
+  Page<AuctionEventDto> get(int page, int perPage);
 
   AuctionEventDto blockAuctionEventById(Long auctionId);
 
@@ -50,4 +50,6 @@ public interface AuctionEventService {
   List<AuctionEvent> getListForStart(AuctionStatus status);
 
   List<AuctionEvent> getListForFinish(AuctionStatus status);
+
+  Page<AuctionEventDto> findAllAndFilter(int page, int perPage, String filter);
 }

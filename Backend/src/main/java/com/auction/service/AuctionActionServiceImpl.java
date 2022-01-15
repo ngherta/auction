@@ -64,21 +64,29 @@ class AuctionActionServiceImpl implements AuctionActionService {
   @Override
   @Transactional(readOnly = true)
   public void checkBet(AuctionEvent auctionEvent, Double bet) {
-    if (auctionEvent.getStatusType() != (AuctionStatus.ACTIVE)) {
-      throw new WrongBetException("Auction[" + auctionEvent.getId() + "] has status " + auctionEvent.getStatusType());
-    }
-
-    if (auctionEvent.getStartPrice() > bet) {
-      throw new WrongBetException("Bet should be higher than Start Price!");
-    }
+    checkBetByStatus(auctionEvent);
 
     Optional<AuctionAction> action = auctionActionRepository.findTopByAuctionEventOrderByBetDesc(auctionEvent);
+    checkBetDifference(bet, auctionEvent, action);
+  }
 
-    if (action.isEmpty()) return;
-
+  private void checkBetDifference(Double bet,
+                                  AuctionEvent auctionEvent,
+                                  Optional<AuctionAction> action) {
+    if (action.isEmpty()) {
+      if (auctionEvent.getStartPrice() > bet) {
+        throw new WrongBetException("Bet should be higher than Start Price!");
+      }
+    }
     double betDifference = (bet * 100 / action.get().getBet()) - 100;
     if (betDifference < 5.0) {
       throw new WrongBetException("Bet should be 5 percent higher!");
+    }
+  }
+
+  private void checkBetByStatus(AuctionEvent auctionEvent) {
+    if (auctionEvent.getStatusType() != AuctionStatus.ACTIVE) {
+      throw new WrongBetException("Auction[" + auctionEvent.getId() + "] has status " + auctionEvent.getStatusType());
     }
   }
 
@@ -98,9 +106,9 @@ class AuctionActionServiceImpl implements AuctionActionService {
     List<LastBidProjection> listOfProjections = getLasBidsFromId(listOfAuctionsIds);
     List<LastBidResponse> response = new ArrayList<>();
     listOfProjections.forEach(e -> response.add(LastBidResponse.builder()
-                         .auctionId(e.getAuctionId())
-                         .bid(getLastBidFromListById(listOfProjections, e.getAuctionId()))
-                         .build()));
+                                                        .auctionId(e.getAuctionId())
+                                                        .bid(getLastBidFromListById(listOfProjections, e.getAuctionId()))
+                                                        .build()));
     return response;
   }
 

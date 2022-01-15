@@ -2,42 +2,37 @@ package com.auction.repository.specification.builder;
 
 import com.auction.model.AuctionEvent;
 import com.auction.repository.specification.AuctionEventSpecification;
-import com.auction.repository.specification.SearchCriteria;
+import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-
+@AllArgsConstructor
 public class AuctionSpecificationBuilder {
-  private final List<SearchCriteria> params;
+  private final List<AuctionEventSpecification> params;
 
   public AuctionSpecificationBuilder() {
-    params = new ArrayList<SearchCriteria>();
+    params = new ArrayList<>();
   }
 
-  public AuctionSpecificationBuilder with(String key, String operation, Object value, boolean isOrPredicate) {
-    params.add(new SearchCriteria(key, operation, value, isOrPredicate));
+  public AuctionSpecificationBuilder with(Specification<AuctionEvent> specification, boolean isOrPredicate) {
+    params.add(new AuctionEventSpecification(specification, isOrPredicate));
     return this;
   }
 
   public Specification<AuctionEvent> build() {
-    if (params.size() == 0) {
+    if (params.isEmpty()) {
       return null;
     }
 
-    List<Specification> specs = params.stream()
-            .map(AuctionEventSpecification::new)
-            .collect(Collectors.toList());
-
-    Specification result = specs.get(0);
+    Specification result = params.get(0).getSpecification();
 
     for (int i = 1; i < params.size(); i++) {
       result = params.get(i)
               .isOrPredicate()
-              ? Specification.where(result).or(specs.get(i))
-              : Specification.where(result).and(specs.get(i));
+              ? Specification.where(result).or(params.get(i).getSpecification())
+              : Specification.where(result).and(params.get(i).getSpecification());
     }
     return result;
   }

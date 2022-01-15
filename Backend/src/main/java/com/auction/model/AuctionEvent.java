@@ -9,6 +9,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -20,13 +22,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "auction")
@@ -78,8 +77,9 @@ public class AuctionEvent extends AbstractEntity{
     private LocalDateTime genDate;
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
     @JoinTable(	name = "auction_category",
             joinColumns = @JoinColumn(name = "auction_id"),
             inverseJoinColumns = @JoinColumn(name = "sub_category_id"))
-    private Set<SubCategory> categories = new HashSet<>();
+    private List<SubCategory> categories = new ArrayList<>();
 }

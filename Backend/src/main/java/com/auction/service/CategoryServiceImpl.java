@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,6 +64,21 @@ class CategoryServiceImpl implements CategoryService {
             .orElseThrow(() -> new CategoryNotFound("Category[" + id + "] not found!"));
 
     categoryRepository.delete(category);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<SubCategory> getSubCategoriesByIds(List<Long> subCategoryIds) {
+    List<SubCategory> subCategories = subCategoryRepository.findByIdIn(subCategoryIds);
+    if (subCategories.size() != subCategoryIds.size()) {
+      List<Long> notFoundSubCategories = subCategoryIds.stream()
+              .filter(id -> subCategories.stream()
+                      .anyMatch(sc -> sc.getId() == id))
+              .collect(Collectors.toList());
+      throw new CategoryNotFound(
+              "Sub categories with ids" + notFoundSubCategories.toArray() + " not found!");
+    }
+    return subCategories;
   }
 
   @Override

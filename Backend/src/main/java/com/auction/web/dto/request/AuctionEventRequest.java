@@ -1,8 +1,10 @@
 package com.auction.web.dto.request;
 
+import com.auction.model.enums.AuctionType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,14 +12,12 @@ import java.util.List;
 @Data
 public class AuctionEventRequest {
 
-    @NotNull
+    @NotBlank
     private String title;
+    @NotBlank
     private String description;
-    @NotNull
-    private String auctionType;
-    @NotNull
-    private String auctionStatus;
-    @NotNull
+    @NotBlank
+    private AuctionType auctionType;
     private Double startPrice;
     private Double finishPrice;
     @NotNull
@@ -28,4 +28,5 @@ public class AuctionEventRequest {
     private LocalDateTime finishDate;
     private Double charityPercent;
     private List<String> images;
+    private Long categoryIds;
 }
