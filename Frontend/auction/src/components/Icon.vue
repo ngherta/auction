@@ -31,16 +31,50 @@
     <path id="Icon-place" data-name="Icon material-place" d="M18,3A10.492,10.492,0,0,0,7.5,13.5C7.5,21.375,18,33,18,33S28.5,21.375,28.5,13.5A10.492,10.492,0,0,0,18,3Zm0,14.25a3.75,3.75,0,1,1,3.75-3.75A3.751,3.751,0,0,1,18,17.25Z" transform="translate(-7.5 -3)"/>
   </svg>
 
-  <svg v-else-if="name === 'row'" xmlns="http://www.w3.org/2000/svg" width="13.999" height="8.009" viewBox="0 0 13.999 8.009">
+  <svg v-else-if="name === 'row'" xmlns="http://www.w3.org/2000/svg" :width="13.999 * this.sizePercent" :height="8.009 * this.sizePercent" viewBox="0 0 13.999 8.009">
     <path id="Icon_ionic-ios-arrow-up" data-name="Icon ionic-ios-arrow-up" d="M13.187,13.666l5.291,5.306a1,1,0,0,0,1.412-1.419l-6-6.007a1,1,0,0,0-1.379-.029L6.479,17.545a1,1,0,0,0,1.412,1.419Z" transform="translate(-6.185 -11.255)"/>
   </svg>
+
+  <svg v-else-if="name === 'profile-account-overview'" xmlns="http://www.w3.org/2000/svg" :width="27 * this.sizePercent" :height="27 * this.sizePercent" viewBox="0 0 27 27">
+    <path id="Icon_material-account-box" data-name="Icon material-account-box" d="M4.5,7.5v21a3,3,0,0,0,3,3h21a3.009,3.009,0,0,0,3-3V7.5a3.009,3.009,0,0,0-3-3H7.5A3,3,0,0,0,4.5,7.5Zm18,6A4.5,4.5,0,1,1,18,9,4.494,4.494,0,0,1,22.5,13.5ZM9,25.5c0-3,6-4.65,9-4.65s9,1.65,9,4.65V27H9Z" transform="translate(-4.5 -4.5)"/>
+  </svg>
+
+  <svg v-else-if="name === 'profile-my-details'" xmlns="http://www.w3.org/2000/svg" :width="30.931 * this.sizePercent" :height="24.057 * this.sizePercent" viewBox="0 0 30.931 24.057">
+    <path id="Icon_awesome-address-card" data-name="Icon awesome-address-card" d="M28.353,2.25H2.578A2.578,2.578,0,0,0,0,4.828v18.9a2.578,2.578,0,0,0,2.578,2.578H28.353a2.578,2.578,0,0,0,2.578-2.578V4.828A2.578,2.578,0,0,0,28.353,2.25ZM9.451,7.405a3.437,3.437,0,1,1-3.437,3.437A3.44,3.44,0,0,1,9.451,7.405Zm6.014,12.716a1.126,1.126,0,0,1-1.2,1.031H4.64a1.126,1.126,0,0,1-1.2-1.031V19.09A3.382,3.382,0,0,1,7.045,16h.268a5.531,5.531,0,0,0,4.274,0h.268a3.382,3.382,0,0,1,3.609,3.093Zm12.029-2.835a.431.431,0,0,1-.43.43H19.332a.431.431,0,0,1-.43-.43v-.859a.431.431,0,0,1,.43-.43h7.733a.431.431,0,0,1,.43.43Zm0-3.437a.431.431,0,0,1-.43.43H19.332a.431.431,0,0,1-.43-.43V12.99a.431.431,0,0,1,.43-.43h7.733a.431.431,0,0,1,.43.43Zm0-3.437a.431.431,0,0,1-.43.43H19.332a.431.431,0,0,1-.43-.43V9.553a.431.431,0,0,1,.43-.43h7.733a.431.431,0,0,1,.43.43Z" transform="translate(0 -2.25)"/>
+  </svg>
+
+  <svg v-else-if="name === 'profile-my-address'" xmlns="http://www.w3.org/2000/svg" :width="30 * this.sizePercent" :height="33 * this.sizePercent" viewBox="0 0 30 33">
+    <g id="Icon_feather-home" data-name="Icon feather-home" transform="translate(-3 -1.5)">
+      <path id="Path_1" data-name="Path 1" d="M4.5,13.5,18,3,31.5,13.5V30a3,3,0,0,1-3,3H7.5a3,3,0,0,1-3-3Z" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      <path id="Path_2" data-name="Path 2" d="M13.5,33V18h9V33" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+    </g>
+  </svg>
+
+  <svg v-else-if="name === 'profile-auction-table'" xmlns="http://www.w3.org/2000/svg" :width="31 * this.sizePercent" :height="27.125 * this.sizePercent" viewBox="0 0 31 27.125">
+    <path id="Icon_awesome-table" data-name="Icon awesome-table" d="M28.094,2.25H2.906A2.906,2.906,0,0,0,0,5.156V26.469a2.906,2.906,0,0,0,2.906,2.906H28.094A2.906,2.906,0,0,0,31,26.469V5.156A2.906,2.906,0,0,0,28.094,2.25ZM13.563,25.5H3.875V19.688h9.688Zm0-9.687H3.875V10h9.688ZM27.125,25.5H17.438V19.688h9.688Zm0-9.687H17.438V10h9.688Z" transform="translate(0 -2.25)"/>
+  </svg>
+
+  <svg v-else-if="name === 'profile-statistic'" xmlns="http://www.w3.org/2000/svg" :width="28.361 * this.sizePercent" :height="21.271 * this.sizePercent" viewBox="0 0 28.361 21.271">
+    <path id="Icon_awesome-chart-line" data-name="Icon awesome-chart-line" d="M27.475,22.226H3.545V5.386A.886.886,0,0,0,2.659,4.5H.886A.886.886,0,0,0,0,5.386V24a1.773,1.773,0,0,0,1.773,1.773h25.7a.886.886,0,0,0,.886-.886V23.112A.886.886,0,0,0,27.475,22.226ZM25.7,6.273h-6.54a1.329,1.329,0,0,0-.94,2.269l1.795,1.795L15.953,14.4l-4.064-4.064a1.772,1.772,0,0,0-2.507,0l-3.8,3.8a.886.886,0,0,0,0,1.254L6.83,16.649a.886.886,0,0,0,1.254,0L10.635,14.1,14.7,18.161a1.772,1.772,0,0,0,2.507,0l5.318-5.318,1.795,1.795a1.329,1.329,0,0,0,2.269-.94V7.159A.885.885,0,0,0,25.7,6.273Z" transform="translate(0 -4.5)"/>
+  </svg>
+
 
 </template>
 
 <script>
 export default {
   name: "Icon",
-  props: ['name', 'size']
+  props: ['name', 'size'],
+  data() {
+    return {
+      sizePercent : 1,
+    }
+  },
+  mounted() {
+    if (this.size != null) {
+      this.sizePercent = this.size;
+    }
+  }
 
 }
 </script>

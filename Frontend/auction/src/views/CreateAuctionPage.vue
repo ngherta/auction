@@ -1,6 +1,10 @@
 <template>
   <div class="container">
     <h1 class="h1">Create auction</h1>
+    <div>{{ this.$store.state.imageLink }}</div>
+    <div>{{ this.images }}</div>
+
+
     <div>
       <Form @submit="createAuction" :validation-schema="schema">
         <div v-if="!successful" class="row">
@@ -21,18 +25,12 @@
           </div>
           <div class="mb-3 col-4">
             <label for="category">CATEGORY:</label>
-            <!--            <v-select-->
-            <!--                placeholder="Choose a category"-->
-            <!--                label="category"-->
-            <!--                :options="categories"-->
-            <!--                :selectable="(option) => option.type == 'SUB_CATEGORY'"-->
-            <!--            />-->
-            <select class="custom-select">
+            <select class="custom-select" id="category" v-model="selectedCategories">
               <option v-for="category in categories"
                       :key="category.id"
-                      value={{category.id}}
+                      :value="category.id"
                       :disabled="category.type == 'CATEGORY'"
-                      v-bind:class="{ category: category.type == 'CATEGORY' }">
+                      :class="{ category: category.type == 'CATEGORY' }">
                 {{ category.name }}
               </option>
             </select>
@@ -49,6 +47,21 @@
               <ErrorMessage name="finishPrice" class="error-feedback"/>
             </div>
           </div>
+          <div class="mb-3">
+            <label for="startDate">START DATE:</label>
+            <Datepicker class="form-control"
+                        id="startDate"
+                        v-model="startDate"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="finishDate">FINISH DATE:</label>
+            <Datepicker class="form-control"
+                        id="finishDate"
+                        v-model="finishDate"
+            />
+          </div>
+          <UploadFiles @uploadNewImages="uploadNewImages($event)"/>
 
           <div class="">
             <button class="btn btn-primary btn-block" :disabled="loading">
@@ -59,7 +72,6 @@
               Create
             </button>
           </div>
-          <UploadFiles v-bind="imagesData"/>
         </div>
       </Form>
     </div>
@@ -71,6 +83,9 @@ import {ErrorMessage, Field, Form} from "vee-validate";
 import * as yup from "yup";
 import CategoryService from "../services/category.service"
 import UploadFiles from "../views/UploadFiles";
+import AuctionService from "../services/auction.service";
+import Datepicker from 'vue3-datepicker';
+
 
 export default {
   name: "CreateAuctionPage",
@@ -79,23 +94,49 @@ export default {
     Field,
     ErrorMessage,
     UploadFiles,
+    Datepicker,
   },
   data() {
     const schema = yup.object().shape({});
     return {
       successful: false,
-      imagesData : [],
       loading: false,
       message: "",
       schema,
       isCheckedFinishPrice: true,
       categories: [],
-      timer: null
+      selectedCategories: [],
+      images: [],
+      startDate: null,
+      finishDate: null,
     };
   },
   methods: {
-    createAuction(auction) {
-      console.log("Create auction! Content : " + JSON.stringify(auction));
+    createAuction(data) {
+      const auction = {
+        title: data.title,
+        description: data.description,
+        startPrice: data.startPrice,
+        finishPrice: data.finishPrice,
+        categoryIds: this.selectedCategories,
+        images: this.images,
+        userId: this.$store.state.auth.user.userDto.id,
+        startDate: this.startDate,
+        finishDate: this.finishDate,
+      }
+      console.log(this.$store.state.auth.user);
+      console.log(auction);
+      AuctionService.create(auction).then(
+          (response) => {
+            console.log(response);
+          },
+          (error) => {
+            this.$notify({
+              text: error.message,
+              type: 'error'
+            });
+          }
+      )
     },
     toggle() {
       this.isCheckedFinishPrice = !this.isCheckedFinishPrice;
@@ -107,9 +148,10 @@ export default {
           }
       )
     },
+    uploadNewImages(event) {
+      this.images.push(event);
+    },
     prepareCategories(categories) {
-      console.log(categories);
-      console.log(this.categories);
       for (let i = 0; i < categories.length; i++) {
         this.categories.push({
           id: categories[i].mainCategory.id,
@@ -123,14 +165,10 @@ export default {
             name: categories[i].listSubCategories[q].categoryName
           });
         }
-        console.log(this.categories);
       }
     }
   },
   mounted() {
-    this.timer = setInterval(() => {
-      console.log(UploadFiles.data());
-    }, 1000),
     this.getCategories();
   }
 }

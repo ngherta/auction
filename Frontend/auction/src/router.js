@@ -10,16 +10,14 @@ import NotFoundPage from "@/views/NotFoundPage";
 import ForgotPasswordPage from "@/views/auth/ForgotPasswordPage";
 import ChangePasswordPage from "@/views/auth/ChangePasswordPage";
 import Actuator from "@/components/Actuator";
-import UserTable from "@/views/profile/admin/UserTable";
 import AuctionTable from "@/views/profile/admin/AuctionTable";
 import Chart from "@/views/profile/admin/Chart";
 import TopCategories from "@/views/profile/admin/TopCategories";
 import Logging from "@/views/profile/admin/Logging";
 import CreateNewCategory from "@/views/profile/admin/CreateNewCategory";
 import AuctionsPage from '@/views/AuctionsPage';
-
-// lazy-loaded
-const Profile = () => import("./views/Profile.vue")
+import ProfilePage from '@/views/profile/ProfilePage';
+import AboutUsPage from '@/views/AboutUsPage';
 
 const routes = [
   {
@@ -52,12 +50,6 @@ const routes = [
     component: WebSocketGreetings,
   },
   {
-    path: "/profile",
-    name: "profile",
-    // lazy-loaded
-    component: Profile,
-  },
-  {
     path: "/error",
     component: NotFoundPage,
   },
@@ -76,10 +68,6 @@ const routes = [
   {
     path: "/actuator",
     component: Actuator
-  },
-  {
-    path: "/table/user",
-    component: UserTable
   },
   {
     path:"/table/auction",
@@ -102,12 +90,24 @@ const routes = [
     component: CreateNewCategory,
   },
   {
+    path: "/about-us",
+    component: AboutUsPage,
+  },
+  {
     path: "/auctions",
     component: AuctionsPage,
   },
   {
     path: "/auctions/:filter",
     component: AuctionsPage,
+  },
+  {
+    path: "/profile/account",
+    component: ProfilePage,
+  },
+  {
+    path: "/profile/user-table",
+    component: ProfilePage
   },
 ];
 

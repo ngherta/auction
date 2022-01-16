@@ -12,6 +12,20 @@ class AuctionsService {
         return axios.get(API_URL + auctionId);
     }
 
+    create(auction) {
+        return axios.post(API_URL, {
+            title: auction.title,
+            description: auction.description,
+            startPrice: auction.startPrice,
+            finishPrice: auction.finishPrice,
+            categoryIds: auction.categoryIds,
+            images: auction.images,
+            userId: auction.userId,
+            startDate: auction.startDate,
+            finishDate: auction.finishDate
+        });
+    }
+
     update(auction) {
         return axios.put(API_URL + auction.id, {
             auction,
@@ -34,16 +48,6 @@ class AuctionsService {
                 perPage: perPage
             }
         });
-    }
-
-    search(text, page, perPage) {
-        return axios.get(API_URL + 'search', {
-            params: {
-                page: page,
-                perPage: perPage,
-                text: text
-            }
-        })
     }
 
     filter(filter, page, perPage) {

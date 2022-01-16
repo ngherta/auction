@@ -98,7 +98,6 @@ export default {
       else {
         this.errors = [];
       }
-      console.log("upload", this.file.name);
       let reader = new FileReader();
       // attach listener to be called when data from file
       reader.addEventListener(
@@ -125,8 +124,9 @@ export default {
             axios(requestObj)
                 .then(response => {
                   this.results.push(response.data);
-                  console.log(this.results);
-                  console.log("public_id", this.results.public_id);
+                  console.log(response.data.secure_url)
+                  this.$emit('uploadNewImages', response.data.secure_url)
+                  // this.$store.dispatch("image/uploadImage", this.results);
                 })
                 .catch(error => {
                   this.errors.push(error);

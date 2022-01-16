@@ -55,7 +55,7 @@
                  :image="auction.images[0]"
                  :last-bid="getLastBidById(auction.id)"/>
   </div>
-  <nav aria-label="Page navigation example">
+  <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-5 mb-3">
     <ul class="pagination">
       <li class="page-item">
         <router-link class="page-link" to="/auctions"
@@ -253,7 +253,6 @@ export default {
     if (this.$route.params.filter) {
       this.filter = this.$route.params.filter;
       this.activeCategories = FilterService.getCategories(this.filter);
-      console.log(this.activeCategories);
     }
 
     this.getAuctions();

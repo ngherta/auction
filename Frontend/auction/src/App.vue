@@ -58,7 +58,7 @@ export default {
             },
             error => {
               this.$notify({
-                text: error.response.data.errorMessage,
+                text: error,
                 type: 'error'
               });
               this.connected = false;

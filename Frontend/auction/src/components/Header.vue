@@ -19,15 +19,16 @@
           <router-link to="/auction/create" class="nav-link text-center">AUCTIONS</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/home" class="nav-link text-center">ABOUT US</router-link>
+          <router-link to="/about-us" class="nav-link text-center">ABOUT US</router-link>
         </li>
 
         <!-- For Tablet Mobile. if(resizeForDevice) == true -->
         <li v-if="isMobile" class="nav-item">
-          <router-link to="/home" v-if="currentUser" class="nav-link text-center">MY PROFILE</router-link>
+          <router-link to="/profile/account" v-if="currentUser" class="nav-link text-center">MY PROFILE</router-link>
         </li>
         <li v-if="isMobile" class="nav-item">
-          <router-link to="/login" v-on:click="logOut" v-if="currentUser" class="nav-link text-center">LOGOUT</router-link>
+          <router-link to="/login" v-on:click="logOut" v-if="currentUser" class="nav-link text-center">LOGOUT
+          </router-link>
         </li>
         <li v-if="isMobile" class="nav-item">
           <router-link to="/register" v-if="!currentUser" class="nav-link text-center">REGISTER</router-link>
@@ -43,7 +44,7 @@
             MY PROFILE
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownProfile">
-            <router-link to="/home" v-if="currentUser" class="dropdown-item">My profile</router-link>
+            <router-link to="/profile/account" v-if="currentUser" class="dropdown-item">My profile</router-link>
             <button v-on:click="logOut" v-if="currentUser" class="dropdown-item">Logout</button>
             <router-link to="/register" v-if="!currentUser" class="dropdown-item">Register</router-link>
             <router-link to="/login" v-if="!currentUser" class="dropdown-item">Login</router-link>
@@ -162,5 +163,11 @@ export default {
   .img-logo {
     width: 10%;
   }
+}
+
+.nav-item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

@@ -3,7 +3,19 @@ import UserService from "../services/user.service";
 export const users = {
     namespaced: true,
     actions: {
-        resetPassword({ commit }, email) {
+        update({commit}, user) {
+            return UserService.update(user).then(
+                response => {
+                    commit('updateSuccess', response);
+                    return Promise.resolve(response);
+                },
+                error => {
+                    commit('updateFailure');
+                    return Promise.reject(error);
+                }
+            )
+        },
+        resetPassword({commit}, email) {
             return UserService.resetPassword(email).then(
                 response => {
                     commit('resetSuccess', response);
@@ -15,7 +27,7 @@ export const users = {
                 }
             );
         },
-        disableUserAfterReset({ commit }, code) {
+        disableUserAfterReset({commit}, code) {
             return UserService.disableUserAfterPasswordReset(code).then(
                 response => {
                     commit('resetSuccess', response);
@@ -27,7 +39,7 @@ export const users = {
                 }
             );
         },
-        updatePassword({ commit }, request) {
+        updatePassword({commit}, request) {
             console.log(request.code + " : " + request.password)
             return UserService.changePasswordAfterReset(request.code, request.password).then(
                 response => {
@@ -41,5 +53,12 @@ export const users = {
         }
     },
     mutations: {
+        updateSuccess(state, user) {
+            state.status.updated = true;
+            state.user = user;
+        },
+        updateFailure(state) {
+            state.status.updated = false;
+        }
     }
 };

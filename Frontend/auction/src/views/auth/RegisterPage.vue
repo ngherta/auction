@@ -139,12 +139,7 @@ export default {
       this.message = "";
       this.successful = false;
       this.loading = true;
-
-      console.log(JSON.stringify(user))
-
       user.birthday = this.date;
-
-      console.log(JSON.stringify(user))
 
       this.$store.dispatch("auth/register", user).then(
           (data) => {

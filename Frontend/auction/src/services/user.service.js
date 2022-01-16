@@ -33,6 +33,10 @@ export class UserService {
         return JSON.parse(localStorage.getItem('user'));
     }
 
+    getUserById(userId) {
+        return axios.get(API_URL + userId, {headers: authHeader()});
+    }
+
     resetPassword(email) {
         return axios.post(API_URL + 'reset/password/' + email);
     }
