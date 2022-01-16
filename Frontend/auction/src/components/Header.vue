@@ -167,7 +167,5 @@ export default {
 
 .nav-item {
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 </style>

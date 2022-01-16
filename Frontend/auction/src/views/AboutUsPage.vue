@@ -24,6 +24,13 @@
 <script>
 export default {
   name: "AboutUsPage",
+  components: {
+  },
+  data() {
+    return {
+      date: null,
+    }
+  },
   methods: {
     loggedIn() {
       if (this.$store.state.auth.status.loggedIn) {

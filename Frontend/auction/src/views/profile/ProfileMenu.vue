@@ -20,20 +20,20 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/home" class="">
+        <router-link @click="this.$emit('handleChangePage', 'auction-table')" to="/profile/auction-table" class="">
           <div class="p-3 border profile-item"
-               :class="{'profile-item-active' : activeItem == 'account-overview'}">
-            <Icon name="profile-account-overview"/>
-            <span class="pl-3 profile-item-text">Account overview</span>
+               :class="{'profile-item-active' : activeItem == 'auction-table'}">
+            <Icon name="profile-auction-table"/>
+            <span class="pl-3 profile-item-text">Auction table</span>
           </div>
         </router-link>
       </li>
       <li>
-        <router-link to="/home" class="">
+        <router-link @click="this.$emit('handleChangePage', 'statistic')" to="/profile/statistic" class="">
           <div class="p-3 border profile-item"
-               :class="{'profile-item-active' : activeItem == 'account-overview'}">
-            <Icon name="profile-account-overview"/>
-            <span class="pl-3 profile-item-text">Account overview</span>
+               :class="{'profile-item-active' : activeItem == 'statistic'}">
+            <Icon name="profile-statistic"/>
+            <span class="pl-3 profile-item-text">Statistic</span>
           </div>
         </router-link>
       </li>

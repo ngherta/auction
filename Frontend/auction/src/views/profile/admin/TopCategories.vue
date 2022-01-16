@@ -15,6 +15,9 @@ import StatisticService from "../../../services/statistic.service";
 
 export default {
   name: "Chart",
+  props: [
+    'statisticLabels', 'statisticValues'
+  ],
   components: {
     Vue3ChartJs,
   },
@@ -24,51 +27,39 @@ export default {
       type: 'bar',
       values: [],
       labels: [],
-      data: ""
+      data: "",
+      barChart: null,
     }
   },
-  setup() {
-    const beforeRenderLogic = (event) => {
-      // this.getData();
-      console.log(event)
+  created() {
+    let colors = [];
+    console.log(this.statisticLabels);
+    console.log(this.statisticValues);
+
+    for (let i = 0; i < this.statisticLabels.length; i++) {
+      colors.push('#' + (Math.random() * 0xFFFFFF << 0).toString(16));
     }
 
-
-    let labels = [];
-    let values = [];
-    let colors = [];
-    StatisticService.getStatisticData().then(
-        (response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            labels.push(response.data[i].name);
-            values.push(response.data[i].count);
-            colors.push('#'+(Math.random()*0xFFFFFF<<0).toString(16));
-          }
-          console.log(labels);
-        },
-        (error) => {
-          this.rowData = error.error;
-        }
-    );
-
-    let barChart = {
+    this.barChart = {
       id: 'bar',
       type: 'bar',
       data: {
-        // labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
-        labels: labels,
+        labels: this.statisticLabels,
         datasets: [
           {
             backgroundColor: colors,
-            // data: [40, 20, 80, 10]
-            data: values
+            data: this.statisticValues
           }
         ]
       }
     }
+  },
+  setup() {
+    const beforeRenderLogic = (event) => {
+      console.log(event);
+    }
 
     return {
-      barChart,
       beforeRenderLogic
     }
   },

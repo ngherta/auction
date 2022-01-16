@@ -109,6 +109,14 @@ const routes = [
     path: "/profile/user-table",
     component: ProfilePage
   },
+  {
+    path: "/profile/auction-table",
+    component: ProfilePage
+  },
+  {
+    path: "/profile/statistic",
+    component: ProfilePage
+  }
 ];
 
 const router = createRouter({

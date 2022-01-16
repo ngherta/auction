@@ -27,12 +27,15 @@
             <Field name="lastName" id="lastName" type="text" class="form-control"/>
             <ErrorMessage name="lastName" class="error-feedback"/>
           </div>
+
+<!--          TODO: Add some styles, because we can't add .form-control-->
           <div class="mb-3">
             <label for="birthday">BIRTHDAY:</label>
-            <Datepicker class="form-control"
-                        id="birthday"
-                        v-model="date"
-            />
+            <Datetimepicker v-model="date"
+                            class=""
+                            :enableTimePicker="false"
+                            id="birthday"/>
+
           </div>
           <div class="mb-3">
             <label for="email">EMAIL:</label>
@@ -72,7 +75,8 @@
 import {Form, Field, ErrorMessage} from "vee-validate";
 import * as yup from "yup";
 import Main_Logo from "@/components/Main_Logo";
-import Datepicker from 'vue3-datepicker';
+import Datetimepicker from 'vue3-date-time-picker';
+import 'vue3-date-time-picker/dist/main.css'
 import {ref} from 'vue'
 
 
@@ -83,7 +87,7 @@ export default {
     Field,
     ErrorMessage,
     Main_Logo,
-    Datepicker,
+    Datetimepicker,
   },
   setup() {
     return {

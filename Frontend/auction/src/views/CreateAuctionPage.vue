@@ -47,19 +47,19 @@
               <ErrorMessage name="finishPrice" class="error-feedback"/>
             </div>
           </div>
+<!--          TODO: add styles because we cant use .form-control-->
           <div class="mb-3">
             <label for="startDate">START DATE:</label>
-            <Datepicker class="form-control"
-                        id="startDate"
-                        v-model="startDate"
-            />
+            <Datetimepicker v-model="startDate"
+                            class=""
+                            id="startDate"/>
+
           </div>
           <div class="mb-3">
             <label for="finishDate">FINISH DATE:</label>
-            <Datepicker class="form-control"
-                        id="finishDate"
-                        v-model="finishDate"
-            />
+            <Datetimepicker v-model="finishDate"
+                            id="finishDate"/>
+
           </div>
           <UploadFiles @uploadNewImages="uploadNewImages($event)"/>
 
@@ -84,8 +84,8 @@ import * as yup from "yup";
 import CategoryService from "../services/category.service"
 import UploadFiles from "../views/UploadFiles";
 import AuctionService from "../services/auction.service";
-import Datepicker from 'vue3-datepicker';
-
+import Datetimepicker from 'vue3-date-time-picker';
+import 'vue3-date-time-picker/dist/main.css'
 
 export default {
   name: "CreateAuctionPage",
@@ -94,7 +94,7 @@ export default {
     Field,
     ErrorMessage,
     UploadFiles,
-    Datepicker,
+    Datetimepicker,
   },
   data() {
     const schema = yup.object().shape({});
