@@ -1,5 +1,5 @@
 package com.auction.model.enums;
 
 public enum NotificationType {
-  CREATING_AUCTION, NEW_MESSAGE
+  CREATING_AUCTION, NEW_MESSAGE, BET_CHANGED
 }

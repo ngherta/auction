@@ -24,13 +24,13 @@ public class WebSocketController {
   private final SimpMessagingTemplate messagingTemplate;
 
   @MessageMapping("/betting/{auctionId}")
-  public String betting(@DestinationVariable("auctionId") Long auctionId, @Valid BetRequest betRequest) {
+  public void betting(@DestinationVariable("auctionId") Long auctionId,
+                        @Valid BetRequest betRequest) {
     log.info(betRequest.toString());
     AuctionActionDto dto = auctionActionService.bet(betRequest.getBet(),
                                                     betRequest.getAuctionId(),
                                                     betRequest.getUserId());
     messagingTemplate.convertAndSend("/betting/" + auctionId, dto);
-    return null;
   }
 
   @MessageExceptionHandler

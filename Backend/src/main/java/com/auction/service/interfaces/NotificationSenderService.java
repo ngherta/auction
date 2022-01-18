@@ -1,7 +1,8 @@
 package com.auction.service.interfaces;
 
-import com.auction.model.AuctionEvent;
+import com.auction.model.enums.NotificationType;
+import com.auction.web.dto.response.notification.NotificationTemplate;
 
 public interface NotificationSenderService {
-  void sendNotificationOfCreatingAuction(AuctionEvent auctionEvent);
+  <T extends NotificationTemplate> void sendNotificationToUsers(T response, NotificationType notificationType);
 }

@@ -19,9 +19,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
   Boolean existsByEmail(String email);
 
 
-
   @Query(nativeQuery = true, value = "" +
-          "SSELECT to_char(u.gen_date, 'YYYY-Month')          AS date, " +
+          "SELECT to_char(u.gen_date, 'YYYY-Month')          AS date, " +
           "       to_char(u.gen_date, 'Month')                AS month, " +
           "       to_char(u.gen_date, 'YYYY')                AS year, " +
           "       COUNT(u.id)                                AS count, " +

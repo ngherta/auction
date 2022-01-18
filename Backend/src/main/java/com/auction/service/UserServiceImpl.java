@@ -15,7 +15,6 @@ import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.NotificationService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.UserDto;
-import com.auction.web.dto.request.DeleteUserRequest;
 import com.auction.web.dto.request.SignupRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +24,12 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -92,7 +93,7 @@ public class UserServiceImpl implements UserService {
     }
 
     if (!request.getEmail().equals(user.getEmail())) {
-      user.setEnabled(request.getEnabled());
+      user.setEmail(request.getEmail());
     }
 
     if (!request.getFirstName().equals(user.getFirstName())) {

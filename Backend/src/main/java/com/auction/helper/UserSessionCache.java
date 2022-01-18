@@ -1,4 +1,4 @@
-package com.auction.cache;
+package com.auction.helper;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -30,9 +31,11 @@ public class UserSessionCache {
     userBySession.invalidate(sessionId);
   }
 
-  public Set<String> getActiveUsers() {
+  public Set<Long> getActiveUsers() {
     Set<String> active = Sets.newTreeSet();
     active.addAll(userBySession.asMap().values());
-    return active;
+    return active.stream()
+            .map(Long::valueOf)
+            .collect(Collectors.toSet());
   }
 }

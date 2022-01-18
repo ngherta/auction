@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+  <changeSet id="13" author="ngh">
+    <createTable tableName="notification_message">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="message" type="varchar(255)"></column>
+      <column name="type" type="varchar(20)"></column>
+      <column name="gen_date" type="timestamp"></column>
+    </createTable>
+
+    <createTable tableName="notification_message_user">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="user_id" type="int8"></column>
+      <column name="notification_message_id" type="int8"></column>
+      <column name="seen" type="bool"></column>
+    </createTable>
+
+    <rollback>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

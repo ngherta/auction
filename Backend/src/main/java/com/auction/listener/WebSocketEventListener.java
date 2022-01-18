@@ -1,6 +1,6 @@
 package com.auction.listener;
 
-import com.auction.cache.UserSessionCache;
+import com.auction.helper.UserSessionCache;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;

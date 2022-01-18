@@ -16,5 +16,6 @@
   <include file="db/migration/lot_10.xml"/>
   <include file="db/migration/lot_11.xml"/>
   <include file="db/migration/lot_12.xml"/>
+  <include file="db/migration/lot_13.xml"/>
   <include file="db/migration/lot_15.xml"/>
 </databaseChangeLog>
