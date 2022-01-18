@@ -1,6 +1,5 @@
 <template>
-  <top-categories :statisticValues="this.topCategoriesValues"
-                  :statisticLabels="this.topCategoriesLabels"/>
+  <top-categories :data="this.topCategoriesData"/>
 </template>
 
 <script>
@@ -14,20 +13,14 @@ export default {
   },
   data() {
     return {
-      topCategoriesLabels: [],
-      topCategoriesValues: [],
+      topCategoriesData: null
     }
   },
   methods: {
     getStatisticData() {
       StatisticService.getStatisticData().then(
           (response) => {
-            for (let i = 0; i < response.data.length; i++) {
-              this.topCategoriesLabels.push(response.data[i].name);
-              this.topCategoriesValues.push(response.data[i].count);
-              console.log(this.topCategoriesLabels);
-              console.log(this.topCategoriesLabels);
-            }
+            this.topCategoriesData = response.data.categoryCount;
           },
           (error) => {
             this.rowData = error.error;

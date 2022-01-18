@@ -108,24 +108,36 @@
     </div>
 
     <div class="w-50 p-3 border mt-5">
-      <h3 class="text-center mb-4">MAKE A BID</h3>
+      <h3 v-if="this.$store.state.auth.status.loggedIn" class="text-center mb-4">MAKE A BID</h3>
+      <h3 v-if="!this.$store.state.auth.status.loggedIn" class="text-center mb-4">List of bids:</h3>
       <div>
-        <Form @submit="handleBet" :validation-schema="schema">
+        <Form v-if="this.$store.state.auth.status.loggedIn" @submit="handleBet" :validation-schema="schema">
           <div class="row">
             <div class="col input-group">
-              <Field name="bid" id="bid" type="number" class="form-control"/>
+              <Field @input="checkBetForChangeColor"
+                     v-model="betInput"
+                     name="bid"
+                     id="bid"
+                     type="number"
+                     class="form-control"/>
               <div class="input-group-append">
-                <div class="input-group-text">$</div>
+                <div class="input-group-text"
+                     :class="{
+                  'text-red' : this.isWrongBet == true,
+                  'text-green' : this.isWrongBet == false
+                     }"
+                >$
+                </div>
               </div>
               <!--          <ErrorMessage name="bid" class="error-feedback" />-->
             </div>
 
             <div class="d-flex col" style="flex-basis: min-content">
-              <button class="btn btn-primary btn-block mt-0 mr-3" :disabled="loading">
+              <button class="btn btn-primary btn-block mt-0 mr-3"
+                      :disabled="loading || isWrongBet">
               <span
                   v-show="loading"
-                  class="spinner-border spinner-border-sm"
-              ></span>
+                  class="spinner-border spinner-border-sm"></span>
                 BID
               </button>
               <button class="btn btn-primary btn-block mt-0" :disabled="loading">
@@ -205,21 +217,46 @@ export default {
       bid: "",
       images: [],
       schema,
+      betInput: null,
+      isWrongBet: null
     };
   },
   methods: {
     getUser() {
       return JSON.parse(localStorage.getItem('user'));
     },
-    handleBet(bet) {
-      console.log(bet.bid);
+    checkBetForChangeColor() {
+      console.log(this.betInput <= this.bids.findLast(x => x) * 1.05);
+      console.log(this.betInput);
+      console.log(this.bids.findLast(x => x).bid);
+      if (this.bids.length !== 0) {
+        // if (this.betInput == null || this.betInput == '') {
+        //   this.isWrongBet = null;
+        // } else
+        if (this.betInput <= this.bids.findLast(x => x).bid * 1.05) {
+          this.isWrongBet = true;
+        } else {
+          this.isWrongBet = false;
+        }
+      } else {
+        // if (this.betInput == null || this.betInput == '') {
+        //   this.isWrongBet = null;
+        // } else
+        if (this.betInput <= this.content.startPrice * 1.05) {
+          this.isWrongBet = true;
+        } else {
+          this.isWrongBet = false;
+        }
+      }
+    },
+    handleBet() {
       this.loading = true;
-
+      console.log(this.betInput);
       if (this.stompClient && this.stompClient.connected) {
         this.stompClient.send("/app/betting/" + this.auctionId, JSON.stringify({
           'auctionId': String(this.auctionId),
           'userId': this.getUser().userDto.id,
-          'bet': bet.bid
+          'bet': this.betInput
         }));
       }
       this.loading = false;
@@ -228,17 +265,16 @@ export default {
       this.socket = new SockJS("http://localhost:8080/websocket");
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
-          {userId: "17"},
-          frame => {
+          {userId: this.userId},
+          () => {
             this.connected = true;
-            console.log(frame);
             this.stompClient.subscribe("/betting/" + this.auctionId, tick => {
               this.bids.push(JSON.parse(tick.body));
-              console.log(tick.body)
+              console.log("receive response")
             });
 
             this.stompClient.subscribe("/user/betting/errors", tick => {
-              console.log("tick.body = " + tick.body);
+              console.log("tick.error");
               this.$notify({
                 type: 'error',
                 text: tick.body.replaceAll('"', ''),
@@ -320,5 +356,13 @@ export default {
   object-fit: cover;
   width: auto;
   height: 500px;
+}
+
+.text-green {
+  color: green;
+}
+
+.text-red {
+  color: red;
 }
 </style>

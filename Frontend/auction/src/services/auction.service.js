@@ -12,6 +12,24 @@ class AuctionsService {
         return axios.get(API_URL + auctionId);
     }
 
+    getByOwner(userId, page, perPage) {
+        return axios.get(API_URL + 'owner/' + userId, {
+            params: {
+                page: page,
+                perPage: perPage
+            }
+        })
+    }
+
+    getByParticipant(userId, page, perPage) {
+        return axios.get(API_URL + 'participant/' + userId, {
+            params: {
+                page: page,
+                perPage: perPage
+            }
+        })
+    }
+
     create(auction) {
         return axios.post(API_URL, {
             title: auction.title,
@@ -22,7 +40,9 @@ class AuctionsService {
             images: auction.images,
             userId: auction.userId,
             startDate: auction.startDate,
-            finishDate: auction.finishDate
+            finishDate: auction.finishDate,
+            auctionType: auction.auctionType,
+            charityPercent : auction.charityPercent
         });
     }
 

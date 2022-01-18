@@ -116,6 +116,14 @@ const routes = [
   {
     path: "/profile/statistic",
     component: ProfilePage
+  },
+  {
+    path: "/profile/my-auctions",
+    component: ProfilePage
+  },
+  {
+    path: "/profile/create-category",
+    component: ProfilePage
   }
 ];
 

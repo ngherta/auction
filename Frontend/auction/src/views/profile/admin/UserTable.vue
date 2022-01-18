@@ -85,8 +85,7 @@ export default {
     reRenderUserStatus(params) {
       if (params.data.enabled == true) {
         return 'Enabled';
-      }
-      else if (params.data.enabled == false) {
+      } else if (params.data.enabled == false) {
         return 'Disabled'
       }
     },
@@ -121,15 +120,9 @@ export default {
         }
 
         if (action === 'update') {
-          console.log(params);
-          console.log(params.node.data.enabled);
-          console.log(params.node.data.enabled == "Disabled");
           if (params.node.data.enabled == "Enabled") {
             params.node.data.enabled = true;
-            console.log("Hello")
-          }
-          else if (params.node.data.enabled == "Disabled") {
-            console.log("ENter")
+          } else if (params.node.data.enabled == "Disabled") {
             params.node.data.enabled = false;
           }
           UserService.update(params.node.data).then(
@@ -202,15 +195,19 @@ export default {
       {field: 'id', minWidth: 150, sortable: true, filter: true},
       {field: 'firstName', minWidth: 90, sortable: true, filter: true},
       {field: 'lastName', minWidth: 90, sortable: true, filter: true},
-      {field: 'email', minWidth: 90, sortable: true, filter: true,
-        cellRenderer: this.creatLink},
+      {
+        field: 'email', minWidth: 90, sortable: true, filter: true,
+        cellRenderer: this.creatLink
+      },
       {field: 'birthday', minWidth: 90, sortable: true, filter: true},
-      {field: 'enabled', minWidth: 90, sortable: true, filter: true,
+      {
+        field: 'enabled', minWidth: 90, sortable: true, filter: true,
         cellRenderer: this.reRenderUserStatus,
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: ['Enabled', 'Disabled'],
-        },},
+        },
+      },
 
       {
         headerName: 'action',

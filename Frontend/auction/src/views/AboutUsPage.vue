@@ -3,7 +3,7 @@
     <h1 class="h1">About us</h1>
     <p>
       Welcome to the LOT
-      <span v-if="loggedIn">
+      <span v-if="this.loggedInValue">
         , <b>{{
           this.$store.state.auth.user.userDto.firstName + ' ' + this.$store.state.auth.user.userDto.lastName
         }}</b>
@@ -24,11 +24,11 @@
 <script>
 export default {
   name: "AboutUsPage",
-  components: {
-  },
+  components: {},
   data() {
     return {
       date: null,
+      loggedInValue: false,
     }
   },
   methods: {
@@ -39,6 +39,9 @@ export default {
         return false;
       }
     },
+  },
+  created() {
+    this.loggedInValue = this.loggedIn();
   }
 }
 </script>

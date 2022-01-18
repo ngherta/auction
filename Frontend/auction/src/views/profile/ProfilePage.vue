@@ -1,14 +1,16 @@
 <template>
-  <div class="row ml-auto mr-auto mt-5">
+  <div class="row justify-content-between ml-auto mr-auto mt-5">
     <div class="col-2">
       <profile-menu :active-item="currentPage"
                     @handleChangePage="handleChangePage($event)"/>
     </div>
-    <div class="col-9">
+    <div class="col-8">
       <account v-if="this.currentPage == 'account'"></account>
       <user-table v-else-if="this.currentPage == 'user-table'"/>
       <auction-table v-else-if="this.currentPage == 'auction-table'"/>
       <statistic-page v-else-if="this.currentPage == 'statistic'"/>
+      <user-auction-list v-else-if="this.currentPage == 'my-auctions'"/>
+      <create-new-category v-else-if="this.currentPage == 'create-category'"/>
     </div>
   </div>
 </template>
@@ -19,6 +21,8 @@ import Account from './items/Account';
 import UserTable from './admin/UserTable';
 import AuctionTable from './admin/AuctionTable';
 import StatisticPage from './StatisticPage';
+import UserAuctionList from './items/UserAuctionList';
+import CreateNewCategory from './admin/CreateNewCategory';
 
 export default {
   name: "ProfilePage",
@@ -27,7 +31,9 @@ export default {
     Account,
     UserTable,
     AuctionTable,
+    UserAuctionList,
     StatisticPage,
+    CreateNewCategory,
   },
   data() {
     return {

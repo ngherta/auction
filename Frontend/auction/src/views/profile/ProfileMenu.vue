@@ -11,7 +11,7 @@
         </router-link>
       </li>
       <li>
-        <router-link @click="this.$emit('handleChangePage', 'user-table')"  to="/profile/user-table" class="">
+        <router-link @click="this.$emit('handleChangePage', 'user-table')" to="/profile/user-table" class="">
           <div class="p-3 border profile-item"
                :class="{'profile-item-active' : activeItem == 'user-table'}">
             <Icon name="profile-auction-table"/>
@@ -38,11 +38,20 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/home" class="">
+        <router-link @click="this.$emit('handleChangePage', 'my-auctions')" to="/profile/my-auctions" class="">
           <div class="p-3 border profile-item"
-               :class="{'profile-item-active' : activeItem == 'account-overview'}">
+               :class="{'profile-item-active' : activeItem == 'my-auctions'}">
             <Icon name="profile-account-overview"/>
-            <span class="pl-3 profile-item-text">Account overview</span>
+            <span class="pl-3 profile-item-text">My auctions</span>
+          </div>
+        </router-link>
+      </li>
+      <li>
+        <router-link @click="this.$emit('handleChangePage', 'create-category')" to="/profile/create-category" class="">
+          <div class="p-3 border profile-item"
+               :class="{'profile-item-active' : activeItem == 'create-category'}">
+            <Icon name="profile-account-overview"/>
+            <span class="pl-3 profile-item-text">New categories</span>
           </div>
         </router-link>
       </li>

@@ -14,7 +14,8 @@
                   type="submit"
                   :disabled="connected == true"
                   @click.prevent="connect"
-              >Connect</button>
+              >Connect
+              </button>
               <button
                   id="disconnect"
                   class="btn btn-default"
@@ -43,7 +44,8 @@
                 class="btn btn-default"
                 type="submit"
                 @click.prevent="send"
-            >Send</button>
+            >Send
+            </button>
           </form>
         </div>
       </div>
@@ -76,6 +78,7 @@
 <script>
 import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
+
 export default {
   name: "websockets",
   data() {
@@ -89,25 +92,19 @@ export default {
     getUser() {
       return JSON.parse(localStorage.getItem('user'));
     },
-    send() {
-      console.log("Send message:" + this.send_message);
-      if (this.stompClient && this.stompClient.connected) {
-        console.log(this.send_message);
-        this.stompClient.send("/app/hello",  JSON.stringify({'auctionId': String(1006), 'userId': this.getUser().userDto.id, 'bet' : String(this.send_message)}));
-      }
-    },
     connect() {
       this.socket = new SockJS("http://localhost:8080/websocket");
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
-          {"username" : this.getUser().userDto.id},
-          frame => {
+          {"username": this.getUser().userDto.id},
+          () => {
             this.connected = true;
-            console.log("NGH" + frame);
-            // this.received_messages = BettingService.getBidsForByAuction(1006);
-
-            console.log("qq" + this.received_messages);
-            this.stompClient.subscribe("/notification/" + this.getUser().userDto.id + "/secured/user", tick => {
+            this.stompClient.subscribe("/notification/" + this.getUser().userDto.id, tick => {
+              console.log("tick.body = " + tick.body);
+              this.received_messages.push(JSON.parse(tick.body));
+              console.log(tick)
+            });
+            this.stompClient.subscribe("/notification/", tick => {
               console.log("tick.body = " + tick.body);
               this.received_messages.push(JSON.parse(tick.body));
               console.log(tick)
@@ -125,8 +122,8 @@ export default {
             frame => {
               console.log(frame);
             },
-            {"username" : this.getUser().userDto.id},
-            {"username" : 4}
+            {"username": this.getUser().userDto.id},
+            {"username": 4}
         );
       }
       this.connected = false;
@@ -136,7 +133,7 @@ export default {
     },
   },
   mounted() {
-    // this.connect();
+    this.connect();
   }
 };
 </script>

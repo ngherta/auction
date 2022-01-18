@@ -1,10 +1,13 @@
 <template>
   <div class="container">
+    <button type="button" v-on:click="createNewSubCategory" class="btn btn-primary btn-block">
+      Update
+    </button>
+
     <ul>
       <li v-for="(item,index) in data" :key="index" class="">
         {{ item.mainCategory.categoryName }}
         <form class="">
-          <button type="button" v-on:click="createNewSubCategory">Update</button>
           <div class="form-group">
             <label class="text-gray-600 font-semibold text-lg" hidden>Create new subcategory</label>
             <div
@@ -67,11 +70,10 @@
 
 <script>
 import CategoryService from '../../../services/category.service'
-// import {Form, Field} from "vee-validate";
 
 export default {
   name: "CreateNewCategory",
-  components:{
+  components: {
     // Form,
     // Field,
   },
@@ -113,7 +115,10 @@ export default {
             this.initButtons(response.data);
           },
           (error) => {
-            console.log(error);
+            this.$notify({
+              text: error.response.data.errorMessage,
+              type: 'error'
+            })
           }
       );
     },
