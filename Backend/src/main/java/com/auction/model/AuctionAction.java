@@ -4,11 +4,10 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "auction_action")
-//@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @Builder
@@ -28,18 +27,4 @@ public class AuctionAction extends AbstractEntity {
 
     @Column(name = "gen_date")
     private LocalDateTime genDate;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        AuctionAction that = (AuctionAction) o;
-        return bet.equals(that.bet) && super.equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), bet);
-    }
 }

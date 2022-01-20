@@ -1,11 +1,10 @@
 package com.auction.helper;
 
-import com.auction.cache.UserSessionCache;
 import com.auction.model.AuctionEvent;
 import com.auction.model.enums.AuctionStatus;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.AuctionEventSortService;
-import com.auction.service.interfaces.NotificationSenderService;
+import com.auction.service.interfaces.NotificationMessageService;
 import com.auction.service.interfaces.TokenConfirmationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Component;
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Set;
 
 @Component
 @Slf4j
@@ -24,8 +22,7 @@ public class ScheduledTasks {
 
   private final AuctionEventService auctionEventService;
   private final AuctionEventSortService auctionEventSortService;
-  private final UserSessionCache userServiceCache;
-  private final NotificationSenderService notificationService;
+  private final NotificationMessageService notificationMessageService;
   private final TokenConfirmationService tokenConfirmationService;
 
   @Scheduled(cron = "0 0/1 * * * ?")
@@ -36,11 +33,6 @@ public class ScheduledTasks {
       log.info("Found auction events for finishing.");
       auctionEventService.changeStatusToFinished(list);
     }
-  }
-
-  @Scheduled(fixedDelay = 2000)
-  public void getActiveUser() {
-    Set<String> activeUsers = userServiceCache.getActiveUsers();
   }
 
   @Scheduled(fixedDelay = 60000)
@@ -63,5 +55,10 @@ public class ScheduledTasks {
     log.info("Start sorting AuctionEvents...");
     auctionEventSortService.sortAuctionEvent();
     log.info("Finish sorting AuctionEvents...");
+  }
+
+  @Scheduled(fixedRate = 60*60*1000)
+  public void deleteAllNotifications() {
+    notificationMessageService.deleteOldMessage();
   }
 }

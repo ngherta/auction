@@ -14,9 +14,13 @@ import com.auction.service.interfaces.AuctionActionService;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionActionDto;
+import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.response.LastBidResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +38,7 @@ class AuctionActionServiceImpl implements AuctionActionService {
   private final AuctionEventRepository auctionEventRepository;
   private final AuctionEventService auctionEventService;
   private final Mapper<AuctionAction, AuctionActionDto> auctionActionToDtoMapper;
+  private final Mapper<AuctionEvent, AuctionEventDto> auctionEventDtoMapper;
   private final UserService userService;
 
 
@@ -116,6 +121,13 @@ class AuctionActionServiceImpl implements AuctionActionService {
   @Override
   public List<LastBidProjection> getLasBidsFromId(List<Long> auctionIds) {
     return auctionActionRepository.getLastBidByAuctionIds(auctionIds);
+  }
+
+  @Override
+  public Page<AuctionEventDto> getAuctionsByParticipant(Long userId, int page, int perPage) {
+    Pageable pageable = PageRequest.of(page - 1, perPage);
+    return auctionActionRepository.findAuctionActionByParticipantAndGroupByAuction(userId, pageable)
+            .map(e -> auctionEventDtoMapper.map(e.getAuctionEvent()));
   }
 
   private Double getLastBidFromListById(List<LastBidProjection> list, Long auctionId) {

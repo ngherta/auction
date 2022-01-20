@@ -10,6 +10,7 @@ import com.auction.model.mapper.Mapper;
 import com.auction.repository.UserRepository;
 import com.auction.repository.UserRoleRepository;
 import com.auction.service.interfaces.AuthenticationService;
+import com.auction.service.interfaces.NotificationGenerationService;
 import com.auction.service.interfaces.NotificationService;
 import com.auction.service.interfaces.TokenConfirmationService;
 import com.auction.service.interfaces.UserService;
@@ -48,6 +49,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
   private final NotificationService notificationService;
   private final Mapper<User, UserDto> userToDtoMapper;
   private final List<UserValidator> validators;
+  private final NotificationGenerationService notificationGenerationService;
 
 
   @Override
@@ -61,6 +63,8 @@ class AuthenticationServiceImpl implements AuthenticationService {
     User user = userRepository.findByEmail(loginRequest.getEmail())
             .orElseThrow(() -> new UserNotFoundException("User with email[" + loginRequest.getEmail() + "] doesn't exist!"));
     UserDto userDto = userToDtoMapper.map(user);
+
+    notificationGenerationService.generateNotificationsForUser(user);
     return new JwtResponse(jwt, userDto);
   }
 

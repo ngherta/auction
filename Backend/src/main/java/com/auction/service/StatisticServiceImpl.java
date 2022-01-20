@@ -6,6 +6,7 @@ import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.StatisticService;
 import com.auction.web.dto.response.statistic.CategoryCount;
+import com.auction.web.dto.response.statistic.Statistic;
 import com.auction.web.dto.response.statistic.UserCountPerMonth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,15 @@ import java.util.List;
 public class StatisticServiceImpl implements StatisticService {
   private final UserRepository userRepository;
   private final AuctionEventRepository auctionEventRepository;
+
+  @Transactional(readOnly = true)
+  public Statistic getStatistic() {
+    Statistic statistic = new Statistic();
+    statistic.setCategoryCount(getCategoryCount());
+    statistic.setSubCategoryCount(getSubCategoryCount());
+    statistic.setUserCountPerMonth(getCountOfUsersPerMouth());
+    return statistic;
+  }
 
   @Override
   @Transactional(readOnly = true)

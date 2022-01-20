@@ -2,8 +2,6 @@ package com.auction.repository;
 
 import com.auction.model.AuctionEvent;
 import com.auction.model.User;
-import com.auction.model.enums.AuctionStatus;
-import com.auction.model.mapper.Mapper;
 import com.auction.projection.AuctionEventSortProjection;
 import com.auction.projection.CategoryCountProjection;
 import org.springframework.data.domain.Page;
@@ -14,7 +12,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -48,12 +45,7 @@ public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long
 
   List<AuctionEvent> findByUser(User user);
 
-  @Query(nativeQuery = true, value =
-          "SELECT a.* FROM auction AS a " +
-                  "WHERE a.status in " +
-                  "AND a.title LIKE %:search%")
-  Page<AuctionEvent> search(@Param("search") String message,
-                            Pageable pageable);
+  Page<AuctionEvent> findByUser(User user, Pageable pageable);
 
   @Query(nativeQuery = true, value = "" +
           "SELECT ae.* FROM auction AS ae " +

@@ -59,13 +59,11 @@ class PaymentServiceImpl implements PaymentService {
   @SneakyThrows
   public void execute(String paymentId, String payerId) {
     Payment payment = paypalService.executePayment(paymentId, payerId);
-    System.out.println(payment.toJSON());
 
     PaymentOrder paymentOrder = paymentOrderRepository.findByPaymentId(paymentId)
             .orElseThrow(() -> new PaymentNotFound("Payment order[" + paymentId + "] doesn't exist!"));
 
     if (payment.getState().equals("completed") || payment.getState().equals("approved")) {
-      System.out.println("Payment executed!");
       paymentOrder.setStatus(PaymentStatus.COMPLETED);
       paymentOrderRepository.save(paymentOrder);
     }

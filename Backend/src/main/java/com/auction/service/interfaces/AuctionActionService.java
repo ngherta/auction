@@ -3,7 +3,9 @@ package com.auction.service.interfaces;
 import com.auction.model.AuctionEvent;
 import com.auction.projection.LastBidProjection;
 import com.auction.web.dto.AuctionActionDto;
+import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.response.LastBidResponse;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -17,4 +19,7 @@ public interface AuctionActionService {
   List<LastBidResponse> getLastBidForAuction(List<Long> listOfAuctionsIds);
 
   List<LastBidProjection> getLasBidsFromId(List<Long> auctionIds);
+
+  Page<AuctionEventDto> getAuctionsByParticipant(Long userId, int page, int perPage);
+
 }

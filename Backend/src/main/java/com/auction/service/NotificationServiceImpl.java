@@ -4,10 +4,14 @@ import com.auction.model.Notification;
 import com.auction.model.NotificationMessage;
 import com.auction.model.User;
 import com.auction.model.enums.NotificationType;
+import com.auction.model.mapper.Mapper;
 import com.auction.projection.NotificationProjection;
 import com.auction.repository.NotificationMessageRepository;
+import com.auction.repository.NotificationMessageUserRepository;
 import com.auction.repository.NotificationRepository;
+import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.NotificationService;
+import com.auction.web.dto.NotificationMessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +26,6 @@ import java.util.stream.Collectors;
 class NotificationServiceImpl implements NotificationService {
 
   private final NotificationRepository notificationRepository;
-  private final NotificationMessageRepository notificationMessageRepository;
 
   @Override
   @Transactional
@@ -52,12 +54,6 @@ class NotificationServiceImpl implements NotificationService {
     return notificationRepository.findActiveNotificationByUser(user.getId());
   }
 
-  @Override
-  @Transactional
-  public List<NotificationMessage> findNotificationMessageForCreateByUser(User user, List<NotificationType> notificationTypes) {
-    List<String> list = notificationTypes.stream().map(Enum::name).collect(Collectors.toList());
-    return notificationMessageRepository.findUncreatedNotificationForUser(user.getId(), list);
-  }
 
   @Override
   @Transactional

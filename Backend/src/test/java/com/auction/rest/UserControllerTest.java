@@ -15,6 +15,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.http.MediaType;
+
+import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -23,6 +26,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -66,9 +71,26 @@ class UserControllerTest {
   @Test
   @WithMockUser(username = "test", roles = "ADMIN")
   void getUser_whenInvoked_returns200() throws Exception {
-    user.setId(1000L);
-    mockMvc.perform(get("/api/users/{id}", user.getId()))
-            .andExpect(status().isOk());
+    UserDto userDto = UserDto.builder()
+            .id(123L)
+            .birthday(LocalDateTime.now().toString())
+            .email("email@test.com")
+            .enabled(true)
+            .firstName("name")
+            .lastName("lastName")
+            .build();
+
+    when(userService.getById(any(Long.class))).thenReturn(userDto);
+
+    mockMvc.perform(get("/api/users/{id}", userDto.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("id").value(userDto.getId()))
+            .andExpect(jsonPath("birthday").value(userDto.getBirthday()))
+            .andExpect(jsonPath("email").value(userDto.getEmail()))
+            .andExpect(jsonPath("enabled").value(userDto.getEnabled()))
+            .andExpect(jsonPath("firstName").value(userDto.getFirstName()))
+            .andExpect(jsonPath("lastName").value(userDto.getLastName()));
   }
 
   @Test

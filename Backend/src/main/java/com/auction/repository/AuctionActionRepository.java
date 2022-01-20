@@ -4,6 +4,8 @@ import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
 import com.auction.model.User;
 import com.auction.projection.LastBidProjection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,6 +20,12 @@ public interface AuctionActionRepository extends JpaRepository<AuctionAction, Lo
   Optional<AuctionAction> findTopByAuctionEventOrderByBetDesc(AuctionEvent auctionEvent);
 
   List<AuctionAction> findByAuctionEvent(AuctionEvent auctionEvent);
+
+  @Query(nativeQuery = true, value = "" +
+          "SELECT * FROM auction_action aa " +
+          "WHERE aa.user_id = :userId " +
+          "GROUP BY aa.auction_id ")
+  Page<AuctionAction> findAuctionActionByParticipantAndGroupByAuction(@Param("userId") Long userId, Pageable pageable);
 
   @Query(nativeQuery = true, value =
           "SELECT * FROM auction_action AS aa " +

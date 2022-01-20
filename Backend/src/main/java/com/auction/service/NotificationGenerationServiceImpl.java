@@ -11,6 +11,7 @@ import com.auction.repository.NotificationMessageRepository;
 import com.auction.repository.NotificationMessageUserRepository;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.NotificationGenerationService;
+import com.auction.service.interfaces.NotificationMessageService;
 import com.auction.service.interfaces.NotificationSenderService;
 import com.auction.service.interfaces.NotificationService;
 import com.auction.web.dto.response.notification.AuctionNotificationDto;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 public class NotificationGenerationServiceImpl implements NotificationGenerationService {
 
   private final NotificationSenderService notificationSenderService;
+  private final NotificationMessageService notificationMessageService;
   private final NotificationService notificationService;
   private final NotificationMessageUserRepository notificationMessageUserRepository;
   private final NotificationMessageRepository notificationMessageRepository;
@@ -58,7 +60,7 @@ public class NotificationGenerationServiceImpl implements NotificationGeneration
     response.setNotificationType(NotificationType.CREATING_AUCTION);
     response.setMessage(auctionEvent.getUser().getFirstName() + " " + auctionEvent.getUser().getLastName() +
                                 " created new auction " + auctionEvent.getTitle());
-    notificationSenderService.sendNotificationToUsers(response, NotificationType.CREATING_AUCTION);
+    notificationSenderService.sendNotificationToActiveUsers(response, NotificationType.CREATING_AUCTION);
   }
 
   @Transactional
@@ -77,7 +79,8 @@ public class NotificationGenerationServiceImpl implements NotificationGeneration
       notifications.add(notificationForUser);
     });
     notificationMessageUserRepository.saveAll(notifications);
-    ///SENDER
+
+    notificationSenderService.sendNotificationToUsers(message, activeUsers);
   }
 
   @Transactional
@@ -87,24 +90,7 @@ public class NotificationGenerationServiceImpl implements NotificationGeneration
     List<NotificationType> typeList = notificationSettings.stream()
             .map(NotificationProjection::getNotificationType).collect(Collectors.toList());
 
-    List<NotificationMessage> messages = notificationService.findNotificationMessageForCreateByUser(user, typeList);
-    createNotificationMessagesForUser(user, messages);
-  }
-
-  @Transactional
-  @Override
-  public void createNotificationMessagesForUser(User user, List<NotificationMessage> messages) {
-    List<NotificationMessageUser> notificationMessageUsers = new ArrayList<>();
-
-    messages.forEach(e -> {
-      NotificationMessageUser notification = NotificationMessageUser.builder()
-              .notificationMessage(e)
-              .seen(false)
-              .user(user)
-              .build();
-      notificationMessageUsers.add(notification);
-    });
-
-    notificationMessageUserRepository.saveAll(notificationMessageUsers);
+    List<NotificationMessage> messages = notificationMessageService.findNotificationMessageForCreateByUser(user, typeList);
+    notificationMessageService.createNotificationMessagesForUser(user, messages);
   }
 }

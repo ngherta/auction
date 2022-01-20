@@ -1,7 +1,6 @@
 package com.auction.web.dto.request;
 
 import com.auction.model.enums.AuctionType;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -16,15 +15,15 @@ public class AuctionEventRequest {
     private String title;
     @NotBlank
     private String description;
-    @NotBlank
+    @NotNull
     private AuctionType auctionType;
     private Double startPrice;
     private Double finishPrice;
     @NotNull
     private Long userId;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm")
     private LocalDateTime startDate;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm")
     private LocalDateTime finishDate;
     private Double charityPercent;
     private List<String> images;

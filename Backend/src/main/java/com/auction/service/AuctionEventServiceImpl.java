@@ -20,6 +20,7 @@ import com.auction.service.interfaces.AuctionSpecificationFilter;
 import com.auction.service.interfaces.AuctionWinnerService;
 import com.auction.service.interfaces.CategoryService;
 import com.auction.service.interfaces.MailService;
+import com.auction.service.interfaces.NotificationGenerationService;
 import com.auction.service.interfaces.NotificationSenderService;
 import com.auction.service.interfaces.PaymentService;
 import com.auction.service.interfaces.UserService;
@@ -52,7 +53,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
   private final AuctionWinnerRepository auctionWinnerRepository;
   private final AuctionActionRepository auctionActionRepository;
   private final AuctionWinnerService auctionWinnerService;
-  private final NotificationSenderService notificationSenderService;
+  private final NotificationGenerationService notificationGenerationService;
   private final AuctionEventSortRepository auctionEventSortRepository;
   private final CategoryService categoryService;
   private final UserService userService;
@@ -64,10 +65,10 @@ class AuctionEventServiceImpl implements AuctionEventService {
 
   private void checkDateForAuction(AuctionEventRequest request) {
     if (request.getStartDate().isBefore(LocalDateTime.now())) {
-      throw new DateTimeException("Start date should be before" + LocalDateTime.now());
+      throw new DateTimeException("Start date should be before " + LocalDateTime.now());
     }
     else if (request.getFinishDate().isBefore(LocalDateTime.now())) {
-      throw new DateTimeException("Finish date should be before" + LocalDateTime.now());
+      throw new DateTimeException("Finish date should be before " + LocalDateTime.now());
     }
 
     if (request.getStartDate().isAfter(request.getFinishDate())) {
@@ -100,7 +101,9 @@ class AuctionEventServiceImpl implements AuctionEventService {
             .categories(subCategoryList)
             .build();
 
-    if (request.getCharityPercent() == 0) {
+    if (request.getAuctionType() == AuctionType.CHARITY &&
+            request.getCharityPercent() != null &&
+            request.getCharityPercent() == 0) {
       auctionEvent.setAuctionType(AuctionType.COMMERCIAL);
     }
     else if (request.getCharityPercent() > 0) {
@@ -112,7 +115,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
     auctionEvent = auctionEventRepository.save(auctionEvent);
 
     auctionChatService.create(auctionEvent);
-    notificationSenderService.sendNotificationOfCreatingAuction(auctionEvent);
+    notificationGenerationService.sendNotificationOfCreatingAuction(auctionEvent);
     return auctionEventToDtoMapper.map(auctionEvent);
   }
 
@@ -188,7 +191,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
 
 //        return auctionEventRepository.search(message, pageable, specification).map(auctionEventToDtoMapper::map);
 //    return auctionEventRepository.findAll(specification, pageable).map(auctionEventToDtoMapper::map);
-      return null;
+    return null;
   }
 
   @Override
@@ -319,12 +322,22 @@ class AuctionEventServiceImpl implements AuctionEventService {
     Pageable pageable = PageRequest.of(page - 1, perPage);
     Specification<AuctionEvent> specification = null;
 //    try {
-      specification = auctionSpecificationFilter.createFilter(filter);
+    specification = auctionSpecificationFilter.createFilter(filter);
 //    }
 //    catch (Exception e) {
 //      throw new SpecificationException("Filter parameter is wrong!");
 //    }
     return auctionEventRepository.findAll(specification, pageable).map(auctionEventToDtoMapper::map);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<AuctionEventDto> getAllByOwner(Long userId,
+                                             int page,
+                                             int perPage) {
+    User user = userService.findById(userId);
+    Pageable pageable = PageRequest.of(page - 1, perPage);
+    return auctionEventRepository.findByUser(user, pageable).map(auctionEventToDtoMapper::map);
   }
 
   @Override

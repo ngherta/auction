@@ -1,0 +1,2 @@
+INSERT INTO public.auction (title,"type",description,start_date,finish_date,start_price,finish_price,status,charity_percent,gen_date,gen_user_id) VALUES
+    ('Nike Air Jordan 1','COMMERCIAL','Best shoes!','2021-01-12 18:30:31.291387','2021-01-15 18:30:31.291387',2.0,100.0,'ACTIVE',0.0,'2022-01-15 18:30:31.291387',9999);

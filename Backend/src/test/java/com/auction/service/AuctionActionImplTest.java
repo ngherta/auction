@@ -15,6 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,12 +46,11 @@ class AuctionActionImplTest {
 
   @BeforeEach
   public void setUp() {
-    //SUT
-    auctionActionService = new AuctionActionServiceImpl(auctionActionRepository,
-                                                        auctionEventRepository,
-                                                        auctionEventService,
-                                                        auctionActionToDtoMapper,
-                                                        userService);
+//    auctionActionService = new AuctionActionServiceImpl(auctionActionRepository,
+//                                                        auctionEventRepository,
+//                                                        auctionEventService,
+//                                                        auctionActionToDtoMapper,
+//                                                        userService);
     auctionEvent = AuctionEvent.builder()
             .title("title")
             .statusType(AuctionStatus.ACTIVE)
@@ -59,6 +60,7 @@ class AuctionActionImplTest {
             .auctionEvent(auctionEvent)
             .bet(10D)
             .build();
+    auctionAction.setId(1000L);
   }
 
   @Test
@@ -106,6 +108,24 @@ class AuctionActionImplTest {
     String actualMessage = exception.getMessage();
 
     assertThat(actualMessage.contains(expectedMessage));
+  }
+
+  @Test
+  void getAllByAuctionId_whenInvoked_returnListOfAuctionAction() {
+    Long auctionId = 2000L;
+    List<AuctionAction> auctionActionList = new ArrayList<>();
+    auctionActionList.add(auctionAction);
+
+    List<AuctionActionDto> dtos = new ArrayList<>();
+    dtos.add(AuctionActionDto.builder()
+                     .auctionEvent(auctionId)
+                     .bid(10D)
+                     .build());
+    when(auctionActionRepository.findByAuctionEvent(any(AuctionEvent.class))).thenReturn(auctionActionList);
+    when(auctionEventRepository.findById(auctionId)).thenReturn(Optional.ofNullable(auctionEvent));
+    when(auctionActionToDtoMapper.mapList(any(List.class))).thenReturn(dtos);
+
+    assertThat(auctionActionService.getAllByAuctionId(auctionId)).isNotEmpty();
   }
 
 }

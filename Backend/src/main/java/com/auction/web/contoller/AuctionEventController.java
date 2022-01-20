@@ -1,5 +1,6 @@
 package com.auction.web.contoller;
 
+import com.auction.service.interfaces.AuctionActionService;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.request.AuctionEventRequest;
@@ -27,8 +28,7 @@ import java.util.List;
 public class AuctionEventController {
 
   private final AuctionEventService auctionEventService;
-
-
+  private final AuctionActionService auctionActionService;
 
   @PostMapping
   public ResponseEntity<AuctionEventDto> createAuctionEvent(@Valid @RequestBody AuctionEventRequest request) {
@@ -60,6 +60,21 @@ public class AuctionEventController {
     return ResponseEntity.ok(auctionEventService.getAllSortByRating(page, perPage));
   }
 
+  @GetMapping("/owner/{userId}")
+  public ResponseEntity<Page<AuctionEventDto>> getAllByOwner(@RequestParam(defaultValue = "1") int page,
+                                                             @RequestParam(defaultValue = "10") int perPage,
+                                                             @PathVariable Long userId) {
+    return ResponseEntity.ok(auctionEventService.getAllByOwner(userId, page, perPage));
+  }
+
+  @GetMapping("/participanasdt/{userId}")
+  public ResponseEntity<Page<AuctionEventDto>> getAllByParticipant(@RequestParam(defaultValue = "1") int page,
+                                                             @RequestParam(defaultValue = "10") int perPage,
+                                                             @PathVariable Long userId) {
+    // TODO: change this method
+    return ResponseEntity.ok(auctionEventService.getAllByOwner(userId, page, perPage));
+  }
+
   @DeleteMapping("/{auctionId}")
   public ResponseEntity<Void> deleteById(@PathVariable Long auctionId) {
     auctionEventService.deleteById(auctionId);
@@ -87,5 +102,12 @@ public class AuctionEventController {
                                                                      @RequestParam(defaultValue = "1") int page,
                                                                      @RequestParam(defaultValue = "10") int perPage) {
     return ResponseEntity.ok(auctionEventService.findAuctionsByCategory(subCategoryId, page, perPage));
+  }
+
+  @GetMapping("/participant/{userId}")
+  public ResponseEntity<Page<AuctionEventDto>> getAuctionsByParticipants(@PathVariable Long userId,
+                                                                         @RequestParam(defaultValue = "1") int page,
+                                                                         @RequestParam(defaultValue = "10") int perPage) {
+    return ResponseEntity.ok(auctionActionService.getAuctionsByParticipant(userId, page, perPage));
   }
 }
