@@ -32,12 +32,13 @@ export default {
   created() {
     let colors = [];
 
-    for (let i = 0; i < this.labels.length; i++) {
-      colors.push('#' + (Math.random() * 0xFFFFFF << 0).toString(16));
-    }
     for (let i = 0; i < this.data.length; i++) {
       this.labels.push(this.data[i].name);
       this.values.push(this.data[i].count);
+    }
+
+    for (let i = 0; i < this.labels.length; i++) {
+      colors.push('#' + (Math.random() * 0xFFFFFF << 0).toString(16));
     }
 
     this.barChart = {
@@ -52,6 +53,11 @@ export default {
           }
         ]
       }
+    }
+  },
+  methods: {
+    test() {
+      console.log("asd")
     }
   },
   setup() {

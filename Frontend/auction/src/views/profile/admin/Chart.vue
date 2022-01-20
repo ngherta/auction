@@ -17,6 +17,7 @@ export default {
   components: {
     Vue3ChartJs,
   },
+  props: ['data'],
   setup() {
     const doughnutChart = {
       id: 'doughnut',

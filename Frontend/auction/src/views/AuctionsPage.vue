@@ -20,44 +20,48 @@
       </Form>
     </div>
   </div>
-  <div class="border d-flex">
-    <ul>
-      <li v-for="(category, index) in categories" :key="index">
-        <div class="d-flex align-items-center" @click="handleClickOnCategory(category.mainCategory.id)">
-          {{ category.mainCategory.categoryName }}
-          <Icon name="row" :class="{ rotate : !this.clickedCategories.includes(category.mainCategory.id) }"></Icon>
-        </div>
-        <ul v-if="this.clickedCategories.includes(category.mainCategory.id)">
-          <li v-for="(subCategory, index) in category.listSubCategories"
-              class="d-flex justify-content-between"
-              :key="index">
-            <label class="form-check-label" :for="subCategory.id">
-              {{ subCategory.categoryName }}
-            </label>
-            <input
-                @click="addOrRemoveSubCategory(subCategory.id)"
-                class="form-check-input"
-                type="checkbox"
-                :id="subCategory.id"
-                :value="subCategory.id"
-                :checked="isActiveSubCategory(subCategory.id)">
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </div>
-  <div class="d-flex container">
-    <AuctionItem v-for="(auction,index) in auctions"
-                 :key="index"
-                 :id="auction.id"
-                 :title="auction.title"
-                 :finish-price="auction.finishPrice"
-                 :image="auction.images[0]"
-                 :last-bid="getLastBidById(auction.id)"/>
+  <div class="row">
+    <div class="border p-4 col-2">
+      <ul>
+        <li v-for="(category, index) in categories" :key="index">
+          <button class="d-flex align-items-center remove-button-style"
+                  @click="handleClickOnCategory(category.mainCategory.id)">
+            {{ category.mainCategory.categoryName }}
+            <Icon name="row" class="ml-3"
+                  :class="{ rotate : !this.clickedCategories.includes(category.mainCategory.id) }"></Icon>
+          </button>
+          <ul v-if="this.clickedCategories.includes(category.mainCategory.id)">
+            <li v-for="(subCategory, index) in category.listSubCategories"
+                class="d-flex justify-content-between"
+                :key="index">
+              <label class="form-check-label" :for="subCategory.id">
+                {{ subCategory.categoryName }}
+              </label>
+              <input
+                  @click="addOrRemoveSubCategory(subCategory.id)"
+                  class="form-check-input"
+                  type="checkbox"
+                  :id="subCategory.id"
+                  :value="subCategory.id"
+                  :checked="isActiveSubCategory(subCategory.id)">
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="d-flex container">
+      <AuctionItem v-for="(auction,index) in auctions"
+                   :key="index"
+                   :id="auction.id"
+                   :title="auction.title"
+                   :finish-price="auction.finishPrice"
+                   :image="auction.images[0]"
+                   :last-bid="getLastBidById(auction.id)"/>
+    </div>
   </div>
   <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-5 mb-3">
-    <ul class="pagination">
-      <li class="page-item">
+    <ul class="pagination ">
+      <li class="page-item list-unstyled">
         <router-link class="page-link" to="/auctions"
                      @click="changePage(this.page-1)"
                      aria-label="Previous">
@@ -264,5 +268,10 @@ export default {
 <style scoped>
 .rotate {
   transform: rotate(180deg);
+}
+
+.remove-button-style {
+  all: unset;
+  cursor: pointer;
 }
 </style>

@@ -16,7 +16,7 @@
           <router-link to="/home" class="nav-link text-center">HOME</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/auction/create" class="nav-link text-center">AUCTIONS</router-link>
+          <router-link to="/auctions" class="nav-link text-center">AUCTIONS</router-link>
         </li>
         <li class="nav-item">
           <router-link to="/about-us" class="nav-link text-center">ABOUT US</router-link>
@@ -63,6 +63,8 @@
 <script>
 import {useWindowSize} from 'vue-window-size';
 import router from "@/router";
+import SockJS from "sockjs-client";
+import Stomp from "webstomp-client";
 
 export default {
   name: "Header",
@@ -73,6 +75,8 @@ export default {
     return {
       $windowWidth: this.windowWidth,
       isMobile: false,
+      notifications: [],
+      isConnectedToNotifications: false,
     };
   },
   setup() {
@@ -101,29 +105,74 @@ export default {
     },
     resizeForDevice() {
       if (this.windowWidth <= 992) {
-        console.log("NGH -------------- width:" + this.windowWidth);
         this.isMobile = true;
       }
     },
     isAdmin() {
-      // console.log(this.currentUser['userDto'].userRole.includes('name: "USER"'));
-      // console.log(JSON.stringify(this.currentUser['userDto'].userRole[0]));
       if (this.currentUser) {
         for (let i = 0; i < this.currentUser['userDto'].userRole.length; i++) {
-          console.log('{"name":"USER"}');
-          console.log(JSON.stringify(this.currentUser['userDto'].userRole[i]))
           if (JSON.stringify(this.currentUser['userDto'].userRole[i]) == '{"name":"USER"}') {
             return true;
           }
         }
       }
       return false;
-
+    },
+    getUser() {
+      return JSON.parse(localStorage.getItem('user'));
+    },
+    connect() {
+      this.socket = new SockJS("http://localhost:8080/websocket");
+      this.stompClient = Stomp.over(this.socket);
+      this.stompClient.connect(
+          {"username": this.getUser().userDto.id},
+          () => {
+            this.isConnectedToNotifications = true;
+            this.stompClient.subscribe("/notification/" + this.getUser().userDto.id,
+                tick => {
+                  console.log(tick);
+                  this.notifications.push(JSON.parse(tick.body));
+                });
+            this.stompClient.subscribe("/notification/",
+                tick => {
+                  this.notifications.push(JSON.parse(tick.body));
+                });
+          },
+          error => {
+            console.log(error);
+            this.isConnectedToNotifications = false;
+          }
+      );
+    },
+    disconnect() {
+      if (this.stompClient) {
+        this.stompClient.disconnect(
+            frame => {
+              console.log(frame);
+            },
+            {"username": this.getUser().userDto.id});
+      }
+      this.connected = false;
+    },
+    tickleConnection() {
+      this.connected ? this.disconnect() : this.connect();
     },
   },
   mounted() {
     this.isAdmin();
     this.resizeForDevice();
+  },
+  watch: {
+    $route(to, from) {
+      console.log(to);
+      console.log(from);
+      console.log(this.isConnectedToNotifications);
+      if (this.$store.state.auth.status.loggedIn == true &&
+          this.isConnectedToNotifications == false) {
+        this.connect();
+        console.log("Connected to notifications!")
+      }
+    }
   }
 };
 </script>

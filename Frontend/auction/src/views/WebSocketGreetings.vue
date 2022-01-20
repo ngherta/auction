@@ -122,9 +122,7 @@ export default {
             frame => {
               console.log(frame);
             },
-            {"username": this.getUser().userDto.id},
-            {"username": 4}
-        );
+            {"username": this.getUser().userDto.id});
       }
       this.connected = false;
     },

@@ -23,6 +23,7 @@
     "ag-grid-vue3": "26.0.0",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
+    "bulma": "^0.9.3",
     "chart.js": "^3.7.0",
     "cloudinary-vue": "^1.2.3",
     "conditional-specs": "^1.0.1",

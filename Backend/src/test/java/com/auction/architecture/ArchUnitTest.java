@@ -12,10 +12,20 @@ import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 public class ArchUnitTest {
   @ArchTest
   static final ArchRule layeredArchitectureRule = layeredArchitecture()
+//          .layer("Controller").definedBy("..web..")
+//          .layer("Domain").definedBy("..model..")
+//          .layer("Repository").definedBy("..repository..")
+//          .layer("Service").definedBy("..service..", "..helper..", "..listener..")
+//          .layer("Configuration").definedBy("..config..")
+//
+//          .whereLayer("Controller").mayNotBeAccessedByAnyLayer()
+//          .whereLayer("Domain").mayOnlyBeAccessedByLayers("Repository", "Service", "Configuration")
+//          .whereLayer("Repository").mayOnlyBeAccessedByLayers("Service", "Configuration")
+//          .whereLayer("Service").mayOnlyBeAccessedByLayers("Controller", "Service", "Configuration");
           .layer("Controller").definedBy("..web..")
-          .layer("Domain").definedBy("..model..")
+          .layer("Domain").definedBy("..domain..")
           .layer("Repository").definedBy("..repository..")
-          .layer("Service").definedBy("..service..", "..helper..")
+          .layer("Service").definedBy("..service..")
           .layer("Configuration").definedBy("..config..")
 
           .whereLayer("Controller").mayNotBeAccessedByAnyLayer()
