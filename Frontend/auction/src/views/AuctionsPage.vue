@@ -20,7 +20,7 @@
       </Form>
     </div>
   </div>
-  <div class="row">
+  <div class="d-flex">
     <div class="border p-4 col-2">
       <ul>
         <li v-for="(category, index) in categories" :key="index">
@@ -113,7 +113,7 @@ export default {
       searchResultEmpty: true,
       auctions: [],
       page: 1,
-      perPage: 1,
+      perPage: 5,
       countOfPages: '',
       filter: '',
       lastBids: [{

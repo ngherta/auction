@@ -52,6 +52,20 @@
             <router-link to="/home" class="dropdown-item">Something else here</router-link>
           </div>
         </li>
+        <li>
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-expanded="false">
+              Notifications
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <span v-for="(notification) in notifications" :key="notification.id" class="dropdown-item">
+                {{ notification.message }}
+              </span>
+            </div>
+          </div>
+        </li>
         <!--        <li class="nav-item">-->
         <!--          <a class="nav-link disabled" href="#">Disabled</a>-->
         <!--        </li>-->
@@ -68,6 +82,7 @@ import Stomp from "webstomp-client";
 
 export default {
   name: "Header",
+  components: {},
   props: {
     msg: String
   },
@@ -130,11 +145,14 @@ export default {
             this.isConnectedToNotifications = true;
             this.stompClient.subscribe("/notification/" + this.getUser().userDto.id,
                 tick => {
+                  console.log("NGH1111");
                   console.log(tick);
                   this.notifications.push(JSON.parse(tick.body));
                 });
             this.stompClient.subscribe("/notification/",
                 tick => {
+                  console.log("NGH2222");
+                  console.log(tick)
                   this.notifications.push(JSON.parse(tick.body));
                 });
           },

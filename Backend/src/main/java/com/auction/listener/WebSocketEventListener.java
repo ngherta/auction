@@ -1,6 +1,7 @@
 package com.auction.listener;
 
 import com.auction.helper.UserSessionCache;
+import com.auction.service.interfaces.NotificationGenerationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -17,6 +18,8 @@ import org.springframework.web.socket.messaging.SessionUnsubscribeEvent;
 @RequiredArgsConstructor
 public class WebSocketEventListener {
   private final UserSessionCache userServiceCache;
+  private final NotificationGenerationService notificationGenerationService;
+
 
   @EventListener
   public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
@@ -44,6 +47,7 @@ public class WebSocketEventListener {
       if (!userId.isEmpty() && !sessionId.isEmpty()) {
         log.info("User[{}] with session[{}] connected!", userId, sessionId);
         userServiceCache.put(sessionId, userId);
+        notificationGenerationService.initNotificationsForUser(Long.parseLong(userId));
       }
     }
   }

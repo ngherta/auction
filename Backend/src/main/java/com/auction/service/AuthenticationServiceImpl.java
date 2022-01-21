@@ -49,7 +49,6 @@ class AuthenticationServiceImpl implements AuthenticationService {
   private final NotificationService notificationService;
   private final Mapper<User, UserDto> userToDtoMapper;
   private final List<UserValidator> validators;
-  private final NotificationGenerationService notificationGenerationService;
 
 
   @Override
@@ -64,7 +63,6 @@ class AuthenticationServiceImpl implements AuthenticationService {
             .orElseThrow(() -> new UserNotFoundException("User with email[" + loginRequest.getEmail() + "] doesn't exist!"));
     UserDto userDto = userToDtoMapper.map(user);
 
-    notificationGenerationService.generateNotificationsForUser(user);
     return new JwtResponse(jwt, userDto);
   }
 

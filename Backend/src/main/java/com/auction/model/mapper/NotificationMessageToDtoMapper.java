@@ -1,20 +1,22 @@
 package com.auction.model.mapper;
 
 import com.auction.model.NotificationMessage;
+import com.auction.model.NotificationMessageUser;
 import com.auction.web.dto.NotificationMessageDto;
 import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class NotificationMessageToDtoMapper implements Mapper<NotificationMessage, NotificationMessageDto> {
+public class NotificationMessageToDtoMapper implements Mapper<NotificationMessageUser, NotificationMessageDto> {
 
   @Override
-  public NotificationMessageDto map(NotificationMessage entity) {
+  public NotificationMessageDto map(NotificationMessageUser entity) {
     return NotificationMessageDto.builder()
-            .message(entity.getMessage())
-            .type(entity.getType())
-            .genDate(entity.getGenDate().format(DateTimeFormatter.ofPattern("dd-MM-yy")))
+            .message(entity.getNotificationMessage().getMessage())
+            .type(entity.getNotificationMessage().getType())
+            .genDate(entity.getNotificationMessage().getGenDate().format(DateTimeFormatter.ofPattern("dd-MM-yy")))
+            .seen(entity.getSeen())
             .build();
   }
 }

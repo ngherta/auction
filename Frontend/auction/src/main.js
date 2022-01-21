@@ -11,8 +11,6 @@ import Datepicker from 'vue3-datepicker';
 import Notifications from '@kyvg/vue3-notification'
 import Datetimepicker from 'vue3-date-time-picker';
 
-
-
 createApp(App)
     .use(router)
     .use(store)

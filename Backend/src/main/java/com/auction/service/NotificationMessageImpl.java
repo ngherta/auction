@@ -27,7 +27,7 @@ public class NotificationMessageImpl implements NotificationMessageService {
   private final UserRepository userRepository;
   private final NotificationMessageRepository notificationMessageRepository;
   private final NotificationMessageUserRepository notificationMessageUserRepository;
-  private final Mapper<NotificationMessage, NotificationMessageDto> notificationMessageDtoMapper;
+  private final Mapper<NotificationMessageUser, NotificationMessageDto> notificationMessageDtoMapper;
 
   @Override
   @Transactional
@@ -36,14 +36,12 @@ public class NotificationMessageImpl implements NotificationMessageService {
             .orElseThrow(() -> new UserNotFoundException("User[" + userId + "] doesn't exist"));
     List<NotificationMessageUser> messages = notificationMessageUserRepository.findByUser(user);
     return notificationMessageDtoMapper
-            .mapList(messages.stream()
-                             .map(NotificationMessageUser::getNotificationMessage)
-                             .collect(Collectors.toList()));
+            .mapList(messages);
   }
 
   @Transactional
   @Override
-  public void createNotificationMessagesForUser(User user, List<NotificationMessage> messages) {
+  public List<NotificationMessageUser> createNotificationMessagesForUser(User user, List<NotificationMessage> messages) {
     List<NotificationMessageUser> notificationMessageUsers = new ArrayList<>();
 
     messages.forEach(e -> {
@@ -55,7 +53,7 @@ public class NotificationMessageImpl implements NotificationMessageService {
       notificationMessageUsers.add(notification);
     });
 
-    notificationMessageUserRepository.saveAll(notificationMessageUsers);
+    return notificationMessageUserRepository.saveAll(notificationMessageUsers);
   }
 
   @Override

@@ -2,6 +2,7 @@ package com.auction.service;
 
 import com.auction.model.Notification;
 import com.auction.model.NotificationMessage;
+import com.auction.model.NotificationMessageUser;
 import com.auction.model.User;
 import com.auction.model.enums.NotificationType;
 import com.auction.model.mapper.Mapper;
@@ -26,6 +27,7 @@ import java.util.List;
 class NotificationServiceImpl implements NotificationService {
 
   private final NotificationRepository notificationRepository;
+  private final NotificationMessageUserRepository notificationMessageUserRepository;
 
   @Override
   @Transactional
@@ -59,5 +61,10 @@ class NotificationServiceImpl implements NotificationService {
   @Transactional
   public void deleteByUser(User user) {
     notificationRepository.deleteAllByUser(user);
+  }
+
+  @Override
+  public List<NotificationMessageUser> getNotificationsForUser(User user) {
+    return notificationMessageUserRepository.findByUser(user);
   }
 }

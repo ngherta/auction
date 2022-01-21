@@ -10,4 +10,5 @@ public class NotificationMessageDto {
   private NotificationType type;
   private String message;
   private String genDate;
+  private Boolean seen;
 }

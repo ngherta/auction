@@ -14,10 +14,10 @@ public interface NotificationMessageRepository extends JpaRepository<Notificatio
   @Query(nativeQuery = true, value = "" +
           "SELECT * FROM notification_message nm " +
           "WHERE nm.type in :notificationTypes " +
-          "AND EXISTS " +
-          "(SELECT 1 FROM notification_message_user nmu  " +
+          "AND NOT EXISTS " +
+          "(SELECT 1 FROM notification_message_user nmu " +
           "WHERE nmu.user_id = :userId " +
-          "AND nmu.notification_message_id != nm.id )" +
+          "AND nmu.notification_message_id = nm.id ) " +
 //          "AND nm.gen_date < LOCA) " +
           "" +
           "")

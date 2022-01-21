@@ -1,5 +1,6 @@
 package com.auction.service;
 
+import com.auction.exception.UserNotFoundException;
 import com.auction.helper.UserSessionCache;
 import com.auction.model.AuctionEvent;
 import com.auction.model.NotificationMessage;
@@ -14,7 +15,6 @@ import com.auction.service.interfaces.NotificationGenerationService;
 import com.auction.service.interfaces.NotificationMessageService;
 import com.auction.service.interfaces.NotificationSenderService;
 import com.auction.service.interfaces.NotificationService;
-import com.auction.web.dto.response.notification.AuctionNotificationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -52,15 +52,6 @@ public class NotificationGenerationServiceImpl implements NotificationGeneration
 
     message = notificationMessageRepository.save(message);
     generateNotificationsForActiveUsers(message);
-
-    AuctionNotificationDto response =
-            AuctionNotificationDto.builder()
-                    .auctionId(auctionEvent.getId())
-                    .build();
-    response.setNotificationType(NotificationType.CREATING_AUCTION);
-    response.setMessage(auctionEvent.getUser().getFirstName() + " " + auctionEvent.getUser().getLastName() +
-                                " created new auction " + auctionEvent.getTitle());
-    notificationSenderService.sendNotificationToActiveUsers(response, NotificationType.CREATING_AUCTION);
   }
 
   @Transactional
@@ -70,27 +61,39 @@ public class NotificationGenerationServiceImpl implements NotificationGeneration
     List<User> activeUsers = userRepository.findAllById(activeUserIds);
 
     List<NotificationMessageUser> notifications = new ArrayList<>();
-    activeUsers.forEach(user -> {
+    for (User user : activeUsers) {
       NotificationMessageUser notificationForUser = NotificationMessageUser.builder()
               .notificationMessage(message)
               .user(user)
               .seen(false)
               .build();
       notifications.add(notificationForUser);
-    });
-    notificationMessageUserRepository.saveAll(notifications);
+    }
+    notifications = notificationMessageUserRepository.saveAll(notifications);
 
-    notificationSenderService.sendNotificationToUsers(message, activeUsers);
+    notificationSenderService.sendNotificationToUsers(notifications);
   }
 
   @Transactional
   @Override
-  public void generateNotificationsForUser(User user) {
+  public void initNotificationsForUser(Long userId) {
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException("User[" + userId + "] doesn't exist"));
+
+    List<NotificationMessageUser> notificationMessageUsers = notificationService.getNotificationsForUser(user);
+    notificationMessageUsers.addAll(generateInitNotificationsForUser(user));
+    notificationSenderService.sendNotificationsToUser(notificationMessageUsers);
+  }
+
+  @Transactional
+  @Override
+  public List<NotificationMessageUser> generateInitNotificationsForUser(User user) {
     List<NotificationProjection> notificationSettings = notificationService.getNotificationTypeByUser(user);
     List<NotificationType> typeList = notificationSettings.stream()
             .map(NotificationProjection::getNotificationType).collect(Collectors.toList());
 
     List<NotificationMessage> messages = notificationMessageService.findNotificationMessageForCreateByUser(user, typeList);
-    notificationMessageService.createNotificationMessagesForUser(user, messages);
+    List<NotificationMessageUser> notificationMessageUsers = notificationMessageService.createNotificationMessagesForUser(user, messages);
+    return notificationMessageUsers;
   }
 }
