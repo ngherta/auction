@@ -1,5 +1,6 @@
 package com.auction.service;
 
+import com.auction.exception.NotificationNotFoundException;
 import com.auction.exception.UserNotFoundException;
 import com.auction.model.NotificationMessage;
 import com.auction.model.NotificationMessageUser;
@@ -22,22 +23,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class NotificationMessageImpl implements NotificationMessageService {
+public class NotificationMessageServiceImpl implements NotificationMessageService {
 
   private final UserRepository userRepository;
   private final NotificationMessageRepository notificationMessageRepository;
   private final NotificationMessageUserRepository notificationMessageUserRepository;
   private final Mapper<NotificationMessageUser, NotificationMessageDto> notificationMessageDtoMapper;
-
-  @Override
-  @Transactional
-  public List<NotificationMessageDto> findNotificationMessagesForUser(Long userId) {
-    User user = userRepository.findById(userId)
-            .orElseThrow(() -> new UserNotFoundException("User[" + userId + "] doesn't exist"));
-    List<NotificationMessageUser> messages = notificationMessageUserRepository.findByUser(user);
-    return notificationMessageDtoMapper
-            .mapList(messages);
-  }
 
   @Transactional
   @Override
@@ -76,7 +67,46 @@ public class NotificationMessageImpl implements NotificationMessageService {
   }
 
   @Transactional
+  @Override
   public List<NotificationMessage> getMessagesOlderThan(LocalDateTime localDateTime) {
     return notificationMessageRepository.findAllOlderThan(localDateTime);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<NotificationMessageUser> getNotificationsForUser(User user) {
+    return notificationMessageUserRepository.findByUserOrderByGenDate(user.getId());
+  }
+
+  @Override
+  @Transactional
+  public void seen(Long userId, List<Long> notificationMessageId) {
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException("User[" + userId + "] doesn't exist"));;
+    List<NotificationMessage> notificationMessages = notificationMessageRepository.findAllByIdIn(notificationMessageId);
+    List<NotificationMessageUser> notificationMessageUsers = notificationMessageUserRepository.findAllByUserAndAndNotificationMessageIn(user, notificationMessages);
+    for (NotificationMessageUser notificationMessageUser : notificationMessageUsers) {
+      notificationMessageUser.setSeen(true);
+    }
+    notificationMessageUserRepository.saveAll(notificationMessageUsers);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public NotificationMessageUser getNotificationMessageByUserAndMessage(User user, NotificationMessage notificationMessage) {
+    return notificationMessageUserRepository.findByUserAndNotificationMessage(user, notificationMessage)
+            .orElseThrow(() -> new NotificationNotFoundException("NotificationMessageUser not found for message with id = " + notificationMessage.getId()));
+  }
+
+  @Override
+  @Transactional
+  public void seen(Long userId, Long notificationMessageId) {
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException("User[" + userId + "] doesn't exist"));
+    NotificationMessage notificationMessage = notificationMessageRepository.findById(notificationMessageId)
+            .orElseThrow(() -> new NotificationNotFoundException("NotificationMessage[" + notificationMessageId + "] doesn't exist!"));
+    NotificationMessageUser notificationMessageUser = getNotificationMessageByUserAndMessage(user, notificationMessage);
+
+    notificationMessageUser.setSeen(true);
   }
 }

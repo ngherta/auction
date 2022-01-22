@@ -1,18 +1,14 @@
 package com.auction.service;
 
 import com.auction.model.Notification;
-import com.auction.model.NotificationMessage;
-import com.auction.model.NotificationMessageUser;
 import com.auction.model.User;
 import com.auction.model.enums.NotificationType;
-import com.auction.model.mapper.Mapper;
 import com.auction.projection.NotificationProjection;
 import com.auction.repository.NotificationMessageRepository;
 import com.auction.repository.NotificationMessageUserRepository;
 import com.auction.repository.NotificationRepository;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.NotificationService;
-import com.auction.web.dto.NotificationMessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,7 +23,6 @@ import java.util.List;
 class NotificationServiceImpl implements NotificationService {
 
   private final NotificationRepository notificationRepository;
-  private final NotificationMessageUserRepository notificationMessageUserRepository;
 
   @Override
   @Transactional
@@ -63,8 +58,4 @@ class NotificationServiceImpl implements NotificationService {
     notificationRepository.deleteAllByUser(user);
   }
 
-  @Override
-  public List<NotificationMessageUser> getNotificationsForUser(User user) {
-    return notificationMessageUserRepository.findByUser(user);
-  }
 }

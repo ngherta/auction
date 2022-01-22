@@ -1,5 +1,6 @@
 <template>
-  <svg v-if="name === 'twitter'" xmlns="http://www.w3.org/2000/svg" :width="31.5" :height="31.5" viewBox="0 0 31.5 31.5">
+  <svg v-if="name === 'twitter'" xmlns="http://www.w3.org/2000/svg" :width="31.5" :height="31.5"
+       viewBox="0 0 31.5 31.5">
     <path id="Icon_twitter"
           d="M28.125,2.25H3.375A3.376,3.376,0,0,0,0,5.625v24.75A3.376,3.376,0,0,0,3.375,33.75h24.75A3.376,3.376,0,0,0,31.5,30.375V5.625A3.376,3.376,0,0,0,28.125,2.25ZM24.687,13.416c.014.2.014.4.014.6a13.031,13.031,0,0,1-13.12,13.12A13.06,13.06,0,0,1,4.5,25.066a9.715,9.715,0,0,0,1.111.056,9.246,9.246,0,0,0,5.723-1.969,4.618,4.618,0,0,1-4.31-3.2,4.97,4.97,0,0,0,2.081-.084,4.612,4.612,0,0,1-3.691-4.528v-.056A4.608,4.608,0,0,0,7.5,15.87,4.6,4.6,0,0,1,5.442,12.03,4.554,4.554,0,0,1,6.068,9.7a13.094,13.094,0,0,0,9.506,4.823,4.621,4.621,0,0,1,7.868-4.212A9.036,9.036,0,0,0,26.367,9.2a4.6,4.6,0,0,1-2.025,2.538A9.177,9.177,0,0,0,27,11.025,9.707,9.707,0,0,1,24.687,13.416Z"
           transform="translate(0 -2.25)"/>
@@ -20,45 +21,76 @@
   </svg>
 
   <svg v-else-if="name === 'email'" xmlns="http://www.w3.org/2000/svg" :width="30" :height="24" viewBox="0 0 30 24">
-    <path id="Icon-email" data-name="Icon material-email" d="M30,6H6A3,3,0,0,0,3.015,9L3,27a3.009,3.009,0,0,0,3,3H30a3.009,3.009,0,0,0,3-3V9A3.009,3.009,0,0,0,30,6Zm0,6L18,19.5,6,12V9l12,7.5L30,9Z" transform="translate(-3 -6)"/>
+    <path id="Icon-email" data-name="Icon material-email"
+          d="M30,6H6A3,3,0,0,0,3.015,9L3,27a3.009,3.009,0,0,0,3,3H30a3.009,3.009,0,0,0,3-3V9A3.009,3.009,0,0,0,30,6Zm0,6L18,19.5,6,12V9l12,7.5L30,9Z"
+          transform="translate(-3 -6)"/>
   </svg>
 
   <svg v-else-if="name === 'phone'" xmlns="http://www.w3.org/2000/svg" :width="29" :height="29" viewBox="0 0 29 29">
-    <path id="Icon-phone" data-name="Icon awesome-phone-alt" d="M28.173,20.493l-6.344-2.719a1.359,1.359,0,0,0-1.586.391L17.434,21.6A21,21,0,0,1,7.4,11.561L10.83,8.752a1.356,1.356,0,0,0,.391-1.586L8.5.822A1.368,1.368,0,0,0,6.944.035L1.054,1.394A1.359,1.359,0,0,0,0,2.719,26.279,26.279,0,0,0,26.282,29a1.359,1.359,0,0,0,1.325-1.054l1.359-5.891a1.376,1.376,0,0,0-.794-1.563Z" transform="translate(0 0)"/>
+    <path id="Icon-phone" data-name="Icon awesome-phone-alt"
+          d="M28.173,20.493l-6.344-2.719a1.359,1.359,0,0,0-1.586.391L17.434,21.6A21,21,0,0,1,7.4,11.561L10.83,8.752a1.356,1.356,0,0,0,.391-1.586L8.5.822A1.368,1.368,0,0,0,6.944.035L1.054,1.394A1.359,1.359,0,0,0,0,2.719,26.279,26.279,0,0,0,26.282,29a1.359,1.359,0,0,0,1.325-1.054l1.359-5.891a1.376,1.376,0,0,0-.794-1.563Z"
+          transform="translate(0 0)"/>
   </svg>
 
   <svg v-else-if="name === 'place'" xmlns="http://www.w3.org/2000/svg" :width="21" :height="30" viewBox="0 0 21 30">
-    <path id="Icon-place" data-name="Icon material-place" d="M18,3A10.492,10.492,0,0,0,7.5,13.5C7.5,21.375,18,33,18,33S28.5,21.375,28.5,13.5A10.492,10.492,0,0,0,18,3Zm0,14.25a3.75,3.75,0,1,1,3.75-3.75A3.751,3.751,0,0,1,18,17.25Z" transform="translate(-7.5 -3)"/>
+    <path id="Icon-place" data-name="Icon material-place"
+          d="M18,3A10.492,10.492,0,0,0,7.5,13.5C7.5,21.375,18,33,18,33S28.5,21.375,28.5,13.5A10.492,10.492,0,0,0,18,3Zm0,14.25a3.75,3.75,0,1,1,3.75-3.75A3.751,3.751,0,0,1,18,17.25Z"
+          transform="translate(-7.5 -3)"/>
   </svg>
 
-  <svg v-else-if="name === 'row'" xmlns="http://www.w3.org/2000/svg" :width="13.999 * this.sizePercent" :height="8.009 * this.sizePercent" viewBox="0 0 13.999 8.009">
-    <path id="Icon_ionic-ios-arrow-up" data-name="Icon ionic-ios-arrow-up" d="M13.187,13.666l5.291,5.306a1,1,0,0,0,1.412-1.419l-6-6.007a1,1,0,0,0-1.379-.029L6.479,17.545a1,1,0,0,0,1.412,1.419Z" transform="translate(-6.185 -11.255)"/>
+  <svg v-else-if="name === 'row'" xmlns="http://www.w3.org/2000/svg" :width="13.999 * this.sizePercent"
+       :height="8.009 * this.sizePercent" viewBox="0 0 13.999 8.009">
+    <path id="Icon_ionic-ios-arrow-up" data-name="Icon ionic-ios-arrow-up"
+          d="M13.187,13.666l5.291,5.306a1,1,0,0,0,1.412-1.419l-6-6.007a1,1,0,0,0-1.379-.029L6.479,17.545a1,1,0,0,0,1.412,1.419Z"
+          transform="translate(-6.185 -11.255)"/>
   </svg>
 
-  <svg v-else-if="name === 'profile-account-overview'" xmlns="http://www.w3.org/2000/svg" :width="27 * this.sizePercent" :height="27 * this.sizePercent" viewBox="0 0 27 27">
-    <path id="Icon_material-account-box" data-name="Icon material-account-box" d="M4.5,7.5v21a3,3,0,0,0,3,3h21a3.009,3.009,0,0,0,3-3V7.5a3.009,3.009,0,0,0-3-3H7.5A3,3,0,0,0,4.5,7.5Zm18,6A4.5,4.5,0,1,1,18,9,4.494,4.494,0,0,1,22.5,13.5ZM9,25.5c0-3,6-4.65,9-4.65s9,1.65,9,4.65V27H9Z" transform="translate(-4.5 -4.5)"/>
+  <svg v-else-if="name === 'profile-account-overview'" xmlns="http://www.w3.org/2000/svg" :width="27 * this.sizePercent"
+       :height="27 * this.sizePercent" viewBox="0 0 27 27">
+    <path id="Icon_material-account-box" data-name="Icon material-account-box"
+          d="M4.5,7.5v21a3,3,0,0,0,3,3h21a3.009,3.009,0,0,0,3-3V7.5a3.009,3.009,0,0,0-3-3H7.5A3,3,0,0,0,4.5,7.5Zm18,6A4.5,4.5,0,1,1,18,9,4.494,4.494,0,0,1,22.5,13.5ZM9,25.5c0-3,6-4.65,9-4.65s9,1.65,9,4.65V27H9Z"
+          transform="translate(-4.5 -4.5)"/>
   </svg>
 
-  <svg v-else-if="name === 'profile-my-details'" xmlns="http://www.w3.org/2000/svg" :width="30.931 * this.sizePercent" :height="24.057 * this.sizePercent" viewBox="0 0 30.931 24.057">
-    <path id="Icon_awesome-address-card" data-name="Icon awesome-address-card" d="M28.353,2.25H2.578A2.578,2.578,0,0,0,0,4.828v18.9a2.578,2.578,0,0,0,2.578,2.578H28.353a2.578,2.578,0,0,0,2.578-2.578V4.828A2.578,2.578,0,0,0,28.353,2.25ZM9.451,7.405a3.437,3.437,0,1,1-3.437,3.437A3.44,3.44,0,0,1,9.451,7.405Zm6.014,12.716a1.126,1.126,0,0,1-1.2,1.031H4.64a1.126,1.126,0,0,1-1.2-1.031V19.09A3.382,3.382,0,0,1,7.045,16h.268a5.531,5.531,0,0,0,4.274,0h.268a3.382,3.382,0,0,1,3.609,3.093Zm12.029-2.835a.431.431,0,0,1-.43.43H19.332a.431.431,0,0,1-.43-.43v-.859a.431.431,0,0,1,.43-.43h7.733a.431.431,0,0,1,.43.43Zm0-3.437a.431.431,0,0,1-.43.43H19.332a.431.431,0,0,1-.43-.43V12.99a.431.431,0,0,1,.43-.43h7.733a.431.431,0,0,1,.43.43Zm0-3.437a.431.431,0,0,1-.43.43H19.332a.431.431,0,0,1-.43-.43V9.553a.431.431,0,0,1,.43-.43h7.733a.431.431,0,0,1,.43.43Z" transform="translate(0 -2.25)"/>
+  <svg v-else-if="name === 'profile-my-details'" xmlns="http://www.w3.org/2000/svg" :width="30.931 * this.sizePercent"
+       :height="24.057 * this.sizePercent" viewBox="0 0 30.931 24.057">
+    <path id="Icon_awesome-address-card" data-name="Icon awesome-address-card"
+          d="M28.353,2.25H2.578A2.578,2.578,0,0,0,0,4.828v18.9a2.578,2.578,0,0,0,2.578,2.578H28.353a2.578,2.578,0,0,0,2.578-2.578V4.828A2.578,2.578,0,0,0,28.353,2.25ZM9.451,7.405a3.437,3.437,0,1,1-3.437,3.437A3.44,3.44,0,0,1,9.451,7.405Zm6.014,12.716a1.126,1.126,0,0,1-1.2,1.031H4.64a1.126,1.126,0,0,1-1.2-1.031V19.09A3.382,3.382,0,0,1,7.045,16h.268a5.531,5.531,0,0,0,4.274,0h.268a3.382,3.382,0,0,1,3.609,3.093Zm12.029-2.835a.431.431,0,0,1-.43.43H19.332a.431.431,0,0,1-.43-.43v-.859a.431.431,0,0,1,.43-.43h7.733a.431.431,0,0,1,.43.43Zm0-3.437a.431.431,0,0,1-.43.43H19.332a.431.431,0,0,1-.43-.43V12.99a.431.431,0,0,1,.43-.43h7.733a.431.431,0,0,1,.43.43Zm0-3.437a.431.431,0,0,1-.43.43H19.332a.431.431,0,0,1-.43-.43V9.553a.431.431,0,0,1,.43-.43h7.733a.431.431,0,0,1,.43.43Z"
+          transform="translate(0 -2.25)"/>
   </svg>
 
-  <svg v-else-if="name === 'profile-my-address'" xmlns="http://www.w3.org/2000/svg" :width="30 * this.sizePercent" :height="33 * this.sizePercent" viewBox="0 0 30 33">
+  <svg v-else-if="name === 'profile-my-address'" xmlns="http://www.w3.org/2000/svg" :width="30 * this.sizePercent"
+       :height="33 * this.sizePercent" viewBox="0 0 30 33">
     <g id="Icon_feather-home" data-name="Icon feather-home" transform="translate(-3 -1.5)">
-      <path id="Path_1" data-name="Path 1" d="M4.5,13.5,18,3,31.5,13.5V30a3,3,0,0,1-3,3H7.5a3,3,0,0,1-3-3Z" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
-      <path id="Path_2" data-name="Path 2" d="M13.5,33V18h9V33" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      <path id="Path_1" data-name="Path 1" d="M4.5,13.5,18,3,31.5,13.5V30a3,3,0,0,1-3,3H7.5a3,3,0,0,1-3-3Z" fill="none"
+            stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      <path id="Path_2" data-name="Path 2" d="M13.5,33V18h9V33" fill="none" stroke="#000" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="3"/>
     </g>
   </svg>
 
-  <svg v-else-if="name === 'profile-auction-table'" xmlns="http://www.w3.org/2000/svg" :width="31 * this.sizePercent" :height="27.125 * this.sizePercent" viewBox="0 0 31 27.125">
-    <path id="Icon_awesome-table" data-name="Icon awesome-table" d="M28.094,2.25H2.906A2.906,2.906,0,0,0,0,5.156V26.469a2.906,2.906,0,0,0,2.906,2.906H28.094A2.906,2.906,0,0,0,31,26.469V5.156A2.906,2.906,0,0,0,28.094,2.25ZM13.563,25.5H3.875V19.688h9.688Zm0-9.687H3.875V10h9.688ZM27.125,25.5H17.438V19.688h9.688Zm0-9.687H17.438V10h9.688Z" transform="translate(0 -2.25)"/>
+  <svg v-else-if="name === 'profile-auction-table'" xmlns="http://www.w3.org/2000/svg" :width="31 * this.sizePercent"
+       :height="27.125 * this.sizePercent" viewBox="0 0 31 27.125">
+    <path id="Icon_awesome-table" data-name="Icon awesome-table"
+          d="M28.094,2.25H2.906A2.906,2.906,0,0,0,0,5.156V26.469a2.906,2.906,0,0,0,2.906,2.906H28.094A2.906,2.906,0,0,0,31,26.469V5.156A2.906,2.906,0,0,0,28.094,2.25ZM13.563,25.5H3.875V19.688h9.688Zm0-9.687H3.875V10h9.688ZM27.125,25.5H17.438V19.688h9.688Zm0-9.687H17.438V10h9.688Z"
+          transform="translate(0 -2.25)"/>
   </svg>
 
-  <svg v-else-if="name === 'profile-statistic'" xmlns="http://www.w3.org/2000/svg" :width="28.361 * this.sizePercent" :height="21.271 * this.sizePercent" viewBox="0 0 28.361 21.271">
-    <path id="Icon_awesome-chart-line" data-name="Icon awesome-chart-line" d="M27.475,22.226H3.545V5.386A.886.886,0,0,0,2.659,4.5H.886A.886.886,0,0,0,0,5.386V24a1.773,1.773,0,0,0,1.773,1.773h25.7a.886.886,0,0,0,.886-.886V23.112A.886.886,0,0,0,27.475,22.226ZM25.7,6.273h-6.54a1.329,1.329,0,0,0-.94,2.269l1.795,1.795L15.953,14.4l-4.064-4.064a1.772,1.772,0,0,0-2.507,0l-3.8,3.8a.886.886,0,0,0,0,1.254L6.83,16.649a.886.886,0,0,0,1.254,0L10.635,14.1,14.7,18.161a1.772,1.772,0,0,0,2.507,0l5.318-5.318,1.795,1.795a1.329,1.329,0,0,0,2.269-.94V7.159A.885.885,0,0,0,25.7,6.273Z" transform="translate(0 -4.5)"/>
+  <svg v-else-if="name === 'profile-statistic'" xmlns="http://www.w3.org/2000/svg" :width="28.361 * this.sizePercent"
+       :height="21.271 * this.sizePercent" viewBox="0 0 28.361 21.271">
+    <path id="Icon_awesome-chart-line" data-name="Icon awesome-chart-line"
+          d="M27.475,22.226H3.545V5.386A.886.886,0,0,0,2.659,4.5H.886A.886.886,0,0,0,0,5.386V24a1.773,1.773,0,0,0,1.773,1.773h25.7a.886.886,0,0,0,.886-.886V23.112A.886.886,0,0,0,27.475,22.226ZM25.7,6.273h-6.54a1.329,1.329,0,0,0-.94,2.269l1.795,1.795L15.953,14.4l-4.064-4.064a1.772,1.772,0,0,0-2.507,0l-3.8,3.8a.886.886,0,0,0,0,1.254L6.83,16.649a.886.886,0,0,0,1.254,0L10.635,14.1,14.7,18.161a1.772,1.772,0,0,0,2.507,0l5.318-5.318,1.795,1.795a1.329,1.329,0,0,0,2.269-.94V7.159A.885.885,0,0,0,25.7,6.273Z"
+          transform="translate(0 -4.5)"/>
   </svg>
 
-
+  <svg
+      v-else-if="name ==='notification-bell'"
+      xmlns="http://www.w3.org/2000/svg" :width="16 * this.sizePercent" :height="16 * this.sizePercent"
+      class="bi bi-bell"
+      viewBox="0 0 16 16">
+    <path
+        d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+  </svg>
 </template>
 
 <script>
@@ -67,7 +99,8 @@ export default {
   props: ['name', 'size'],
   data() {
     return {
-      sizePercent : 1,
+      sizePercent: 1,
+      notCount: 1
     }
   },
   mounted() {
@@ -86,5 +119,11 @@ svg:hover {
 
 svg:active {
   fill: dimgrey;
+}
+
+.badge-notification-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
 }
 </style>

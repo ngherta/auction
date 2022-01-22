@@ -1,27 +1,25 @@
 package com.auction.web.contoller;
 
-import com.auction.service.interfaces.NotificationService;
+import com.auction.service.interfaces.NotificationMessageService;
+import com.auction.web.dto.request.ListOfLongs;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @Slf4j
 @CrossOrigin("http://localhost:8081")
 @RequiredArgsConstructor
 public class NotificationWebsocketController {
-  private final SimpMessagingTemplate messagingTemplate;
-  private final NotificationService notificationService;
+  private final NotificationMessageService notificationMessageService;
 
-  @MessageMapping("/notification")
-  public void receiveSeenOfNotification(@Header Long userId) {
-
-    messagingTemplate.convertAndSend("/notification/" + userId);
+  @MessageMapping("/notification/{userId}")
+  public void seenNotification(@DestinationVariable("userId") Long userId,
+                               @RequestBody ListOfLongs list) {
+    notificationMessageService.seen(userId, list.getList());
   }
-
-
 }

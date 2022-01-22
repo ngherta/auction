@@ -36,8 +36,8 @@ class CategoryServiceImplTest {
 
   private CategoryServiceImpl categoryService;
 
-  List<Category> listOfCategories = new ArrayList<>();
-  List<SubCategory> listOfSubCategories = new ArrayList<>();
+  private List<Category> listOfCategories = new ArrayList<>();
+  private List<SubCategory> listOfSubCategories = new ArrayList<>();
 
 
   @BeforeEach

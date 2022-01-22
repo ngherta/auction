@@ -270,11 +270,9 @@ export default {
             this.connected = true;
             this.stompClient.subscribe("/betting/" + this.auctionId, tick => {
               this.bids.push(JSON.parse(tick.body));
-              console.log("receive response")
             });
 
             this.stompClient.subscribe("/user/betting/errors", tick => {
-              console.log("tick.error");
               this.$notify({
                 type: 'error',
                 text: tick.body.replaceAll('"', ''),

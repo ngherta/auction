@@ -13,9 +13,10 @@ public class NotificationMessageToDtoMapper implements Mapper<NotificationMessag
   @Override
   public NotificationMessageDto map(NotificationMessageUser entity) {
     return NotificationMessageDto.builder()
+            .messageId(entity.getNotificationMessage().getId())
             .message(entity.getNotificationMessage().getMessage())
             .type(entity.getNotificationMessage().getType())
-            .genDate(entity.getNotificationMessage().getGenDate().format(DateTimeFormatter.ofPattern("dd-MM-yy")))
+            .genDate(entity.getNotificationMessage().getGenDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
             .seen(entity.getSeen())
             .build();
   }

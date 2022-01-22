@@ -45,30 +45,53 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownProfile">
             <router-link to="/profile/account" v-if="currentUser" class="dropdown-item">My profile</router-link>
-            <button v-on:click="logOut" v-if="currentUser" class="dropdown-item">Logout</button>
+            <router-link to="/login" v-on:click="logOut" v-if="currentUser" class="dropdown-item">Logout</router-link>
             <router-link to="/register" v-if="!currentUser" class="dropdown-item">Register</router-link>
             <router-link to="/login" v-if="!currentUser" class="dropdown-item">Login</router-link>
             <div class="dropdown-divider"></div>
             <router-link to="/home" class="dropdown-item">Something else here</router-link>
           </div>
         </li>
-        <li>
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-expanded="false">
-              Notifications
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <span v-for="(notification) in notifications" :key="notification.id" class="dropdown-item">
-                {{ notification.message }}
-              </span>
-            </div>
-          </div>
+
+        <li v-if="this.$store.state.auth.status.loggedIn == true" class="nav-item dropdown d-flex">
+          <button class="nav-link text-light" id="navbarDropdown" role="button" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+            <icon name="notification-bell"
+                  :size="1.5"/>
+            <span class="badge-notification-count badge badge-danger">{{ this.unSeenNotification }}</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-notification">
+            <li class="head text-light bg-dark">
+              <div class="row">
+                <div class="col-lg-12 col-sm-12 col-12">
+                  <span>New notifications ({{ this.unSeenNotification }})</span>
+                  <button @click="seenNotifications" type="button" class="float-right text-light">Mark all as read
+                  </button>
+                </div>
+              </div>
+            </li>
+            <li class="notification-box"
+                :class="{'bg-gray' : notification.seen == false }"
+                v-for="notification in notifications.slice().reverse()"
+                :key="notification.messageId">
+              <div class="row">
+                <div class="col-lg-3 col-sm-3 col-3 text-center">
+                  <img src="/demo/man-profile.jpg" class="w-50 rounded-circle">
+                </div>
+                <div class="col-lg-8 col-sm-8 col-8">
+                  <strong class="text-info">David John</strong>
+                  <div>
+                    {{ notification.message }}
+                  </div>
+                  <small class="text-warning">{{ notification.genDate }}</small>
+                </div>
+              </div>
+            </li>
+            <li class="footer bg-dark text-center">
+              <a href="" class="text-light">View All</a>
+            </li>
+          </ul>
         </li>
-        <!--        <li class="nav-item">-->
-        <!--          <a class="nav-link disabled" href="#">Disabled</a>-->
-        <!--        </li>-->
       </ul>
     </div>
   </nav>
@@ -79,10 +102,11 @@ import {useWindowSize} from 'vue-window-size';
 import router from "@/router";
 import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
+import Icon from "./Icon";
 
 export default {
   name: "Header",
-  components: {},
+  components: {Icon},
   props: {
     msg: String
   },
@@ -92,6 +116,7 @@ export default {
       isMobile: false,
       notifications: [],
       isConnectedToNotifications: false,
+      unSeenNotification: 0,
     };
   },
   setup() {
@@ -114,6 +139,23 @@ export default {
     }
   },
   methods: {
+    seenNotifications() {
+      let request = [];
+      for (let i = 0; i < this.notifications.length; i++) {
+        if (this.notifications[i].seen == false) {
+          this.notifications[i].seen = true;
+          request.push(this.notifications[i].messageId);
+
+          if (this.stompClient && this.stompClient.connected) {
+            console.log(request);
+            this.stompClient.send("/app/notification/" + this.currentUser['userDto'].id, JSON.stringify({
+              'list': request,
+            }));
+          }
+        }
+      }
+      this.unSeenNotification = 0;
+    },
     logOut() {
       this.$store.dispatch('auth/logout');
       router.push("/login");
@@ -136,6 +178,13 @@ export default {
     getUser() {
       return JSON.parse(localStorage.getItem('user'));
     },
+    countUnSeenMessages(notification) {
+      if (notification.seen == false) {
+        console.log(notification.seen);
+        console.log("+1")
+        this.unSeenNotification = this.unSeenNotification + 1;
+      }
+    },
     connect() {
       this.socket = new SockJS("http://localhost:8080/websocket");
       this.stompClient = Stomp.over(this.socket);
@@ -145,14 +194,12 @@ export default {
             this.isConnectedToNotifications = true;
             this.stompClient.subscribe("/notification/" + this.getUser().userDto.id,
                 tick => {
-                  console.log("NGH1111");
-                  console.log(tick);
-                  this.notifications.push(JSON.parse(tick.body));
+                  let notification = JSON.parse(tick.body);
+                  this.notifications.push(notification);
+                  this.countUnSeenMessages(notification);
                 });
             this.stompClient.subscribe("/notification/",
                 tick => {
-                  console.log("NGH2222");
-                  console.log(tick)
                   this.notifications.push(JSON.parse(tick.body));
                 });
           },
@@ -232,7 +279,60 @@ export default {
   }
 }
 
+button {
+  all: unset;
+}
+
 .nav-item {
   white-space: nowrap;
+}
+
+.badge-notification-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+}
+
+.dropdown-menu-notification {
+  top: 60px;
+  right: 0px;
+  left: unset;
+  width: 460px;
+  box-shadow: 0px 5px 7px -1px #c1c1c1;
+  padding: 0px;
+}
+
+.dropdown-menu-notification:before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  right: 12px;
+  border: 10px solid #343A40;
+  border-color: transparent transparent #343A40 transparent;
+}
+
+.head {
+  padding: 5px 15px;
+  border-radius: 3px 3px 0px 0px;
+}
+
+.notification-box {
+  padding: 10px 0px;
+}
+
+.bg-gray {
+  background-color: #eee;
+}
+
+@media (max-width: 640px) {
+  .dropdown-menu-notification {
+    top: 50px;
+    left: -16px;
+    width: 290px;
+  }
+
+  .nav .nav-item, .nav .nav-item a {
+    padding-left: 0px;
+  }
 }
 </style>
