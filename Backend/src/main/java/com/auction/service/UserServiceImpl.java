@@ -1,5 +1,6 @@
 package com.auction.service;
 
+import com.auction.config.cache.properties.CacheNames;
 import com.auction.exception.UserNotFoundException;
 import com.auction.exception.UserRoleNotFoundException;
 import com.auction.model.AuctionEvent;
@@ -25,6 +26,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.retry.annotation.Retryable;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +42,7 @@ import java.util.Set;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = CacheNames.USERS_CACHE)
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
@@ -70,6 +75,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @CacheEvict(allEntries = true)
   @Transactional
   public void delete(User user) {
     List<AuctionEvent> auctionEventList = auctionEventRepository.findByUser(user);
@@ -85,6 +91,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @CacheEvict(allEntries = true)
   @Transactional
   public UserDto update(UserUpdateRequest request) {
     User user = findById(request.getId());
@@ -112,6 +119,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional
   public User create(SignupRequest request) {
     User user = new User(request.getEmail(),
                          encoder.encode(request.getPassword()));
@@ -130,6 +138,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @CacheEvict(allEntries = true)
   @Transactional
   public UserDto disable(Long userId) {
     User user = findById(userId);
@@ -139,6 +148,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @CacheEvict(allEntries = true)
   @Transactional
   public UserDto enable(Long userId) {
     User user = findById(userId);
@@ -148,6 +158,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Cacheable(key = "#p0")
   @Transactional(readOnly = true)
   public User findById(Long id) {
      return userRepository.findById(id)
