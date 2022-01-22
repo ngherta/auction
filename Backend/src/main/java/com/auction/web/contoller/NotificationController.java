@@ -19,11 +19,5 @@ import java.util.List;
 @RequestMapping("/api/notification")
 public class NotificationController {
 
-  private final NotificationService notificationService;
-  private final NotificationMessageService notificationMessageService;
 
-  @GetMapping("/{userId}")
-  public ResponseEntity<List<NotificationMessageDto>> getNotificationsByUser(@PathVariable Long userId) {
-    return ResponseEntity.ok(notificationMessageService.findNotificationMessagesForUser(userId));
-  }
 }

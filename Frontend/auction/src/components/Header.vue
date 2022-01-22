@@ -70,25 +70,24 @@
                 </div>
               </div>
             </li>
-            <li class="notification-box"
-                :class="{'bg-gray' : notification.seen == false }"
-                v-for="notification in notifications.slice().reverse()"
-                :key="notification.messageId">
-              <div class="row">
-                <div class="col-lg-3 col-sm-3 col-3 text-center">
-                  <img src="/demo/man-profile.jpg" class="w-50 rounded-circle">
-                </div>
-                <div class="col-lg-8 col-sm-8 col-8">
-                  <strong class="text-info">David John</strong>
-                  <div>
-                    {{ notification.message }}
+            <li class="notification-container">
+              <div class="notification-box"
+                   :class="{'bg-gray' : notification.seen == false }"
+                   v-for="notification in notifications.slice().reverse()"
+                   :key="notification.messageId">
+                <div class="row">
+                  <div class="col-lg-3 col-sm-3 col-3 text-center">
+                    <img src="/demo/man-profile.jpg" class="w-50 rounded-circle">
                   </div>
-                  <small class="text-warning">{{ notification.genDate }}</small>
+                  <div class="col-lg-8 col-sm-8 col-8">
+                    <strong class="text-info">David John</strong>
+                    <div class="white-space-nowrap">
+                      {{ notification.message }}
+                    </div>
+                    <small class="text-warning">{{ notification.genDate }}</small>
+                  </div>
                 </div>
               </div>
-            </li>
-            <li class="footer bg-dark text-center">
-              <a href="" class="text-light">View All</a>
             </li>
           </ul>
         </li>
@@ -320,8 +319,18 @@ button {
   padding: 10px 0px;
 }
 
+.white-space-nowrap {
+  white-space: normal;
+}
+
 .bg-gray {
   background-color: #eee;
+}
+
+.notification-container {
+  max-height: 300px;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 @media (max-width: 640px) {

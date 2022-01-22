@@ -19,7 +19,7 @@ public interface NotificationMessageUserRepository extends JpaRepository<Notific
           "WHERE nmu.user_id = :userId " +
           "ORDER BY nm.gen_date ASC ")
   List<NotificationMessageUser> findByUserOrderByGenDate(Long userId);
-  
+
   Optional<NotificationMessageUser> findByUserAndNotificationMessage(User user, NotificationMessage notificationMessage);
 
   List<NotificationMessageUser> findAllByUserAndAndNotificationMessageIn(User user, List<NotificationMessage> notificationMessages);

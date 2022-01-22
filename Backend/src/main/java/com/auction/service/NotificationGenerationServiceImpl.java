@@ -80,7 +80,7 @@ public class NotificationGenerationServiceImpl implements NotificationGeneration
     User user = userRepository.findById(userId)
             .orElseThrow(() -> new UserNotFoundException("User[" + userId + "] doesn't exist"));
 
-    List<NotificationMessageUser> notificationMessageUsers = notificationService.getNotificationsForUser(user);
+    List<NotificationMessageUser> notificationMessageUsers = notificationMessageService.getNotificationsForUser(user);
     notificationMessageUsers.addAll(generateInitNotificationsForUser(user));
     notificationSenderService.sendNotificationsToUser(notificationMessageUsers);
   }
