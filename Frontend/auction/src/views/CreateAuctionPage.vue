@@ -12,8 +12,7 @@
             </div>
             <div class="mb-3">
               <label for="description">DESCRIPTION:</label>
-              <Field name="description" id="description" type="text" class="form-control"/>
-              <ErrorMessage name="description" class="error-feedback"/>
+              <editor @handleChangeValue="handleDescriptionInput($event)" id="description"/>
             </div>
             <div class="mb-3">
               <label for="startPrice">START PRICE:</label>
@@ -94,6 +93,7 @@ import UploadFiles from "../views/UploadFiles";
 import AuctionService from "../services/auction.service";
 import Datetimepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css'
+import Editor from "../components/Editor";
 
 export default {
   name: "CreateAuctionPage",
@@ -103,6 +103,7 @@ export default {
     ErrorMessage,
     UploadFiles,
     Datetimepicker,
+    Editor,
   },
   data() {
     const schema = yup.object().shape({});
@@ -118,16 +119,20 @@ export default {
       startDate: null,
       finishDate: null,
       isCharity: false,
+      descriptionValue: "",
     };
   },
   methods: {
+    handleDescriptionInput(event) {
+      this.descriptionValue = event;
+    },
     createAuction(data) {
       this.successful = false;
       this.loading = true;
 
       const auction = {
         title: data.title,
-        description: data.description,
+        description: this.descriptionValue,
         startPrice: data.startPrice,
         finishPrice: data.finishPrice,
         categoryIds: this.selectedCategories,
