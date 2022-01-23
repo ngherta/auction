@@ -18,6 +18,7 @@ import CreateNewCategory from "@/views/profile/admin/CreateNewCategory";
 import AuctionsPage from '@/views/AuctionsPage';
 import ProfilePage from '@/views/profile/ProfilePage';
 import AboutUsPage from '@/views/AboutUsPage';
+import Editor from "./components/Editor";
 
 const routes = [
   {
@@ -124,6 +125,10 @@ const routes = [
   {
     path: "/profile/create-category",
     component: ProfilePage
+  },
+  {
+    path: "/editor",
+    component: Editor
   }
 ];
 
