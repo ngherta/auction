@@ -1,55 +1,64 @@
 <template>
-  <div class="container">
-    <div class="search mt-5 mb-5">
-      <Form @submit="searchFromInput">
-        <div class="d-flex justify-content-center">
-          <div class="w-50 mr-5">
-            <label for="search" hidden>Search</label>
-            <Field name="search" id="search" type="text" class="form-control"/>
-          </div>
-          <div class="">
-            <button class="btn btn-primary btn-block" :disabled="loading">
+  <div class="container-lg">
+    <div class="">
+      <div class="search mt-5 mb-5">
+        <Form @submit="searchFromInput">
+          <div class="d-flex justify-content-center">
+            <div class="w-50 mr-5">
+              <label for="search" hidden>Search</label>
+              <Field name="search" id="search" type="text" class="form-control"/>
+            </div>
+            <div class="">
+              <button class="btn btn-primary btn-block" :disabled="loading">
               <span
                   v-show="loading"
                   class="spinner-border spinner-border-sm"
               ></span>
-              Search
-            </button>
+                Search
+              </button>
+            </div>
           </div>
-        </div>
-      </Form>
+        </Form>
+      </div>
     </div>
-  </div>
-  <div class="d-flex">
-    <div class="border p-4 col-2">
-      <ul>
-        <li v-for="(category, index) in categories" :key="index">
-          <button class="d-flex align-items-center remove-button-style"
-                  @click="handleClickOnCategory(category.mainCategory.id)">
-            {{ category.mainCategory.categoryName }}
-            <Icon name="row" class="ml-3"
-                  :class="{ rotate : !this.clickedCategories.includes(category.mainCategory.id) }"></Icon>
-          </button>
-          <ul v-if="this.clickedCategories.includes(category.mainCategory.id)">
-            <li v-for="(subCategory, index) in category.listSubCategories"
-                class="d-flex justify-content-between"
-                :key="index">
-              <label class="form-check-label" :for="subCategory.id">
-                {{ subCategory.categoryName }}
-              </label>
-              <input
-                  @click="addOrRemoveSubCategory(subCategory.id)"
-                  class="form-check-input"
-                  type="checkbox"
-                  :id="subCategory.id"
-                  :value="subCategory.id"
-                  :checked="isActiveSubCategory(subCategory.id)">
-            </li>
-          </ul>
-        </li>
-      </ul>
+    <div class="row mb-5">
+      <div>
+        <router-link class="btn btn-success" to="/auction/create">Create new auction</router-link>
+      </div>
+      <div class="w-20 ml-auto mr-4">
+        <Multiselect
+            @select="getAuctions()"
+            @deselect="getAuctions()"
+            v-model="categoryValue"
+            placeholder="Filter by category"
+            :options="categoriesOptions"
+            :loading="true"
+            :search="true"
+            :hideSelectedTag="true"
+            mode="multiple"
+            :closeOnSelect="false"
+            :hideSelected="false"
+            :searchable="true"
+        />
+      </div>
+      <div class="w-20">
+        <Multiselect
+            @select="getAuctions()"
+            @deselect="getAuctions()"
+            v-model="statusValue"
+            placeholder="Filter by status"
+            :options="statusesOptions"
+            :loading="true"
+            :search="true"
+            :hideSelectedTag="true"
+            mode="multiple"
+            :closeOnSelect="false"
+            :hideSelected="false"
+        />
+      </div>
     </div>
     <div class="d-flex container">
+      <h2 v-if="searchResultEmpty" class="h2 text-center">No auctions found</h2>
       <AuctionItem v-for="(auction,index) in auctions"
                    :key="index"
                    :id="auction.id"
@@ -95,8 +104,9 @@ import AuctionService from '../services/auction.service';
 import AuctionItem from '../components/AuctionItem'
 import BettingService from '../services/betting.service';
 import CategoryService from '../services/category.service';
-import FilterService from '../services/filter.service';
-import Icon from '../components/Icon';
+import Multiselect from '@vueform/multiselect';
+import '@vueform/multiselect/themes/default.css';
+
 
 export default {
   name: "AuctionsPage",
@@ -104,32 +114,34 @@ export default {
     Field,
     Form,
     AuctionItem,
-    Icon,
+    Multiselect,
   },
   data() {
     return {
       successful: false,
       loading: false,
-      searchResultEmpty: true,
+      searchResultEmpty: false,
       auctions: [],
+      categoryValue: [],
+      statusValue: [],
+      searchTitle: "",
       page: 1,
       perPage: 5,
       countOfPages: '',
-      filter: '',
       lastBids: [{
         auctionId: '',
         bid: ''
       }],
       categories: [],
-      activeCategories: [],
-      clickedCategories: [],
+      statusesOptions: ['EXPECTATION', 'ACTIVE', 'FINISHED'],
+      categoriesOptions: []
     }
   },
   methods: {
     searchFromInput(input) {
-      this.filter = FilterService.equals(this.filter, 'title', input.search);
+      console.log(input);
+      this.searchTitle = input.search;
       this.getAuctions();
-      this.$router.push("/auctions/" + this.filter);
     },
     isPageForRender(index) {
       //index < this.page - 4 || index > this.page + 5 }
@@ -151,8 +163,7 @@ export default {
       this.page = index;
       this.getAuctions();
       window.scrollTo(0, 0);
-    }
-    ,
+    },
     getLastBidById(auctionId) {
       let bid = 0;
       for (let i = 0; i < this.lastBids.length; i++) {
@@ -161,77 +172,57 @@ export default {
         }
       }
       return bid;
-    }
-    ,
-    isActiveSubCategory(subCategory) {
-      for (let i = 0; i < this.activeCategories.length; i++) {
-        if (subCategory == this.activeCategories[i]) {
-          return true;
-        }
-      }
-      return false;
-    }
-    ,
+    },
     getCategories() {
       CategoryService.getCategoriesForCreateAuction().then(
           (response) => {
             this.categories = response.data;
+            console.log(this.categories);
+            this.categoriesOptions = [];
+            for (let i = 0; i < this.categories.length; i++) {
+              this.categoriesOptions.push({
+                label: this.categories[i].mainCategory.categoryName,
+                value: this.categories[i].mainCategory.id,
+                disabled: true
+              });
+              for (let q = 0; q < this.categories[i].listSubCategories.length; q++) {
+                this.categoriesOptions.push({
+                  label: this.categories[i].listSubCategories[q].categoryName,
+                  value: this.categories[i].listSubCategories[q].id
+                });
+              }
+            }
           }
       )
-    }
-    ,
-    handleClickOnCategory(categoryId) {
-      if (this.clickedCategories.includes(categoryId)) {
-        let index = this.clickedCategories.indexOf(categoryId);
-        this.clickedCategories.splice(index, 1);
-      } else {
-        this.clickedCategories.push(categoryId);
-      }
-    }
-    ,
-    addOrRemoveSubCategory(subCategory) {
-      const cb = document.querySelector("[id='" + subCategory + "']");
-
-      if (!cb.checked) {
-        this.removeSubCategoryFromFilter(subCategory);
-      } else {
-        this.addSubCategoryToFilter(subCategory);
-      }
-      this.getAuctions();
-      this.$router.push("/auctions/" + this.filter);
-
-    }
-    ,
-    addSubCategoryToFilter(subCategory) {
-      this.filter = FilterService.in(this.filter, 'categories', subCategory);
-    }
-    ,
-    removeSubCategoryFromFilter(subCategory) {
-      this.filter = FilterService.removeSubCategory(this.filter, subCategory);
-    }
-    ,
+    },
     getAuctions() {
-      let filter = FilterService.prepareFilterForRequest(this.filter);
-      AuctionService.filter(filter, this.page, this.perPage).then(
-          (response) => {
-            if (response.data.totalElements != 0) {
-              this.searchResultEmpty = false;
-              this.auctions = response.data.content;
-              this.countOfPages = response.data.totalPages;
-              this.getLastBids();
-            } else if (response.data.totalElements == 0) {
-              this.auctions = [];
-              this.searchResultEmpty = true;
-            }
-          },
-          (error) => {
-            // Add router to not found page
-            this.$notify({
-              text: error.response.data.errorMessage,
-              type: 'error'
-            });
-          }
-      );
+      console.log(this.categoryValue.toString());
+      AuctionService
+          .filter(this.page,
+              this.perPage,
+              this.categoryValue.toString(),
+              this.searchTitle,
+              this.statusValue.toString())
+          .then(
+              (response) => {
+                if (response.data.totalElements != 0) {
+                  this.searchResultEmpty = false;
+                  this.auctions = response.data.content;
+                  this.countOfPages = response.data.totalPages;
+                  this.getLastBids();
+                } else if (response.data.totalElements == 0) {
+                  this.auctions = [];
+                  this.searchResultEmpty = true;
+                }
+              },
+              (error) => {
+                // Add router to not found page
+                this.$notify({
+                  text: error.response.data.errorMessage,
+                  type: 'error'
+                });
+              }
+          );
     }
     ,
     getLastBids() {
@@ -254,11 +245,6 @@ export default {
     }
   },
   mounted() {
-    if (this.$route.params.filter) {
-      this.filter = this.$route.params.filter;
-      this.activeCategories = FilterService.getCategories(this.filter);
-    }
-
     this.getAuctions();
     this.getCategories();
   }
@@ -266,12 +252,7 @@ export default {
 </script>
 
 <style scoped>
-.rotate {
-  transform: rotate(180deg);
-}
-
-.remove-button-style {
-  all: unset;
-  cursor: pointer;
+.w-20 {
+  width: 20%;
 }
 </style>

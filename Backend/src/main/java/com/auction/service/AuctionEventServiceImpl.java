@@ -316,17 +316,17 @@ class AuctionEventServiceImpl implements AuctionEventService {
     return auctionEventRepository.getListForFinish(status.name());
   }
 
-  @Override
   @Transactional(readOnly = true)
-  public Page<AuctionEventDto> findAllAndFilter(int page, int perPage, String filter) {
+  @Override
+  public Page<AuctionEventDto> findAllAndFilter(int page,
+                                    int perPage,
+                                    String title,
+                                    List<Long> categoriesIds,
+                                    List<AuctionStatus> statuses) {
     Pageable pageable = PageRequest.of(page - 1, perPage);
     Specification<AuctionEvent> specification = null;
-//    try {
-    specification = auctionSpecificationFilter.createFilter(filter);
-//    }
-//    catch (Exception e) {
-//      throw new SpecificationException("Filter parameter is wrong!");
-//    }
+    specification = auctionSpecificationFilter.createFilter(title, categoriesIds, statuses);
+
     return auctionEventRepository.findAll(specification, pageable).map(auctionEventToDtoMapper::map);
   }
 

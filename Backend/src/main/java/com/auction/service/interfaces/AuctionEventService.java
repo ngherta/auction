@@ -51,7 +51,12 @@ public interface AuctionEventService {
 
   List<AuctionEvent> getListForFinish(AuctionStatus status);
 
-  Page<AuctionEventDto> findAllAndFilter(int page, int perPage, String filter);
+  Page<AuctionEventDto> findAllAndFilter(int page,
+                                         int perPage,
+                                         String title,
+                                         List<Long> categoriesIds,
+                                         List<AuctionStatus> statuses);
+
 
   Page<AuctionEventDto> getAllByOwner(Long userId,
                                       int page,

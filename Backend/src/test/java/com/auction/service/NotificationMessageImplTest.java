@@ -4,6 +4,7 @@ import com.auction.model.NotificationMessage;
 import com.auction.model.NotificationMessageUser;
 import com.auction.model.User;
 import com.auction.model.enums.NotificationType;
+import com.auction.model.fixture.NotificationMessageFixture;
 import com.auction.model.fixture.UserFixture;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.NotificationMessageRepository;
@@ -18,14 +19,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,11 +54,7 @@ class NotificationMessageImplTest {
 
     user = UserFixture.user();
 
-    NotificationMessageUser messageUser = NotificationMessageUser.builder()
-            .seen(false)
-            .user(user)
-            .notificationMessage(new NotificationMessage("test", NotificationType.NEW_MESSAGE, LocalDateTime.now()))
-            .build();
+    NotificationMessageUser messageUser = NotificationMessageFixture.notificationMessageUser();
     notificationMessageList.add(messageUser);
 
     NotificationMessageDto dto = NotificationMessageDto.builder()
@@ -73,19 +68,21 @@ class NotificationMessageImplTest {
     notificationMessages.add(new NotificationMessage("test", NotificationType.NEW_MESSAGE, LocalDateTime.now()));
   }
 
-//  @Test
-//  void findNotificationMessagesForUser_whenInvoked_returnListONotificationMessageDto() {
-//    when(userRepository.findById(any(Long.class))).thenReturn(java.util.Optional.ofNullable(user));
-//    when(notificationMessageUserRepository.findByUser(any(User.class))).thenReturn(notificationMessageList);
-//    when(mapper.mapList(any(List.class))).thenReturn(dtos);
-//
-//    assertThat(notificationMessageService.findNotificationMessagesForUser(100L))
-//            .isNotEqualTo(Collections.EMPTY_LIST);
-//  }
-
   @Test
-  void createNotificationMessagesForUser_whenInvoked_repositoryInvokedOneTIme() {
+  void createNotificationMessagesForUser_whenInvoked_repositoryInvokedOneTime() {
     notificationMessageService.createNotificationMessagesForUser(user, notificationMessages);
     verify(notificationMessageUserRepository, times(1)).saveAll(any(List.class));
+  }
+
+  @Test
+  void seen_whenInvoked_findAllByUserAndAndNotificationMessageInInvokedOneTime() {
+    when(userRepository.findById(any())).thenReturn(Optional.of(user));
+    when(notificationMessageRepository.findAllByIdIn(any(List.class))).thenReturn(notificationMessageList);
+    when(notificationMessageUserRepository
+                 .findAllByUserAndAndNotificationMessageIn(any(), any()))
+            .thenReturn(notificationMessageList);
+
+    notificationMessageService.seen(user.getId(), List.of(1L));
+    verify(notificationMessageUserRepository, times(1)).findAllByUserAndAndNotificationMessageIn(any(), any());
   }
 }

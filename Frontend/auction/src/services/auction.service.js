@@ -70,12 +70,14 @@ class AuctionsService {
         });
     }
 
-    filter(filter, page, perPage) {
+    filter(page, perPage, categories, title, statuses) {
         return axios.get(API_URL + 'filter', {
             params: {
                 page: page,
                 perPage: perPage,
-                filter: filter
+                title: title,
+                categoryIds: categories,
+                statuses: statuses,
             }
         })
     }

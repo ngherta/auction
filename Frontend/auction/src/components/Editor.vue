@@ -5,13 +5,16 @@
         :tippy-options="{ duration: 100 }"
         :editor="editor"
     >
-      <button type="button" @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
+      <button type="button" @click="editor.chain().focus().toggleBold().run()"
+              :class="{ 'is-active': editor.isActive('bold') }">
         Bold
       </button>
-      <button type="button" @click="editor.chain().focus().toggleItalic().run()" :class="{ 'is-active': editor.isActive('italic') }">
+      <button type="button" @click="editor.chain().focus().toggleItalic().run()"
+              :class="{ 'is-active': editor.isActive('italic') }">
         Italic
       </button>
-      <button type="button" @click="editor.chain().focus().toggleStrike().run()" :class="{ 'is-active': editor.isActive('strike') }">
+      <button type="button" @click="editor.chain().focus().toggleStrike().run()"
+              :class="{ 'is-active': editor.isActive('strike') }">
         Strike
       </button>
     </bubble-menu>
@@ -63,25 +66,15 @@ export default {
       extensions: [
         StarterKit,
       ],
-      content: `
-        <p>
-          Try to select <em>this text</em> to see what we call the bubble menu.
-        </p>
-        <p>
-          Neat, isn’t it? Add an empty paragraph to see the floating menu.
-        </p>
-      `,
+      content: ` `,
     })
   },
 
   beforeUnmount() {
     this.editor.destroy()
   },
-
 }
 </script>
-
-
 
 <style lang="scss">
 
@@ -96,12 +89,14 @@ export default {
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.5;  color: #495057;
+  line-height: 1.5;
+  color: #495057;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
-  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
   > * + * {
     margin-top: 0.75em;
   }

@@ -2,6 +2,7 @@ package com.auction.web.contoller;
 
 import com.auction.service.interfaces.PaymentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +18,10 @@ public class PaymentController {
   private final PaymentService paymentService;
 
   @GetMapping("/success")
-  public String successPay(@RequestParam("paymentId") String paymentId,
-                           @RequestParam("PayerID") String payerId) {
+  public ResponseEntity<Void> successPay(@RequestParam("paymentId") String paymentId,
+                                   @RequestParam("PayerID") String payerId) {
 
     paymentService.execute(paymentId, payerId);
-    return "redirect:/";
+    return ResponseEntity.ok().build();
   }
 }

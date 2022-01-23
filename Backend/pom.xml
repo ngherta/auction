@@ -5,7 +5,8 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.5.5</version>
+    <version>2.5.4</version>
+<!--    2.5.5-->
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.auction</groupId>
@@ -132,39 +133,25 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger2</artifactId>
-      <version>${springfox-swagger.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger-ui</artifactId>
-      <version>${springfox-swagger.version}</version>
-    </dependency>
+
     <dependency>
       <groupId>com.google.firebase</groupId>
       <artifactId>firebase-admin</artifactId>
       <version>8.1.0</version>
     </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-cache</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-configuration-processor</artifactId>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.springframework.boot</groupId>-->
+<!--      <artifactId>spring-boot-configuration-processor</artifactId>-->
+<!--    </dependency>-->
 <!--    <dependency>-->
 <!--      <groupId>org.springframework.boot</groupId>-->
 <!--      <artifactId>spring-boot-starter-data-redis</artifactId>-->
 <!--    </dependency>-->
-
-    <dependency>
-      <groupId>org.testcontainers</groupId>
-      <artifactId>postgresql</artifactId>
-      <scope>test</scope>
-    </dependency>
 
     <dependency>
       <groupId>org.assertj</groupId>
@@ -207,7 +194,6 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-<!--      <version>5.3.2</version>-->
       <version>5.7.0</version>
       <scope>test</scope>
     </dependency>
@@ -215,7 +201,6 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-<!--      <version>5.3.2</version>-->
       <version>5.7.0</version>
       <scope>test</scope>
     </dependency>
@@ -223,7 +208,6 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-<!--      <version>5.3.2</version>-->
       <version>5.7.0</version>
       <scope>test</scope>
     </dependency>
@@ -258,16 +242,11 @@
       <artifactId>jackson-datatype-jsr310</artifactId>
       <version>2.13.1</version>
     </dependency>
+
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-jpamodelgen</artifactId>
       <version>5.3.7.Final</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.retry</groupId>
-      <artifactId>spring-retry</artifactId>
-      <version>1.2.5.RELEASE</version>
     </dependency>
 
     <dependency>

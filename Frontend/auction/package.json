@@ -20,6 +20,7 @@
     "@tiptap/starter-kit": "^2.0.0-beta.174",
     "@tiptap/vue-3": "^2.0.0-beta.89",
     "@vue/cli-plugin-unit-jest": "^4.5.10",
+    "@vueform/multiselect": "^2.3.1",
     "ag-grid-community": "^26.2.0",
     "ag-grid-vue": "^26.2.0",
     "ag-grid-vue3": "26.0.0",

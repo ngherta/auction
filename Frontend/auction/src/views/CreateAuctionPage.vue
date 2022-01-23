@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <h1 class="h1">Create auction</h1>
+  <div class="container mt-5 mb-5">
+    <h1 class="h1 mb-4">Create auction</h1>
     <div>
       <Form @submit="createAuction" :validation-schema="schema">
         <div v-if="!successful" class="row">

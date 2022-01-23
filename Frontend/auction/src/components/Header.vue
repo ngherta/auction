@@ -70,6 +70,11 @@
                 </div>
               </div>
             </li>
+            <li v-if="this.notifications.length == 0" class="notification-container">
+              <div class="notification-box p-2">
+                <h6 class="text-center">You don't have any notifications :(</h6>
+              </div>
+            </li>
             <li class="notification-container">
               <div class="notification-box"
                    :class="{'bg-gray' : notification.seen == false }"
