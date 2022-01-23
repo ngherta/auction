@@ -7,8 +7,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
-@EnableConfigurationProperties
-@EntityScan(basePackages = {"com.auction.model"})
+//@EnableConfigurationProperties
+//@EntityScan(basePackages = {"com.auction.model"})
 @SpringBootApplication
 class AuctionApplication {
 
