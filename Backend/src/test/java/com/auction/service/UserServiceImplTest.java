@@ -3,6 +3,7 @@ package com.auction.service;
 import com.auction.model.Role;
 import com.auction.model.User;
 import com.auction.model.enums.UserRole;
+import com.auction.model.fixture.UserFixture;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
@@ -20,6 +21,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -46,8 +49,9 @@ class UserServiceImplTest {
 
   private UserServiceImpl userService;
 
-  private Role role;
+  private Set<Role> roles = new HashSet<>();
   private User user;
+  private UserDto dto = new UserDto();
 
   @BeforeEach
   public void setUp() {
@@ -60,19 +64,15 @@ class UserServiceImplTest {
                                       roleRepository,
                                       encoder);
     userService.setAuctionEventService(auctionEventService);
+    roles = UserFixture.userRole();
+    user = UserFixture.user();
 
-    role = Role.builder().userRole(UserRole.USER).build();
-
-    user = User.builder()
-            .email("asdasda")
-            .firstName("asdasda")
-            .build();
-    user.setId(5L);
+    dto.setEnabled(false);
   }
 
   @Test
   void create_whenInvoked_returnNewUser() {
-    when(roleRepository.findByUserRole(any(UserRole.class))).thenReturn(java.util.Optional.ofNullable(role));
+    when(roleRepository.findByUserRole(any(UserRole.class))).thenReturn(roles.stream().findFirst());
     when(userRepository.save(any(User.class))).thenReturn(user);
 
     SignupRequest request = new SignupRequest();
@@ -90,21 +90,23 @@ class UserServiceImplTest {
 
   @Test
   void disable_whenInvoked_returnDisabledUser() {
-    user.setEnabled(true);
-    when(userRepository.findById(any(Long.class))).thenReturn(java.util.Optional.ofNullable(user));
-    when(userRepository.save(any(User.class))).thenReturn(user);
+    when(userRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(user));
+    user = UserFixture.disabledUser();
+    when(userRepository.save(any(User.class))).thenReturn(UserFixture.disabledUser());
+    when(userToDtoMapper.map(any(User.class))).thenReturn(dto);
 
-    userService.disable(user.getId());
-    assertThat(user.isEnabled()).isFalse();
+    assertThat(userService.disable(user.getId()).getEnabled()).isFalse();
   }
 
   @Test
   void enable_whenInvoked_returnEnabledUser() {
-    user.setEnabled(false);
-    when(userRepository.findById(any(Long.class))).thenReturn(java.util.Optional.ofNullable(user));
-    when(userRepository.save(any(User.class))).thenReturn(user);
+    when(userRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(user));
+    user = UserFixture.disabledUser();
+    when(userRepository.save(any(User.class)))
+            .thenReturn(UserFixture.user());
+    when(userToDtoMapper.map(any(User.class)))
+            .thenReturn(dto);
 
-    userService.enable(user.getId());
-    assertThat(user.isEnabled()).isTrue();
+    assertThat(userService.disable(user.getId()).getEnabled()).isFalse();
   }
 }

@@ -9,6 +9,7 @@ import com.auction.repository.AuctionEventRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionActionDto;
+import com.auction.web.dto.AuctionEventDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,12 +33,13 @@ class AuctionActionImplTest {
   @Mock
   private AuctionActionRepository auctionActionRepository;
   @Mock
-  private AuctionEventService auctionEventService;
-  @Mock
   private Mapper<AuctionAction, AuctionActionDto> auctionActionToDtoMapper;
   @Mock
+  private AuctionEventService auctionEventService;
+  @Mock
+  private Mapper<AuctionEvent, AuctionEventDto> auctionEventDtoMapper;
+  @Mock
   private UserService userService;
-
 
   private AuctionActionServiceImpl auctionActionService;
 
@@ -46,11 +48,12 @@ class AuctionActionImplTest {
 
   @BeforeEach
   public void setUp() {
-//    auctionActionService = new AuctionActionServiceImpl(auctionActionRepository,
-//                                                        auctionEventRepository,
-//                                                        auctionEventService,
-//                                                        auctionActionToDtoMapper,
-//                                                        userService);
+    auctionActionService = new AuctionActionServiceImpl(auctionActionRepository,
+                                                        auctionEventRepository,
+                                                        auctionEventService,
+                                                        auctionActionToDtoMapper,
+                                                        auctionEventDtoMapper,
+                                                        userService);
     auctionEvent = AuctionEvent.builder()
             .title("title")
             .statusType(AuctionStatus.ACTIVE)

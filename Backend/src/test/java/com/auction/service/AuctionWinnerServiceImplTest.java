@@ -3,6 +3,8 @@ package com.auction.service;
 import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionWinner;
 import com.auction.model.User;
+import com.auction.model.fixture.AuctionEventFixture;
+import com.auction.model.fixture.UserFixture;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionWinnerRepository;
 import com.auction.service.interfaces.UserService;
@@ -41,15 +43,8 @@ public class AuctionWinnerServiceImplTest {
   @BeforeEach
   public void setUp() {
     auctionWinnerService = new AuctionWinnerServiceImpl(auctionWinnerRepository, userService, auctionWinnerDtoMapper);
-    user = User.builder()
-            .lastName("Gherta")
-            .email("asd@asd.com")
-            .firstName("asd")
-            .build();
-    AuctionEvent auctionEvent = AuctionEvent.builder()
-            .title("asd")
-            .finishPrice(123D)
-            .build();
+    user = UserFixture.user();
+    AuctionEvent auctionEvent = AuctionEventFixture.auctionEvent();
     AuctionWinner auctionWinner = AuctionWinner.builder()
             .auctionEvent(auctionEvent)
             .price(123D)

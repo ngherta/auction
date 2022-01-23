@@ -53,6 +53,6 @@ public class AuctionWinnerController {
   @Test
   @WithMockUser(username = "test", roles = "ADMIN")
   void getUsers_whenInvoked_return200() throws Exception {
-    mockMvc.perform(get("/api/winner/user/")).andExpect(status().isOk());
+    mockMvc.perform(get("/api/winner/")).andExpect(status().isOk());
   }
 }

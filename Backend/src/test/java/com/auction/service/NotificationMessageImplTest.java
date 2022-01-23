@@ -4,6 +4,7 @@ import com.auction.model.NotificationMessage;
 import com.auction.model.NotificationMessageUser;
 import com.auction.model.User;
 import com.auction.model.enums.NotificationType;
+import com.auction.model.fixture.UserFixture;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.NotificationMessageRepository;
 import com.auction.repository.NotificationMessageUserRepository;
@@ -52,11 +53,7 @@ class NotificationMessageImplTest {
                                                                     notificationMessageUserRepository,
                                                                     mapper);
 
-    user = User.builder()
-            .firstName("asd")
-            .email("asd@asd.com")
-            .email("asd")
-            .build();
+    user = UserFixture.user();
 
     NotificationMessageUser messageUser = NotificationMessageUser.builder()
             .seen(false)

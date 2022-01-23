@@ -3,6 +3,8 @@ package com.auction.service;
 import com.auction.model.Category;
 import com.auction.model.SubCategory;
 import com.auction.model.enums.CategoryType;
+import com.auction.model.fixture.CategoryFixture;
+import com.auction.model.fixture.SubCategoriesFixture;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.CategoryRepository;
 import com.auction.repository.SubCategoryRepository;
@@ -47,15 +49,9 @@ class CategoryServiceImplTest {
                                               categoryDtoMapper,
                                               subCategoryDtoMapper);
 
-    Category category = Category.builder()
-            .category("name")
-            .build();
-    listOfCategories.add(category);
-    SubCategory subCategory = SubCategory.builder()
-            .subCategoryName("subCategoryName")
-            .category(category)
-            .build();
-    listOfSubCategories.add(subCategory);
+    listOfCategories = List.of(CategoryFixture.category());
+
+    listOfSubCategories = SubCategoriesFixture.listOfCategories();
   }
 
   @Test
