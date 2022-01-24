@@ -5,8 +5,7 @@ import com.auction.model.AuctionEventComplaint;
 import com.auction.model.AuctionEventComplaintAudit;
 import com.auction.model.User;
 import com.auction.model.enums.ComplaintStatus;
-import com.auction.model.mapper.ComplaintAuditToDtoMapper;
-import com.auction.model.mapper.ComplaintToDtoMapper;
+import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionEventComplaintAuditRepository;
 import com.auction.repository.AuctionEventComplaintRepository;
 import com.auction.service.interfaces.AuctionEventService;
@@ -32,8 +31,8 @@ class ComplaintServiceImpl implements ComplaintService {
   private final AuctionEventComplaintAuditRepository complaintAuditRepository;
   private final UserService userService;
   private final AuctionEventService auctionEventService;
-  private final ComplaintToDtoMapper complaintToDtoMapper;
-  private final ComplaintAuditToDtoMapper complaintAuditToDtoMapper;
+  private final Mapper<AuctionEventComplaint, ComplaintDto> complaintToDtoMapper;
+  private final Mapper<AuctionEventComplaintAudit, ComplaintAuditDto> complaintAuditToDtoMapper;
 
   @Override
   @Transactional
@@ -73,7 +72,7 @@ class ComplaintServiceImpl implements ComplaintService {
       complaint.setStatus(ComplaintStatus.REJECTED);
       complaintStatus = ComplaintStatus.REJECTED;
     }
-    else if(request.getStatus() == ComplaintStatus.SATISFIED) {
+    else if (request.getStatus() == ComplaintStatus.SATISFIED) {
       complaint.setStatus(ComplaintStatus.SATISFIED);
       auctionEvent = auctionEventService.blockAuctionEvent(auctionEvent);
       complaint.setAuctionEvent(auctionEvent);

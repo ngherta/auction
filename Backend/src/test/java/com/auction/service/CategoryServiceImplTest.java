@@ -91,8 +91,11 @@ class CategoryServiceImplTest {
   @Test
   void createSubCategory_whenSubCategoryNameAlreadyExist_thrownCategoryAlreadyExistException() {
     String name = "ELECTRONIC";
-    when(categoryRepository.findById(any(Long.class))).thenReturn(java.util.Optional.ofNullable(listOfCategories.get(0)));
-    when(categoryService.subCategoryExistsByNameAndCategory(any(String.class), any(Category.class))).thenReturn(true);
+    when(categoryRepository
+                 .findById(any(Long.class)))
+            .thenReturn(java.util.Optional.ofNullable(listOfCategories.get(0)));
+    when(categoryService.subCategoryExistsByNameAndCategory(any(String.class), any(Category.class)))
+            .thenReturn(true);
 
     CreateCategoryRequest request = new CreateCategoryRequest();
     request.setName(name);
