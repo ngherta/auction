@@ -1,5 +1,5 @@
 <template>
-  <div class="container-lg">
+  <div class="container">
     <div class="">
       <div class="search mt-5 mb-5">
         <Form @submit="searchFromInput">
@@ -57,8 +57,14 @@
         />
       </div>
     </div>
-    <div class="d-flex container">
-      <h2 v-if="searchResultEmpty" class="h2 text-center">No auctions found</h2>
+    <div class=" mb-5">
+      <div class="text-center"
+           v-if="this.loadingAuctions == true && this.searchResultEmpty == false">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <h2 v-else-if="this.searchResultEmpty" class="h2 text-center">No auctions found</h2>
       <AuctionItem v-for="(auction,index) in auctions"
                    :key="index"
                    :id="auction.id"
@@ -68,7 +74,9 @@
                    :last-bid="getLastBidById(auction.id)"/>
     </div>
   </div>
-  <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-5 mb-3">
+  <nav v-if="this.loadingAuctions && this.searchResultEmpty"
+       aria-label="Page navigation example"
+       class="d-flex justify-content-center mt-5 mb-3">
     <ul class="pagination ">
       <li class="page-item list-unstyled">
         <router-link class="page-link" to="/auctions"
@@ -122,6 +130,7 @@ export default {
       loading: false,
       searchResultEmpty: false,
       auctions: [],
+      loadingAuctions: null,
       categoryValue: [],
       statusValue: [],
       searchTitle: "",
@@ -196,7 +205,8 @@ export default {
       )
     },
     getAuctions() {
-      console.log(this.categoryValue.toString());
+      this.auctions = [];
+      this.loadingAuctions = true;
       AuctionService
           .filter(this.page,
               this.perPage,
@@ -214,6 +224,7 @@ export default {
                   this.auctions = [];
                   this.searchResultEmpty = true;
                 }
+                this.loadingAuctions = false;
               },
               (error) => {
                 // Add router to not found page
@@ -221,6 +232,7 @@ export default {
                   text: error.response.data.errorMessage,
                   type: 'error'
                 });
+                this.loadingAuctions = false;
               }
           );
     }

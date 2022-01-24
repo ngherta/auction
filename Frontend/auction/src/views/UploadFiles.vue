@@ -14,6 +14,15 @@
       />
       <!-- submit button is disabled until a file is selected -->
       <button type="submit" :disabled="filesSelected < 1">Upload</button>
+      <div class="progress">
+        <div class="progress-bar"
+             role="progressbar"
+             :style="'width: ' + this.progress + '%'"
+             :aria-valuenow="this.progress"
+             aria-valuemin="0"
+             aria-valuemax="100">
+        </div>
+      </div>
     </form>
 
     <!-- display uploaded image if successful -->
@@ -89,6 +98,7 @@ export default {
     },
     // function to handle form submit
     upload() {
+      this.progress = 0;
       //no need to look at selected files if there is no cloudname or preset
       if (this.preset.length < 1 || this.cloudName.length < 1) {
         this.errors.push("You must enter a cloud name and preset to upload");
@@ -111,11 +121,9 @@ export default {
               method: "POST",
               data: this.formData,
               onUploadProgress: function (progressEvent) {
-                console.log("progress", progressEvent);
                 this.progress = Math.round(
-                    (progressEvent.loaded * 100.0) / progressEvent.total
+                    (progressEvent.loaded * 100) / progressEvent.total
                 );
-                console.log(this.progress);
                 //bind "this" to access vue state during callback
               }.bind(this)
             };
@@ -124,7 +132,6 @@ export default {
             axios(requestObj)
                 .then(response => {
                   this.results.push(response.data);
-                  console.log(response.data.secure_url)
                   this.$emit('uploadNewImages', response.data.secure_url)
                   // this.$store.dispatch("image/uploadImage", this.results);
                 })
@@ -209,7 +216,8 @@ input:focus {
   }
 
   input,
-  button {
+  button,
+  .progress{
     grid-column: 2 / 3;
   }
 }

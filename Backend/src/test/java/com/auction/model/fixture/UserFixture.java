@@ -3,6 +3,8 @@ package com.auction.model.fixture;
 import com.auction.model.Role;
 import com.auction.model.User;
 import com.auction.model.enums.UserRole;
+import com.auction.web.dto.RoleDto;
+import com.auction.web.dto.UserDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,10 +31,27 @@ public class UserFixture {
             .build();
   }
 
+  public static UserDto userDto() {
+    return UserDto.builder()
+            .email(email)
+            .firstName(firstName)
+            .lastName(lastName)
+            .birthday(LocalDate.now().toString())
+            .enabled(true)
+            .userRole(userDtoRole())
+            .build();
+  }
+
   public static Set<Role> userRole() {
     return Set.of(Role.builder()
             .userRole(UserRole.ADMIN)
             .build());
+  }
+
+  public static Set<RoleDto> userDtoRole() {
+    RoleDto roleDto = new RoleDto();
+    roleDto.setName("ADMIN");
+    return Set.of(roleDto);
   }
 
   public static User disabledUser() {
