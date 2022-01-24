@@ -85,7 +85,7 @@ class CategoryServiceImplTest {
     String expectedMessage = "Category with name " + name + " already exist!";
     String actualMessage = exception.getMessage();
 
-    assertThat(actualMessage.contains(expectedMessage));
+    assertThat(actualMessage.contains(expectedMessage)).isTrue();
   }
 
   @Test
@@ -105,6 +105,6 @@ class CategoryServiceImplTest {
     String expectedMessage = "SubCategory with name [" + name + "] already exist!";
     String actualMessage = exception.getMessage();
 
-    assertThat(actualMessage.contains(expectedMessage));
+    assertThat(actualMessage.contains(expectedMessage)).isTrue();
   }
 }

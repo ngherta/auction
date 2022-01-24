@@ -3,6 +3,7 @@ package com.auction.service;
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
 import com.auction.model.enums.AuctionStatus;
+import com.auction.model.fixture.AuctionEventFixture;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
@@ -23,6 +24,8 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -54,10 +57,7 @@ class AuctionActionImplTest {
                                                         auctionActionToDtoMapper,
                                                         auctionEventDtoMapper,
                                                         userService);
-    auctionEvent = AuctionEvent.builder()
-            .title("title")
-            .statusType(AuctionStatus.ACTIVE)
-            .build();
+    auctionEvent = AuctionEventFixture.auctionEvent();
 
     auctionAction = AuctionAction.builder()
             .auctionEvent(auctionEvent)
@@ -77,8 +77,46 @@ class AuctionActionImplTest {
     String expectedMessage = "has status";
     String actualMessage = exception.getMessage();
 
-    assertThat(actualMessage.contains(expectedMessage));
+    assertThat(actualMessage.contains(expectedMessage)).isTrue();
   }
+
+  @Test
+  void getLasBidsFromId_whenInvoked_callGetLastBidByAuctionIdsOnce() {
+    List<Long> ids = new ArrayList<>();
+    ids.add(2L);
+
+    auctionActionService.getLasBidsFromId(ids);
+    verify(auctionActionRepository, times(1))
+            .getLastBidByAuctionIds(any(List.class));
+  }
+
+  @Test
+  void checkBetDifference_whenInvoked_throwWrongBetExceptionAboutStartPrice() {
+    auctionEvent.setStartPrice(100D);
+    Exception exception = assertThrows(RuntimeException.class, () -> {
+      auctionActionService.checkBetDifference(10D, auctionEvent, Optional.empty());
+    });
+
+    String expectedMessage = "Bet should be higher than Start Price!";
+    String actualMessage = exception.getMessage();
+
+    assertThat(actualMessage.contains(expectedMessage)).isTrue();
+  }
+
+  @Test
+  void checkBetDifference_whenInvoked_throwWrongBetExceptionAboutPercent() {
+    auctionEvent.setStartPrice(1D);
+    auctionAction.setBet(20D);
+    Exception exception = assertThrows(RuntimeException.class, () -> {
+      auctionActionService.checkBetDifference(100D, auctionEvent, Optional.empty());
+    });
+
+    String expectedMessage = "Bet should be 5 percent higher!";
+    String actualMessage = exception.getMessage();
+
+    assertThat(actualMessage.contains(expectedMessage)).isTrue();
+  }
+
 
   @Test
   void checkBet_whenAuctionActionIsNullAndStartPriceMoreThanBet_returnWrongBetException() {
@@ -93,7 +131,7 @@ class AuctionActionImplTest {
     String expectedMessage = "Bet should be higher than Start Price!";
     String actualMessage = exception.getMessage();
 
-    assertThat(actualMessage.contains(expectedMessage));
+    assertThat(actualMessage.contains(expectedMessage)).isTrue();
   }
 
   @Test
@@ -110,7 +148,7 @@ class AuctionActionImplTest {
     String expectedMessage = "Bet should be 5 percent higher!";
     String actualMessage = exception.getMessage();
 
-    assertThat(actualMessage.contains(expectedMessage));
+    assertThat(actualMessage.contains(expectedMessage)).isTrue();
   }
 
   @Test

@@ -74,8 +74,8 @@ class AuctionActionServiceImpl implements AuctionActionService {
     Optional<AuctionAction> action = auctionActionRepository.findTopByAuctionEventOrderByBetDesc(auctionEvent);
     checkBetDifference(bet, auctionEvent, action);
   }
-
-  private void checkBetDifference(Double bet,
+//  @Override
+  public void checkBetDifference(Double bet,
                                   AuctionEvent auctionEvent,
                                   Optional<AuctionAction> action) {
     if (action.isEmpty()) {
@@ -124,6 +124,7 @@ class AuctionActionServiceImpl implements AuctionActionService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Page<AuctionEventDto> getAuctionsByParticipant(Long userId, int page, int perPage) {
     Pageable pageable = PageRequest.of(page - 1, perPage);
     return auctionActionRepository.findAuctionActionByParticipantAndGroupByAuction(userId, pageable)
