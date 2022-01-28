@@ -31,8 +31,10 @@ class UserChatServiceImpl implements UserChatService {
   @Override
   @Transactional
   public ChatMessageDto send(ChatMessageRequest request) {
-    UserChat room = userChatRepository.findById(request.getChatRoom())
-            .orElseThrow(() -> new ChatRoomNotFoundException("ChatRoom[" + request.getChatRoom() + "] doesn't exist!"));
+    UserChat room = UserChat.builder().build();
+    //TODO:
+//            userChatRepository.findById(request.getChatRoom())
+//                    .orElseThrow(() -> new ChatRoomNotFoundException("ChatRoom[" + request.getChatRoom() + "] doesn't exist!"));
 
     User sender = userService.findById(request.getSenderId());
 

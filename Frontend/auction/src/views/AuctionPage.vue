@@ -2,13 +2,13 @@
 
   <div class="container">
     <div class="row mt-5">
-      <div v-if="showTest" id="carouselExampleControls" class="col carousel slide w-25" data-ride="carousel">
+      <div v-if="showTest" id="carouselExampleControls" class="col carousel slide w-25 border" data-ride="carousel">
         <div class="carousel-inner" style="height: 500px">
           <div v-for="(image, index) of images"
                :key="image"
-               class="carousel-item"
+               class="carousel-item "
                v-bind:class="{active : index == 0}">
-            <img class="d-block img-responsive"
+            <img class="d-flex m-auto img-responsive"
                  v-bind:src="image">
           </div>
 
@@ -22,7 +22,7 @@
           <span class="sr-only">Next</span>
         </a>
       </div>
-      <div class="col d-flex flex-column justify-content-between">
+      <div class="col d-flex flex-column justify-content-between pb-5 pl-5 pr-5">
         <div>
           <div class="d-flex justify-content-between align-items-center flex-wrap">
             <h1 class="h1">{{ content.title }}</h1>
@@ -107,74 +107,87 @@
       </div>
     </div>
 
-    <div class="w-50 p-3 border mt-5">
-      <h3 v-if="this.$store.state.auth.status.loggedIn" class="text-center mb-4">MAKE A BID</h3>
-      <h3 v-if="!this.$store.state.auth.status.loggedIn" class="text-center mb-4">List of bids:</h3>
-      <div>
-        <Form v-if="this.$store.state.auth.status.loggedIn" @submit="handleBet" :validation-schema="schema">
-          <div class="row">
-            <div class="col input-group">
-              <Field @input="checkBetForChangeColor"
-                     v-model="betInput"
-                     name="bid"
-                     id="bid"
-                     type="number"
-                     class="form-control"/>
-              <div class="input-group-append">
-                <div class="input-group-text"
-                     :class="{
+    <div class="row">
+      <div class="col-6 p-3 border mt-5">
+        <h3 v-if="this.$store.state.auth.status.loggedIn" class="text-center mb-4">MAKE A BID</h3>
+        <h3 v-if="!this.$store.state.auth.status.loggedIn" class="text-center mb-4">List of bids:</h3>
+        <div>
+          <Form v-if="this.$store.state.auth.status.loggedIn" @submit="handleBet" :validation-schema="schema">
+            <div class="row">
+              <div class="col input-group">
+                <Field @input="checkBetForChangeColor"
+                       v-model="betInput"
+                       name="bid"
+                       id="bid"
+                       type="number"
+                       class="form-control"/>
+                <div class="input-group-append">
+                  <div class="input-group-text"
+                       :class="{
                   'text-red' : this.isWrongBet == true,
                   'text-green' : this.isWrongBet == false
                      }"
-                >$
+                  >$
+                  </div>
                 </div>
+                <!--          <ErrorMessage name="bid" class="error-feedback" />-->
               </div>
-              <!--          <ErrorMessage name="bid" class="error-feedback" />-->
-            </div>
 
-            <div class="d-flex col" style="flex-basis: min-content">
-              <button class="btn btn-primary btn-block mt-0 mr-3"
-                      :disabled="loading || isWrongBet">
+              <div class="d-flex col" style="flex-basis: min-content">
+                <button class="btn btn-primary btn-block mt-0 mr-3"
+                        :disabled="loading || isWrongBet">
               <span
                   v-show="loading"
                   class="spinner-border spinner-border-sm"></span>
-                BID
-              </button>
-              <button class="btn btn-primary btn-block mt-0" :disabled="loading">
+                  BID
+                </button>
+                <button class="btn btn-primary btn-block mt-0" :disabled="loading">
               <span
                   v-show="loading"
                   class="spinner-border spinner-border-sm"
               ></span>
-                BUY NOW
-              </button>
+                  BUY NOW
+                </button>
+              </div>
             </div>
-          </div>
-        </Form>
-        <div class="custom-table mt-3">
-          <table class="table table-bordered table-striped">
-            <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Date</th>
-              <th scope="col">Bid</th>
-            </tr>
-            </thead>
-            <tbody class="">
-            <tr v-for="(bid,index) in bids.slice().reverse()"
-                :key="index"
-                class="border-top border-bottom"
-                v-bind:class="{
+          </Form>
+          <div class="custom-table mt-3">
+            <table class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Date</th>
+                <th scope="col">Bid</th>
+              </tr>
+              </thead>
+              <tbody class="">
+              <tr v-for="(bid,index) in bids.slice().reverse()"
+                  :key="index"
+                  class="border-top border-bottom"
+                  v-bind:class="{
                   firstTableRow : index == 0
                 }">
-              <td>{{ bids.length - index }}</td>
-              <td>{{ bid.user.firstName + ' ' + bid.user.lastName }}</td>
-              <td>{{ bid.genDate }}</td>
-              <th scope="row">{{ bid.bid }} USD</th>
-            </tr>
-            </tbody>
-          </table>
+                <td>{{ bids.length - index }}</td>
+                <td>{{ bid.user.firstName + ' ' + bid.user.lastName }}</td>
+                <td>{{ bid.genDate }}</td>
+                <th scope="row">{{ bid.bid }} USD</th>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
+      <div class="col-6 border d-flex flex-column">
+        <div v-for="message in chatMessages"
+             class="d-flex"
+             :class="{'ml-auto' : this.isMessageFromCurrentUser(message.senderId) == true}"
+             :key="message">
+          <span class="chat-name">{{ message.senderFirstName + ' ' + message.senderLastName }}</span>
+          <span class="chat-date">{{ message.genDate }}</span>
+          <span class="chat-message">{{ message.message }}</span>
+        </div>
+        <button @click="handleMessageSending" class="btn btn-primary">SEND TEST MESSAGE!</button>
       </div>
     </div>
   </div>
@@ -188,6 +201,7 @@ import AuctionService from "../services/auction.service"
 import {Field, Form} from "vee-validate";
 import * as yup from "yup";
 import router from "@/router";
+import ChatService from "../services/chat.service";
 
 
 export default {
@@ -207,6 +221,7 @@ export default {
       showTest: false,
       received_messages: [],
       send_message: null,
+      socket: null,
       connected: false,
       auctionId: this.$route.params.id,
       content: "",
@@ -216,19 +231,28 @@ export default {
       successful: false,
       bid: "",
       images: [],
+      chatMessages: [],
       schema,
       betInput: null,
       isWrongBet: null
     };
   },
   methods: {
+    isMessageFromCurrentUser(senderId) {
+      if (this.$store.state.auth.user) {
+        if (this.$store.state.auth.user.userDto.id == senderId) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    },
     getUser() {
       return JSON.parse(localStorage.getItem('user'));
     },
     checkBetForChangeColor() {
-      console.log(this.betInput <= this.bids.findLast(x => x) * 1.05);
-      console.log(this.betInput);
-      console.log(this.bids.findLast(x => x).bid);
       if (this.bids.length !== 0) {
         // if (this.betInput == null || this.betInput == '') {
         //   this.isWrongBet = null;
@@ -249,9 +273,28 @@ export default {
         }
       }
     },
+    getAllMessagesByAuctionId() {
+      ChatService.getMessagesByAuctionId(this.auctionId).then(
+          (response) => {
+            console.log(response);
+            this.chatMessages = response.data;
+          },
+          (error) => {
+            console.log(error);
+          }
+      );
+    },
+    handleMessageSending() {
+      console.log();
+      if (this.stompClient && this.stompClient.connected) {
+        this.stompClient.send("/app/chat/auction/" + this.auctionId, JSON.stringify({
+          'senderId': this.$store.state.auth.user.userDto.id,
+          'message': 'Hello!'
+        }));
+      }
+    },
     handleBet() {
       this.loading = true;
-      console.log(this.betInput);
       if (this.stompClient && this.stompClient.connected) {
         this.stompClient.send("/app/betting/" + this.auctionId, JSON.stringify({
           'auctionId': String(this.auctionId),
@@ -265,26 +308,34 @@ export default {
       this.socket = new SockJS("http://localhost:8080/websocket");
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
-          {userId: this.userId},
+          () => {
+          },
           () => {
             this.connected = true;
-            this.stompClient.subscribe("/betting/" + this.auctionId, tick => {
-              this.bids.push(JSON.parse(tick.body));
-            });
+            this.stompClient.subscribe("/betting/" + this.auctionId,
+                tick => {
+                  this.bids.push(JSON.parse(tick.body));
+                });
 
-            this.stompClient.subscribe("/user/betting/errors", tick => {
-              this.$notify({
-                type: 'error',
-                text: tick.body.replaceAll('"', ''),
-              })
-            });
+            this.stompClient.subscribe("/chat/auction/" + this.auctionId,
+                tick => {
+                  console.log("NEW MESSAGE!")
+                  this.chatMessages.push(JSON.parse(tick.body));
+                });
+
+            this.stompClient.subscribe("/user/betting/errors",
+                tick => {
+                  this.$notify({
+                    type: 'error',
+                    text: tick.body
+                  })
+                });
           },
           error => {
             this.$notify({
-              text: error.response.data.errorMessage,
-              type: 'error'
-            });
-            this.connected = false;
+              type: 'error',
+              text: error
+            })
           }
       );
     },
@@ -327,6 +378,7 @@ export default {
           this.$notify(error.message);
         }
     )
+    this.getAllMessagesByAuctionId();
   }
 };
 </script>
@@ -362,5 +414,11 @@ export default {
 
 .text-red {
   color: red;
+}
+
+.chat-message {
+  background-color: #9c9c9c;
+  border-radius: 50%;
+  border-style: solid;
 }
 </style>

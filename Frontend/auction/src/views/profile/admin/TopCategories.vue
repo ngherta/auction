@@ -56,9 +56,7 @@ export default {
     }
   },
   methods: {
-    test() {
-      console.log("asd")
-    }
+
   },
   setup() {
     const beforeRenderLogic = (event) => {

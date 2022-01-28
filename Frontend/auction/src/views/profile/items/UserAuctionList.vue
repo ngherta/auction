@@ -52,6 +52,7 @@ export default {
   },
   methods: {
     changeGetBy(filter) {
+      this.data = [];
       this.getBy = filter;
       if (filter == 'ALL') {
         this.title = 'All Auctions'

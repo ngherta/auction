@@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,5 +38,9 @@ public class UserSessionCache {
     return active.stream()
             .map(Long::valueOf)
             .collect(Collectors.toSet());
+  }
+
+  public Map<String, String> getActiveUsersMap() {
+    return userBySession.asMap();
   }
 }

@@ -17,4 +17,5 @@ public class ChatMessageDto {
   private Long senderId;
   private String senderFirstName;
   private String senderLastName;
+  private String genDate;
 }

@@ -1,5 +1,6 @@
 package com.auction.service;
 
+import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.exception.ChatRoomNotFoundException;
 import com.auction.model.AuctionChat;
 import com.auction.model.AuctionChatMessage;
@@ -8,6 +9,7 @@ import com.auction.model.User;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionChatMessageRepository;
 import com.auction.repository.AuctionChatRepository;
+import com.auction.repository.AuctionEventRepository;
 import com.auction.service.interfaces.AuctionChatService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.ChatMessageDto;
@@ -27,23 +29,27 @@ class AuctionChatServiceImpl implements AuctionChatService {
 
   private final AuctionChatRepository auctionChatRepository;
   private final AuctionChatMessageRepository auctionChatMessageRepository;
+  private final AuctionEventRepository auctionEventRepository;
   private final UserService userService;
   private final Mapper<AuctionChatMessage, ChatMessageDto> auctionChatMessageMapper;
 
   @Override
   @Transactional
-  public ChatMessageDto send(ChatMessageRequest request) {
-    AuctionChat room = auctionChatRepository.findById(request.getChatRoom())
-            .orElseThrow(() -> new ChatRoomNotFoundException("ChatRoom[" + request.getChatRoom() + "] doesn't exist!"));
+  public ChatMessageDto send(ChatMessageRequest request, Long auctionId) {
+    AuctionEvent auctionEvent = auctionEventRepository
+            .findById(auctionId)
+            .orElseThrow(() -> new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "] not found!"));
+    AuctionChat room = auctionChatRepository.findByAuctionEvent(auctionEvent)
+            .orElseThrow(() -> new ChatRoomNotFoundException("ChatRoom for auctionEvent[" + auctionId + "] doesn't exist!"));
 
     User sender = userService.findById(request.getSenderId());
 
     AuctionChatMessage message = AuctionChatMessage.builder()
             .auctionChat(room)
             .genDate(LocalDateTime.now())
+            .sender(sender)
+            .message(request.getMessage())
             .build();
-    message.setSender(sender);
-    message.setMessage(request.getMessage());
     return auctionChatMessageMapper.map(auctionChatMessageRepository.save(message));
   }
 
@@ -57,7 +63,30 @@ class AuctionChatServiceImpl implements AuctionChatService {
   @Override
   @Transactional(readOnly = true)
   public List<ChatMessageDto> getAllByChat(AuctionChat chat) {
-    return auctionChatMessageMapper.mapList(auctionChatMessageRepository.findByAuctionChat(chat));
+    return auctionChatMessageMapper
+            .mapList(auctionChatMessageRepository
+                             .findByAuctionChat(chat));
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<ChatMessageDto> getAllByChatId(Long id) {
+    AuctionChat chat = auctionChatRepository
+            .findById(id)
+            .orElseThrow(() -> new ChatRoomNotFoundException("ChatRoom with id[" + id + "] not found!"));
+    return getAllByChat(chat);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<ChatMessageDto> getAllByAuctionId(Long id) {
+    AuctionEvent auctionEvent = auctionEventRepository
+            .findById(id)
+            .orElseThrow(
+                    () -> new AuctionEventNotFoundException("Auction[" + id + "] not found!"));
+    AuctionChat chat = auctionChatRepository.findByAuctionEvent(auctionEvent)
+            .orElseThrow(() -> new ChatRoomNotFoundException("ChatRoom for AuctionEvent[ " + id + " ] not found!"));
+    return getAllByChat(chat);
   }
 
   @Override

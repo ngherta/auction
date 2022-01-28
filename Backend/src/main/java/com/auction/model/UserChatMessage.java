@@ -23,12 +23,20 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class UserChatMessage extends ChatMessage{
+public class UserChatMessage extends AbstractEntity{
   @ManyToOne
   @JoinColumn(name = "chat_room", updatable = false, nullable = false)
   private UserChat userChat;
 
   @Column(name = "genDate")
   private LocalDateTime genDate;
+
+
+  @Column(name = "message")
+  private String message;
+
+  @ManyToOne
+  @JoinColumn(name = "sender", updatable = false, nullable = false)
+  private User sender;
 }
 

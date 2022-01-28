@@ -5,6 +5,8 @@ import com.auction.web.dto.ChatMessageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
+
 @RequiredArgsConstructor
 @Component
 public class ChatUserMessageToDtoMapper implements Mapper<UserChatMessage, ChatMessageDto>{
@@ -17,6 +19,7 @@ public class ChatUserMessageToDtoMapper implements Mapper<UserChatMessage, ChatM
             .senderId(entity.getSender().getId())
             .senderFirstName(entity.getSender().getFirstName())
             .senderLastName(entity.getSender().getLastName())
+            .genDate(entity.getGenDate().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")))
             .build();
   }
 }

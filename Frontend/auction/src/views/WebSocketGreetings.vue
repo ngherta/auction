@@ -131,7 +131,7 @@ export default {
     },
   },
   mounted() {
-    this.connect();
+    // this.connect();
   }
 };
 </script>

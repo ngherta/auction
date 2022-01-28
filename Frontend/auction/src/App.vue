@@ -6,6 +6,7 @@
         <router-view/>
       </div>
       <Footer class="flex-shrink-0 mt-auto"/>
+      <notifications/>
     </div>
   </div>
 </template>

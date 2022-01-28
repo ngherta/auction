@@ -1,7 +1,6 @@
 package com.auction.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -23,43 +22,47 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSocketMessageBroker
-@Slf4j
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    @Override
-    public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/betting/", "/notification");
-        config.setApplicationDestinationPrefixes("/app");
+  @Override
+  public void configureMessageBroker(MessageBrokerRegistry config) {
+    config.enableSimpleBroker("/betting/",
+                              "/notification",
+                              "/chat/",
+                              "chat/auction/");
+//        "/auction-chat",
+    config.setApplicationDestinationPrefixes("/app");
 //        config.setUserDestinationPrefix("/notification");
-    }
+  }
 
-    @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/websocket")
-                .setAllowedOrigins("http://localhost:8081",
-                                   "chrome-extension://ggnhohnkfcpcanfekomdkjffnfcjnjam")
-                .setHandshakeHandler(new DefaultHandshakeHandler() {
+  @Override
+  public void registerStompEndpoints(StompEndpointRegistry registry) {
+    registry.addEndpoint("/websocket")
+            .setAllowedOrigins("http://localhost:8081",
+                               "chrome-extension://ggnhohnkfcpcanfekomdkjffnfcjnjam")
+            .setHandshakeHandler(new DefaultHandshakeHandler() {
 
-                    //Get sessionId from request and set it in Map attributes
-                    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
-                                                   Map attributes) {
-                        if (request instanceof ServletServerHttpRequest) {
-                            ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
-                            HttpSession session = servletRequest.getServletRequest().getSession();
-                            attributes.put("sessionId", session.getId());
-                        }
-                        return true;
-                    }}).withSockJS();
-    }
+              //Get sessionId from request and set it in Map attributes
+              public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
+                                             Map attributes) {
+                if (request instanceof ServletServerHttpRequest) {
+                  ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
+                  HttpSession session = servletRequest.getServletRequest().getSession();
+                  attributes.put("sessionId", session.getId());
+                }
+                return true;
+              }
+            }).withSockJS();
+  }
 
-    @Override
-    public boolean configureMessageConverters(List<MessageConverter> messageConverters) {
-        DefaultContentTypeResolver resolver = new DefaultContentTypeResolver();
-        resolver.setDefaultMimeType(MimeTypeUtils.APPLICATION_JSON);
-        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-        converter.setObjectMapper(new ObjectMapper());
-        converter.setContentTypeResolver(resolver);
-        messageConverters.add(converter);
-        return false;
-    }
+  @Override
+  public boolean configureMessageConverters(List<MessageConverter> messageConverters) {
+    DefaultContentTypeResolver resolver = new DefaultContentTypeResolver();
+    resolver.setDefaultMimeType(MimeTypeUtils.APPLICATION_JSON);
+    MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+    converter.setObjectMapper(new ObjectMapper());
+    converter.setContentTypeResolver(resolver);
+    messageConverters.add(converter);
+    return false;
+  }
 }

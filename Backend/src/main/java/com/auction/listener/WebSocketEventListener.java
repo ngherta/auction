@@ -23,7 +23,16 @@ public class WebSocketEventListener {
 
   @EventListener
   public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
+    GenericMessage message = (GenericMessage) event.getMessage();
+    String simpDestination = (String) message.getHeaders().get("simpDestination");
 
+    log.info("Disconnect from: {}", simpDestination);
+
+    String sessionId = event.getSessionId();
+    log.info("User disconnected from {} with session[{}]", simpDestination, sessionId);
+    if (!sessionId.isEmpty()) {
+      userServiceCache.remove(sessionId);
+    }
   }
 
   @EventListener
@@ -54,19 +63,5 @@ public class WebSocketEventListener {
 
   @EventListener
   public void handleSessionUnsubscribeEvent(SessionUnsubscribeEvent event) {
-    GenericMessage message = (GenericMessage) event.getMessage();
-    String simpDestination = (String) message.getHeaders().get("simpDestination");
-
-    log.info("Disconnect from: {}", simpDestination);
-
-    if (simpDestination.startsWith("/notification/")) {
-      StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-      String sessionId = headerAccessor.getHeader("simpSessionId").toString();
-      log.info("User disconnected from {} with session[{}]", simpDestination, sessionId);
-      if (!sessionId.isEmpty()) {
-        userServiceCache.remove(sessionId);
-      }
-    }
   }
-
 }

@@ -11,7 +11,5 @@ public class ChatMessageRequest {
   @NotNull
   private Long senderId;
   @NotNull
-  private Long chatRoom;
-  @NotNull
   private String message;
 }

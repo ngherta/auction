@@ -1,6 +1,6 @@
 <template>
-  <div class="row justify-content-between ml-auto mr-auto mt-5">
-    <div class="col-2">
+  <div class="row justify-content-between ml-auto mr-auto mt-5 container">
+    <div class="col-3">
       <profile-menu :active-item="currentPage"
                     @handleChangePage="handleChangePage($event)"/>
     </div>
