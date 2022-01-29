@@ -127,6 +127,10 @@ const routes = [
     component: ProfilePage
   },
   {
+    path: "/profile/account/password",
+    component: ProfilePage
+  },
+  {
     path: "/editor",
     component: Editor
   }

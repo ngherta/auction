@@ -16,6 +16,9 @@ import com.auction.web.dto.ChatMessageDto;
 import com.auction.web.dto.request.ChatMessageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +28,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = {"auction-messages"})
 class AuctionChatServiceImpl implements AuctionChatService {
 
   private final AuctionChatRepository auctionChatRepository;
@@ -32,6 +36,7 @@ class AuctionChatServiceImpl implements AuctionChatService {
   private final AuctionEventRepository auctionEventRepository;
   private final UserService userService;
   private final Mapper<AuctionChatMessage, ChatMessageDto> auctionChatMessageMapper;
+  private final CacheManager cacheManager;
 
   @Override
   @Transactional
@@ -61,6 +66,7 @@ class AuctionChatServiceImpl implements AuctionChatService {
   }
 
   @Override
+  @Cacheable
   @Transactional(readOnly = true)
   public List<ChatMessageDto> getAllByChat(AuctionChat chat) {
     return auctionChatMessageMapper

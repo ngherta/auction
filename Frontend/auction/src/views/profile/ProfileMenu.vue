@@ -4,7 +4,7 @@
       <li>
         <router-link @click="this.$emit('handleChangePage', 'account')" to="/profile/account" class="">
           <div class="p-3 border profile-item"
-               :class="{'profile-item-active' : activeItem == 'account'}">
+               :class="{'profile-item-active' : activeItem == 'account' || activeItem == 'update/password'}">
             <Icon name="profile-account-overview"/>
             <span class="pl-3 profile-item-text">Account overview</span>
           </div>

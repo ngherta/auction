@@ -167,8 +167,6 @@ export default {
   background: #dee2e6;
 }
 
-
-
 .error-feedback {
   color: red;
 }

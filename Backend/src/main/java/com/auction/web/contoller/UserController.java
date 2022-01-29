@@ -4,6 +4,7 @@ import com.auction.service.interfaces.ResetPasswordService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.ChangePasswordRequest;
+import com.auction.web.dto.request.UpdatePasswordRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -38,6 +39,12 @@ public class UserController {
                                                    @Email String email)
           throws MessagingException, UnsupportedEncodingException {
     resetPasswordService.resetPasswordByEmail(email);
+    return ResponseEntity.ok().build();
+  }
+
+  @PutMapping("/password")
+  public ResponseEntity<Void> updatePassword(@Valid @RequestBody UpdatePasswordRequest request) {
+    userService.updatePassword(request);
     return ResponseEntity.ok().build();
   }
 

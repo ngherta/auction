@@ -5,6 +5,7 @@ import com.auction.model.fixture.UserFixture;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.SignupRequest;
+import com.auction.web.dto.request.UpdatePasswordRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
 import org.springframework.data.domain.Page;
 
@@ -52,5 +53,10 @@ public class UserServiceFake implements UserService {
   @Override
   public User create(SignupRequest request) {
     return UserFixture.user();
+  }
+
+  @Override
+  public void updatePassword(UpdatePasswordRequest request) {
+
   }
 }

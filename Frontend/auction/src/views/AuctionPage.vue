@@ -42,7 +42,10 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title m-auto" id="qrModalLabel">Share this link</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <button type="button"
+                          class="close close-custom"
+                          data-dismiss="modal"
+                          aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
@@ -52,7 +55,7 @@
                 </div>
                 <div class="modal-footer">
                   <ShareNetwork
-                      network="vk"
+                      network="facebook"
                       url="https://news.vuejs.org/issues/180"
                       title=""
                       description=""
@@ -61,7 +64,17 @@
                   >
                     Share on Facebook
                   </ShareNetwork>
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <ShareNetwork
+                      network="vk"
+                      url="https://news.vuejs.org/issues/180"
+                      title=""
+                      description=""
+                      quote="qqq"
+                      hashtags="auction"
+                  >
+                    Share on VK
+                  </ShareNetwork>
+<!--                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
                 </div>
               </div>
             </div>
@@ -102,83 +115,64 @@
         <div>
           <span>
             <b>Description:</b>
-            {{ content.description }}</span>
+            <!--            <span v-html="content.description"/>-->
+          </span>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#descriptionModalLong">
+            open
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="descriptionModalLong" tabindex="-1" role="dialog"
+               aria-labelledby="descriptionModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="descriptionModalLongTitle">Description</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" v-html="content.description"/>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="row mt-5">
       <div class="col-6 p-3 border">
-        <h3 v-if="this.$store.state.auth.status.loggedIn" class="text-center mb-4">MAKE A BID</h3>
-        <h3 v-if="!this.$store.state.auth.status.loggedIn" class="text-center mb-4">List of bids:</h3>
-        <div>
-          <Form v-if="this.$store.state.auth.status.loggedIn" @submit="handleBet" :validation-schema="schema">
-            <div class="row">
-              <div class="col input-group">
-                <Field @input="checkBetForChangeColor"
-                       v-model="betInput"
-                       name="bid"
-                       id="bid"
-                       type="number"
-                       class="form-control"/>
-                <div class="input-group-append">
-                  <div class="input-group-text"
-                       :class="{
-                  'text-red' : this.isWrongBet == true,
-                  'text-green' : this.isWrongBet == false
-                     }"
-                  >$
-                  </div>
-                </div>
-                <!--          <ErrorMessage name="bid" class="error-feedback" />-->
+        <button type="button"
+                data-toggle="modal"
+                data-target="#bettingModalLong"
+                class="btn expand-betting-button">
+          <icon :name="'expand'"/>
+        </button>
+        <betting-room :bids="bids"
+                      :auction-id="auctionId"
+                      :stomp-client="stompClient"/>
+        <!-- Modal -->
+        <div class="modal fade" id="bettingModalLong" tabindex="-1" role="dialog"
+             aria-labelledby="bettingModalLongTitle" aria-hidden="true">
+          <div class="modal-dialog modal-betting" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <!--                <h5 class="modal-title" id="bettingModalLongTitle">BETTING!</h5>-->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
-
-              <div class="d-flex col" style="flex-basis: min-content">
-                <button class="btn btn-primary btn-block mt-0 mr-3"
-                        :disabled="loading || isWrongBet">
-              <span
-                  v-show="loading"
-                  class="spinner-border spinner-border-sm"></span>
-                  BID
-                </button>
-                <button class="btn btn-primary btn-block mt-0" :disabled="loading">
-              <span
-                  v-show="loading"
-                  class="spinner-border spinner-border-sm"
-              ></span>
-                  BUY NOW
-                </button>
+              <div class="modal-body">
+                <betting-room :bids="bids"
+                              :auction-id="auctionId"
+                              :stomp-client="stompClient"/>
               </div>
             </div>
-          </Form>
-          <div class="custom-table mt-3">
-            <table class="table table-bordered table-striped">
-              <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Date</th>
-                <th scope="col">Bid</th>
-              </tr>
-              </thead>
-              <tbody class="">
-              <tr v-for="(bid,index) in bids.slice().reverse()"
-                  :key="index"
-                  class="border-top border-bottom"
-                  v-bind:class="{
-                  firstTableRow : index == 0
-                }">
-                <td>{{ bids.length - index }}</td>
-                <td>{{ bid.user.firstName + ' ' + bid.user.lastName }}</td>
-                <td>{{ bid.genDate }}</td>
-                <th scope="row">{{ bid.bid }} USD</th>
-              </tr>
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
-      <div class="col-6 border p-0 mb-5">
+      <div class="col-6 border p-0">
         <div class="chat-box d-flex flex-column pt-3 pb-3" id="chat-box">
           <div v-for="message in chatMessages"
                class=""
@@ -212,13 +206,17 @@ import {Field, Form} from "vee-validate";
 import * as yup from "yup";
 import router from "@/router";
 import ChatService from "../services/chat.service";
+import BettingRoom from "../components/BettingRoom";
+import Icon from "../components/Icon";
 
 
 export default {
   name: "AuctionPage",
   components: {
+    Icon,
     Form,
     Field,
+    BettingRoom,
     // ErrorMessage,
   },
   data() {
@@ -229,6 +227,7 @@ export default {
     });
     return {
       showTest: false,
+      stompClient: null,
       received_messages: [],
       send_message: null,
       socket: null,
@@ -264,18 +263,12 @@ export default {
     },
     checkBetForChangeColor() {
       if (this.bids.length !== 0) {
-        // if (this.betInput == null || this.betInput == '') {
-        //   this.isWrongBet = null;
-        // } else
         if (this.betInput <= this.bids.findLast(x => x).bid * 1.05) {
           this.isWrongBet = true;
         } else {
           this.isWrongBet = false;
         }
       } else {
-        // if (this.betInput == null || this.betInput == '') {
-        //   this.isWrongBet = null;
-        // } else
         if (this.betInput <= this.content.startPrice * 1.05) {
           this.isWrongBet = true;
         } else {
@@ -386,7 +379,10 @@ export default {
           this.bids = response.data
         },
         (error) => {
-          this.$notify(error.message);
+          this.$notify({
+            type: 'error',
+            text: error.message
+          });
         }
     )
     this.getAllMessagesByAuctionId();
@@ -395,22 +391,51 @@ export default {
 </script>
 
 <style scoped>
+@media only screen and (min-width: 576px) {
+  .modal-dialog {
+    max-width: 500px;
+    /*margin: 1.75rem auto;*/
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .modal-dialog {
+    max-width: 600px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .modal-dialog {
+    max-width: 700px;
+  }
+
+  .modal-dialog.modal-betting {
+    max-width: 90%;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  .modal-dialog {
+    max-width: 800px;
+  }
+
+}
+
+@media only screen and (min-width: 1600px) {
+  .modal-dialog {
+    max-width: 900px;
+  }
+
+  .modal-dialog.modal-betting {
+    max-width: 80%;
+  }
+}
+
 .btn-circle {
   border-radius: 1rem;
   padding: 0 0.5rem;
   display: block;
   align-self: flex-start;
-}
-
-.custom-table {
-  position: relative;
-  height: 200px;
-  overflow: auto;
-  display: block;
-}
-
-.firstTableRow {
-  background-color: #90EE90 !important;
 }
 
 .img-responsive {
@@ -419,22 +444,20 @@ export default {
   height: 500px;
 }
 
-.text-green {
-  color: green;
-}
-
-.text-red {
-  color: red;
-}
-
-.custom-table {
-  max-height: 300px;
+.expand-betting-button {
+  position: absolute;
+  right: 5px;
+  top: 5px;
 }
 
 .chat-box {
   height: 300px;
   overflow-x: hidden;
   overflow-y: scroll;
+}
+
+.modal-header .close-custom {
+  margin: -1rem -1rem -1rem 0;
 }
 
 .chat-message {

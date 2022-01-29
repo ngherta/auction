@@ -3,6 +3,7 @@ package com.auction.service.interfaces;
 import com.auction.model.User;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.SignupRequest;
+import com.auction.web.dto.request.UpdatePasswordRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
 import org.springframework.data.domain.Page;
 
@@ -25,4 +26,6 @@ public interface UserService {
   UserDto update(UserUpdateRequest request);
 
   User create(SignupRequest request);
+
+  void updatePassword(UpdatePasswordRequest request);
 }

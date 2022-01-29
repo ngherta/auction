@@ -9,7 +9,6 @@ export class UserService {
     }
 
     update(user) {
-        console.log(user);
         return axios.put(API_URL, {
             id: user.id,
             email: user.email,
@@ -17,6 +16,14 @@ export class UserService {
             lastName: user.lastName,
             enabled: user.enabled,
             birthday: user.birthday
+        })
+    }
+
+    updatePassword(userId, oldPassword, newPassword) {
+        return axios.put(API_URL + 'password', {
+            userId: userId,
+            oldPassword: oldPassword,
+            newPassword: newPassword,
         })
     }
 

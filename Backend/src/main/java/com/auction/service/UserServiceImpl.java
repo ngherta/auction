@@ -3,6 +3,7 @@ package com.auction.service;
 import com.auction.config.cache.properties.CacheNames;
 import com.auction.exception.UserNotFoundException;
 import com.auction.exception.UserRoleNotFoundException;
+import com.auction.exception.WrongPasswordException;
 import com.auction.model.AuctionEvent;
 import com.auction.model.Role;
 import com.auction.model.User;
@@ -17,6 +18,7 @@ import com.auction.service.interfaces.NotificationService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.SignupRequest;
+import com.auction.web.dto.request.UpdatePasswordRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +42,6 @@ import java.util.Set;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@CacheConfig(cacheNames = CacheNames.USERS_CACHE)
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
@@ -73,7 +74,6 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  @CacheEvict(allEntries = true)
   @Transactional
   public void delete(User user) {
     List<AuctionEvent> auctionEventList = auctionEventRepository.findByUser(user);
@@ -89,7 +89,6 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  @CacheEvict(allEntries = true)
   @Transactional
   public UserDto update(UserUpdateRequest request) {
     User user = findById(request.getId());
@@ -120,7 +119,7 @@ public class UserServiceImpl implements UserService {
   @Transactional
   public User create(SignupRequest request) {
     User user = new User(request.getEmail(),
-                         encoder.encode(request.getPassword()));
+            encoder.encode(request.getPassword()));
 
     Set<Role> roles = new HashSet<>(1);
     Role role = roleRepository.findByUserRole(UserRole.USER)
@@ -136,7 +135,24 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  @CacheEvict(allEntries = true)
+  @Transactional
+  public void updatePassword(UpdatePasswordRequest request) {
+    User user = findById(request.getUserId());;
+
+    if (!encoder.matches(request.getOldPassword(), user.getPassword())) {
+      throw new WrongPasswordException("Wrong password!");
+    }
+
+    String newPasswordEncoded = encoder.encode(request.getNewPassword());
+    if (user.getPassword().equals(newPasswordEncoded)) {
+      throw new WrongPasswordException("Your old and new password are the same!");
+    }
+
+    user.setPassword(newPasswordEncoded);
+    userRepository.save(user);
+  }
+
+  @Override
   @Transactional
   public UserDto disable(Long userId) {
     User user = findById(userId);
@@ -146,7 +162,6 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  @CacheEvict(allEntries = true)
   @Transactional
   public UserDto enable(Long userId) {
     User user = findById(userId);
@@ -156,10 +171,9 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  @Cacheable(key = "#p0")
   @Transactional(readOnly = true)
   public User findById(Long id) {
-     return userRepository.findById(id)
+    return userRepository.findById(id)
             .orElseThrow(() -> new UserNotFoundException("User[" + id + "] doesn't exist"));
   }
 

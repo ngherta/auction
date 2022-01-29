@@ -1,11 +1,12 @@
 <template>
   <div class="row justify-content-between ml-auto mr-auto mt-5 container">
-    <div class="col-3">
+    <div class="profile-menu">
       <profile-menu :active-item="currentPage"
                     @handleChangePage="handleChangePage($event)"/>
     </div>
-    <div class="col-8">
-      <account v-if="this.currentPage == 'account'"></account>
+    <div class="profile-view">
+      <account v-if="this.currentPage == 'account'" @handleChangePage="handleChangePage($event)"/>
+      <change-password-component v-else-if="this.currentPage == 'account/password'"/>
       <user-table v-else-if="this.currentPage == 'user-table'"/>
       <auction-table v-else-if="this.currentPage == 'auction-table'"/>
       <statistic-page v-else-if="this.currentPage == 'statistic'"/>
@@ -23,6 +24,7 @@ import AuctionTable from './admin/AuctionTable';
 import StatisticPage from './StatisticPage';
 import UserAuctionList from './items/UserAuctionList';
 import CreateNewCategory from './admin/CreateNewCategory';
+import ChangePasswordComponent from "./items/ChangePasswordComponent";
 
 export default {
   name: "ProfilePage",
@@ -34,6 +36,7 @@ export default {
     UserAuctionList,
     StatisticPage,
     CreateNewCategory,
+    ChangePasswordComponent,
   },
   data() {
     return {
@@ -60,5 +63,30 @@ export default {
 </script>
 
 <style scoped>
+@media only screen and (min-width: 576px) {
+  .profile-menu,
+  .profile-view {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
 
+@media only screen and (min-width: 992px) {
+  .profile-menu {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  .profile-view {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+}
+
+.profile-menu,
+.profile-view {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
 </style>

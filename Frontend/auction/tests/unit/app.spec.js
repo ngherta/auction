@@ -1,7 +1,7 @@
 import {mount, shallowMount} from '@vue/test-utils'
 import Test from '../../src/views/profile/Test'
 import Home from "../../src/views/Home";
-import AuctionPage from '../../src/views/AuctionPage'
+import  AuctionPage from '../../src/views/AuctionPage'
 import Header from '../../src/components/Header'
 
 describe('Home.vue', () => {

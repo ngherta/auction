@@ -5,6 +5,7 @@ import com.auction.model.fixture.UserFixture;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.SignupRequest;
+import com.auction.web.dto.request.UpdatePasswordRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
 import org.springframework.data.domain.Page;
 
@@ -100,5 +101,10 @@ public class UserServiceMock implements UserService {
             .genDate(LocalDateTime.now())
             .build();
     return user;
+  }
+
+  @Override
+  public void updatePassword(UpdatePasswordRequest request) {
+
   }
 }

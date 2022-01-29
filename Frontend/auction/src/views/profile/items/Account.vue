@@ -1,5 +1,5 @@
 <template>
-  <div class="border container-lg p-5">
+  <div class="border container-lg p-5 mb-5">
     <Icon name="profile-account-overview" :size="1.3"/>
     <h2 class="h2 mt-2">Edit details</h2>
     <p class="mt-2">Feel free to edit any of your details below.</p>
@@ -41,6 +41,10 @@
           </div>
         </div>
       </Form>
+    </div>
+    <div class="d-flex justify-content-center mt-3">
+      <router-link @click="this.$emit('handleChangePage', 'account/password')"
+                   to="/profile/account/password">Do you want to change password?</router-link>
     </div>
   </div>
 </template>
