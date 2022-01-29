@@ -47,6 +47,11 @@
             <Field name="password" id="password" type="password" class="form-control"/>
             <ErrorMessage name="password" class="error-feedback"/>
           </div>
+          <div class="mb-3">
+            <label for="confirmPassword">CONFIRM PASSWORD:</label>
+            <Field name="confirmPassword" id="confirmPassword" type="password" class="form-control"/>
+            <ErrorMessage name="confirmPassword" class="error-feedback"/>
+          </div>
 
           <div class="">
             <button class="btn btn-primary btn-block" :disabled="loading">
@@ -142,8 +147,18 @@ export default {
     handleRegister(user) {
       this.message = "";
       this.successful = false;
-      this.loading = true;
       user.birthday = this.date;
+
+      if (user.password !== user.confirmPassword) {
+        this.$notify({
+          text: "Confirm password is wrong",
+          type: "error"
+        });
+        this.loading = false;
+        return;
+      }
+
+      this.loading = true;
 
       this.$store.dispatch("auth/register", user).then(
           (data) => {
@@ -151,7 +166,6 @@ export default {
             this.successful = true;
             this.loading = false;
             this.$router.push("/login");
-
           },
           (error) => {
             this.message =

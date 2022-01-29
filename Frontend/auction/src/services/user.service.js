@@ -9,6 +9,7 @@ export class UserService {
     }
 
     update(user) {
+        console.log(user);
         return axios.put(API_URL, {
             id: user.id,
             email: user.email,
@@ -46,7 +47,6 @@ export class UserService {
     }
 
     changePasswordAfterReset(code, password) {
-        console.log(code + " : " + password);
         return axios.post(API_URL + 'update/password/' + code, {
             password: password,
         });

@@ -107,8 +107,8 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-6 p-3 border mt-5">
+    <div class="row mt-5">
+      <div class="col-6 p-3 border">
         <h3 v-if="this.$store.state.auth.status.loggedIn" class="text-center mb-4">MAKE A BID</h3>
         <h3 v-if="!this.$store.state.auth.status.loggedIn" class="text-center mb-4">List of bids:</h3>
         <div>
@@ -178,16 +178,26 @@
           </div>
         </div>
       </div>
-      <div class="col-6 border d-flex flex-column">
-        <div v-for="message in chatMessages"
-             class="d-flex"
-             :class="{'ml-auto' : this.isMessageFromCurrentUser(message.senderId) == true}"
-             :key="message">
-          <span class="chat-name">{{ message.senderFirstName + ' ' + message.senderLastName }}</span>
-          <span class="chat-date">{{ message.genDate }}</span>
-          <span class="chat-message">{{ message.message }}</span>
+      <div class="col-6 border p-0 mb-5">
+        <div class="chat-box d-flex flex-column pt-3 pb-3" id="chat-box">
+          <div v-for="message in chatMessages"
+               class=""
+               :class="{'ml-auto' : this.isMessageFromCurrentUser(message.senderId) == true}"
+               :key="message">
+            <div class="chat-name">{{ message.senderFirstName + ' ' + message.senderLastName }}</div>
+            <div class="chat-date">{{ message.genDate }}</div>
+            <div class="chat-message pl-2 pr-2">{{ message.message }}</div>
+          </div>
         </div>
-        <button @click="handleMessageSending" class="btn btn-primary">SEND TEST MESSAGE!</button>
+        <div class="">
+          <Form class="d-flex pr-3 pl-3" @submit="handleMessageSending">
+            <Field name="message"
+                   id="message"
+                   type="text"
+                   class="form-control col-10"/>
+            <button class="btn btn-primary btn-block col-2" type="submit">SEND</button>
+          </Form>
+        </div>
       </div>
     </div>
   </div>
@@ -285,12 +295,13 @@ export default {
       );
     },
     handleMessageSending() {
-      console.log();
       if (this.stompClient && this.stompClient.connected) {
         this.stompClient.send("/app/chat/auction/" + this.auctionId, JSON.stringify({
           'senderId': this.$store.state.auth.user.userDto.id,
           'message': 'Hello!'
         }));
+        let div = document.getElementById('chat-box');
+        div.scroll({top: div.scrollHeight, behavior: 'smooth'});
       }
     },
     handleBet() {
@@ -416,9 +427,20 @@ export default {
   color: red;
 }
 
+.custom-table {
+  max-height: 300px;
+}
+
+.chat-box {
+  height: 300px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
 .chat-message {
+  display: inline-flex;
   background-color: #9c9c9c;
-  border-radius: 50%;
+  border-radius: 48%;
   border-style: solid;
 }
 </style>

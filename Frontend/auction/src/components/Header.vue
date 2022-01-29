@@ -76,7 +76,7 @@
               </div>
             </li>
             <li class="notification-container">
-              <div class="notification-box"
+              <div class="notification-box border-bottom"
                    :class="{'bg-gray' : notification.seen == false }"
                    v-for="notification in notifications.slice().reverse()"
                    :key="notification.messageId">
@@ -184,8 +184,6 @@ export default {
     },
     countUnSeenMessages(notification) {
       if (notification.seen == false) {
-        console.log(notification.seen);
-        console.log("+1")
         this.unSeenNotification = this.unSeenNotification + 1;
       }
     },

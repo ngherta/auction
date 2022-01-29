@@ -20,12 +20,9 @@ public class UserUpdateRequest {
 
   @NotBlank
   private String firstName;
-
   @NotBlank
   private String lastName;
-
-  @NotNull
   private Boolean enabled;
-
+  @NotNull
   private LocalDate birthday;
 }
