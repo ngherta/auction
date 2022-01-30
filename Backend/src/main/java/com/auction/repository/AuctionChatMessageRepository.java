@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface AuctionChatMessageRepository extends JpaRepository<AuctionChatMessage, Long> {
   List<AuctionChatMessage> findByAuctionChat(AuctionChat chat);
+
+  void deleteAllByAuctionChat(AuctionChat auctionChat);
 }

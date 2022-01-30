@@ -100,6 +100,13 @@ class AuctionChatServiceImpl implements AuctionChatService {
   public void deleteByAuction(AuctionEvent auctionEvent) {
     AuctionChat auctionChat = auctionChatRepository.findByAuctionEvent(auctionEvent)
             .orElseThrow(() -> new ChatRoomNotFoundException("AuctionChat for auctionEvent[" + auctionEvent.getId() + "] doesn't exist!"));
+    delete(auctionChat);
+  }
+
+  @Override
+  @Transactional
+  public void delete(AuctionChat auctionChat) {
+    auctionChatMessageRepository.deleteAllByAuctionChat(auctionChat);
     auctionChatRepository.delete(auctionChat);
   }
 }

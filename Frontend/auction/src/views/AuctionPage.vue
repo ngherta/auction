@@ -141,7 +141,7 @@
       </div>
     </div>
 
-    <div class="row mt-5">
+    <div class="row mt-5 mb-5">
       <div class="col-6 p-3 border">
         <button type="button"
                 data-toggle="modal"

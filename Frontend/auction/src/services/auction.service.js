@@ -70,6 +70,10 @@ class AuctionsService {
         });
     }
 
+    findAll() {
+        return axios.get(API_URL + 'all');
+    }
+
     filter(page, perPage, categories, title, statuses) {
         return axios.get(API_URL + 'filter', {
             params: {

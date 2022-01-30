@@ -53,7 +53,7 @@
 import Icon from "../../../components/Icon";
 import Datetimepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css';
-import {Form, Field, ErrorMessage} from "vee-validate";
+import {Form, Field, useForm, ErrorMessage} from "vee-validate";
 import * as yup from "yup";
 import {ref} from 'vue'
 import UserService from '../../../services/user.service';
@@ -68,6 +68,7 @@ export default {
     Datetimepicker,
   },
   setup() {
+
     return {
       date: ref(new Date()),
     };
@@ -117,7 +118,6 @@ export default {
       this.successful = false;
       this.loading = true;
       user.birthday = this.date;
-      console.log("UPDATE");
       console.log(user);
 
       this.$store.dispatch("users/update", user).then(
@@ -150,9 +150,9 @@ export default {
       );
     },
     initFields() {
-      document.getElementById('firstName').value = this.user.firstName;
-      document.getElementById('lastName').value = this.user.lastName;
-      document.getElementById('email').value = this.user.email;
+      // document.getElementById('firstName').value = this.user.firstName;
+      // document.getElementById('lastName').value = this.user.lastName;
+      // document.getElementById('email').value = this.user.email;
       // document.getElementById('firstName').value = this.user.firstName;
 
     },
@@ -172,6 +172,9 @@ export default {
               email: response.data.email,
               birthday: this.date
             }
+            useForm({
+              initialValues: this.user,
+            });
             this.initFields();
           },
           (error) => {

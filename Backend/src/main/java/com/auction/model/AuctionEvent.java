@@ -44,10 +44,10 @@ public class AuctionEvent extends AbstractEntity{
     @Enumerated(EnumType.STRING)
     private AuctionType auctionType;
 
-    @Column
+    @Column(name = "start_price")
     private Double startPrice;
 
-    @Column
+    @Column(name = "finish_price")
     private Double finishPrice;
 
     @ManyToOne(fetch = FetchType.EAGER)

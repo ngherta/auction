@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+  <changeSet id="14" author="ngh">
+    <createTable tableName="image_link">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="url" type="varchar(255)"></column>
+      <column name="image_link" type="varchar(255)"></column>
+      <column name="type" type="varchar(255)"></column>
+    </createTable>
+
+    <insert tableName="image_link">
+      <column name="id" valueNumeric="9534"></column>
+      <column name="url" value="http://localhost:8080/auction/9999"></column>
+      <column name="image_link" value="https://images.ctfassets.net/hrltx12pl8hq/5596z2BCR9KmT1KeRBrOQa/4070fd4e2f1a13f71c2c46afeb18e41c/shutterstock_451077043-hero1.jpg"></column>
+      <column name="type" value="HOME_PAGE"></column>
+    </insert>
+
+    <insert tableName="image_link">
+      <column name="id" valueNumeric="9565"></column>
+      <column name="url" value="http://localhost:8080/auction/9999"></column>
+      <column name="image_link" value="https://images.ctfassets.net/hrltx12pl8hq/5596z2BCR9KmT1KeRBrOQa/4070fd4e2f1a13f71c2c46afeb18e41c/shutterstock_451077043-hero1.jpg"></column>
+      <column name="type" value="HOME_PAGE"></column>
+    </insert>
+
+
+    <insert tableName="image_link">
+      <column name="id" valueNumeric="9525"></column>
+      <column name="url" value="http://localhost:8080/auction/9999"></column>
+      <column name="image_link" value="https://images.ctfassets.net/hrltx12pl8hq/5596z2BCR9KmT1KeRBrOQa/4070fd4e2f1a13f71c2c46afeb18e41c/shutterstock_451077043-hero1.jpg"></column>
+      <column name="type" value="HOME_PAGE"></column>
+    </insert>
+
+
+    <rollback>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

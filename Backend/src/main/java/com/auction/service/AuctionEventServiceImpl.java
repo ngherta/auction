@@ -119,6 +119,15 @@ class AuctionEventServiceImpl implements AuctionEventService {
     return auctionEventToDtoMapper.map(auctionEvent);
   }
 
+  @Transactional
+  public void resetAuction(AuctionEvent auctionEvent) {
+    auctionEvent.setStatusType(AuctionStatus.FOR_RESET);
+    auctionEvent.setStartDate(null);
+    auctionEvent.setFinishDate(null);
+
+    auctionChatService.deleteByAuction(auctionEvent);
+  }
+
   @Override
   @Transactional
   public void changeStatusToFinished(List<AuctionEvent> list) throws MessagingException, UnsupportedEncodingException {
@@ -127,8 +136,8 @@ class AuctionEventServiceImpl implements AuctionEventService {
     for (AuctionEvent event : list) {
       Optional<AuctionAction> auctionAction = auctionActionRepository.findTopByAuctionEventOrderByBetDesc(event);
       if (auctionAction.isEmpty()) {
+        resetAuction(event);
         break;
-        //0 bet
       }
       AuctionAction action = auctionAction.get();
       AuctionWinner auctionWinner = AuctionWinner.builder()
@@ -145,14 +154,9 @@ class AuctionEventServiceImpl implements AuctionEventService {
 
       paymentService.createPaymentForAuction(auctionWinner);
 
-      log.info("Start to send email to winner " + auctionWinner.getUser().getEmail());
       mailService.sendEmailToAuctionWinner(auctionWinner);
-      log.info("Finish to send email to winner");
 
-      log.info("Start to send email to participants " + event.getTitle());
-//            notificationSenderService.sendNotificationOfCreatingAuction();
       sendEmailToParticipants(event, auctionWinner);
-      log.info("Finish to send email to participants");
     }
 
     auctionWinnerRepository.saveAll(listOfWinners);
@@ -266,16 +270,16 @@ class AuctionEventServiceImpl implements AuctionEventService {
     auctionEvent.setTitle(request.getTitle());
     auctionEvent.setDescription(request.getDescription());
 
-    if (oldAuctionType.name().equals(AuctionType.CHARITY.name()) &&
-            !request.getAuctionType().equals(AuctionType.CHARITY.name())) {
+    if (oldAuctionType == AuctionType.CHARITY &&
+            request.getAuctionType() != AuctionType.CHARITY) {
       auctionEvent.setAuctionType(AuctionType.COMMERCIAL);
     }
     else if (request.getCharityPercent() > 0 &&
-            auctionEvent.getAuctionType().equals(AuctionType.CHARITY)) {
+            auctionEvent.getAuctionType() == AuctionType.CHARITY) {
       auctionEvent.setCharityPercent(request.getCharityPercent());
     }
     else if (request.getCharityPercent() > 0 &&
-            auctionEvent.getAuctionType().equals(AuctionType.COMMERCIAL)) {
+            auctionEvent.getAuctionType() == AuctionType.COMMERCIAL) {
       auctionEvent.setCharityPercent(request.getCharityPercent());
     }
     return auctionEventToDtoMapper.map(auctionEvent);
@@ -319,10 +323,10 @@ class AuctionEventServiceImpl implements AuctionEventService {
   @Transactional(readOnly = true)
   @Override
   public Page<AuctionEventDto> findAllAndFilter(int page,
-                                    int perPage,
-                                    String title,
-                                    List<Long> categoriesIds,
-                                    List<AuctionStatus> statuses) {
+                                                int perPage,
+                                                String title,
+                                                List<Long> categoriesIds,
+                                                List<AuctionStatus> statuses) {
     Pageable pageable = PageRequest.of(page - 1, perPage);
     Specification<AuctionEvent> specification = null;
     specification = auctionSpecificationFilter.createFilter(title, categoriesIds, statuses);

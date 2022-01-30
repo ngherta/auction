@@ -2,14 +2,14 @@
   <div class="container mt-5">
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img class="d-block w-100" src="../assets/logo.jpg" alt="First slide">
-        </div>
-        <div class="carousel-item">
-          <img class="d-block w-100" src="../assets/logo.jpg" alt="Second slide">
-        </div>
-        <div class="carousel-item">
-          <img class="d-block w-100" src="../assets/logo.jpg" alt="Third slide">
+        <div v-for="(image, index) of images"
+                     :key="image"
+                     class="carousel-item "
+                     v-bind:class="{active : index == 0}">
+          <router-link :to="image.url">
+            <img class="d-block w-100"
+                 v-bind:src="image.imageLink" :alt="index + 'slide'">
+          </router-link>
         </div>
       </div>
       <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -43,18 +43,20 @@
 
 <script>
 import AuctionService from '../services/auction.service';
+import ImageLinkService from '../services/imageLink.service';
 
 export default {
   name: "Home",
   data() {
     return {
-      auctions: ""
+      auctions: "",
+      images: [],
     };
   },
   mounted() {
-    AuctionService.getAuctions(15, null).then(
+    ImageLinkService.getAllByType('HOME_PAGE').then(
         (response) => {
-          this.auctions = response.data.content;
+          this.images = response.data;
         },
         (error) => {
           this.$notify({
@@ -62,7 +64,18 @@ export default {
             type: 'error'
           });
         }
-    );
+    ),
+        AuctionService.getAuctions(15, null).then(
+            (response) => {
+              this.auctions = response.data.content;
+            },
+            (error) => {
+              this.$notify({
+                text: error.response.data.errorMessage,
+                type: 'error'
+              });
+            }
+        );
   },
 };
 </script>

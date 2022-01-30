@@ -145,18 +145,15 @@ export default {
     },
 
     onGridReady() {
-      AuctionService.getAll().then(
+      AuctionService.findAll().then(
           (response) => {
             this.rowData = response.data;
-            console.log(this.rowData);
           },
           (error) => {
-            this.rowData =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString();
+            this.$notify({
+              text: error.response.data.errorMessage,
+              type: 'error'
+            });
           }
       );
     },
