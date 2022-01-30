@@ -24,7 +24,8 @@ public interface AuctionActionRepository extends JpaRepository<AuctionAction, Lo
   @Query(nativeQuery = true, value = "" +
           "SELECT * FROM auction_action aa " +
           "WHERE aa.user_id = :userId " +
-          "GROUP BY aa.auction_id ")
+          "GROUP BY aa.auction_id, " +
+          "         aa.id ")
   Page<AuctionAction> findAuctionActionByParticipantAndGroupByAuction(@Param("userId") Long userId, Pageable pageable);
 
   @Query(nativeQuery = true, value =

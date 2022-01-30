@@ -68,21 +68,6 @@ public class AuctionEventController {
     return ResponseEntity.ok(auctionEventService.getAllSortByRating(page, perPage));
   }
 
-  @GetMapping("/owner/{userId}")
-  public ResponseEntity<Page<AuctionEventDto>> getAllByOwner(@RequestParam(defaultValue = "1") int page,
-                                                             @RequestParam(defaultValue = "10") int perPage,
-                                                             @PathVariable Long userId) {
-    return ResponseEntity.ok(auctionEventService.getAllByOwner(userId, page, perPage));
-  }
-
-  @GetMapping("/participanasdt/{userId}")
-  public ResponseEntity<Page<AuctionEventDto>> getAllByParticipant(@RequestParam(defaultValue = "1") int page,
-                                                                   @RequestParam(defaultValue = "10") int perPage,
-                                                                   @PathVariable Long userId) {
-    // TODO: change this method
-    return ResponseEntity.ok(auctionEventService.getAllByOwner(userId, page, perPage));
-  }
-
   @DeleteMapping("/{auctionId}")
   public ResponseEntity<Void> deleteById(@PathVariable Long auctionId) {
     auctionEventService.deleteById(auctionId);
@@ -117,5 +102,12 @@ public class AuctionEventController {
                                                                          @RequestParam(defaultValue = "1") int page,
                                                                          @RequestParam(defaultValue = "10") int perPage) {
     return ResponseEntity.ok(auctionActionService.getAuctionsByParticipant(userId, page, perPage));
+  }
+
+  @GetMapping("/owner/{userId}")
+  public ResponseEntity<Page<AuctionEventDto>> getAllByOwner(@RequestParam(defaultValue = "1") int page,
+                                                             @RequestParam(defaultValue = "10") int perPage,
+                                                             @PathVariable Long userId) {
+    return ResponseEntity.ok(auctionEventService.getAllByOwner(userId, page, perPage));
   }
 }
