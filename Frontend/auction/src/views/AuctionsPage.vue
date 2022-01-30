@@ -57,7 +57,7 @@
         />
       </div>
     </div>
-    <div class=" mb-5">
+    <div class="d-flex flex-wrap mb-5">
       <div class="text-center"
            v-if="this.loadingAuctions == true && this.searchResultEmpty == false">
         <div class="spinner-border" role="status">
@@ -66,6 +66,7 @@
       </div>
       <h2 v-else-if="this.searchResultEmpty" class="h2 text-center">No auctions found</h2>
       <AuctionItem v-for="(auction,index) in auctions"
+                   class="mr-5 mb-5"
                    :key="index"
                    :id="auction.id"
                    :title="auction.title"

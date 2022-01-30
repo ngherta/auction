@@ -97,7 +97,6 @@ export default {
         }
 
         if (action === 'delete') {
-          console.log("NGH - DELETE");
           AuctionService.delete(params.data.id).then(
               () => {
                 params.api.applyTransaction({

@@ -19,18 +19,23 @@
       </button>
     </div>
     <div v-for="auction in data" :key="auction" class="card mt-3" style="max-width: 540px;">
-      <div class="row no-gutters">
-        <div class="col-md-4">
-          <img :src="auction.images[0]" alt="...">
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h5 class="card-title">{{ auction.title }}</h5>
-            <p class="card-text">{{ auction.description }}</p>
-            <p class="card-text"><small class="text-muted">{{ auction.statusType }}</small></p>
+      <router-link :to="'/auction/' + auction.id"
+                   class="text-decoration-none">
+        <div class="row no-gutters">
+          <div class="img-item">
+            <img class="image-item"
+                 :src="auction.images[0]"
+                 alt="Image of auction">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{ auction.title }}</h5>
+              <p class="card-text">{{ auction.description }}</p>
+              <p class="card-text"><small class="text-muted">{{ auction.statusType }}</small></p>
+            </div>
           </div>
         </div>
-      </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -62,7 +67,7 @@ export default {
         this.getAuctionsByOwner();
       } else if (filter == 'PARTICIPANT') {
         this.title = 'PARTICIPANT';
-        this.getByParticipant();
+        this.getAuctionsByParticipant();
       }
       window.scrollTo(0, 0);
     },
@@ -110,5 +115,22 @@ export default {
 <style scoped>
 .filter-button {
   border: none;
+}
+
+.image-item {
+  max-width: 11rem;
+  margin: auto;
+}
+
+.img-item {
+  /*height: 10rem;*/
+  display: flex;
+  object-fit: scale-down;
+  margin: 0 auto;
+  max-width: 11rem;
+}
+
+.text-decoration-none {
+  color: black;
 }
 </style>
