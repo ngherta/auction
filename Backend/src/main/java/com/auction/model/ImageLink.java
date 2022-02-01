@@ -14,9 +14,13 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "image_link")
+@Table(name = "image_link",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "sequence")
+        })
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
@@ -32,4 +36,7 @@ public class ImageLink extends AbstractEntity {
 
   @Enumerated(EnumType.STRING)
   private ImageLinkType type;
+
+  @Column(name = "sequence")
+  private Integer sequence;
 }

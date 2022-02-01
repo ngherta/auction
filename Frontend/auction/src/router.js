@@ -19,6 +19,7 @@ import AuctionsPage from '@/views/AuctionsPage';
 import ProfilePage from '@/views/profile/ProfilePage';
 import AboutUsPage from '@/views/AboutUsPage';
 import Editor from "./components/Editor";
+import ChangeHomeImagePage from "@/views/profile/admin/ChangeHomeImagePage";
 
 const routes = [
   {
@@ -133,6 +134,10 @@ const routes = [
   {
     path: "/editor",
     component: Editor
+  },
+  {
+    path: "/admin/home-images",
+    component: ChangeHomeImagePage
   }
 ];
 

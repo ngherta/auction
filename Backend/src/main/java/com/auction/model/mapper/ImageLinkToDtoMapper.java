@@ -12,6 +12,7 @@ public class ImageLinkToDtoMapper implements Mapper<ImageLink, ImageLinkDto> {
             .imageLink(entity.getImageLink())
             .type(entity.getType())
             .url(entity.getUrl())
+            .sequence(entity.getSequence())
             .build();
   }
 }

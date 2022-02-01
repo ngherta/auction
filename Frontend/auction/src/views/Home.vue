@@ -2,10 +2,10 @@
   <div class="container mt-5">
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
-        <div v-for="(image, index) of images"
-                     :key="image"
-                     class="carousel-item "
-                     v-bind:class="{active : index == 0}">
+        <div v-for="(image, index) of this.sortImages()"
+             :key="image"
+             class="carousel-item "
+             v-bind:class="{active : index == 0}">
           <router-link :to="image.url">
             <img class="d-block w-100"
                  v-bind:src="image.imageLink" :alt="index + 'slide'">
@@ -52,6 +52,13 @@ export default {
       auctions: "",
       images: [],
     };
+  },
+  methods: {
+    sortImages(){
+      return this.images.slice().sort(function(a, b){
+        return (a.sequence > b.sequence) ? 1 : -1;
+      });
+    }
   },
   mounted() {
     ImageLinkService.getAllByType('HOME_PAGE').then(

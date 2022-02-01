@@ -12,4 +12,5 @@ public class ImageLinkCreateRequest {
   @NotBlank
   private String imageLink;
   private ImageLinkType type;
+  private Integer sequence;
 }

@@ -10,4 +10,5 @@ public class ImageLinkDto {
   private String url;
   private String imageLink;
   private ImageLinkType type;
+  private Integer sequence;
 }
