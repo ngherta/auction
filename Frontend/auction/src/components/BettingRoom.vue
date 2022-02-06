@@ -1,5 +1,4 @@
 <template>
-  <!--    <div class="row mt-5">-->
   <div class="">
     <h3 v-if="this.$store.state.auth.status.loggedIn" class="text-center mb-4">MAKE A BID</h3>
     <h3 v-if="!this.$store.state.auth.status.loggedIn" class="text-center mb-4">List of bids:</h3>
@@ -22,7 +21,6 @@
               >$
               </div>
             </div>
-            <!--          <ErrorMessage name="bid" class="error-feedback" />-->
           </div>
 
           <div class="d-flex col" style="flex-basis: min-content">
@@ -70,7 +68,6 @@
       </div>
     </div>
   </div>
-  <!--    </div>-->
 </template>
 
 <script>

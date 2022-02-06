@@ -39,4 +39,7 @@ public class ImageLink extends AbstractEntity {
 
   @Column(name = "sequence")
   private Integer sequence;
+
+  @Column(name = "internal_link")
+  private Boolean internalLink;
 }

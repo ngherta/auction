@@ -29,11 +29,12 @@ public class ImageLinkServiceImpl implements ImageLinkService {
   @Transactional
   public ImageLinkDto save(final ImageLinkCreateRequest request) {
     ImageLink imageLink = ImageLink.builder()
-            .imageLink(request.getImageLink())
             .type(request.getType())
-            .url(prepareUrl(request.getUrl()))
             .sequence(request.getSequence())
+            .imageLink(request.getImageLink())
             .build();
+
+    setUrlAndType(imageLink, request.getUrl());
 
     return imageLinkDtoMapper
             .map(imageLinkRepository
@@ -64,14 +65,20 @@ public class ImageLinkServiceImpl implements ImageLinkService {
     delete(imageLink);
   }
 
-  private String prepareUrl(final String url) {
+  private ImageLink setUrlAndType(ImageLink imageLink, String url) {
     String clientUrl = this.clientUrl
             .replace("http://", "")
             .replace("https://", "");
 
     if (url.contains(clientUrl)) {
-      return url.replaceAll(this.clientUrl, "");
+      url =  url.replaceAll(this.clientUrl, "");
+      imageLink.setInternalLink(true);
     }
-    return url;
+    else {
+      imageLink.setInternalLink(true);
+    }
+    imageLink.setImageLink(url);
+
+    return imageLink;
   }
 }

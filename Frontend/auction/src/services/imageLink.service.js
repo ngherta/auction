@@ -8,11 +8,12 @@ class ImageLinkService {
         return axios.get(API_URL + type);
     }
 
-    create(request) {
+    create(request, type) {
         return axios.post(API_URL, {
             url : request.url,
             imageLink : request.imageLink,
-            type : request.type
+            sequence : request.sequence,
+            type : type
         })
     }
 }

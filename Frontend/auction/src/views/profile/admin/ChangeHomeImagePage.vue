@@ -3,16 +3,24 @@
     <div class="border p-5">
       <h1 class="h1 mb-3">Add new image to home page</h1>
       <Form @submit="handleUpdate" :validation-schema="schema">
-        <div v-if="!successful" class="row align-items-center">
+        <div class="row align-items-center">
           <div class="col">
             <div class="mb-3">
               <label for="link">LINK:</label>
-              <Field name="link" id="link" type="text" class="form-control"/>
+              <Field v-model="linkModel"
+                     name="link"
+                     id="link"
+                     type="text"
+                     class="form-control"/>
               <ErrorMessage name="link" class="error-feedback"/>
             </div>
             <div class="mb-3">
               <label for="sequence">SEQUENCE:</label>
-              <Field name="sequence" id="sequence" type="text" class="form-control"/>
+              <Field v-model="sequenceModel"
+                     name="sequence"
+                     id="sequence"
+                     type="number"
+                     class="form-control"/>
               <ErrorMessage name="sequence" class="error-feedback"/>
             </div>
 
@@ -32,11 +40,45 @@
         </div>
         <div class="row mt-3">
           <button type="button"
+                  @click="addImageForPreview"
                   class="btn btn-info btn-block"
                   data-toggle="modal"
                   data-target="#descriptionModalLong">
             PREVIEW
           </button>
+
+          <div class="custom-table mt-5">
+            <table class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Url</th>
+                <th scope="col">Image</th>
+                <th scope="col">Sequence</th>
+              </tr>
+              </thead>
+              <tbody class="">
+              <tr v-for="(image, index) of this.sortImages()"
+                  :key="index"
+                  class="border-top border-bottom"
+                  v-bind:class="{
+                  firstTableRow : index == 0
+                }">
+                <td>{{ image.id }}</td>
+                <td v-if="image.isInternalLink == true">
+                  <router-link :to="image.url">{{ image.url }}</router-link>
+                </td>
+                <td v-else-if="image.isInternalLink == false">
+                  <a :href="image.url">{{ image.url }}</a>
+                </td>
+                <td>
+                  <img :src="image.imageLink" class="img-thumbnail">
+                </td>
+                <th scope="row">{{ image.sequence }}</th>
+              </tr>
+              </tbody>
+            </table>
+          </div>
 
           <!-- Modal -->
           <div class="modal fade" id="descriptionModalLong" tabindex="-1" role="dialog"
@@ -51,7 +93,7 @@
                 <div class="modal-body">
                   <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
-                      <div v-for="(image, index) of this.sortImages()"
+                      <div v-for="(image, index) of this.imagesPreview"
                            :key="image"
                            class="carousel-item "
                            v-bind:class="{active : index == 0}">
@@ -105,19 +147,44 @@ export default {
           .string()
           .required("Sequence is required!")
           .min(1, "Must be at least 3 characters!")
-          // .notOneOf([''].concat(this.sequenceArr), '"${value}" is not allowed!')
-          })
+    })
 
     return {
       images: [],
+      imagesPreview: [],
       sequenceArr: [''],
       loading: false,
-      successful: false,
       imageUploaded: null,
+      linkModel: null,
+      sequenceModel: null,
       schema
     }
   },
   methods: {
+    addImageForPreview() {
+      console.log(this.sequenceModel);
+      console.log(this.linkModel);
+      console.log(this.imageUploaded);
+      if (this.sequenceModel == null ||
+          this.linkModel == null ||
+          this.imageUploaded == null) {
+        return;
+      }
+
+      console.log(this.imagesPreview[this.imagesPreview.length - 1]);
+      if (this.imagesPreview[this.imagesPreview.length - 1].id == null) {
+        this.imagesPreview.pop();
+      }
+
+      const previewImage = {
+        id: null,
+        url: this.linkModel,
+        sequence: this.sequenceModel,
+        imageLink: this.imageUploaded,
+      }
+      this.imagesPreview.push(previewImage);
+      this.imagesPreview = this.sortImagesForPreview();
+    },
     uploadNewImages(event) {
       this.imageUploaded = event;
     },
@@ -131,6 +198,7 @@ export default {
       ImageLinkService.getAllByType('HOME_PAGE').then(
           (response) => {
             this.images = response.data;
+            this.imagesPreview = response.data;
             for (let i = 0; i < response.data.length; i++) {
               this.sequenceArr.push(response.data[i].sequence);
             }
@@ -145,7 +213,7 @@ export default {
     },
     handleUpdate(data) {
       this.loading = true;
-      if (this.imageUploaded.length != 1) {
+      if (this.imageUploaded == null) {
         this.loading = false;
         this.$notify({
           text: 'You should add image!',
@@ -159,12 +227,10 @@ export default {
         imageLink: this.imageUploaded,
         sequence: data.sequence
       }
-      console.log(data);
-      console.log(request);
+
       ImageLinkService.create(request, 'HOME_PAGE').then(
           () => {
             this.images.push(request);
-            this.successful = true;
           },
           (error) => {
             this.$notify({
@@ -177,6 +243,11 @@ export default {
     },
     sortImages() {
       return this.images.slice().sort(function (a, b) {
+        return (a.sequence > b.sequence) ? 1 : -1;
+      });
+    },
+    sortImagesForPreview() {
+      return this.imagesPreview.slice().sort(function (a, b) {
         return (a.sequence > b.sequence) ? 1 : -1;
       });
     }
