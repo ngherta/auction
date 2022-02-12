@@ -1,6 +1,5 @@
 package com.auction.model.mapper;
 
-import com.auction.model.NotificationMessage;
 import com.auction.model.NotificationMessageUser;
 import com.auction.web.dto.NotificationMessageDto;
 import org.springframework.stereotype.Component;

@@ -12,6 +12,7 @@
       <statistic-page v-else-if="this.currentPage == 'statistic'"/>
       <user-auction-list v-else-if="this.currentPage == 'my-auctions'"/>
       <create-new-category v-else-if="this.currentPage == 'create-category'"/>
+      <settings v-else-if="this.currentPage == 'settings'"/>
     </div>
   </div>
 </template>
@@ -25,10 +26,12 @@ import StatisticPage from './StatisticPage';
 import UserAuctionList from './items/UserAuctionList';
 import CreateNewCategory from './admin/CreateNewCategory';
 import ChangePasswordComponent from "./items/ChangePasswordComponent";
+import Settings from './items/Settings';
 
 export default {
   name: "ProfilePage",
   components: {
+    Settings,
     ProfileMenu,
     Account,
     UserTable,

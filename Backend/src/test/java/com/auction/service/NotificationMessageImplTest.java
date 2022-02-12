@@ -65,7 +65,7 @@ class NotificationMessageImplTest {
             .build();
     dtos.add(dto);
 
-    notificationMessages.add(new NotificationMessage("test", NotificationType.NEW_MESSAGE, LocalDateTime.now()));
+    notificationMessages.add(new NotificationMessage("test", NotificationType.NEW_MESSAGE, LocalDateTime.now(), false));
   }
 
   @Test

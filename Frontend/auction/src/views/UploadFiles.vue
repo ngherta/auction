@@ -130,6 +130,7 @@ export default {
             this.showProgress = true;
             axios(requestObj)
                 .then(response => {
+                  console.log(response);
                   this.results.push(response.data);
                   this.$emit('uploadNewImages', response.data.secure_url)
                   // this.$store.dispatch("image/uploadImage", this.results);

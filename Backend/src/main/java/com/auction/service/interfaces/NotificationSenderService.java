@@ -6,6 +6,4 @@ import java.util.List;
 
 public interface NotificationSenderService {
   void sendNotificationToUsers(List<NotificationMessageUser> messages);
-
-  void sendNotificationsToUser(List<NotificationMessageUser> messages);
 }

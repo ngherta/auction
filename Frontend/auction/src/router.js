@@ -126,6 +126,10 @@ const routes = [
     component: ProfilePage
   },
   {
+    path: "/profile/settings",
+    component: ProfilePage,
+  },
+  {
     path: "/profile/create-category",
     component: ProfilePage
   },

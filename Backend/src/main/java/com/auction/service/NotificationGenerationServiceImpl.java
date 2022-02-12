@@ -43,6 +43,11 @@ public class NotificationGenerationServiceImpl implements NotificationGeneration
 
     List<NotificationMessageUser> notifications = new ArrayList<>();
     for (User user : activeUsers) {
+      if (notificationService.getAllByUser(user)
+              .stream()
+              .anyMatch(e -> e.getNotificationType() == message.getType())) {
+        continue;
+      }
       NotificationMessageUser notificationForUser = NotificationMessageUser.builder()
               .notificationMessage(message)
               .user(user)
@@ -63,7 +68,25 @@ public class NotificationGenerationServiceImpl implements NotificationGeneration
 
     List<NotificationMessageUser> notificationMessageUsers = notificationMessageService.getNotificationsForUser(user);
     notificationMessageUsers.addAll(generateInitNotificationsForUser(user));
-    notificationSenderService.sendNotificationsToUser(notificationMessageUsers);
+    notificationSenderService.sendNotificationToUsers(notificationMessageUsers);
+  }
+
+  @Transactional
+  @Override
+  public void generateSingleNotificationFor(User user, NotificationMessage notificationMessage) {
+    NotificationMessageUser notificationMessageUser = NotificationMessageUser
+            .builder()
+            .notificationMessage(notificationMessage)
+            .user(user)
+            .seen(false)
+            .build();
+
+    NotificationMessageUser message = notificationMessageUserRepository.save(notificationMessageUser);
+
+    Set<Long> activeUserIds = userServiceCache.getActiveUsers();
+    if (activeUserIds.stream().anyMatch(e -> e.equals(user.getId()))) {
+      notificationSenderService.sendNotificationToUsers(List.of(message));
+    }
   }
 
   @Transactional

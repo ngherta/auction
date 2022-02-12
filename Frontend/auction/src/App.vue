@@ -37,12 +37,12 @@ export default {
 
 <style scoped>
 /*@font-face {*/
-/*  font-family: "Century Gothic";*/
-/*  src: local("Century Gothic"),*/
-/*  url("./public/fonts/century-gothic.woff2") format("woff2");*/
+  /*font-family: "Century Gothic";*/
+  /*src: local("Century Gothic"),*/
+  /*url("./public/fonts/century-gothic.woff2") format("woff2");*/
 /*}*/
 
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');*/
 
 p {
   font-size: 1rem;

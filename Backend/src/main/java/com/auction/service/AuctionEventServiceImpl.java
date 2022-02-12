@@ -1,6 +1,7 @@
 package com.auction.service;
 
 import com.auction.event.notification.AuctionCreationNotificationEvent;
+import com.auction.event.notification.AuctionFinishingNotificationEvent;
 import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.exception.SpecificationException;
 import com.auction.model.AuctionAction;
@@ -55,7 +56,6 @@ class AuctionEventServiceImpl implements AuctionEventService {
   private final AuctionWinnerRepository auctionWinnerRepository;
   private final AuctionActionRepository auctionActionRepository;
   private final AuctionWinnerService auctionWinnerService;
-  private final NotificationGenerationService notificationGenerationService;
   private final AuctionEventSortRepository auctionEventSortRepository;
   private final CategoryService categoryService;
   private final ApplicationEventPublisher publisher;
@@ -141,7 +141,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
       Optional<AuctionAction> auctionAction = auctionActionRepository.findTopByAuctionEventOrderByBetDesc(event);
       if (auctionAction.isEmpty()) {
         resetAuction(event);
-        break;
+        continue;
       }
       AuctionAction action = auctionAction.get();
       AuctionWinner auctionWinner = AuctionWinner.builder()
@@ -151,16 +151,15 @@ class AuctionEventServiceImpl implements AuctionEventService {
               .build();
 
       listOfWinners.add(auctionWinner);
-      log.info("User[" + action.getUser() + "] won auctionEvent[" + event.getId() + "]");
+      log.info("User[" + action.getUser() + "] win auctionEvent[" + event.getId() + "]");
 
       event.setStatusType(AuctionStatus.FINISHED);
       log.info("AuctionEvent [" + event.getId() + "] set new status - FINISHED.");
 
       paymentService.createPaymentForAuction(auctionWinner);
-
       mailService.sendEmailToAuctionWinner(auctionWinner);
-
       sendEmailToParticipants(event, auctionWinner);
+      publisher.publishEvent(new AuctionFinishingNotificationEvent(auctionWinner));
     }
 
     auctionWinnerRepository.saveAll(listOfWinners);

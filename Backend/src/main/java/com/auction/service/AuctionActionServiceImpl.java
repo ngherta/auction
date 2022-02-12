@@ -56,7 +56,8 @@ class AuctionActionServiceImpl implements AuctionActionService {
       bet = auctionEvent.getFinishPrice();
     }
 
-    AuctionAction auctionAction = AuctionAction.builder()
+    AuctionAction auctionAction = AuctionAction
+            .builder()
             .auctionEvent(auctionEvent)
             .user(user)
             .bet(bet)
@@ -74,14 +75,12 @@ class AuctionActionServiceImpl implements AuctionActionService {
     Optional<AuctionAction> action = auctionActionRepository.findTopByAuctionEventOrderByBetDesc(auctionEvent);
     checkBetDifference(bet, auctionEvent, action);
   }
-//  @Override
+
   public void checkBetDifference(Double bet,
-                                  AuctionEvent auctionEvent,
-                                  Optional<AuctionAction> action) {
-    if (action.isEmpty()) {
-      if (auctionEvent.getStartPrice() > bet) {
-        throw new WrongBetException("Bet should be higher than Start Price!");
-      }
+                                 AuctionEvent auctionEvent,
+                                 Optional<AuctionAction> action) {
+    if (action.isEmpty() && auctionEvent.getStartPrice() > bet) {
+      throw new WrongBetException("Bet should be higher than Start Price!");
     }
     double betDifference = (bet * 100 / action.get().getBet()) - 100;
     if (betDifference < 5.0) {

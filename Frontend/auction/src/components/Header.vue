@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light pr-5 pl-5">
     <div class="d-flex">
-      <router-link to="/home">
+      <router-link class="img-link" to="/home">
         <img class="img-logo" src="../assets/logo.jpg" alt="Logo">
       </router-link>
       <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -86,9 +86,7 @@
                   </div>
                   <div class="col-lg-8 col-sm-8 col-8">
                     <strong class="text-info">David John</strong>
-                    <div class="white-space-nowrap">
-                      {{ notification.message }}
-                    </div>
+                    <div class="white-space-nowrap" v-html="notification.message"/>
                     <small class="text-warning">{{ notification.genDate }}</small>
                   </div>
                 </div>
@@ -320,6 +318,10 @@ button {
 
 .notification-box {
   padding: 10px 0px;
+}
+
+.img-link {
+  display: contents;
 }
 
 .white-space-nowrap {

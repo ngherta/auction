@@ -1,5 +1,6 @@
 package com.auction.service;
 
+import com.auction.event.notification.ComplaintNotificationEvent;
 import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionEventComplaint;
 import com.auction.model.AuctionEventComplaintAudit;
@@ -17,6 +18,7 @@ import com.auction.web.dto.request.ComplaintAdminRequest;
 import com.auction.web.dto.request.ComplaintRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +34,7 @@ class ComplaintServiceImpl implements ComplaintService {
   private final AuctionEventComplaintRepository complaintRepository;
   private final AuctionEventComplaintAuditRepository complaintAuditRepository;
   private final UserService userService;
+  private final ApplicationEventPublisher publisher;
   private final AuctionEventService auctionEventService;
   private final Mapper<AuctionEventComplaint, ComplaintDto> complaintToDtoMapper;
   private final Mapper<AuctionEventComplaintAudit, ComplaintAuditDto> complaintAuditToDtoMapper;
@@ -94,6 +97,7 @@ class ComplaintServiceImpl implements ComplaintService {
 
     audit = complaintAuditRepository.save(audit);
 
+    publisher.publishEvent(new ComplaintNotificationEvent(audit));
     return complaintAuditToDtoMapper.map(audit);
   }
 

@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,6 +37,9 @@ class AuctionWinnerServiceImplTest {
   private Mapper<AuctionWinner, AuctionWinnerDto> auctionWinnerDtoMapper;
   @Mock
   private PaymentService paymentService;
+  @Mock
+  private ApplicationEventPublisher publisher;
+
 
   private AuctionWinnerServiceImpl auctionWinnerService;
 
@@ -45,7 +49,7 @@ class AuctionWinnerServiceImplTest {
 
   @BeforeEach
   public void setUp() {
-    auctionWinnerService = new AuctionWinnerServiceImpl(auctionWinnerRepository, userService, auctionWinnerDtoMapper, paymentService);
+    auctionWinnerService = new AuctionWinnerServiceImpl(auctionWinnerRepository, userService, auctionWinnerDtoMapper, paymentService,publisher);
     user = UserFixture.user();
     AuctionEvent auctionEvent = AuctionEventFixture.auctionEvent();
     AuctionWinner auctionWinner = AuctionWinner.builder()

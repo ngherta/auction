@@ -29,14 +29,4 @@ class NotificationSenderServiceImpl implements NotificationSenderService {
       messagingTemplate.convertAndSend("/notification/" + message.getUser().getId(), dto);
     }
   }
-
-  @Override
-  @Transactional
-  public void sendNotificationsToUser(List<NotificationMessageUser> messages) {
-    messages.forEach(message -> {
-      NotificationMessageDto dto = notificationMessageDtoMapper.map(message);
-      messagingTemplate.convertAndSend("/notification/" + message.getUser().getId(), dto);
-    });
-  }
-
 }

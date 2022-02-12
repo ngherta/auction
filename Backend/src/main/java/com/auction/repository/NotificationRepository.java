@@ -2,6 +2,7 @@ package com.auction.repository;
 
 import com.auction.model.Notification;
 import com.auction.model.User;
+import com.auction.model.enums.NotificationType;
 import com.auction.projection.NotificationProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,8 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
                                                        @Param("notificationType") String notificationType);
 
   void deleteAllByUser(User user);
+
+  List<Notification> findAllByUser(User user);
+
+  Optional<Notification> findAllByNotificationTypeAndUser(NotificationType notificationType, User user);
 }

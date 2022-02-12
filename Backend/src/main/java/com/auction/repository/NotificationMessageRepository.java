@@ -18,8 +18,7 @@ public interface NotificationMessageRepository extends JpaRepository<Notificatio
           "(SELECT 1 FROM notification_message_user nmu " +
           "WHERE nmu.user_id = :userId " +
           "AND nmu.notification_message_id = nm.id ) " +
-//          "AND nm.gen_date < LOCA) " +
-          "" +
+          "AND nm.single_notification = false " +
           "")
   List<NotificationMessage> findUncreatedNotificationForUser(Long userId, List<String> notificationTypes);
 

@@ -55,6 +55,15 @@
           </div>
         </router-link>
       </li>
+      <li>
+        <router-link @click="this.$emit('handleChangePage', 'settings')" to="/profile/settings">
+          <div class="p-3 border profile-item"
+               :class="{'profile-item-active' : activeItem == 'settings'}">
+            <Icon name="settings" size="0.8"/>
+            <span class="pl-3 profile-item-text">Settings</span>
+          </div>
+        </router-link>
+      </li>
     </ul>
   </div>
 </template>

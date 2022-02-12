@@ -33,4 +33,7 @@ public class NotificationMessage extends AbstractEntity{
 
   @Column(name = "gen_date")
   private LocalDateTime genDate;
+
+  @Column(name = "single_notification")
+  private Boolean singleNotification;
 }

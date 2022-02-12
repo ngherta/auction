@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -42,6 +43,8 @@ class ComplaintServiceImplTest {
   private Mapper<AuctionEventComplaint, ComplaintDto> complaintComplaintDtoMapper;
   @Mock
   private Mapper<AuctionEventComplaintAudit, ComplaintAuditDto> complaintAuditComplaintAuditDtoMapper;
+  @Mock
+  private ApplicationEventPublisher publisher;
 
 
   private ComplaintServiceImpl complaintService;
@@ -54,6 +57,7 @@ class ComplaintServiceImplTest {
     complaintService = new ComplaintServiceImpl(auctionEventComplaintRepository,
                                                 auctionEventComplaintAuditRepository,
                                                 userService,
+                                                publisher,
                                                 auctionEventService,
                                                 complaintComplaintDtoMapper,
                                                 complaintAuditComplaintAuditDtoMapper);
