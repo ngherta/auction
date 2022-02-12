@@ -30,6 +30,11 @@ public class AuctionEventServiceDummy implements AuctionEventService {
   }
 
   @Override
+  public AuctionEvent finish(AuctionEvent auctionEvent) {
+    return null;
+  }
+
+  @Override
   public Page<AuctionEventDto> getAllSortByRating(int page, int perPage) {
     return null;
   }

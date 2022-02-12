@@ -85,7 +85,6 @@ export default {
     // function to handle file info obtained from local
     // file system and set the file state
     handleFileChange: function (event) {
-      console.log("handlefilechange", event.target.files);
       //returns an array of files even though multiple not used
       this.file = event.target.files[0];
       this.filesSelected = event.target.files.length;

@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -74,7 +75,7 @@ class ComplaintServiceImplTest {
             .user(UserFixture.userDto())
             .id(1L)
             .status(complaint.getStatus())
-            .genDate(complaint.getGenDate())
+            .genDate(complaint.getGenDate().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")))
             .auctionEvent(new AuctionEventDto())
             .build();
   }

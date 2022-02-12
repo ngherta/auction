@@ -15,6 +15,8 @@ class AuctionEventToDtoMapper implements Mapper<AuctionEvent, AuctionEventDto>{
 
   private final Mapper<User, UserDto> userToDtoMapper;
 
+  private static final String DATE_PATTERN = "dd-MM-yyyy HH:mm";
+
   @Override
   public AuctionEventDto map(AuctionEvent entity) {
 
@@ -27,9 +29,9 @@ class AuctionEventToDtoMapper implements Mapper<AuctionEvent, AuctionEventDto>{
             .startPrice(entity.getStartPrice())
             .finishPrice(entity.getFinishPrice())
             .user(userToDtoMapper.map(entity.getUser()))
-            .startDate(entity.getStartDate().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")))
-            .finishDate(entity.getFinishDate().format(DateTimeFormatter.ofPattern("dd-MM-yy hh:mm")))
-            .genDate(entity.getGenDate().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")))
+            .startDate(entity.getStartDate().format(DateTimeFormatter.ofPattern(DATE_PATTERN)))
+            .finishDate(entity.getFinishDate().format(DateTimeFormatter.ofPattern(DATE_PATTERN)))
+            .genDate(entity.getGenDate().format(DateTimeFormatter.ofPattern(DATE_PATTERN)))
             .charityPercent(entity.getCharityPercent())
             .images(entity.getImages())
             .build();

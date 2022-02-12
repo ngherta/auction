@@ -20,6 +20,8 @@ import ProfilePage from '@/views/profile/ProfilePage';
 import AboutUsPage from '@/views/AboutUsPage';
 import Editor from "./components/Editor";
 import ChangeHomeImagePage from "@/views/profile/admin/ChangeHomeImagePage";
+import ComplaintList from "@/views/profile/admin/ComplaintList";
+import SuccessPay from "@/views/SuccessPay";
 
 const routes = [
   {
@@ -138,6 +140,14 @@ const routes = [
   {
     path: "/admin/home-images",
     component: ChangeHomeImagePage
+  },
+  {
+    path: "/admin/complaint",
+    component: ComplaintList
+  },
+  {
+    path: "/payment/success",
+    component: SuccessPay
   }
 ];
 

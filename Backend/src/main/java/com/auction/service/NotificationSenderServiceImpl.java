@@ -2,7 +2,6 @@ package com.auction.service;
 
 import com.auction.model.NotificationMessageUser;
 import com.auction.model.mapper.Mapper;
-import com.auction.repository.NotificationRepository;
 import com.auction.service.interfaces.NotificationSenderService;
 import com.auction.web.dto.NotificationMessageDto;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,6 @@ import java.util.List;
 @Slf4j
 class NotificationSenderServiceImpl implements NotificationSenderService {
 
-  private final NotificationRepository notificationRepository;
   private final SimpMessagingTemplate messagingTemplate;
   private final Mapper<NotificationMessageUser, NotificationMessageDto> notificationMessageDtoMapper;
 

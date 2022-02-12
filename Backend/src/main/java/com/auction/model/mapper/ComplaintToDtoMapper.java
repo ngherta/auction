@@ -9,6 +9,8 @@ import com.auction.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
+
 @RequiredArgsConstructor
 @Component
 public class ComplaintToDtoMapper implements Mapper<AuctionEventComplaint, ComplaintDto>{
@@ -22,7 +24,7 @@ public class ComplaintToDtoMapper implements Mapper<AuctionEventComplaint, Compl
             .id(entity.getId())
             .user(userToDtoMapper.map(entity.getUser()))
             .auctionEvent(auctionEventToDtoMapper.map(entity.getAuctionEvent()))
-            .genDate(entity.getGenDate())
+            .genDate(entity.getGenDate().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")))
             .message(entity.getMessage())
             .status(entity.getStatus())
             .build();

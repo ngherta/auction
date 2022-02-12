@@ -1,5 +1,6 @@
 package com.auction.service;
 
+import com.auction.event.notification.AuctionCreationNotificationEvent;
 import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.exception.SpecificationException;
 import com.auction.model.AuctionAction;
@@ -28,6 +29,7 @@ import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.request.AuctionEventRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -56,6 +58,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
   private final NotificationGenerationService notificationGenerationService;
   private final AuctionEventSortRepository auctionEventSortRepository;
   private final CategoryService categoryService;
+  private final ApplicationEventPublisher publisher;
   private final UserService userService;
   private final MailService mailService;
   private final AuctionChatService auctionChatService;
@@ -115,7 +118,8 @@ class AuctionEventServiceImpl implements AuctionEventService {
     auctionEvent = auctionEventRepository.save(auctionEvent);
 
     auctionChatService.create(auctionEvent);
-    notificationGenerationService.sendNotificationOfCreatingAuction(auctionEvent);
+
+    publisher.publishEvent(new AuctionCreationNotificationEvent(auctionEvent));
     return auctionEventToDtoMapper.map(auctionEvent);
   }
 
@@ -206,6 +210,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
   }
 
   @Transactional
+  @Override
   public AuctionEvent finish(AuctionEvent auctionEvent) {
     auctionEvent.setStatusType(AuctionStatus.FINISHED);
     return auctionEventRepository.save(auctionEvent);

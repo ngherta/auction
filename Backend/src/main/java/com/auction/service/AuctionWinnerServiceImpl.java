@@ -6,10 +6,12 @@ import com.auction.model.User;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionWinnerRepository;
 import com.auction.service.interfaces.AuctionWinnerService;
+import com.auction.service.interfaces.PaymentService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionWinnerDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ public class AuctionWinnerServiceImpl implements AuctionWinnerService {
   private final AuctionWinnerRepository auctionWinnerRepository;
   private final UserService userService;
   private final Mapper<AuctionWinner, AuctionWinnerDto> auctionWinnerDtoMapper;
+  private final PaymentService paymentService;
 
   @Override
   @Transactional(readOnly = true)
@@ -32,6 +35,7 @@ public class AuctionWinnerServiceImpl implements AuctionWinnerService {
 
   @Override
   @Transactional
+  @Async
   public void createForFinishPrice(AuctionEvent auctionEvent, User user) {
     AuctionWinner auctionWinner = AuctionWinner.builder()
             .user(user)
@@ -40,6 +44,7 @@ public class AuctionWinnerServiceImpl implements AuctionWinnerService {
             .build();
 
     auctionWinnerRepository.save(auctionWinner);
+    paymentService.createPaymentForAuction(auctionWinner);
   }
 
   @Override

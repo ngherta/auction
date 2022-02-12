@@ -1,5 +1,4 @@
 <template>
-
   <div class="container">
     <div class="row mt-5">
       <div v-if="showTest" id="carouselExampleControls" class="col carousel slide w-25 border" data-ride="carousel">
@@ -32,6 +31,11 @@
                 SHARE
               </button>
             </div>
+            <button type="button"
+                    data-toggle="modal"
+                    data-target="#complaintModal"
+                    class="btn btn-primary expand-complaint-button">COMPLAINT
+            </button>
 
           </div>
 
@@ -74,7 +78,7 @@
                   >
                     Share on VK
                   </ShareNetwork>
-<!--                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                  <!--                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
                 </div>
               </div>
             </div>
@@ -150,8 +154,10 @@
           <icon :name="'expand'"/>
         </button>
         <betting-room :bids="bids"
-                      :auction-id="auctionId"
-                      :stomp-client="stompClient"/>
+                      :auction="content"
+                      :stomp-client="stompClient"
+                      ref="betting-room"
+                      @refreshAuction="getData"/>
         <!-- Modal -->
         <div class="modal fade" id="bettingModalLong" tabindex="-1" role="dialog"
              aria-labelledby="bettingModalLongTitle" aria-hidden="true">
@@ -165,7 +171,7 @@
               </div>
               <div class="modal-body">
                 <betting-room :bids="bids"
-                              :auction-id="auctionId"
+                              :auction="content"
                               :stomp-client="stompClient"/>
               </div>
             </div>
@@ -195,6 +201,53 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade"
+       id="complaintModal"
+       tabindex="-1"
+       role="dialog"
+       aria-labelledby="complaintModalLongTitle"
+       aria-hidden="true">
+    <div class="modal-dialog modal-complaint" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="complaintModalLongTitle">COMPLAINT</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <Form @submit="handleComplaint">
+          <div class="modal-body">
+            <div v-if="!complaintSuccessful">
+              <div class="mb-3">
+                <label for="modalMessage">MESSAGE:</label>
+                <textarea name="modalMessage" class="form-control" v-model="complaintMessage" rows="3"/>
+              </div>
+            </div>
+            <div v-else-if="complaintSuccessful">
+              <h4 class="alert text-center alert-success" role="alert">
+                Your complaint <b class="alert-link">#{{ this.complaintId }}</b> has been accepted.
+              </h4>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button v-if="complaintSuccessful" type="button" class="btn btn-secondary" data-dismiss="modal">Close
+            </button>
+            <div v-else-if="!complaintSuccessful" class="">
+              <button class="btn btn-primary btn-block" :disabled="complaintLoading">
+              <span
+                  v-show="complaintLoading"
+                  class="spinner-border spinner-border-sm"
+              ></span>
+                SEND
+              </button>
+            </div>
+          </div>
+        </Form>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -202,6 +255,7 @@ import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
 import BettingService from "../services/betting.service"
 import AuctionService from "../services/auction.service"
+import ComplaintService from "../services/complaint.service"
 import {Field, Form} from "vee-validate";
 import * as yup from "yup";
 import router from "@/router";
@@ -217,7 +271,6 @@ export default {
     Form,
     Field,
     BettingRoom,
-    // ErrorMessage,
   },
   data() {
     const schema = yup.object().shape({
@@ -233,10 +286,29 @@ export default {
       socket: null,
       connected: false,
       auctionId: this.$route.params.id,
-      content: "",
+      content: {
+        id: "",
+        statusType: "",
+        description: "",
+        title: "",
+        auctionType: "",
+        startPrice: "",
+        finishPrice: "",
+        user: "",
+        startDate: "",
+        finishDate: "",
+        genDate: "",
+        charityPercent: "",
+        images : [],
+        lastBid: null,
+      },
       qr_image: "",
       loading: false,
       bids: [],
+      complaintMessage: null,
+      complaintSuccessful: false,
+      complaintId: null,
+      complaintLoading: false,
       successful: false,
       bid: "",
       images: [],
@@ -260,6 +332,28 @@ export default {
     },
     getUser() {
       return JSON.parse(localStorage.getItem('user'));
+    },
+    handleComplaint() {
+      this.complaintLoading = true;
+      this.complaintSuccessful = false;
+      const data = {
+        userId: this.$store.state.auth.user.userDto.id,
+        auctionEventId: this.auctionId,
+        message: this.complaintMessage
+      }
+      ComplaintService.sendComplaint(data).then(
+          (response) => {
+            this.complaintId = response.data.id;
+            this.complaintSuccessful = true;
+          },
+          error => {
+            this.$notify({
+              type: 'error',
+              text: error.response.data.errorMessage
+            });
+          }
+      );
+      this.complaintLoading = false;
     },
     checkBetForChangeColor() {
       if (this.bids.length !== 0) {
@@ -323,7 +417,6 @@ export default {
 
             this.stompClient.subscribe("/chat/auction/" + this.auctionId,
                 tick => {
-                  console.log("NEW MESSAGE!")
                   this.chatMessages.push(JSON.parse(tick.body));
                 });
 
@@ -352,27 +445,32 @@ export default {
     tickleConnection() {
       this.connected ? this.disconnect() : this.connect();
     },
+    getData() {
+      AuctionService.getAuctionById(this.auctionId).then(
+          (response) => {
+            for (let i = 0; i < response.data.images.length; i++) {
+              this.images.push(response.data.images[i]);
+            }
+            this.content = response.data;
+            if (this.content.statusType == 'EXPECTATION') {
+              this.$refs["betting-room"].setStartDate(response.data.startDate);
+            }
+            this.showTest = true;
+          },
+          (error) => {
+            this.content =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            router.push("/error");
+          }
+      );
+    }
   },
   mounted() {
-    AuctionService.getAuctionById(this.auctionId).then(
-        (response) => {
-          for (let i = 0; i < response.data.images.length; i++) {
-            this.images.push(response.data.images[i]);
-          }
-          // this.images = response.data.images;
-          this.content = response.data;
-          this.showTest = true;
-        },
-        (error) => {
-          this.content =
-              (error.response &&
-                  error.response.data &&
-                  error.response.data.message) ||
-              error.message ||
-              error.toString();
-          router.push("/error");
-        }
-    );
+    this.getData();
     this.connect();
     BettingService.getBidsForByAuction(this.auctionId).then(
         (response) => {

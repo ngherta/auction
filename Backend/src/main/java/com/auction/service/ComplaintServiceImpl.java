@@ -17,11 +17,13 @@ import com.auction.web.dto.request.ComplaintAdminRequest;
 import com.auction.web.dto.request.ComplaintRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +39,7 @@ class ComplaintServiceImpl implements ComplaintService {
   @Override
   @Transactional
   public ComplaintDto create(ComplaintRequest request) {
-    AuctionEvent auctionEvent = auctionEventService.findById(request.getUserId());
+    AuctionEvent auctionEvent = auctionEventService.findById(request.getAuctionEventId());
 
     User user = userService.findById(request.getUserId());
 
@@ -56,9 +58,11 @@ class ComplaintServiceImpl implements ComplaintService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<ComplaintDto> getAll() {
-    List<AuctionEventComplaint> list = complaintRepository.findAll();
-    return complaintToDtoMapper.mapList(list);
+  public Page<ComplaintDto> getAll(int page, int perPage) {
+    Pageable pageable = PageRequest.of(page - 1, perPage);
+    return complaintRepository
+            .findAll(pageable)
+            .map(complaintToDtoMapper::map);
   }
 
   @Override
@@ -91,5 +95,11 @@ class ComplaintServiceImpl implements ComplaintService {
     audit = complaintAuditRepository.save(audit);
 
     return complaintAuditToDtoMapper.map(audit);
+  }
+
+  @Override
+  public void deleteAllByUser(User user) {
+    complaintAuditRepository.deleteAllByAdmin(user);
+    complaintRepository.deleteAllByUser(user);
   }
 }

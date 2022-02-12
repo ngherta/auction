@@ -58,9 +58,9 @@
       </div>
     </div>
     <div class="d-flex flex-wrap mb-5">
-      <div class="text-center"
+      <div class="m-auto"
            v-if="this.loadingAuctions == true && this.searchResultEmpty == false">
-        <div class="spinner-border" role="status">
+        <div class="spinner-border mt-5 mb-5" style="width: 4rem; height: 4rem;" role="status">
           <span class="sr-only">Loading...</span>
         </div>
       </div>

@@ -19,6 +19,8 @@ public interface AuctionEventService {
 
   void finishByFinishPrice(AuctionEvent auctionEvent, User user);
 
+  AuctionEvent finish(AuctionEvent auctionEvent);
+
   Page<AuctionEventDto> getAllSortByRating(int page, int perPage);
 
   Page<AuctionEventDto> get(int page, int perPage);

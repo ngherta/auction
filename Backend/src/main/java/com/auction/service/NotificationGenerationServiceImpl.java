@@ -2,7 +2,6 @@ package com.auction.service;
 
 import com.auction.exception.UserNotFoundException;
 import com.auction.helper.UserSessionCache;
-import com.auction.model.AuctionEvent;
 import com.auction.model.NotificationMessage;
 import com.auction.model.NotificationMessageUser;
 import com.auction.model.User;
@@ -16,11 +15,9 @@ import com.auction.service.interfaces.NotificationMessageService;
 import com.auction.service.interfaces.NotificationSenderService;
 import com.auction.service.interfaces.NotificationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -37,22 +34,6 @@ public class NotificationGenerationServiceImpl implements NotificationGeneration
   private final NotificationMessageRepository notificationMessageRepository;
   private final UserSessionCache userServiceCache;
   private final UserRepository userRepository;
-
-
-  @Override
-  @Transactional
-  @Async
-  public void sendNotificationOfCreatingAuction(AuctionEvent auctionEvent) {
-    NotificationMessage message = NotificationMessage.builder()
-            .message(auctionEvent.getUser().getFirstName() + " " + auctionEvent.getUser().getLastName() +
-                             " created new auction " + auctionEvent.getTitle())
-            .genDate(LocalDateTime.now())
-            .type(NotificationType.CREATING_AUCTION)
-            .build();
-
-    message = notificationMessageRepository.save(message);
-    generateNotificationsForActiveUsers(message);
-  }
 
   @Transactional
   @Override
@@ -89,11 +70,12 @@ public class NotificationGenerationServiceImpl implements NotificationGeneration
   @Override
   public List<NotificationMessageUser> generateInitNotificationsForUser(User user) {
     List<NotificationProjection> notificationSettings = notificationService.getNotificationTypeByUser(user);
-    List<NotificationType> typeList = notificationSettings.stream()
-            .map(NotificationProjection::getNotificationType).collect(Collectors.toList());
+    List<NotificationType> typeList = notificationSettings
+            .stream()
+            .map(NotificationProjection::getNotificationType)
+            .collect(Collectors.toList());
 
     List<NotificationMessage> messages = notificationMessageService.findNotificationMessageForCreateByUser(user, typeList);
-    List<NotificationMessageUser> notificationMessageUsers = notificationMessageService.createNotificationMessagesForUser(user, messages);
-    return notificationMessageUsers;
+    return notificationMessageService.createNotificationMessagesForUser(user, messages);
   }
 }

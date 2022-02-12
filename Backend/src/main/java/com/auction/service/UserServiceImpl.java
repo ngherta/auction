@@ -1,6 +1,5 @@
 package com.auction.service;
 
-import com.auction.config.cache.properties.CacheNames;
 import com.auction.exception.UserNotFoundException;
 import com.auction.exception.UserRoleNotFoundException;
 import com.auction.exception.WrongPasswordException;
@@ -14,6 +13,7 @@ import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.UserRepository;
 import com.auction.repository.UserRoleRepository;
 import com.auction.service.interfaces.AuctionEventService;
+import com.auction.service.interfaces.ComplaintService;
 import com.auction.service.interfaces.NotificationService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.UserDto;
@@ -23,9 +23,6 @@ import com.auction.web.dto.request.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -52,11 +49,17 @@ public class UserServiceImpl implements UserService {
   private final Mapper<User, UserDto> userToDtoMapper;
   private final UserRoleRepository roleRepository;
   private final PasswordEncoder encoder;
+  private  ComplaintService complaintService;
 
   //beans cycle
   @Autowired
   public void setAuctionEventService(@Lazy AuctionEventService auctionEventService) {
     this.auctionEventService = auctionEventService;
+  }
+
+  @Autowired
+  public void setComplaintService(@Lazy ComplaintService complaintService) {
+    this.complaintService = complaintService;
   }
 
   @Override
@@ -83,6 +86,7 @@ public class UserServiceImpl implements UserService {
 
     auctionActionRepository.deleteAllByUser(user);
     notificationService.deleteByUser(user);
+    complaintService.deleteAllByUser(user);
 
     log.info("Deleting user[" + user.getId() + "]");
     userRepository.delete(user);
@@ -137,7 +141,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public void updatePassword(UpdatePasswordRequest request) {
-    User user = findById(request.getUserId());;
+    User user = findById(request.getUserId());
 
     if (!encoder.matches(request.getOldPassword(), user.getPassword())) {
       throw new WrongPasswordException("Wrong password!");

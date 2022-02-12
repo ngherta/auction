@@ -7,6 +7,7 @@ import com.auction.model.fixture.AuctionEventFixture;
 import com.auction.model.fixture.UserFixture;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionWinnerRepository;
+import com.auction.service.interfaces.PaymentService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.AuctionWinnerDto;
@@ -25,7 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class AuctionWinnerServiceImplTest {
+class AuctionWinnerServiceImplTest {
 
   @Mock
   private AuctionWinnerRepository auctionWinnerRepository;
@@ -33,6 +34,8 @@ public class AuctionWinnerServiceImplTest {
   private UserService userService;
   @Mock
   private Mapper<AuctionWinner, AuctionWinnerDto> auctionWinnerDtoMapper;
+  @Mock
+  private PaymentService paymentService;
 
   private AuctionWinnerServiceImpl auctionWinnerService;
 
@@ -42,7 +45,7 @@ public class AuctionWinnerServiceImplTest {
 
   @BeforeEach
   public void setUp() {
-    auctionWinnerService = new AuctionWinnerServiceImpl(auctionWinnerRepository, userService, auctionWinnerDtoMapper);
+    auctionWinnerService = new AuctionWinnerServiceImpl(auctionWinnerRepository, userService, auctionWinnerDtoMapper, paymentService);
     user = UserFixture.user();
     AuctionEvent auctionEvent = AuctionEventFixture.auctionEvent();
     AuctionWinner auctionWinner = AuctionWinner.builder()

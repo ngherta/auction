@@ -16,7 +16,6 @@ import java.util.List;
 @Setter
 @Builder
 public class AuctionEventDto {
-
     private Long id;
     private String title;
     private String description;

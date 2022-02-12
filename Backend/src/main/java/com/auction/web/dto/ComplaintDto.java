@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -20,5 +18,5 @@ public class ComplaintDto {
   private UserDto user;
   private String message;
   private ComplaintStatus status;
-  private LocalDateTime genDate;
+  private String genDate;
 }

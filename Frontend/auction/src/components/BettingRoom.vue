@@ -3,7 +3,8 @@
     <h3 v-if="this.$store.state.auth.status.loggedIn" class="text-center mb-4">MAKE A BID</h3>
     <h3 v-if="!this.$store.state.auth.status.loggedIn" class="text-center mb-4">List of bids:</h3>
     <div>
-      <Form v-if="this.$store.state.auth.status.loggedIn" @submit="handleBet" :validation-schema="schema">
+      <Form v-if="this.$store.state.auth.status.loggedIn && this.auction.statusType == 'ACTIVE'"
+            @submit="handleBet" :validation-schema="schema">
         <div class="row">
           <div class="col input-group">
             <Field @input="checkBetForChangeColor"
@@ -41,6 +42,21 @@
           </div>
         </div>
       </Form>
+      <div v-else-if="!this.$store.state.auth.status.loggedIn"
+           class="alert alert-primary" role="alert">
+        Please
+        <router-link to="/login" class="alert-link">login</router-link>
+        to make a bet.
+      </div>
+      <h5 v-else-if="this.auction.statusType == 'EXPECTATION'"
+          class="alert alert-light text-center" role="alert">
+        The auction starts in
+        <Countdown v-if="startDate" :deadlineDate="startDate" @timeElapsed="timeElapsedHandler"/>
+      </h5>
+      <h5 v-else-if="this.auction.statusType == 'FINISHED'"
+          class="alert text-center alert-light" role="alert">
+        Auction has status <span class="alert-link">FINISHED</span>!
+      </h5>
       <div class="custom-table mt-3">
         <table class="table table-bordered table-striped">
           <thead>
@@ -73,14 +89,17 @@
 <script>
 import {Field, Form} from "vee-validate";
 import * as yup from "yup";
+import {Countdown} from 'vue3-flip-countdown'
+import DateConverter from '../helpers/date.converter';
+
 
 export default {
   name: "BettingRoom",
-  props: ['bids', 'auctionId', 'stompClient'],
+  props: ['bids', 'auction', 'stompClient'],
   components: {
     Form,
     Field,
-    // ErrorMessage,
+    Countdown,
   },
   data() {
     const schema = yup.object().shape({
@@ -95,9 +114,16 @@ export default {
       successful: false,
       schema,
       bid: "",
+      startDate: null
     }
   },
   methods: {
+    setStartDate(date) {
+      this.startDate = DateConverter.convert(date);
+    },
+    timeElapsedHandler() {
+      this.$emit('refreshAuction')
+    },
     checkBetForChangeColor() {
       if (this.bids.length !== 0) {
         if (this.betInput <= this.bids.findLast(x => x).bid * 1.05) {
@@ -116,8 +142,8 @@ export default {
     handleBet() {
       this.loading = true;
       if (this.stompClient && this.stompClient.connected) {
-        this.stompClient.send("/app/betting/" + this.auctionId, JSON.stringify({
-          'auctionId': String(this.auctionId),
+        this.stompClient.send("/app/betting/" + this.auction.id, JSON.stringify({
+          'auctionId': String(this.auction.id),
           'userId': this.$store.state.auth.user.userDto.id,
           'bet': this.betInput
         }));

@@ -16,12 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -59,7 +61,7 @@ class ComplaintControllerTest {
     complaintDto = ComplaintDto.builder()
             .id(100L)
             .auctionEvent(new AuctionEventDto())
-            .genDate(LocalDateTime.now())
+            .genDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")))
             .status(adminRequest.getStatus())
             .user(new UserDto())
             .message("test")
@@ -96,7 +98,7 @@ class ComplaintControllerTest {
   @Test
   @WithMockUser(username = "test", roles = "ADMIN")
   void getAll_whenInvoked_returnListOfComplaints() throws Exception {
-    when(complaintService.getAll()).thenReturn(List.of(complaintDto));
+    when(complaintService.getAll(1, 2)).thenReturn(Page.empty());
 
     mockMvc.perform(MockMvcRequestBuilders.get("/api/complaint"))
             .andExpect(status().isOk())

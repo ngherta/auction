@@ -27,8 +27,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PaypalServiceImpl implements PaypalService {
 
-  public static final String successUrl = "api/payment/success";
-  public static final String cancelUrl = "api/payment/cancel";
+  public static final String SUCCESS_URL = "/payment/success";
+  public static final String CANCEL_URL = "/auctions";
 
   @Value("${spring.client.url}")
   private String clientUrl;
@@ -59,10 +59,8 @@ public class PaypalServiceImpl implements PaypalService {
     thePayment.setPayer(thePayer);
 
     RedirectUrls theRedirectUrls = new RedirectUrls();
-//    theRedirectUrls.setCancelUrl(clientUrl + cancelUrl);
-//    theRedirectUrls.setReturnUrl(clientUrl + successUrl);
-    theRedirectUrls.setCancelUrl("http://localhost:8080/" + cancelUrl);
-    theRedirectUrls.setReturnUrl("http://localhost:8080/" + successUrl);
+    theRedirectUrls.setCancelUrl(clientUrl + CANCEL_URL);
+    theRedirectUrls.setReturnUrl(clientUrl + SUCCESS_URL);
     thePayment.setRedirectUrls(theRedirectUrls);
 
     return thePayment.create(apiContext);

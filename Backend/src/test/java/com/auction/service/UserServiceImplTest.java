@@ -10,6 +10,7 @@ import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.UserRepository;
 import com.auction.repository.UserRoleRepository;
 import com.auction.service.interfaces.AuctionEventService;
+import com.auction.service.interfaces.ComplaintService;
 import com.auction.service.interfaces.NotificationService;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.SignupRequest;
@@ -46,6 +47,9 @@ class UserServiceImplTest {
   private UserRoleRepository roleRepository;
   @Mock
   private PasswordEncoder encoder;
+  @Mock
+  private ComplaintService complaintService;
+
 
   private UserServiceImpl userService;
 
@@ -64,6 +68,7 @@ class UserServiceImplTest {
                                       roleRepository,
                                       encoder);
     userService.setAuctionEventService(auctionEventService);
+    userService.setComplaintService(complaintService);
     roles = UserFixture.userRole();
     user = UserFixture.user();
 
