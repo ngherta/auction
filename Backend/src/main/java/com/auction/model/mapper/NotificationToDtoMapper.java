@@ -13,6 +13,7 @@ public class NotificationToDtoMapper implements Mapper<Notification, Notificatio
             .builder()
             .notificationType(entity.getNotificationType())
             .userId(entity.getUser().getId())
+            .description(entity.getNotificationType().getDescription())
             .name(entity.getNotificationType().getValue())
             .value(entity.getValue())
             .build();

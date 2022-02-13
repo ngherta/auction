@@ -21,7 +21,7 @@
         </Form>
       </div>
     </div>
-    <div class="row mb-5">
+    <div class="d-flex mb-5">
       <div>
         <router-link class="btn btn-success" to="/auction/create">Create new auction</router-link>
       </div>

@@ -1,5 +1,6 @@
 package com.auction.service.interfaces;
 
+import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
 import com.auction.projection.LastBidProjection;
 import com.auction.web.dto.AuctionActionDto;
@@ -8,6 +9,7 @@ import com.auction.web.dto.response.LastBidResponse;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AuctionActionService {
   AuctionActionDto bet(Double bet, Long auctionId, Long userId);
@@ -15,6 +17,8 @@ public interface AuctionActionService {
   List<AuctionActionDto> getAllByAuctionId(Long auctionId);
 
   void checkBet(AuctionEvent auctionEvent, Double bet);
+
+  void checkBet(AuctionEvent auctionEvent, Double bet, Optional<AuctionAction> auctionAction);
 
   List<LastBidResponse> getLastBidForAuction(List<Long> listOfAuctionsIds);
 

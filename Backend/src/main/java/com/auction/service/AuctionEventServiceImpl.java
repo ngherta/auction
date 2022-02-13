@@ -169,7 +169,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
   @Override
   @Transactional(readOnly = true)
   public void sendEmailToParticipants(AuctionEvent auctionEvent, AuctionWinner auctionWinner) throws MessagingException, UnsupportedEncodingException {
-    List<AuctionAction> list = auctionActionRepository.getAllByAuctionGroupByUser(auctionEvent.getId(), auctionWinner.getUser().getId());
+    List<AuctionAction> list = auctionActionRepository.getAllByAuctionGroupByUser(auctionEvent.getId());
     if (!list.isEmpty()) {
       mailService.sendEmailToAuctionParticipant(list);
     }

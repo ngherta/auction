@@ -18,6 +18,7 @@ import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.response.LastBidResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,7 @@ class AuctionActionServiceImpl implements AuctionActionService {
   private final Mapper<AuctionAction, AuctionActionDto> auctionActionToDtoMapper;
   private final Mapper<AuctionEvent, AuctionEventDto> auctionEventDtoMapper;
   private final UserService userService;
+  private final ApplicationEventPublisher publisher;
 
 
   @Override
@@ -47,7 +49,8 @@ class AuctionActionServiceImpl implements AuctionActionService {
   public AuctionActionDto bet(Double bet, Long auctionId, Long userId) {
     AuctionEvent auctionEvent = auctionEventService.findById(auctionId);
 
-    checkBet(auctionEvent, bet);
+    Optional<AuctionAction> action = auctionActionRepository.findTopByAuctionEventOrderByBetDesc(auctionEvent);
+    checkBet(auctionEvent, bet, action);
 
     User user = userService.findById(userId);
 
@@ -74,6 +77,15 @@ class AuctionActionServiceImpl implements AuctionActionService {
 
     Optional<AuctionAction> action = auctionActionRepository.findTopByAuctionEventOrderByBetDesc(auctionEvent);
     checkBetDifference(bet, auctionEvent, action);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public void checkBet(AuctionEvent auctionEvent,
+                       Double bet,
+                       Optional<AuctionAction> auctionAction) {
+    checkBetByStatus(auctionEvent);
+    checkBetDifference(bet, auctionEvent, auctionAction);
   }
 
   public void checkBetDifference(Double bet,

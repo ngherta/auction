@@ -4,7 +4,6 @@ import com.auction.model.NotificationMessage;
 import com.auction.model.NotificationMessageUser;
 import com.auction.model.User;
 import com.auction.model.enums.NotificationType;
-import com.auction.web.dto.NotificationMessageDto;
 
 import java.time.LocalDateTime;
 import java.util.List;

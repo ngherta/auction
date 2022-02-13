@@ -89,6 +89,32 @@ public class NotificationGenerationServiceImpl implements NotificationGeneration
     }
   }
 
+  @Override
+  @Transactional
+  public void generateSingleNotificationFor(List<User> users, NotificationMessage notificationMessage) {
+    List<NotificationMessageUser> messagesForUsers = new ArrayList<>();
+
+    for (User user : users) {
+      NotificationMessageUser notificationMessageUser = NotificationMessageUser
+              .builder()
+              .notificationMessage(notificationMessage)
+              .user(user)
+              .seen(false)
+              .build();
+
+      messagesForUsers.add(notificationMessageUserRepository.save(notificationMessageUser));
+    }
+
+    Set<Long> activeUserIds = userServiceCache.getActiveUsers();
+
+    messagesForUsers = messagesForUsers
+            .stream()
+            .filter(e -> activeUserIds.contains(e.getUser().getId()))
+            .collect(Collectors.toList());
+
+    notificationSenderService.sendNotificationToUsers(messagesForUsers);
+  }
+
   @Transactional
   @Override
   public List<NotificationMessageUser> generateInitNotificationsForUser(User user) {

@@ -1,12 +1,16 @@
 package com.auction.service;
 
+import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionEventComplaintAudit;
 import com.auction.model.AuctionWinner;
 import com.auction.model.NotificationMessage;
+import com.auction.model.User;
 import com.auction.model.enums.ComplaintStatus;
 import com.auction.model.enums.NotificationType;
+import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.NotificationMessageRepository;
+import com.auction.service.interfaces.AuctionActionService;
 import com.auction.service.interfaces.NotificationGenerationService;
 import com.auction.service.interfaces.NotificationMessageService;
 import com.auction.service.interfaces.NotificationTemplateService;
@@ -15,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +29,7 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
   private final NotificationGenerationService notificationGenerationService;
   private final NotificationMessageRepository notificationMessageRepository;
   private final NotificationMessageService notificationMessageService;
+  private final AuctionActionRepository auctionActionRepository;
 
   @Override
   @Transactional
@@ -73,6 +80,7 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
   }
 
   @Override
+  @Transactional
   public void sendNotificationOfComplaintAnswer(AuctionEventComplaintAudit audit) {
     StringBuilder sb = new StringBuilder();
     if (audit.getComplaintStatus() == ComplaintStatus.SATISFIED) {
@@ -98,5 +106,42 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
             .build();
 
     notificationGenerationService.generateSingleNotificationFor(audit.getAuctionEventComplaint().getUser(), notificationMessage);
+  }
+
+  @Override
+  @Transactional
+  public void sendNotificationOfChangeBet(AuctionAction currentAction) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("New bet - <b>");
+    sb.append(currentAction.getBet());
+    sb.append("</b> ended by <b>");
+    sb.append(currentAction.getUser().getFirstName());
+    sb.append(" ");
+    sb.append(currentAction.getUser().getLastName());
+    sb.append("</b> for auction - ");
+    sb.append("<b>");
+    sb.append(currentAction.getAuctionEvent().getTitle());
+    sb.append("</b>.");
+
+    sb.append(".");
+
+    NotificationMessage message = NotificationMessage
+            .builder()
+            .genDate(LocalDateTime.now())
+            .message(sb.toString())
+            .singleNotification(true)
+            .type(NotificationType.BET_CHANGED)
+            .build();
+
+
+    message = notificationMessageRepository.save(message);
+
+    List<AuctionAction> participants =  auctionActionRepository.getAllByAuctionGroupByUser(currentAction.getAuctionEvent().getId());
+    List<User> users = participants
+            .stream()
+            .map(AuctionAction::getUser)
+            .collect(Collectors.toList());
+
+    notificationGenerationService.generateSingleNotificationFor(users, message);
   }
 }

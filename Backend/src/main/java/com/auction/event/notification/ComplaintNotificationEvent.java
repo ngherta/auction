@@ -11,7 +11,7 @@ import org.springframework.context.ApplicationEvent;
 @Slf4j
 public class ComplaintNotificationEvent extends ApplicationEvent {
 
-  private AuctionEventComplaintAudit audit;
+  private final transient AuctionEventComplaintAudit audit;
 
   public ComplaintNotificationEvent(AuctionEventComplaintAudit audit) {
     super(audit);

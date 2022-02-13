@@ -18,7 +18,7 @@
                      :checked="item.value">
               <label class="custom-control-label" :for="item.notificationType + 'checkbox'">{{
                   item.name
-                }}</label>
+                }}</label> <Tooltip :text="item.description"/>
             </div>
           </li>
         </ul>
@@ -30,11 +30,13 @@
 <script>
 import Icon from '../../../components/Icon';
 import SettingsService from '../../../services/settings.service';
+import Tooltip from "@/components/Tooltip";
 
 export default {
   name: "Settings",
   components: {
     Icon,
+    Tooltip,
   },
   data() {
     return {
