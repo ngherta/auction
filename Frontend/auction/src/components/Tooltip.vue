@@ -1,5 +1,5 @@
 <template>
-  <div v-show="show" class="tooltip-custom">
+  <div v-if="show" class="tooltip-custom">
     <svg width="20px" height="20px" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
          viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
 <g>
@@ -70,7 +70,7 @@ export default {
       show: true,
     }
   },
-  mounted() {
+  created() {
     if (this.text == null) {
       this.show = false;
     }
@@ -118,7 +118,6 @@ export default {
   border-color: #555 transparent transparent transparent;
 }
 
-/* Show the tooltip text when you mouse over the tooltip container */
 .tooltip-custom:hover .tooltiptext {
   visibility: visible;
   opacity: 1;

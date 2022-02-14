@@ -12,4 +12,5 @@ public class NotificationMessageDto {
   private String message;
   private String genDate;
   private Boolean seen;
+  private String image;
 }

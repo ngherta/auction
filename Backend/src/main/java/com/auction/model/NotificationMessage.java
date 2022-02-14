@@ -36,4 +36,7 @@ public class NotificationMessage extends AbstractEntity{
 
   @Column(name = "single_notification")
   private Boolean singleNotification;
+
+  @Column(name = "image")
+  private String image;
 }

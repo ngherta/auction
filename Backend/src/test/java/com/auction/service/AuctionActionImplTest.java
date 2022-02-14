@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,8 @@ class AuctionActionImplTest {
   private Mapper<AuctionEvent, AuctionEventDto> auctionEventDtoMapper;
   @Mock
   private UserService userService;
+  @Mock
+  private ApplicationEventPublisher publisher;
 
   private AuctionActionServiceImpl auctionActionService;
 
@@ -56,7 +59,8 @@ class AuctionActionImplTest {
                                                         auctionEventService,
                                                         auctionActionToDtoMapper,
                                                         auctionEventDtoMapper,
-                                                        userService);
+                                                        userService,
+                                                        publisher);
     auctionEvent = AuctionEventFixture.auctionEvent();
 
     auctionAction = AuctionAction.builder()

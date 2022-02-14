@@ -11,8 +11,9 @@
       </column>
       <column name="message" type="varchar(255)"></column>
       <column name="type" type="varchar(20)"></column>
-      <column name="gen_date" type="timestamp"></column>
       <column name="single_notification" type="bool"></column>
+      <column name="image" type="varchar(255)"></column>
+      <column name="gen_date" type="timestamp"></column>
     </createTable>
 
     <createTable tableName="notification_message_user">

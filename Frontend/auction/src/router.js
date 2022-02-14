@@ -22,6 +22,7 @@ import Editor from "./components/Editor";
 import ChangeHomeImagePage from "@/views/profile/admin/ChangeHomeImagePage";
 import ComplaintList from "@/views/profile/admin/ComplaintList";
 import SuccessPay from "@/views/SuccessPay";
+import Tour from "@/views/Tour";
 
 const routes = [
   {
@@ -152,6 +153,10 @@ const routes = [
   {
     path: "/payment/success",
     component: SuccessPay
+  },
+  {
+    path: "/guide",
+    component: Tour
   }
 ];
 

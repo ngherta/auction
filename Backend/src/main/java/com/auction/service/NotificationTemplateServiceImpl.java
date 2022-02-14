@@ -10,9 +10,8 @@ import com.auction.model.enums.ComplaintStatus;
 import com.auction.model.enums.NotificationType;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.NotificationMessageRepository;
-import com.auction.service.interfaces.AuctionActionService;
+import com.auction.service.interfaces.ImageResizeService;
 import com.auction.service.interfaces.NotificationGenerationService;
-import com.auction.service.interfaces.NotificationMessageService;
 import com.auction.service.interfaces.NotificationTemplateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,8 +27,10 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
 
   private final NotificationGenerationService notificationGenerationService;
   private final NotificationMessageRepository notificationMessageRepository;
-  private final NotificationMessageService notificationMessageService;
   private final AuctionActionRepository auctionActionRepository;
+  private final ImageResizeService imageResizeService;
+
+  private static final String DEFAULT_IMAGE = "IMAGE_LINK-NOT-IMPL";
 
   @Override
   @Transactional
@@ -41,10 +42,23 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
     sb.append(" created new auction <b>");
     sb.append(auctionEvent.getTitle());
     sb.append("</b>.");
+
+    String image;
+    if (!auctionEvent.getImages().isEmpty()) {
+      image = imageResizeService
+              .resize(auctionEvent
+                              .getImages()
+                              .get(0), 200);
+    }
+    else {
+      image = DEFAULT_IMAGE;
+    }
+
     NotificationMessage message = NotificationMessage
             .builder()
             .message(sb.toString())
             .genDate(LocalDateTime.now())
+            .image(image)
             .singleNotification(false)
             .type(NotificationType.CREATING_AUCTION)
             .build();
@@ -67,10 +81,23 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
     sb.append(auctionWinner.getUser().getLastName());
     sb.append(".");
 
+    String image;
+    if (!auctionWinner.getAuctionEvent().getImages().isEmpty()) {
+      image = imageResizeService
+              .resize(auctionWinner
+                              .getAuctionEvent()
+                              .getImages()
+                              .get(0), 200);
+    }
+    else {
+      image = DEFAULT_IMAGE;
+    }
+
     NotificationMessage message = NotificationMessage
             .builder()
             .genDate(LocalDateTime.now())
             .message(sb.toString())
+            .image(image)
             .singleNotification(false)
             .type(NotificationType.FINISHING_AUCTION)
             .build();
@@ -97,10 +124,25 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
       sb.append("</b> and we didn't find anything strange.");
       sb.append("Thank you for your feedback!");
     }
+
+    String image;
+    if (!audit.getAuctionEventComplaint().getAuctionEvent().getImages().isEmpty()) {
+      image = imageResizeService
+              .resize(audit
+                              .getAuctionEventComplaint()
+                              .getAuctionEvent()
+                              .getImages()
+                              .get(0), 200);
+    }
+    else {
+      image = DEFAULT_IMAGE;
+    }
+
     NotificationMessage notificationMessage = NotificationMessage
             .builder()
             .singleNotification(true)
             .message(sb.toString())
+            .image(image)
             .type(NotificationType.COMPLAINT_ANSWER)
             .genDate(LocalDateTime.now())
             .build();
@@ -125,10 +167,24 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
 
     sb.append(".");
 
+    String image;
+
+    if (!currentAction.getAuctionEvent().getImages().isEmpty()) {
+      image = imageResizeService
+              .resize(currentAction
+                              .getAuctionEvent()
+                              .getImages()
+                              .get(0), 200);
+    }
+    else {
+      image = DEFAULT_IMAGE;
+    }
+
     NotificationMessage message = NotificationMessage
             .builder()
             .genDate(LocalDateTime.now())
             .message(sb.toString())
+            .image(image)
             .singleNotification(true)
             .type(NotificationType.BET_CHANGED)
             .build();
@@ -136,7 +192,7 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
 
     message = notificationMessageRepository.save(message);
 
-    List<AuctionAction> participants =  auctionActionRepository.getAllByAuctionGroupByUser(currentAction.getAuctionEvent().getId());
+    List<AuctionAction> participants = auctionActionRepository.getAllByAuctionGroupByUser(currentAction.getAuctionEvent().getId());
     List<User> users = participants
             .stream()
             .map(AuctionAction::getUser)

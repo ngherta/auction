@@ -17,6 +17,7 @@ public class NotificationMessageToDtoMapper implements Mapper<NotificationMessag
             .type(entity.getNotificationMessage().getType())
             .genDate(entity.getNotificationMessage().getGenDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
             .seen(entity.getSeen())
+            .image(entity.getNotificationMessage().getImage())
             .build();
   }
 }

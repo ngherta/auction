@@ -1,5 +1,6 @@
 package com.auction.service;
 
+import com.auction.event.notification.ChangeBetEvent;
 import com.auction.exception.AuctionEventNotFoundException;
 import com.auction.exception.WrongBetException;
 import com.auction.model.AuctionAction;
@@ -67,6 +68,7 @@ class AuctionActionServiceImpl implements AuctionActionService {
             .genDate(LocalDateTime.now())
             .build();
 
+    publisher.publishEvent(new ChangeBetEvent(auctionAction));
     return auctionActionToDtoMapper.map(auctionActionRepository.save(auctionAction));
   }
 
@@ -91,12 +93,14 @@ class AuctionActionServiceImpl implements AuctionActionService {
   public void checkBetDifference(Double bet,
                                  AuctionEvent auctionEvent,
                                  Optional<AuctionAction> action) {
-    if (action.isEmpty() && auctionEvent.getStartPrice() > bet) {
+    if (auctionEvent.getStartPrice() > bet) {
       throw new WrongBetException("Bet should be higher than Start Price!");
     }
-    double betDifference = (bet * 100 / action.get().getBet()) - 100;
-    if (betDifference < 5.0) {
-      throw new WrongBetException("Bet should be 5 percent higher!");
+    if (!action.isEmpty()) {
+      double betDifference = (bet * 100 / action.get().getBet()) - 100;
+      if (betDifference < 5.0) {
+        throw new WrongBetException("Bet should be 5 percent higher!");
+      }
     }
   }
 
