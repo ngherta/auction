@@ -17,6 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -71,10 +73,10 @@ class AuctionWinnerServiceImplTest {
   }
 
   @Test
-  void getAllAuctionWinnerForUser_whenInvoked_returnNotEmptyList() {
-    when(auctionWinnerRepository.findByUser(any(User.class))).thenReturn(auctionWinnerList);
+  void getAllAuctionWinnerForUser_whenInvoked_returnEmptyList() {
+    when(auctionWinnerRepository.findByUser(any(User.class), any())).thenReturn(Page.empty());
     when(auctionWinnerDtoMapper.mapList(any(List.class))).thenReturn(dtos);
 
-    assertThat(auctionWinnerService.getAllAuctionWinnerForUser(user)).isNotEmpty();
+    assertThat(auctionWinnerService.getAllAuctionWinnerForUser(user,1, 5)).isEmpty();
   }
 }

@@ -235,7 +235,6 @@ export default {
       if (this.$store.state.auth.status.loggedIn == true &&
           this.isConnectedToNotifications == false) {
         this.connect();
-        console.log("Connected to notifications!")
       }
     }
   }

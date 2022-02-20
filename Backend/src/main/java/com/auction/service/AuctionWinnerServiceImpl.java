@@ -13,6 +13,9 @@ import com.auction.web.dto.AuctionWinnerDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,9 +34,9 @@ public class AuctionWinnerServiceImpl implements AuctionWinnerService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<AuctionWinnerDto> getAllAuctionWinnerForUser(Long userId) {
+  public Page<AuctionWinnerDto> getAllAuctionWinnerForUser(Long userId, int page, int perPage) {
     User user = userService.findById(userId);
-    return getAllAuctionWinnerForUser(user);
+    return getAllAuctionWinnerForUser(user, page, perPage);
   }
 
   @Override
@@ -54,8 +57,8 @@ public class AuctionWinnerServiceImpl implements AuctionWinnerService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<AuctionWinnerDto> getAllAuctionWinnerForUser(User user) {
-    List<AuctionWinner> auctionWinnerList = auctionWinnerRepository.findByUser(user);
-    return auctionWinnerDtoMapper.mapList(auctionWinnerList);
+  public Page<AuctionWinnerDto> getAllAuctionWinnerForUser(User user, int page, int perPage) {
+    Pageable pageable = PageRequest.of(page - 1, perPage);
+    return auctionWinnerRepository.findByUser(user, pageable).map(auctionWinnerDtoMapper::map);
   }
 }

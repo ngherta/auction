@@ -23,6 +23,7 @@
       <column name="password" value="$2a$10$gfoTKb0N2xjMZvYhVGLODOHNGqfCMsj1o4.DHd3QipsYH/gTAWy7e"></column>
       <column name="user_rating" value="12"></column>
       <column name="enabled" value="true"></column>
+      <column name="birthday" valueDate="CURRENT_TIMESTAMP()"></column>
     </insert>
     <insert tableName="user_roles">
       <column name="user_id" valueNumeric="9999"></column>

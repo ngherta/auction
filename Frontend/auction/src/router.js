@@ -135,6 +135,10 @@ const routes = [
     component: ProfilePage
   },
   {
+    path: "/profile/payments",
+    component: ProfilePage,
+  },
+  {
     path: "/profile/account/password",
     component: ProfilePage
   },

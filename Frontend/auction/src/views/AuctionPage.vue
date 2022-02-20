@@ -23,19 +23,21 @@
       </div>
       <div class="col d-flex flex-column justify-content-between pb-5 pl-5 pr-5">
         <div>
-          <div class="d-flex justify-content-between align-items-center flex-wrap">
+          <div class="d-flex align-items-center">
             <h1 class="h1">{{ content.title }}</h1>
             <!-- Button trigger modal -->
-            <div>
+            <div class="ml-auto">
               <button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#qrModal">
                 SHARE
               </button>
             </div>
-            <button type="button"
-                    data-toggle="modal"
-                    data-target="#complaintModal"
-                    class="btn btn-primary expand-complaint-button">COMPLAINT
-            </button>
+            <div class="ml-auto">
+              <button type="button"
+                      data-toggle="modal"
+                      data-target="#complaintModal"
+                      class="btn btn-danger btn-circle">COMPLAINT
+              </button>
+            </div>
 
           </div>
 
@@ -299,7 +301,7 @@ export default {
         finishDate: "",
         genDate: "",
         charityPercent: "",
-        images : [],
+        images: [],
         lastBid: null,
       },
       qr_image: "",

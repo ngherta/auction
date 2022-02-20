@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">mobile-demo-mvvm</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <!-- Primary screens titles -->
+    <string name="title_auctions">auctions</string>
+    <string name="title_albums">Albums</string>
+    <string name="title_todos">TODO</string>
+</resources>

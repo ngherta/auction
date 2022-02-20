@@ -27,7 +27,6 @@ public class PaymentController {
                                          @RequestParam("PayerID") String payerId,
                                          @RequestParam("token") String token) {
     paymentService.execute(paymentId, payerId);
-    // TODO: add animation for FRONTEND
     return ResponseEntity.ok().build();
   }
 

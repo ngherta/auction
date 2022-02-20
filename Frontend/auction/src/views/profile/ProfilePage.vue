@@ -13,6 +13,7 @@
       <user-auction-list v-else-if="this.currentPage == 'my-auctions'"/>
       <create-new-category v-else-if="this.currentPage == 'create-category'"/>
       <settings v-else-if="this.currentPage == 'settings'"/>
+      <payments v-else-if="this.currentPage == 'payments'"/>
     </div>
   </div>
 </template>
@@ -27,6 +28,7 @@ import UserAuctionList from './items/UserAuctionList';
 import CreateNewCategory from './admin/CreateNewCategory';
 import ChangePasswordComponent from "./items/ChangePasswordComponent";
 import Settings from './items/Settings';
+import Payments from "@/views/profile/items/Payments";
 
 export default {
   name: "ProfilePage",
@@ -34,6 +36,7 @@ export default {
     Settings,
     ProfileMenu,
     Account,
+    Payments,
     UserTable,
     AuctionTable,
     UserAuctionList,
