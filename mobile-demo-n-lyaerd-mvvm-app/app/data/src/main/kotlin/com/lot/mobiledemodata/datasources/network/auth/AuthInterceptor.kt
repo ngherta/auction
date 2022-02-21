@@ -15,7 +15,7 @@ class AuthInterceptor @Inject constructor(
     override fun intercept(chain: Chain): Response {
         val originalRequest = chain.request()
         val token = tokenProvider.token ?: throw UnauthorizedException()
-        val newRequest = originalRequest.addQueryParams("userId" to token)
+        val newRequest = originalRequest.addQueryParams("token" to token)
         return chain.proceed(newRequest)
     }
 }

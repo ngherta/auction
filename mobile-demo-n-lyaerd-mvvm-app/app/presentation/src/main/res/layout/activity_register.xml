@@ -12,8 +12,26 @@
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="email"
+        android:hint="Email"
         android:inputType="textEmailAddress"
+        android:selectAllOnFocus="true"
+        tools:ignore="Autofill"
+        />
+    <EditText
+        android:id="@+id/firstName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="First name"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        tools:ignore="Autofill"
+        />
+    <EditText
+        android:id="@+id/lastName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Last name"
+        android:inputType="text"
         android:selectAllOnFocus="true"
         tools:ignore="Autofill"
         />
@@ -35,16 +53,16 @@
         />
 
     <Button
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log In"
-        />
-
-    <Button
-        android:id="@+id/register_link"
+        android:id="@+id/register_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Register"
+        />
+
+    <Button
+        android:id="@+id/login_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
         />
 </androidx.appcompat.widget.LinearLayoutCompat>

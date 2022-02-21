@@ -1,10 +1,10 @@
 package com.lot.mobiledemodata.datasources.network.user
 
-import com.lot.mobiledemodata.datasources.network.user.models.UserNetworkModel
+import com.lot.mobiledemodata.datasources.network.auth.models.TokenNetworkModel
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface UserNetworkSource {
-    @GET("/api/users/{userId}")
-    suspend fun getUser(@Path("userId") userId: String): UserNetworkModel
+    @GET("/api/auth/token/{token}")
+    suspend fun getUser(@Path("token") token: String): TokenNetworkModel
 }

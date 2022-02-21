@@ -82,6 +82,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
   @Override
   public JwtResponse refreshToken(String token) {
     String email = jwtUtils.getUserNameFromJwtToken(token);
+//    String email = "asd@asd.com";
 
     User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("User with email" + email + "doesn't exist!"));

@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +34,11 @@ public class AuthController {
     public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         JwtResponse jwtResponse =  authenticationService.authenticateUser(loginRequest);
         return ResponseEntity.ok(jwtResponse);
+    }
+
+    @GetMapping("/token/{token}")
+    public ResponseEntity<JwtResponse> refreshToken(@PathVariable String token) {
+        return ResponseEntity.ok(authenticationService.refreshToken(token));
     }
 
     @PostMapping("/signup")

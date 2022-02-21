@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".presentation.MainActivity" />
         <activity android:name=".presentation.features.login.LoginActivity" />
+        <activity android:name=".presentation.features.register.RegisterActivity" />
     </application>
 
 </manifest>

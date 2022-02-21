@@ -1,5 +1,6 @@
 package com.lot.mobiledemo.presentation.features.auctions.list
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lot.mobiledemo.databinding.LayoutAuctionItemBinding
 import com.lot.mobiledemo.presentation.features.auctions.AuctionItemModel
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Deferred
 import java.net.URL
 
 
@@ -42,6 +45,11 @@ class AuctionsViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(auctionItem: AuctionItemModel) {
         binding.title.text = auctionItem.title
+        binding.description.text = auctionItem.description
+        binding.status.text = auctionItem.status
+        Picasso.get().load(auctionItem.images.first()).into(binding.image);
+
+//        binding.image.setImageBitmap(image)
         binding.root.setOnClickListener { onItemClick(auctionItem) }
     }
 }

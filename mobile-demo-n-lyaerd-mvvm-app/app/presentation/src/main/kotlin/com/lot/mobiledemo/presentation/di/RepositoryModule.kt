@@ -36,9 +36,11 @@ class RepositoryModule {
         memorySource: UserMemorySource,
         diskSource: UserDiskSource,
         networkSource: UserNetworkSource,
-        tokenProvider: TokenProvider
+        tokenProvider: TokenProvider,
+        tokenMemorySource: TokenMemorySource,
+        tokenDiskSource: TokenDiskSource
     ): UserGateway {
-        return UserRepository(memorySource, diskSource, networkSource, tokenProvider)
+        return UserRepository(memorySource, diskSource, networkSource, tokenProvider,tokenMemorySource, tokenDiskSource)
     }
 
     @Provides

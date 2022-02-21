@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 import com.lot.mobiledemodata.datasources.memmory.auth.UserNetworkModel
 
 data class TokenNetworkModel(
-    @SerializedName("id")
-    val id: Long,
+    @SerializedName("token")
+    val token: String,
     @SerializedName("userDto")
     val userDto: UserNetworkModel
 )
