@@ -15,7 +15,7 @@
       </button>
     </div>
     <div>
-      {{data}}
+      {{ data }}
     </div>
   </div>
 </template>
@@ -50,12 +50,19 @@ export default {
       } else if (filter == 'RECEIVE') {
         this.page = 1;
         this.data = [];
-        // this.getReceivePayments();
+        this.getReceivePayments()
       }
       window.scrollTo(0, 0);
     },
     getReceivePayments() {
-
+      this.loading = true;
+      PaymentService.getReceiveOrderWithAuctionByUserId(this.userId, this.page, this.perPage)
+          .then(
+              (response) => {
+                this.loading = false;
+                this.data = response.data.content;
+              }
+          )
     },
     getSendPayments() {
       this.loading = true;

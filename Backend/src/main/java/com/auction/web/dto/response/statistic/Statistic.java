@@ -9,5 +9,5 @@ public class Statistic {
   private List<CategoryCount> categoryCount;
   private List<UserCountPerMonth> userCountPerMonth;
   private List<CategoryCount> subCategoryCount;
-
+  private List<CommissionPerMouth> commissionPerMouths;
 }

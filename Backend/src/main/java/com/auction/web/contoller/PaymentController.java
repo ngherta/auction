@@ -3,6 +3,7 @@ package com.auction.web.contoller;
 import com.auction.service.interfaces.PaymentService;
 import com.auction.web.dto.PaymentOrderDto;
 import com.auction.web.dto.PaymentOrderWithAuctionEventDto;
+import com.auction.web.dto.ReceivePayment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -35,10 +36,17 @@ public class PaymentController {
     return ResponseEntity.ok(paymentService.findByAuctionEvent(auctionId));
   }
 
-  @GetMapping("/user/{userId}")
+  @GetMapping("/send/{userId}")
   public ResponseEntity<Page<PaymentOrderWithAuctionEventDto>> getPaymentOrderByUser(@PathVariable Long userId,
                                                                                      @RequestParam(defaultValue = "1") int page,
                                                                                      @RequestParam(defaultValue = "10") int perPage) {
     return ResponseEntity.ok(paymentService.findByUser(userId, page, perPage));
+  }
+
+  @GetMapping("/receive/{userId}")
+  public ResponseEntity<Page<ReceivePayment>> getReceiveOrderByUser(@PathVariable Long userId,
+                                                                    @RequestParam(defaultValue = "1") int page,
+                                                                    @RequestParam(defaultValue = "10") int perPage) {
+    return ResponseEntity.ok(paymentService.findReceivePaymentsByUser(userId, page, perPage));
   }
 }

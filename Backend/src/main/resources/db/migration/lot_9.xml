@@ -19,7 +19,7 @@
       <column name="gen_date" valueDate="CURRENT_TIMESTAMP()"></column>
       <column name="status" value="EXPECTATION"></column>
       <column name="charity_percent" value="0"></column>
-      <column name="gen_user_id" value="9999"></column>
+      <column name="gen_user_id" value="777"></column>
     </insert>
 
     <insert tableName="chat_auction">

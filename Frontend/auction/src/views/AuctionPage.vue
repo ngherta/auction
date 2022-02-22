@@ -25,13 +25,12 @@
         <div>
           <div class="d-flex align-items-center">
             <h1 class="h1">{{ content.title }}</h1>
-            <!-- Button trigger modal -->
             <div class="ml-auto">
               <button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#qrModal">
                 SHARE
               </button>
             </div>
-            <div class="ml-auto">
+            <div class="ml-2">
               <button type="button"
                       data-toggle="modal"
                       data-target="#complaintModal"
@@ -180,7 +179,7 @@
           </div>
         </div>
       </div>
-      <div class="col-6 border p-0">
+      <div class="col-6 border mt-auto pb-4">
         <div class="chat-box d-flex flex-column pt-3 pb-3" id="chat-box">
           <div v-for="message in chatMessages"
                class=""
@@ -551,7 +550,7 @@ export default {
 }
 
 .chat-box {
-  height: 300px;
+  height: 394px;
   overflow-x: hidden;
   overflow-y: scroll;
 }
