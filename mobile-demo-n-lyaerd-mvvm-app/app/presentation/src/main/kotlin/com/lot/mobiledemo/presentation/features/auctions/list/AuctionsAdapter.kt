@@ -47,9 +47,9 @@ class AuctionsViewHolder(
         binding.title.text = auctionItem.title
         binding.description.text = auctionItem.description
         binding.status.text = auctionItem.status
-        Picasso.get().load(auctionItem.images.first()).into(binding.image);
-
-//        binding.image.setImageBitmap(image)
+        Picasso.get()
+            .load(auctionItem.images.first())
+            .into(binding.image)
         binding.root.setOnClickListener { onItemClick(auctionItem) }
     }
 }

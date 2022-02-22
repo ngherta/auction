@@ -12,7 +12,7 @@
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="email"
+        android:hint="Email"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
         tools:ignore="Autofill"
@@ -46,5 +46,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Register"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         />
 </androidx.appcompat.widget.LinearLayoutCompat>

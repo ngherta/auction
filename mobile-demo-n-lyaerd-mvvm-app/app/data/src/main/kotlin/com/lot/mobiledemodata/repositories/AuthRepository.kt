@@ -13,6 +13,7 @@ import com.lot.mobiledemodata.datasources.memmory.auth.TokenMemorySource
 import com.lot.mobiledemodata.datasources.memmory.user.UserMemoryModel
 import com.lot.mobiledemodata.datasources.memmory.user.UserMemorySource
 import com.lot.mobiledemodata.datasources.network.auth.TokenNetworkSource
+import com.lot.mobiledemodata.datasources.network.auth.TokenProvider
 import com.lot.mobiledemodata.datasources.network.auth.models.TokenNetworkModel
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -23,7 +24,7 @@ class AuthRepository @Inject constructor(
     private val tokenNetworkSource: TokenNetworkSource,
     private val userMemorySource: UserMemorySource,
     private val userDiskSource: UserDiskSource
-) : AuthGateway {
+    ) : AuthGateway {
     override fun login(loginData: LoginDataModel) = flow {
         var token: TokenNetworkModel = tokenNetworkSource.getToken(loginData)
         tokenMemorySource.data = TokenMemoryModel(token.token)
