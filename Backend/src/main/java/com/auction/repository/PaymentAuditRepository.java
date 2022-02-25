@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface PaymentAuditRepository extends JpaRepository<PaymentAudit, Long> {
 
-    Page<PaymentAudit> findAllByRecipient(User recipient, Pageable pageable);
+    Page<PaymentAudit> findAllByRecipientAndCommission(User recipient, Boolean commission, Pageable pageable);
 
     @Query(nativeQuery = true, value = "" +
             "SELECT to_char(pa.gen_date, 'YYYY-Month')          AS date, " +
@@ -22,11 +22,12 @@ public interface PaymentAuditRepository extends JpaRepository<PaymentAudit, Long
             "       to_char(pa.gen_date, 'YYYY')                AS year, " +
             "       sum(pa.amount)                              AS amount, " +
             "       CAST(to_char(pa.gen_date, 'mm') AS integer) AS index " +
-            "FROM payment_audit pa " +
-            "WHERE pa.gen_date > current_date - INTERVAL '12 months' " +
-            "  AND to_char(pa.gen_date, 'YYYY-Month') != to_char(current_date - INTERVAL '12 months', 'YYYY-Month') " +
-            "GROUP BY date, year, index, month " +
-            "ORDER BY year, index ")
+            " FROM payment_audit pa " +
+            " WHERE pa.gen_date > current_date - INTERVAL '12 months' " +
+            " AND to_char(pa.gen_date, 'YYYY-Month') != to_char(current_date - INTERVAL '12 months', 'YYYY-Month') " +
+            " AND pa.commission = true " +
+            " GROUP BY date, year, index, month " +
+            " ORDER BY year, index ")
     List<CommissionPerMouthProjection> getCommissionPerMouth();
 
 

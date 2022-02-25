@@ -194,13 +194,19 @@ export default {
             this.isConnectedToNotifications = true;
             this.stompClient.subscribe("/notification/" + this.getUser().userDto.id,
                 tick => {
-                  let notification = JSON.parse(tick.body);
-                  this.notifications.push(notification);
-                  this.countUnSeenMessages(notification);
+                  let notification = JSON.parse(tick.body)
+                  if (!this.isExistNotification(notification)) {
+                    this.notifications.push(notification);
+                    this.countUnSeenMessages(notification);
+                  }
                 });
             this.stompClient.subscribe("/notification/",
                 tick => {
-                  this.notifications.push(JSON.parse(tick.body));
+                  let notification = JSON.parse(tick.body)
+                  if (!this.isExistNotification(notification)) {
+                    this.notifications.push(notification);
+                    this.countUnSeenMessages(notification);
+                  }
                 });
           },
           error => {
@@ -208,6 +214,14 @@ export default {
             this.isConnectedToNotifications = false;
           }
       );
+    },
+    isExistNotification(notification) {
+      for (let i = 0; i < this.notifications.length; i++) {
+        if (this.notifications[i].messageId == notification.messageId) {
+          return true;
+        }
+      }
+      return false;
     },
     disconnect() {
       if (this.stompClient) {

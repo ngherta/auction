@@ -150,7 +150,7 @@ class PaymentServiceImpl implements PaymentService {
                                                                          final int perPage) {
     Pageable pageable = PageRequest.of(page - 1, perPage);
     return paymentAuditRepository
-            .findAllByRecipient(userService.findById(userId), pageable)
+            .findAllByRecipientAndCommission(userService.findById(userId), false, pageable)
             .map(receivePaymentMapper::map);
   }
 
