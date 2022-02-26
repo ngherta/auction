@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lot.mobiledemo.presentation.features.albums.AlbumsFragment
 import com.lot.mobiledemo.presentation.features.auctions.AuctionsFragment
-import com.lot.mobiledemo.presentation.features.todos.TodosFragment
+import com.lot.mobiledemo.presentation.features.profile.MyProfileFragment
 import com.lot.mobiledemo.presentation.infrastructure.pager.FragmentPagerAdapter
 import com.lot.mobiledemo.presentation.infrastructure.pager.PagerFragment
 import com.lot.mobiledemo.R
@@ -20,7 +20,7 @@ class MainActivity : SecondaryFragmentHandler, AppCompatActivity() {
     private val fragments = listOf(
         PagerFragment(AuctionsFragment(), R.string.title_auctions, R.drawable.ic_article),
         PagerFragment(AlbumsFragment(), R.string.title_albums, R.drawable.ic_photo_album),
-        PagerFragment(TodosFragment(), R.string.title_todos, R.drawable.ic_checklist)
+        PagerFragment(MyProfileFragment(), R.string.my_profile, R.drawable.ic_checklist)
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

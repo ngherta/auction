@@ -12,6 +12,7 @@ import com.auction.model.User;
 import com.auction.model.enums.AuctionStatus;
 import com.auction.model.enums.AuctionType;
 import com.auction.model.mapper.Mapper;
+import com.auction.projection.AuctionSearchProjection;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.AuctionEventSortRepository;
@@ -27,6 +28,7 @@ import com.auction.service.interfaces.NotificationSenderService;
 import com.auction.service.interfaces.PaymentService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionEventDto;
+import com.auction.web.dto.AuctionSearchDto;
 import com.auction.web.dto.request.AuctionEventRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +44,7 @@ import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -346,6 +349,23 @@ class AuctionEventServiceImpl implements AuctionEventService {
     User user = userService.findById(userId);
     Pageable pageable = PageRequest.of(page - 1, perPage);
     return auctionEventRepository.findByUser(user, pageable).map(auctionEventToDtoMapper::map);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<AuctionSearchDto> reactiveSearch(String message) {
+    List<AuctionSearchProjection> listOfProjection = auctionEventRepository.findByText(message, 10);
+    List<AuctionSearchDto> result = new ArrayList<>();
+    for (AuctionSearchProjection e : listOfProjection) {
+      result.add(AuctionSearchDto.builder()
+                         .id(e.getId())
+                         .title(e.getTitle())
+                         .status(e.getStatus())
+                         .startDate(e.getStartDate().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")))
+                         .finishDate(e.getFinishDate().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")))
+                         .build());
+    }
+    return result;
   }
 
   @Override

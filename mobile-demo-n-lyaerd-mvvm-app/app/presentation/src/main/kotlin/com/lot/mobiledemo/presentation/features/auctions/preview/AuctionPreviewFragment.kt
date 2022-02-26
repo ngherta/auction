@@ -37,7 +37,8 @@ class AuctionPreviewFragment : Fragment(R.layout.fragment_auction_preview) {
             }
             it.success { auction ->
                 binding.title.text = auction.title
-                binding.body.text = auction.body
+                binding.description.text = auction.description
+                binding.status.text = auction.status
             }
             it.failure {
 

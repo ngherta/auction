@@ -24,7 +24,7 @@ class RegisterViewModel @Inject constructor(
         _registerState.value = Loading()
         viewModelScope.launch {
             try {
-                loginUseCase.register(email, firstName, lastName, email).collect {
+                loginUseCase.register(email, firstName, lastName, password).collect {
                     _registerState.value = Success(Unit)
                 }
             } catch (ex: IOException) {

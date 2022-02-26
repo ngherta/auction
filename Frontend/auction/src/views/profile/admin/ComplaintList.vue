@@ -7,9 +7,8 @@
           {{item.message}}
         </p>
         <div>
-          <button class="btn-primary" type="btn button">Satisfy</button>
-          <button class="btn-primary" type="btn button">Block</button>
-
+          <button @click="sendResponse(item.id, 'SATISFY')" class="btn btn-success" type="btn button">Satisfy</button>
+          <button @click="sendResponse(item.id, 'REJECTED')" class="btn btn-warning" type="btn button">Reject</button>
         </div>
       </div>
     </div>
@@ -25,6 +24,7 @@ export default {
     return {
       data: [],
       page: 1,
+      userId: this.$store.state.auth.user.userDto.id,
       perPage: 20,
     }
   },
@@ -32,11 +32,23 @@ export default {
     getComplaintList() {
       ComplainService.getAll(this.page, this.perPage).then(
           (response) => {
-            console.log(response.data.content);
             this.data = response.data.content;
+            console.log(this.data)
+          }
+      )
+    },
+    sendResponse(id, status) {
+      ComplainService.sendResponse({
+        admin : this.userId,
+        complaintId: id,
+        status: status
+      }).then(
+          (response) => {
+            console.log(response);
           }
       )
     }
+
   },
   mounted() {
     this.getComplaintList();

@@ -179,7 +179,7 @@
           </div>
         </div>
       </div>
-      <div class="col-6 border mt-auto pb-4">
+      <div class="col-6 border mt-auto pb-4 pr-0">
         <div class="chat-box d-flex flex-column pt-3 pb-3" id="chat-box">
           <div v-for="message in chatMessages"
                class=""

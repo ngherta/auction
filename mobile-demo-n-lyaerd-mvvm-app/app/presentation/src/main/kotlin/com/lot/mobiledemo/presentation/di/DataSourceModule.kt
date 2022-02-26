@@ -2,6 +2,7 @@ package com.lot.mobiledemo.presentation.di
 
 import com.lot.mobiledemodata.datasources.network.auctions.AuctionNetworkSource
 import com.lot.mobiledemodata.datasources.network.auth.TokenNetworkSource
+import com.lot.mobiledemodata.datasources.network.settings.SettingsNetworkSource
 import com.lot.mobiledemodata.datasources.network.user.UserNetworkSource
 import dagger.Module
 import dagger.Provides
@@ -26,6 +27,13 @@ class DataSourceModule {
         retrofitProvider: AnonymousRetrofitProvider
     ): TokenNetworkSource {
         return retrofitProvider.retrofit.create(TokenNetworkSource::class.java)
+    }
+
+    @Provides
+    fun providesSettingNetworkSource(
+        retrofitProvider: AnonymousRetrofitProvider
+    ): SettingsNetworkSource {
+        return retrofitProvider.retrofit.create(SettingsNetworkSource::class.java)
     }
 
     /******************************************************************************

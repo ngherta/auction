@@ -80,12 +80,12 @@
                    :class="{'bg-gray' : notification.seen == false }"
                    v-for="notification in notifications.slice().reverse()"
                    :key="notification.messageId">
-                <div class="row">
-                  <div class="col-lg-3 col-sm-3 col-3 text-center">
-                    <img src="/demo/man-profile.jpg" class="w-50 rounded-circle">
+                <div class="row pl-2">
+                  <div class="col-lg-3 d-flex align-items-center col-sm-3 col-3 text-center">
+                    <img :src="notification.image" class="img-fluid">
                   </div>
                   <div class="col-lg-8 col-sm-8 col-8">
-                    <strong class="text-info">David John</strong>
+<!--                    <strong class="text-info">David John</strong>-->
                     <div class="white-space-nowrap" v-html="notification.message"/>
                     <small class="text-warning">{{ notification.genDate }}</small>
                   </div>

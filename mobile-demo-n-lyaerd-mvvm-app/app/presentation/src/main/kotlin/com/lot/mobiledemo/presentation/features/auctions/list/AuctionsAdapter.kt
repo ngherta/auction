@@ -1,7 +1,5 @@
 package com.lot.mobiledemo.presentation.features.auctions.list
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lot.mobiledemo.databinding.LayoutAuctionItemBinding
 import com.lot.mobiledemo.presentation.features.auctions.AuctionItemModel
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.Deferred
-import java.net.URL
 
 
 object DiffCallback : DiffUtil.ItemCallback<AuctionItemModel>() {

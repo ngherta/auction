@@ -22,6 +22,7 @@ public class SettingsController {
 
   @GetMapping("/{userId}")
   public ResponseEntity<SettingsDto> getAll(@PathVariable Long userId) {
+    System.out.println("NGH:settings userId=" + userId);
     SettingsDto dto = SettingsDto
             .builder()
             .notifications(notificationService.getAllByUser(userId))

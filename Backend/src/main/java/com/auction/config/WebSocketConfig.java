@@ -27,10 +27,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
     config.enableSimpleBroker("/betting/",
+                              "/search/",
                               "/notification",
                               "/chat/",
                               "chat/auction/");
-//        "/auction-chat",
     config.setApplicationDestinationPrefixes("/app");
 //        config.setUserDestinationPrefix("/notification");
   }

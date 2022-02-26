@@ -2,6 +2,7 @@ package com.lot.mobiledemodata.repositories
 
 import com.lot.mobiledemo.domain.entities.UserEntity
 import com.lot.mobiledemo.domain.gateways.UserGateway
+import com.lot.mobiledemo.domain.models.RegisterDataModel
 import com.lot.mobiledemodata.datasources.disk.auth.TokenDiskModel
 import com.lot.mobiledemodata.datasources.disk.auth.TokenDiskSource
 import com.lot.mobiledemodata.datasources.disk.user.UserDiskModel
@@ -15,6 +16,7 @@ import com.lot.mobiledemodata.datasources.network.auth.UnauthorizedException
 import com.lot.mobiledemodata.datasources.network.auth.models.TokenNetworkModel
 import com.lot.mobiledemodata.datasources.network.user.UserNetworkSource
 import com.lot.mobiledemodata.datasources.network.user.models.UserNetworkModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -28,6 +30,10 @@ class UserRepository @Inject constructor(
 ) : UserGateway {
     override fun getUser() = flow {
         emit(getFromMemory() ?: getFromDisk() ?: getFromNetwork())
+    }
+
+    override fun update(registerData: RegisterDataModel): Flow<UserEntity> {
+        TODO("Not yet implemented")
     }
 
     private fun getFromMemory(): UserEntity? = userMemorySource.data?.toEntity()

@@ -2,6 +2,7 @@ package com.lot.mobiledemo.presentation.di
 
 import com.lot.mobiledemo.domain.gateways.AuctionGateway
 import com.lot.mobiledemo.domain.gateways.AuthGateway
+import com.lot.mobiledemo.domain.gateways.SettingsGateway
 import com.lot.mobiledemo.domain.gateways.UserGateway
 import com.lot.mobiledemo.domain.usecases.*
 import dagger.Module
@@ -30,6 +31,16 @@ class DomainModule {
     @Provides
     fun providesLoginUseCase(authGateway: AuthGateway, userGateway: UserGateway): LoginUseCase {
         return LoginUseCase(authGateway, userGateway)
+    }
+
+    @Provides
+    fun providesLoadSettingsUseCase(settingsGateway: SettingsGateway):LoadSettingsUseCase {
+        return LoadSettingsUseCase(settingsGateway)
+    }
+
+    @Provides
+    fun providesUpdateUserUseCase( userGateway: UserGateway):UpdateUserUseCase {
+        return UpdateUserUseCase(userGateway)
     }
 }
 

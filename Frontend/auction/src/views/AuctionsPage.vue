@@ -1,12 +1,35 @@
 <template>
   <div class="container">
     <div class="">
+
+
       <div class="search mt-5 mb-5">
         <Form @submit="searchFromInput">
           <div class="d-flex justify-content-center">
-            <div class="w-50 mr-5">
+            <div class="w-50 position-relative mr-5">
               <label for="search" hidden>Search</label>
-              <Field name="search" id="search" type="text" class="form-control"/>
+              <input @input="handleSearch"
+                     @focusin="focusSearchField = true"
+                     @focusout="focusSearchField = false"
+                     autocomplete="off"
+                     name="search" v-model="searchTitle"
+                     id="search"
+                     type="text"
+                     class="form-control"/>
+              <div v-if="loadingSearch" class="spinner-border spinner-border-sm search-spinner text-info" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+              <div v-if=" searchDropdownData.length > 0" class="search-container">
+                <ul class="list-group">
+                  <li class="list-group-item" v-for="(item, index) in searchDropdownData" :key="index">
+                    <router-link class="text-decoration-none text-reset list-group-item-link" :to="'/auction/' + item.id">
+                      <h4 class="h4">{{item.title}}</h4>
+
+                      {{ item }}
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
             </div>
             <div class="">
               <button class="btn btn-primary btn-block" :disabled="loading">
@@ -20,6 +43,8 @@
           </div>
         </Form>
       </div>
+
+
     </div>
     <div class="d-flex mb-5">
       <div>
@@ -108,19 +133,20 @@
 </template>
 
 <script>
-import {Field, Form} from "vee-validate";
+import {Form} from "vee-validate";
 import AuctionService from '../services/auction.service';
 import AuctionItem from '../components/AuctionItem'
 import BettingService from '../services/betting.service';
 import CategoryService from '../services/category.service';
 import Multiselect from '@vueform/multiselect';
 import '@vueform/multiselect/themes/default.css';
-
+import SockJS from "sockjs-client";
+import Stomp from "webstomp-client";
+import StringCodeService from '../helpers/string.code.service'
 
 export default {
   name: "AuctionsPage",
   components: {
-    Field,
     Form,
     AuctionItem,
     Multiselect,
@@ -135,6 +161,13 @@ export default {
       categoryValue: [],
       statusValue: [],
       searchTitle: "",
+      focusSearchField: false,
+      stompClient: null,
+      socket: null,
+      connected: false,
+      destination: StringCodeService.random(5),
+      searchDropdownData: [],
+      loadingSearch: false,
       page: 1,
       perPage: 5,
       countOfPages: '',
@@ -148,9 +181,7 @@ export default {
     }
   },
   methods: {
-    searchFromInput(input) {
-      console.log(input);
-      this.searchTitle = input.search;
+    searchFromInput() {
       this.getAuctions();
     },
     isPageForRender(index) {
@@ -236,8 +267,44 @@ export default {
                 this.loadingAuctions = false;
               }
           );
-    }
-    ,
+    },
+    handleSearch() {
+      if (!StringCodeService.isBlank(this.searchTitle) &&
+          this.stompClient &&
+          this.stompClient.connected
+      ) {
+        this.loadingSearch = true;
+        this.stompClient.send("/app/search/" + this.destination, JSON.stringify(this.searchTitle));
+      }
+    },
+    connect() {
+      this.socket = new SockJS("http://localhost:8080/websocket");
+      this.stompClient = Stomp.over(this.socket);
+      this.stompClient.connect(
+          () => {
+          },
+          () => {
+            this.connected = true;
+            this.stompClient.subscribe("/search/" + this.destination,
+                tick => {
+                  this.loadingSearch = false;
+                  this.searchDropdownData = JSON.parse(tick.body);
+                });
+          },
+          error => {
+            this.$notify({
+              type: 'error',
+              text: error
+            })
+          }
+      );
+    },
+    disconnect() {
+      if (this.stompClient) {
+        this.stompClient.disconnect();
+      }
+      this.connected = false;
+    },
     getLastBids() {
       let auctionIds = [];
       for (let i = 0; i < this.auctions.length; i++) {
@@ -260,6 +327,7 @@ export default {
   mounted() {
     this.getAuctions();
     this.getCategories();
+    this.connect();
   }
 }
 </script>
@@ -267,5 +335,30 @@ export default {
 <style scoped>
 .w-20 {
   width: 20%;
+}
+
+.search-spinner {
+  position: absolute;
+  right: 0.5rem;
+  top: 11px;
+  color: #80c9d5;
+}
+
+.search-container {
+  position: absolute;
+  z-index: 1;
+}
+
+.list-group-item {
+  padding: 0;
+}
+
+.list-group-item:hover {
+  background-color: #80c9d5;
+}
+
+.list-group-item-link {
+  display: block;
+  padding: 0.75rem 1.25rem;
 }
 </style>

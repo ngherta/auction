@@ -38,6 +38,6 @@ class AuctionPreviewViewModel @Inject constructor(
 }
 
 private fun AuctionEntity.toUiModel(): AuctionPreviewModel {
-    return AuctionPreviewModel(title, description)
+    return AuctionPreviewModel(title, description, status, startDate, finishDate, startPrice, finishPrice)
 }
 

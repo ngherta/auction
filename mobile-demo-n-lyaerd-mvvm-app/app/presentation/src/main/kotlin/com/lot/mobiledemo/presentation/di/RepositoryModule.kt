@@ -2,6 +2,7 @@ package com.lot.mobiledemo.presentation.di
 
 import com.lot.mobiledemo.domain.gateways.AuctionGateway
 import com.lot.mobiledemo.domain.gateways.AuthGateway
+import com.lot.mobiledemo.domain.gateways.SettingsGateway
 import com.lot.mobiledemo.domain.gateways.UserGateway
 import com.lot.mobiledemodata.datasources.disk.auctions.AuctionDiskSource
 import com.lot.mobiledemodata.datasources.disk.auth.TokenDiskSource
@@ -11,9 +12,11 @@ import com.lot.mobiledemodata.datasources.memmory.user.UserMemorySource
 import com.lot.mobiledemodata.datasources.network.auctions.AuctionNetworkSource
 import com.lot.mobiledemodata.datasources.network.auth.TokenNetworkSource
 import com.lot.mobiledemodata.datasources.network.auth.TokenProvider
+import com.lot.mobiledemodata.datasources.network.settings.SettingsNetworkSource
 import com.lot.mobiledemodata.datasources.network.user.UserNetworkSource
 import com.lot.mobiledemodata.repositories.AuctionsRepository
 import com.lot.mobiledemodata.repositories.AuthRepository
+import com.lot.mobiledemodata.repositories.SettingsRepository
 import com.lot.mobiledemodata.repositories.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -52,5 +55,12 @@ class RepositoryModule {
         userDiskSource: UserDiskSource
     ): AuthGateway {
         return AuthRepository(tokenMemorySource, diskSource, networkSource, userMemorySource, userDiskSource)
+    }
+
+    @Provides
+    fun providesSettingsGateWay(
+        settingsNetworkSource: SettingsNetworkSource
+    ): SettingsGateway {
+        return SettingsRepository(settingsNetworkSource)
     }
 }

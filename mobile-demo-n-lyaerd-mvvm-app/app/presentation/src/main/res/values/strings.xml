@@ -6,5 +6,5 @@
     <!-- Primary screens titles -->
     <string name="title_auctions">auctions</string>
     <string name="title_albums">Albums</string>
-    <string name="title_todos">TODO</string>
+    <string name="my_profile">My profile</string>
 </resources>

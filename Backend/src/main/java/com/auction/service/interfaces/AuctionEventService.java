@@ -5,6 +5,7 @@ import com.auction.model.AuctionWinner;
 import com.auction.model.User;
 import com.auction.model.enums.AuctionStatus;
 import com.auction.web.dto.AuctionEventDto;
+import com.auction.web.dto.AuctionSearchDto;
 import com.auction.web.dto.request.AuctionEventRequest;
 import org.springframework.data.domain.Page;
 
@@ -63,4 +64,6 @@ public interface AuctionEventService {
   Page<AuctionEventDto> getAllByOwner(Long userId,
                                       int page,
                                       int perPage);
+
+  List<AuctionSearchDto> reactiveSearch(String message);
 }
