@@ -9,6 +9,8 @@ import com.auction.web.dto.request.UpdatePasswordRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
 import org.springframework.data.domain.Page;
 
+import java.util.Optional;
+
 public class UserServiceSpy implements UserService {
 
   private int invocationOf_get;
@@ -90,6 +92,11 @@ public class UserServiceSpy implements UserService {
   public UserDto getById(Long userId) {
     invocationOf_getById += 1;
     return UserFixture.userDto();
+  }
+
+  @Override
+  public Optional<User> findMainAdmin() {
+    return Optional.empty();
   }
 
   @Override

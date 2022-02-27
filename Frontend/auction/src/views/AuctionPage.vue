@@ -23,19 +23,20 @@
       </div>
       <div class="col d-flex flex-column justify-content-between pb-5 pl-5 pr-5">
         <div>
-          <div class="d-flex justify-content-between align-items-center flex-wrap">
+          <div class="d-flex align-items-center">
             <h1 class="h1">{{ content.title }}</h1>
-            <!-- Button trigger modal -->
-            <div>
+            <div class="ml-auto">
               <button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#qrModal">
                 SHARE
               </button>
             </div>
-            <button type="button"
-                    data-toggle="modal"
-                    data-target="#complaintModal"
-                    class="btn btn-primary expand-complaint-button">COMPLAINT
-            </button>
+            <div class="ml-2">
+              <button type="button"
+                      data-toggle="modal"
+                      data-target="#complaintModal"
+                      class="btn btn-danger btn-circle">COMPLAINT
+              </button>
+            </div>
 
           </div>
 
@@ -178,7 +179,7 @@
           </div>
         </div>
       </div>
-      <div class="col-6 border p-0">
+      <div class="col-6 border mt-auto pb-4 pr-0">
         <div class="chat-box d-flex flex-column pt-3 pb-3" id="chat-box">
           <div v-for="message in chatMessages"
                class=""
@@ -299,7 +300,7 @@ export default {
         finishDate: "",
         genDate: "",
         charityPercent: "",
-        images : [],
+        images: [],
         lastBid: null,
       },
       qr_image: "",
@@ -549,7 +550,7 @@ export default {
 }
 
 .chat-box {
-  height: 300px;
+  height: 394px;
   overflow-x: hidden;
   overflow-y: scroll;
 }

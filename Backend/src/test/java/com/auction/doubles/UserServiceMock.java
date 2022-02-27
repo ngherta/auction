@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UserServiceMock implements UserService {
@@ -73,6 +74,11 @@ public class UserServiceMock implements UserService {
             .filter(e -> e.getId() == userId)
             .findFirst()
             .orElseThrow();
+  }
+
+  @Override
+  public Optional<User> findMainAdmin() {
+    return Optional.empty();
   }
 
   @Override

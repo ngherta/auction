@@ -1,0 +1,19 @@
+const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+class StringCodeService {
+    random(length) {
+        let result = ' ';
+        const charactersLength = characters.length;
+        for ( let i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+
+        return result;
+    }
+    isBlank(str) {
+        const regex = /^\s*$/;
+        return regex.test(str)
+    }
+}
+
+export default new StringCodeService();

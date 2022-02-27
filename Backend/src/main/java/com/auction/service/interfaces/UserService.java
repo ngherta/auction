@@ -7,6 +7,8 @@ import com.auction.web.dto.request.UpdatePasswordRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
 import org.springframework.data.domain.Page;
 
+import java.util.Optional;
+
 public interface UserService {
 
   Page<UserDto> get(int page, int perPage);
@@ -20,6 +22,8 @@ public interface UserService {
   User findById(Long id);
 
   UserDto getById(Long userId);
+
+  Optional<User> findMainAdmin();
 
   void delete(User user);
 

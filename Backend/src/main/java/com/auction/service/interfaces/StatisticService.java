@@ -2,6 +2,7 @@ package com.auction.service.interfaces;
 
 
 import com.auction.web.dto.response.statistic.CategoryCount;
+import com.auction.web.dto.response.statistic.CommissionPerMouth;
 import com.auction.web.dto.response.statistic.Statistic;
 import com.auction.web.dto.response.statistic.UserCountPerMonth;
 
@@ -15,4 +16,6 @@ public interface StatisticService {
   List<CategoryCount> getSubCategoryCount();
 
   Statistic getStatistic();
+
+  List<CommissionPerMouth> getCommissionStats();
 }

@@ -80,12 +80,12 @@
                    :class="{'bg-gray' : notification.seen == false }"
                    v-for="notification in notifications.slice().reverse()"
                    :key="notification.messageId">
-                <div class="row">
-                  <div class="col-lg-3 col-sm-3 col-3 text-center">
-                    <img src="/demo/man-profile.jpg" class="w-50 rounded-circle">
+                <div class="row pl-2">
+                  <div class="col-lg-3 d-flex align-items-center col-sm-3 col-3 text-center">
+                    <img :src="notification.image" class="img-fluid">
                   </div>
                   <div class="col-lg-8 col-sm-8 col-8">
-                    <strong class="text-info">David John</strong>
+<!--                    <strong class="text-info">David John</strong>-->
                     <div class="white-space-nowrap" v-html="notification.message"/>
                     <small class="text-warning">{{ notification.genDate }}</small>
                   </div>
@@ -194,13 +194,19 @@ export default {
             this.isConnectedToNotifications = true;
             this.stompClient.subscribe("/notification/" + this.getUser().userDto.id,
                 tick => {
-                  let notification = JSON.parse(tick.body);
-                  this.notifications.push(notification);
-                  this.countUnSeenMessages(notification);
+                  let notification = JSON.parse(tick.body)
+                  if (!this.isExistNotification(notification)) {
+                    this.notifications.push(notification);
+                    this.countUnSeenMessages(notification);
+                  }
                 });
             this.stompClient.subscribe("/notification/",
                 tick => {
-                  this.notifications.push(JSON.parse(tick.body));
+                  let notification = JSON.parse(tick.body)
+                  if (!this.isExistNotification(notification)) {
+                    this.notifications.push(notification);
+                    this.countUnSeenMessages(notification);
+                  }
                 });
           },
           error => {
@@ -208,6 +214,14 @@ export default {
             this.isConnectedToNotifications = false;
           }
       );
+    },
+    isExistNotification(notification) {
+      for (let i = 0; i < this.notifications.length; i++) {
+        if (this.notifications[i].messageId == notification.messageId) {
+          return true;
+        }
+      }
+      return false;
     },
     disconnect() {
       if (this.stompClient) {
@@ -235,7 +249,6 @@ export default {
       if (this.$store.state.auth.status.loggedIn == true &&
           this.isConnectedToNotifications == false) {
         this.connect();
-        console.log("Connected to notifications!")
       }
     }
   }

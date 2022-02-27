@@ -1,11 +1,14 @@
 package com.auction.service;
 
 import com.auction.projection.CategoryCountProjection;
+import com.auction.projection.CommissionPerMouthProjection;
 import com.auction.projection.UserCountPerMonthProjection;
 import com.auction.repository.AuctionEventRepository;
+import com.auction.repository.PaymentAuditRepository;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.StatisticService;
 import com.auction.web.dto.response.statistic.CategoryCount;
+import com.auction.web.dto.response.statistic.CommissionPerMouth;
 import com.auction.web.dto.response.statistic.Statistic;
 import com.auction.web.dto.response.statistic.UserCountPerMonth;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +23,33 @@ import java.util.List;
 public class StatisticServiceImpl implements StatisticService {
   private final UserRepository userRepository;
   private final AuctionEventRepository auctionEventRepository;
+  private final PaymentAuditRepository paymentAuditRepository;
 
   @Transactional(readOnly = true)
+  @Override
   public Statistic getStatistic() {
     Statistic statistic = new Statistic();
     statistic.setCategoryCount(getCategoryCount());
     statistic.setSubCategoryCount(getSubCategoryCount());
     statistic.setUserCountPerMonth(getCountOfUsersPerMouth());
+    statistic.setCommissionPerMouths(getCommissionStats());
     return statistic;
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommissionPerMouth> getCommissionStats() {
+    List<CommissionPerMouthProjection> commissionPerMouth = paymentAuditRepository.getCommissionPerMouth();
+    List<CommissionPerMouth> result = new ArrayList<>();
+    for (CommissionPerMouthProjection commission : commissionPerMouth) {
+      result.add(CommissionPerMouth.builder()
+                         .amount(commission.getAmount())
+                         .date(commission.getDate())
+                         .index(commission.getIndex())
+                         .month(commission.getMonth())
+                         .build());
+    }
+    return result;
   }
 
   @Override
@@ -67,6 +89,8 @@ public class StatisticServiceImpl implements StatisticService {
     listProjections.forEach(e -> list.add(new CategoryCount(e.getName(), e.getCount())));
     return list;
   }
+
+
 
 //  private List<UserCountPerMonth> addNonExistentMonths(List<UserCountPerMonth> countPerMonths) {
 //    List<Months> months = List.of(Months.values());

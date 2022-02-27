@@ -1,12 +1,9 @@
 <template>
   <div class="container">
-    <button type="button" v-on:click="createNewSubCategory" class="btn btn-primary btn-block">
-      Update
-    </button>
-
-    <ul>
-      <li v-for="(item,index) in data" :key="index" class="">
-        {{ item.mainCategory.categoryName }}
+    <ul class="list-unstyled">
+      <li v-for="(item,index) in data" :key="index" class="mb-4">
+        <h3>        {{ item.mainCategory.categoryName }}
+        </h3>
         <form class="">
           <div class="form-group">
             <label class="text-gray-600 font-semibold text-lg" hidden>Create new subcategory</label>
@@ -58,13 +55,16 @@
             </div>
           </div>
         </form>
-        <ul>
-          <li v-for="(subCategory,subCategoryIndex) in item.listSubCategories" :key="subCategoryIndex" class="">
+        <ul class="list-group">
+          <li v-for="(subCategory,subCategoryIndex) in item.listSubCategories" :key="subCategoryIndex" class="list-group-item">
             {{ subCategory.categoryName }}
           </li>
         </ul>
       </li>
     </ul>
+    <button type="button" v-on:click="createNewSubCategory" class="btn btn-primary btn-block">
+      Update
+    </button>
   </div>
 </template>
 

@@ -12,6 +12,7 @@ import com.auction.model.User;
 import com.auction.model.enums.AuctionStatus;
 import com.auction.model.enums.AuctionType;
 import com.auction.model.mapper.Mapper;
+import com.auction.projection.AuctionSearchProjection;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.AuctionEventSortRepository;
@@ -27,6 +28,7 @@ import com.auction.service.interfaces.NotificationSenderService;
 import com.auction.service.interfaces.PaymentService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionEventDto;
+import com.auction.web.dto.AuctionSearchDto;
 import com.auction.web.dto.request.AuctionEventRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +44,7 @@ import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -67,10 +70,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
   private final AuctionSpecificationFilter auctionSpecificationFilter;
 
   private void checkDateForAuction(AuctionEventRequest request) {
-    if (request.getStartDate().isBefore(LocalDateTime.now())) {
-      throw new DateTimeException("Start date should be before " + LocalDateTime.now());
-    }
-    else if (request.getFinishDate().isBefore(LocalDateTime.now())) {
+    if (request.getFinishDate().isBefore(LocalDateTime.now())) {
       throw new DateTimeException("Finish date should be before " + LocalDateTime.now());
     }
 
@@ -92,21 +92,23 @@ class AuctionEventServiceImpl implements AuctionEventService {
 
     User user = userService.findById(request.getUserId());
     AuctionEvent auctionEvent = AuctionEvent.builder()
-            .title(request.getTitle())
-            .description(request.getDescription())
-            .user(user)
-            .startPrice(request.getStartPrice())
-            .finishPrice(request.getFinishPrice())
-            .statusType(AuctionStatus.EXPECTATION)
-            .startDate(request.getStartDate())
-            .finishDate(request.getFinishDate())
-            .genDate(LocalDateTime.now())
-            .categories(subCategoryList)
-            .build();
+        .title(request.getTitle())
+        .description(request.getDescription())
+        .user(user)
+        .startPrice(request.getStartPrice())
+        .finishPrice(request.getFinishPrice())
+        .statusType(AuctionStatus.EXPECTATION)
+        .startDate(request.getStartDate().isBefore(LocalDateTime.now())
+                       ? request.getStartDate()
+                       : LocalDateTime.now())
+        .finishDate(request.getFinishDate())
+        .genDate(LocalDateTime.now())
+        .categories(subCategoryList)
+        .build();
 
     if (request.getAuctionType() == AuctionType.CHARITY &&
-            request.getCharityPercent() != null &&
-            request.getCharityPercent() == 0) {
+        request.getCharityPercent() != null &&
+        request.getCharityPercent() == 0) {
       auctionEvent.setAuctionType(AuctionType.COMMERCIAL);
     }
     else if (request.getCharityPercent() > 0) {
@@ -124,12 +126,18 @@ class AuctionEventServiceImpl implements AuctionEventService {
   }
 
   @Transactional
-  public void resetAuction(AuctionEvent auctionEvent) {
+  @Override
+  public void resetAuction(AuctionEvent auctionEvent, boolean actions) {
     auctionEvent.setStatusType(AuctionStatus.FOR_RESET);
     auctionEvent.setStartDate(null);
     auctionEvent.setFinishDate(null);
 
+    if (actions) resetWithActions(auctionEvent);
     auctionChatService.deleteByAuction(auctionEvent);
+  }
+
+  private void resetWithActions(AuctionEvent auctionEvent) {
+    auctionActionRepository.deleteAllByAuctionEvent(auctionEvent);
   }
 
   @Override
@@ -140,26 +148,21 @@ class AuctionEventServiceImpl implements AuctionEventService {
     for (AuctionEvent event : list) {
       Optional<AuctionAction> auctionAction = auctionActionRepository.findTopByAuctionEventOrderByBetDesc(event);
       if (auctionAction.isEmpty()) {
-        resetAuction(event);
+        resetAuction(event, true);
         continue;
       }
       AuctionAction action = auctionAction.get();
-      AuctionWinner auctionWinner = AuctionWinner.builder()
-              .auctionEvent(event)
-              .user(action.getUser())
-              .price(action.getBet())
-              .build();
-
-      listOfWinners.add(auctionWinner);
-      log.info("User[" + action.getUser() + "] win auctionEvent[" + event.getId() + "]");
 
       event.setStatusType(AuctionStatus.FINISHED);
       log.info("AuctionEvent [" + event.getId() + "] set new status - FINISHED.");
 
-      paymentService.createPaymentForAuction(auctionWinner);
+      AuctionWinner auctionWinner = auctionWinnerService.create(event, action.getUser(), action.getBet());
+
+      listOfWinners.add(auctionWinner);
+      log.info("User[" + action.getUser() + "] win auctionEvent[" + event.getId() + "]");
+      //TODO:notification!
       mailService.sendEmailToAuctionWinner(auctionWinner);
       sendEmailToParticipants(event, auctionWinner);
-      publisher.publishEvent(new AuctionFinishingNotificationEvent(auctionWinner));
     }
 
     auctionWinnerRepository.saveAll(listOfWinners);
@@ -237,8 +240,8 @@ class AuctionEventServiceImpl implements AuctionEventService {
     Pageable pageable = PageRequest.of(page - 1, perPage);
 
     return auctionEventRepository
-            .findAll(pageable)
-            .map(auctionEventToDtoMapper::map);
+        .findAll(pageable)
+        .map(auctionEventToDtoMapper::map);
   }
 
   @Override
@@ -246,7 +249,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
   public void delete(AuctionEvent auctionEvent) {
     if (auctionEvent.getStatusType().equals(AuctionStatus.FINISHED)) {
       AuctionWinner auctionWinner = auctionWinnerRepository.findByAuctionEvent(auctionEvent)
-              .orElseThrow(() -> new AuctionEventNotFoundException("Winner for auction[" + auctionEvent.getId() + "] not found!"));
+          .orElseThrow(() -> new AuctionEventNotFoundException("Winner for auction[" + auctionEvent.getId() + "] not found!"));
       auctionWinnerRepository.delete(auctionWinner);
     }
 
@@ -275,15 +278,15 @@ class AuctionEventServiceImpl implements AuctionEventService {
     auctionEvent.setDescription(request.getDescription());
 
     if (oldAuctionType == AuctionType.CHARITY &&
-            request.getAuctionType() != AuctionType.CHARITY) {
+        request.getAuctionType() != AuctionType.CHARITY) {
       auctionEvent.setAuctionType(AuctionType.COMMERCIAL);
     }
     else if (request.getCharityPercent() > 0 &&
-            auctionEvent.getAuctionType() == AuctionType.CHARITY) {
+        auctionEvent.getAuctionType() == AuctionType.CHARITY) {
       auctionEvent.setCharityPercent(request.getCharityPercent());
     }
     else if (request.getCharityPercent() > 0 &&
-            auctionEvent.getAuctionType() == AuctionType.COMMERCIAL) {
+        auctionEvent.getAuctionType() == AuctionType.COMMERCIAL) {
       auctionEvent.setCharityPercent(request.getCharityPercent());
     }
     return auctionEventToDtoMapper.map(auctionEvent);
@@ -293,7 +296,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
   @Transactional(readOnly = true)
   public AuctionEvent findById(Long id) {
     return auctionEventRepository.findById(id)
-            .orElseThrow(() -> new AuctionEventNotFoundException("Auction event[" + id + "] doesn't exist."));
+        .orElseThrow(() -> new AuctionEventNotFoundException("Auction event[" + id + "] doesn't exist."));
   }
 
   @Override
@@ -346,6 +349,23 @@ class AuctionEventServiceImpl implements AuctionEventService {
     User user = userService.findById(userId);
     Pageable pageable = PageRequest.of(page - 1, perPage);
     return auctionEventRepository.findByUser(user, pageable).map(auctionEventToDtoMapper::map);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<AuctionSearchDto> reactiveSearch(String message) {
+    List<AuctionSearchProjection> listOfProjection = auctionEventRepository.findByText(message, 10);
+    List<AuctionSearchDto> result = new ArrayList<>();
+    for (AuctionSearchProjection e : listOfProjection) {
+      result.add(AuctionSearchDto.builder()
+                     .id(e.getId())
+                     .title(e.getTitle())
+                     .status(e.getStatus())
+                     .startDate(e.getStartDate().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")))
+                     .finishDate(e.getFinishDate().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")))
+                     .build());
+    }
+    return result;
   }
 
   @Override

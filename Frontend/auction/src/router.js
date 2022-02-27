@@ -23,12 +23,17 @@ import ChangeHomeImagePage from "@/views/profile/admin/ChangeHomeImagePage";
 import ComplaintList from "@/views/profile/admin/ComplaintList";
 import SuccessPay from "@/views/SuccessPay";
 import Tour from "@/views/Tour";
+import Test from "@/views/profile/Test";
 
 const routes = [
   {
     path: "/",
     name: "home",
     component: Home,
+  },
+  {
+    path: "/test",
+    component: Test
   },
   {
     path: "/home",
@@ -133,6 +138,10 @@ const routes = [
   {
     path: "/profile/create-category",
     component: ProfilePage
+  },
+  {
+    path: "/profile/payments",
+    component: ProfilePage,
   },
   {
     path: "/profile/account/password",

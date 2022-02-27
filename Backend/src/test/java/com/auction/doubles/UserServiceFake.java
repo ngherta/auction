@@ -9,6 +9,8 @@ import com.auction.web.dto.request.UpdatePasswordRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
 import org.springframework.data.domain.Page;
 
+import java.util.Optional;
+
 public class UserServiceFake implements UserService {
   @Override
   public Page<UserDto> get(int page, int perPage) {
@@ -38,6 +40,11 @@ public class UserServiceFake implements UserService {
   @Override
   public UserDto getById(Long userId) {
     return UserFixture.userDto();
+  }
+
+  @Override
+  public Optional<User> findMainAdmin() {
+    return Optional.empty();
   }
 
   @Override

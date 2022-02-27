@@ -11,6 +11,14 @@ class ComplaintService {
         });
     }
 
+    sendResponse(data) {
+        return axios.post(API_URL, {
+            adminId : data.adminId,
+            complaintId : data.complaintId,
+            status : data.status
+        })
+    }
+
     getAll(page, perPage) {
         return axios.get(API_URL, {
             params: {

@@ -44,6 +44,12 @@ export default {
 
 /*@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');*/
 
+/*p,*/
+/*span,*/
+/*div {*/
+/*  font-family: "Nanum Gothic", Helvetica, Arial!important;*/
+/*}*/
+
 p {
   font-size: 1rem;
 }

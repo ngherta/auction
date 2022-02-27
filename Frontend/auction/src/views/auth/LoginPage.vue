@@ -32,7 +32,7 @@
                   v-show="loading"
                   class="spinner-border spinner-border-sm"
               ></span>
-              Sign Up
+              Login
             </button>
           </div>
         </div>

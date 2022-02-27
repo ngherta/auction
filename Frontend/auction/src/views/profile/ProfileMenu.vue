@@ -85,6 +85,18 @@
           </div>
         </router-link>
       </li>
+      <li>
+        <router-link @click="this.$emit('handleChangePage', 'payments')"
+                     to="/profile/payments"
+                     :disabled="activeItem == 'payments'"
+                     class="text-decoration-none profile-item-link profile-item-link">
+          <div class="p-3 border profile-item"
+               :class="{'profile-item-active' : activeItem == 'payments'}">
+            <Icon name="settings" size="0.8"/>
+            <span class="pl-3 profile-item-text">Payments</span>
+          </div>
+        </router-link>
+      </li>
     </ul>
   </div>
 </template>

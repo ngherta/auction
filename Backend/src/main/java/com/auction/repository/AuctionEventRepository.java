@@ -3,6 +3,7 @@ package com.auction.repository;
 import com.auction.model.AuctionEvent;
 import com.auction.model.User;
 import com.auction.projection.AuctionEventSortProjection;
+import com.auction.projection.AuctionSearchProjection;
 import com.auction.projection.CategoryCountProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -71,4 +72,16 @@ public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long
           "         LEFT JOIN category c on sc.category_id = c.id " +
           "GROUP BY c.category ")
   List<CategoryCountProjection> getCountPerCategory();
+
+  @Query(nativeQuery = true, value = "" +
+          " SELECT a.id as id, " +
+          " a.title as title," +
+          " a.status as status, " +
+          " a.start_date as startDate, " +
+          " a.finish_date as finishDate " +
+          " FROM auction a " +
+          " WHERE lower(a.title) like '%' || lower(:message) || '%' " +
+          " OR lower(a.description)  like '%' || lower(:message) || '%' " +
+          " LIMIT :limit ")
+  List<AuctionSearchProjection> findByText(@Param("message") String message, Integer limit);
 }

@@ -5,7 +5,16 @@ const API_URL = 'http://localhost:8080/api/payment/';
 
 export class PaymentService {
     getPaymentsWithAuctionByUserId(userId, page, perPage) {
-        return axios.get(API_URL + 'user/' + userId, {
+        return axios.get(API_URL + 'send/' + userId, {
+            params: {
+                page: page,
+                perPage: perPage
+            }
+        });
+    }
+
+    getReceiveOrderWithAuctionByUserId(userId, page, perPage) {
+        return axios.get(API_URL + 'receive/' + userId, {
             params: {
                 page: page,
                 perPage: perPage
@@ -14,13 +23,16 @@ export class PaymentService {
     }
 
     executeSuccessPay(paymentId, payerId, token) {
-        return axios.post(API_URL + 'success', {
-            params: {
-                paymentId : paymentId,
-                payerId : payerId,
-                token : token,
-            }
-        })
+        console.log("ASDASDPAYMENTS!!!")
+        console.log(paymentId);
+        return axios.post(API_URL + 'success', {},
+            {
+                params: {
+                    paymentId: paymentId,
+                    PayerID: payerId,
+                    token: token,
+                }
+            })
     }
 }
 

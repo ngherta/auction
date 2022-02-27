@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+  <changeSet id="15" author="ngh">
+    <!--  user_roles FK  -->
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_roles"
+                             constraintName="fk3naj1dmtvtxxus7k26qcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="users" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_roles"
+                             constraintName="fk3naj1dm2vtqxup7k26qcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="roles" validate="true"/>
+
+    <!--  reset_password FK  -->
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="reset_password"
+                             constraintName="f23nqj1dmtvpxxxs7k26qcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="users" validate="true"/>
+
+    <!--  auction_action FK  -->
+    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="auction_action"
+                             constraintName="f23nqj1dmwv12xqs7i26qcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="auction" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="auction_action"
+                             constraintName="f23nqj1dmwxp2qxs7i26qcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="users" validate="true"/>
+
+
+    <!--  auction FK  -->
+    <addForeignKeyConstraint baseColumnNames="gen_user_id" baseTableName="auction"
+                             constraintName="f23nqj1dmwvpqxxs7i26qcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="users" validate="true"/>
+
+
+    <!--  auction_images FK  -->
+    <addForeignKeyConstraint baseColumnNames="auction_event_id" baseTableName="auction_event_images"
+                             constraintName="f23nxj1d2wv5qxxs7i26qcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="auction" validate="true"/>
+
+    <!--  auction_complaint FK  -->
+    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="auction_complaint"
+                             constraintName="f23nqj1xqwv12xqs7i26qcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="auction" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="auction_complaint"
+                             constraintName="f23nqj1dmwxp2qhs7i26qcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="users" validate="true"/>
+
+    <!--  auction_complaint_audit FK  -->
+    <addForeignKeyConstraint baseColumnNames="auction_complaint_id" baseTableName="auction_complaint_audit"
+                             constraintName="f23qx21d2n1qsqxxs7i26qcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="auction_complaint" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="user_admin_id" baseTableName="auction_complaint_audit"
+                             constraintName="f23qx21d2nv5qxxs7236qcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="users" validate="true"/>
+
+    <!--  auction_sort FK  -->
+    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="auction_sort"
+                             constraintName="f267qxx1d2q1qasqas7i26qcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="auction" validate="true"/>
+
+    <!--  auction_winner FK  -->
+    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="auction_winner"
+                             constraintName="f267qxxx123asqjs7i26qcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="auction" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="auction_winner"
+                             constraintName="f267qxx1d2q1qasadg226qcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="users" validate="true"/>
+
+    <!--  payment FK  -->
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="payment"
+                             constraintName="f267qxx1d2qxqa32dg22sqcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="users" validate="true"/>
+
+    <!--  token_confirmation FK  -->
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="token_confirmation"
+                             constraintName="f267qxx1231xasa32dg22sqcpm83i" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="users" validate="true"/>
+
+    <!--  chat_auction FK  -->
+    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="chat_auction"
+                             constraintName="f267qxx123123xasdghg22sqcpm83i" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="auction" validate="true"/>
+
+    <!--  chat_auction FK  -->
+    <addForeignKeyConstraint baseColumnNames="user_first" baseTableName="chat_user"
+                             constraintName="f267qxx1xas1qgxasdgjgk2sqcpm83i" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="user_second" baseTableName="chat_user"
+                             constraintName="f26qx12123asd123xasdghg22sqcpm83i" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+    <!--  chat_user_message FK  -->
+    <addForeignKeyConstraint baseColumnNames="sender" baseTableName="chat_user_message"
+                             constraintName="f26qqsk2123asd123xasdghg22sqcpm83i" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="chat_room" baseTableName="chat_user_message"
+                             constraintName="f267qxx1alkh23xmsdghg22sqcpm83i" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="chat_user" validate="true"/>
+
+    <!--  chat_auction_message FK  -->
+    <addForeignKeyConstraint baseColumnNames="sender" baseTableName="chat_auction_message"
+                             constraintName="f26qqsk2123asd123xasdghg22sqcpm83i" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="chat_room" baseTableName="chat_auction_message"
+                             constraintName="qsdf267qxx1alkh23xmsdghg22sqcpm83i" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="chat_auction" validate="true"/>
+
+    <!--  notification FK  -->
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="notification"
+                             constraintName="f26qqsk2123asd123xasdghg22sxcqm86i" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+    <!--  category FK  -->
+    <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="sub_category"
+                             constraintName="f26qqsk212asas244xasdghg22shdsmqqi" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="category" validate="true"/>
+
+    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="auction_category"
+                             constraintName="f26qqsk2123asx133xqsdghg22sxcqm86i" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="auction" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="sub_category_id" baseTableName="auction_category"
+                             constraintName="f26qqsk212asas244xasdghg22sxcqm86i" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="sub_category" validate="true"/>
+
+    <!--    Payment Order-->
+    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="payment_order"
+                             constraintName="f267qxx123123xasdghg22sxhkm83i" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="auction" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="payment_order"
+                             constraintName="f267qxx1xas1qgqqqdg2gh2sqcpm83i" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+    <!--    NotificationMessageUser -->
+    <addForeignKeyConstraint baseColumnNames="notification_message_id" baseTableName="notification_message_user"
+                             constraintName="f267qxx123123xasdghgxhjxhkm83i" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="notification_message" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="notification_message_user"
+                             constraintName="f267qxx1xas1qgkljhfs2sqcpm83i" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+    <!--    NotificationMessageUser -->
+    <addForeignKeyConstraint baseColumnNames="payment_id" baseTableName="payment_audit"
+                             constraintName="f267qxx123123xasdg12hkm83i" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="payment_order" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="sender_id" baseTableName="payment_audit"
+                             constraintName="f267qxx1xas1qahfsxsqcpaqm8fi" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="recipient_id" baseTableName="payment_audit"
+                             constraintName="f267qxx1xas1qgkljhfs2sqcx82123" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    <rollback>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

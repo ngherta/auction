@@ -26,7 +26,7 @@
       <column name="bet" valueNumeric="10"></column>
       <column name="gen_date" valueDate="current_timestamp()"></column>
       <column name="auction_id" valueNumeric="9999"></column>
-      <column name="user_id" valueNumeric="9999"></column>
+      <column name="user_id" valueNumeric="777"></column>
     </insert>
 
     <rollback>

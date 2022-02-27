@@ -8,6 +8,7 @@ import com.auction.web.dto.UserDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 public class UserFixture {
@@ -38,7 +39,7 @@ public class UserFixture {
             .lastName(lastName)
             .birthday(LocalDate.now().toString())
             .enabled(true)
-            .userRole(userDtoRole())
+            .userRole(new HashSet<>())
             .build();
   }
 

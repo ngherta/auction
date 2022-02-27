@@ -6,6 +6,7 @@ import com.auction.model.User;
 import com.auction.model.enums.AuctionStatus;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.web.dto.AuctionEventDto;
+import com.auction.web.dto.AuctionSearchDto;
 import com.auction.web.dto.request.AuctionEventRequest;
 import org.springframework.data.domain.Page;
 
@@ -121,6 +122,11 @@ public class AuctionEventServiceDummy implements AuctionEventService {
 
   @Override
   public Page<AuctionEventDto> getAllByOwner(Long userId, int page, int perPage) {
+    return null;
+  }
+
+  @Override
+  public List<AuctionSearchDto> reactiveSearch(String message) {
     return null;
   }
 }
