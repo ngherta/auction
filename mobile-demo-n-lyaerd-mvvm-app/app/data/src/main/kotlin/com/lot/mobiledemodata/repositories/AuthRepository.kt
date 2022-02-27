@@ -37,6 +37,8 @@ class AuthRepository @Inject constructor(
     override fun logout() = flow {
         tokenDiskSource.data = null
         userDiskSource.data = null
+        tokenMemorySource.data = null
+        userMemorySource.data = null
         emit(Unit)
     }
 

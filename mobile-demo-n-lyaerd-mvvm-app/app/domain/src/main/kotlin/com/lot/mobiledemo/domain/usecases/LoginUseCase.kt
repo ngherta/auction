@@ -20,4 +20,9 @@ class LoginUseCase(
         authGateway.register(RegisterDataModel(email, firstName, lastName, password)).collect { }
         emit(Unit)
     }
+
+    fun logout() = flow {
+        authGateway.logout()
+        emit(Unit)
+    }
 }

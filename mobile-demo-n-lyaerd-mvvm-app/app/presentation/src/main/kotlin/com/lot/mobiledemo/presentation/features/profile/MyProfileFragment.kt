@@ -1,7 +1,9 @@
 package com.lot.mobiledemo.presentation.features.profile
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.lot.mobiledemo.R
@@ -19,10 +21,11 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     private val binding by viewBinding(FragmentMyProfileBinding::bind)
     private val adapter = SettingAdapter(::changeValue)
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.settingsList.adapter = adapter
-//        binding.firstName.text = fir
+
         settingsViewModel.settings.observe(viewLifecycleOwner) {
             it.success { settings -> adapter.submitList(settings) }
             it.failure {
@@ -32,6 +35,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
                 // TODO
             }
         }
+
         updateUserViewModel.userData.observe(viewLifecycleOwner) {
             it.success {
                 e -> run {
@@ -40,6 +44,18 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
                     binding.email.setText(e.email)
                 }
             }
+        }
+
+        binding.updateButton.setOnClickListener{
+            updateUserViewModel.onUpdate(
+                binding.email.text.toString(),
+                binding.firstName.text.toString(),
+                binding.lastName.text.toString(),
+            )
+        }
+
+        binding.logout.setOnClickListener{
+            updateUserViewModel.logout()
         }
 
     }

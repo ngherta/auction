@@ -7,11 +7,13 @@ import com.auction.model.AuctionWinner;
 import com.auction.model.PaymentAudit;
 import com.auction.model.PaymentOrder;
 import com.auction.model.User;
+import com.auction.model.enums.AuctionWinnerStatus;
 import com.auction.model.enums.PaymentStatus;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.PaymentAuditRepository;
 import com.auction.repository.PaymentOrderRepository;
+import com.auction.service.interfaces.AuctionWinnerService;
 import com.auction.service.interfaces.PaymentService;
 import com.auction.service.interfaces.PaypalService;
 import com.auction.service.interfaces.UserService;
@@ -23,6 +25,8 @@ import com.paypal.api.payments.Payment;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -45,13 +49,19 @@ class PaymentServiceImpl implements PaymentService {
   private final Mapper<PaymentAudit, ReceivePayment> receivePaymentMapper;
   private final UserService userService;
   private final PaymentAuditRepository paymentAuditRepository;
+  private AuctionWinnerService auctionWinnerService;
 
   private static final Double COMMISSION = 5D;
+
+  @Autowired
+  public void setAuctionWinnerService(@Lazy AuctionWinnerService auctionWinnerService) {
+    this.auctionWinnerService = auctionWinnerService;
+  }
 
   @Override
   @Transactional
   @SneakyThrows
-  public void createPaymentForAuction(AuctionWinner auctionWinner) {
+  public PaymentOrder createPaymentForAuction(AuctionWinner auctionWinner) {
     PaymentOrder paymentOrder = PaymentOrder.builder()
             .auctionEvent(auctionWinner.getAuctionEvent())
             .description("Description of payment")
@@ -71,8 +81,11 @@ class PaymentServiceImpl implements PaymentService {
       paymentOrder.setLink(link);
       paymentOrder.setStatus(PaymentStatus.CREATED);
     }
+    else {
+      //TODO exception
+    }
 
-    paymentOrderRepository.save(paymentOrder);
+    return paymentOrderRepository.save(paymentOrder);
   }
 
   @Transactional(readOnly = true)
@@ -104,6 +117,7 @@ class PaymentServiceImpl implements PaymentService {
             payment.getState().equals("approved")) {
       paymentOrder.setStatus(PaymentStatus.COMPLETED);
       paymentOrderRepository.save(paymentOrder);
+      auctionWinnerService.paid(paymentOrder);
       createAudit(paymentOrderRepository.save(paymentOrder));
     }
   }

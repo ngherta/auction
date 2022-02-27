@@ -1,11 +1,14 @@
 package com.lot.mobiledemo.presentation.features.profile
 
-import androidx.lifecycle.*
-import com.lot.mobiledemo.domain.entities.SettingEntity
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.lot.mobiledemo.domain.entities.UserEntity
 import com.lot.mobiledemo.domain.usecases.LoadUserDataUseCase
+import com.lot.mobiledemo.domain.usecases.LoginUseCase
 import com.lot.mobiledemo.domain.usecases.UpdateUserUseCase
-import com.lot.mobiledemo.presentation.features.profile.settings.SettingItemModel
 import com.lot.mobiledemo.presentation.infrastructure.ReloadableLiveData
 import com.lot.mobiledemo.presentation.infrastructure.Resource
 import com.lot.mobiledemo.presentation.infrastructure.Resource.*
@@ -15,12 +18,14 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import java.io.IOException
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
 class UpdateUserViewModel @Inject constructor(
     private val updateUserUseCase: UpdateUserUseCase,
-    private val loadUserDataUseCase: LoadUserDataUseCase
+    private val loadUserDataUseCase: LoadUserDataUseCase,
+    private val loginUseCase: LoginUseCase
 ) : ViewModel() {
     val userData: ReloadableLiveData<Resource<UserEntity>> = flow {
         try {
@@ -35,22 +40,26 @@ class UpdateUserViewModel @Inject constructor(
         userData.load()
     }
 
-
-
     private val _updateState: MutableLiveData<Resource<Unit>> = MutableLiveData()
-    val authenticationState: LiveData<Resource<Unit>> get() = _updateState
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
     fun onUpdate(email: String, firstName:String, lastName:String) {
         _updateState.value = Loading()
         viewModelScope.launch {
             try {
-                updateUserUseCase.update(email, firstName, lastName, "").collect {
+                val birthday = LocalDate.of(2000, 1, 2)
+                updateUserUseCase.update(email, firstName, lastName, birthday).collect {
                     _updateState.value = Success(Unit)
                 }
             } catch (ex: IOException) {
                 _updateState.value = Failure(ex)
             }
         }
+    }
+
+    fun logout() {
+        loginUseCase.logout()
     }
 }
 

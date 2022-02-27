@@ -27,6 +27,7 @@ public class AuctionWinnerToDtoMapper implements Mapper<AuctionWinner, AuctionWi
             .auctionEvent(auctionEventDtoMapper.map(entity.getAuctionEvent()))
             .paymentOrder(paymentOrderDtoMapper.map(entity.getPaymentOrder()))
             .genDate(entity.getGenDate().toString())
+            .status(entity.getStatus())
             .build();
   }
 }

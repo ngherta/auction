@@ -32,6 +32,8 @@ public interface AuctionEventService {
 
   void deleteById(Long auctionId);
 
+  void resetAuction(AuctionEvent auctionEvent, boolean actions);
+
   AuctionEventDto update(AuctionEventRequest request, Long auctionId);
 
   void sendEmailToParticipants(AuctionEvent auctionEvent, AuctionWinner auctionWinner) throws MessagingException, UnsupportedEncodingException;

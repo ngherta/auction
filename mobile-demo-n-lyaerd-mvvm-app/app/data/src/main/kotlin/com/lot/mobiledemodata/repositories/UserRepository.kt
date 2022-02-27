@@ -3,6 +3,7 @@ package com.lot.mobiledemodata.repositories
 import com.lot.mobiledemo.domain.entities.UserEntity
 import com.lot.mobiledemo.domain.gateways.UserGateway
 import com.lot.mobiledemo.domain.models.RegisterDataModel
+import com.lot.mobiledemo.domain.models.UpdateUserDataModel
 import com.lot.mobiledemodata.datasources.disk.auth.TokenDiskModel
 import com.lot.mobiledemodata.datasources.disk.auth.TokenDiskSource
 import com.lot.mobiledemodata.datasources.disk.user.UserDiskModel
@@ -32,8 +33,11 @@ class UserRepository @Inject constructor(
         emit(getFromMemory() ?: getFromDisk() ?: getFromNetwork())
     }
 
-    override fun update(registerData: RegisterDataModel): Flow<UserEntity> {
-        TODO("Not yet implemented")
+    override fun update(updateData: UpdateUserDataModel) = flow {
+        val data = userNetworkSource.updateUser(updateData)
+        userMemorySource.data = data.toMemory()
+        userDiskSource.data = data.toDisk()
+        emit(data.toEntity())
     }
 
     private fun getFromMemory(): UserEntity? = userMemorySource.data?.toEntity()
@@ -88,6 +92,42 @@ private fun TokenNetworkModel.toMemory(): UserMemoryModel {
         userDto.lastName,
         userDto.enabled,
         userDto.userRole
+    )
+}
+
+private fun UserNetworkModel.toMemory(): UserMemoryModel {
+    return UserMemoryModel(
+        id,
+        email,
+        birthday,
+        firstName,
+        lastName,
+        enabled,
+        userRole
+    )
+}
+
+private fun UserNetworkModel.toEntity(): UserEntity {
+    return UserEntity(
+        id,
+        email,
+        birthday,
+        firstName,
+        lastName,
+        enabled,
+        userRole
+    )
+}
+
+private fun UserNetworkModel.toDisk(): UserDiskModel {
+    return UserDiskModel(
+        id,
+        email,
+        birthday,
+        firstName,
+        lastName,
+        enabled,
+        userRole
     )
 }
 

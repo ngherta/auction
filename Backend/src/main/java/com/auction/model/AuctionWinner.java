@@ -1,5 +1,6 @@
 package com.auction.model;
 
+import com.auction.model.enums.AuctionWinnerStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,4 +32,7 @@ public class AuctionWinner extends AbstractEntity{
 
   @Column(name = "gen_date", nullable = false)
   private LocalDateTime genDate;
+
+  @Enumerated(EnumType.STRING)
+  private AuctionWinnerStatus status;
 }

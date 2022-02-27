@@ -8,7 +8,7 @@ import retrofit2.http.Path
 
 interface SettingsNetworkSource {
     @GET("/api/settings/{userId}")
-    suspend fun getSettings(@Path("userId") userId: Long): SettingsNetworkModel
+    suspend fun getSettings(@Path("userId") userId: Int): SettingsNetworkModel
 
 //    @POST("/api/settings/notification")
 //    suspend fun updateNotificationSettings()

@@ -59,8 +59,9 @@ class RepositoryModule {
 
     @Provides
     fun providesSettingsGateWay(
-        settingsNetworkSource: SettingsNetworkSource
+        settingsNetworkSource: SettingsNetworkSource,
+        userRepository: UserRepository
     ): SettingsGateway {
-        return SettingsRepository(settingsNetworkSource)
+        return SettingsRepository(userRepository, settingsNetworkSource)
     }
 }

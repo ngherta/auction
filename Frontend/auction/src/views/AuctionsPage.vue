@@ -7,25 +7,35 @@
         <Form @submit="searchFromInput">
           <div class="d-flex justify-content-center">
             <div class="w-50 position-relative mr-5">
-              <label for="search" hidden>Search</label>
-              <input @input="handleSearch"
-                     @focusin="focusSearchField = true"
-                     @focusout="focusSearchField = false"
-                     autocomplete="off"
-                     name="search" v-model="searchTitle"
-                     id="search"
-                     type="text"
-                     class="form-control"/>
-              <div v-if="loadingSearch" class="spinner-border spinner-border-sm search-spinner text-info" role="status">
+              <label class="sr-only" for="search" hidden>Search</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <Icon name="search-glass"/>
+                  </div>
+                </div>
+                <input @input="handleSearch"
+                       @focusin="focusSearchField = true"
+                       @focusout="focusSearchField = false"
+                       autocomplete="off"
+                       name="search" v-model="searchTitle"
+                       id="search"
+                       type="text"
+                       class="form-control"
+                       placeholder="Search"/>
+              </div>
+              <div v-if="loadingSearch == true" class="spinner-border spinner-border-sm search-spinner text-info" role="status">
                 <span class="sr-only">Loading...</span>
               </div>
-              <div v-if=" searchDropdownData.length > 0" class="search-container">
+              <div v-if="focusSearchField == true && searchDropdownData.length > 0" class="search-container w-100">
                 <ul class="list-group">
                   <li class="list-group-item" v-for="(item, index) in searchDropdownData" :key="index">
-                    <router-link class="text-decoration-none text-reset list-group-item-link" :to="'/auction/' + item.id">
-                      <h4 class="h4">{{item.title}}</h4>
-
-                      {{ item }}
+                    <router-link class="text-decoration-none text-reset d-flex list-group-item-link"
+                                 :to="'/auction/' + item.id">
+                      <h5 class="h5">{{ item.title }}</h5>
+                      <div class="ml-auto">
+                        <span class="badge badge-pill badge-light">{{item.status}}</span>
+                      </div>
                     </router-link>
                   </li>
                 </ul>
@@ -143,12 +153,14 @@ import '@vueform/multiselect/themes/default.css';
 import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
 import StringCodeService from '../helpers/string.code.service'
+import Icon from "@/components/Icon";
 
 export default {
   name: "AuctionsPage",
   components: {
     Form,
     AuctionItem,
+    Icon,
     Multiselect,
   },
   data() {
@@ -182,6 +194,7 @@ export default {
   },
   methods: {
     searchFromInput() {
+      if (StringCodeService.isBlank(this.searchTitle)) return;
       this.getAuctions();
     },
     isPageForRender(index) {

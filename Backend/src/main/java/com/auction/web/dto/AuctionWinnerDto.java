@@ -1,5 +1,6 @@
 package com.auction.web.dto;
 
+import com.auction.model.enums.AuctionWinnerStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,4 +12,5 @@ public class AuctionWinnerDto {
   private Double price;
   private PaymentOrderDto paymentOrder;
   private String genDate;
+  private AuctionWinnerStatus status;
 }
