@@ -37,7 +37,7 @@
         tools:ignore="Autofill"
         />
 
-    <com.lot.mobiledemo.presentation.widgets.PasswordInput
+    <com.lot.mobile.presentation.widgets.PasswordInput
         android:id="@+id/password_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

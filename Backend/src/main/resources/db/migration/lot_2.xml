@@ -38,6 +38,7 @@
       </column>
       <column name="payment_order_id" type="int8"></column>
       <column name="gen_date" type="timestamp"></column>
+      <column name="status" type="varchar(50)"></column>
     </createTable>
 
     <createTable tableName="auction_event_images">

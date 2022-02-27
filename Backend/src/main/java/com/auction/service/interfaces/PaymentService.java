@@ -9,7 +9,7 @@ import com.auction.web.dto.ReceivePayment;
 import org.springframework.data.domain.Page;
 
 public interface PaymentService {
-    void createPaymentForAuction(AuctionWinner auctionWinner);
+    PaymentOrder createPaymentForAuction(AuctionWinner auctionWinner);
 
     PaymentOrderDto findByAuctionEvent(Long auctionId);
 

@@ -61,6 +61,11 @@ public class AuctionEventServiceDummy implements AuctionEventService {
   }
 
   @Override
+  public void resetAuction(AuctionEvent auctionEvent, boolean actions) {
+
+  }
+
+  @Override
   public AuctionEventDto update(AuctionEventRequest request, Long auctionId) {
     return null;
   }
