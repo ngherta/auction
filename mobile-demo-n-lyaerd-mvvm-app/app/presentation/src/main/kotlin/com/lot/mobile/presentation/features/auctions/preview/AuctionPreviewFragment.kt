@@ -1,5 +1,6 @@
 package com.lot.mobile.presentation.features.auctions.preview
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -39,6 +40,10 @@ class AuctionPreviewFragment : Fragment(R.layout.fragment_auction_preview) {
                 binding.title.text = auction.title
                 binding.description.text = auction.description
                 binding.status.text = auction.status
+                binding.startDate.text = auction.startDate
+                binding.finishDate.text = auction.finishDate
+                binding.startPrice.text = auction.startPrice.toString() + " $"
+                binding.finishPrice.text = auction.finishPrice.toString() + " $"
             }
             it.failure {
 

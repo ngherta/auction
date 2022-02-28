@@ -5,28 +5,128 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="20dp"
-    >
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Post Title"
-        style="@style/TextAppearance.AppCompat.Headline"
-        />
+    android:padding="20dp">
 
     <TextView
-        android:id="@+id/description"
+        android:id="@+id/title"
+        style="@style/TextAppearance.AppCompat.Headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        tools:text="description"
-        />
-    <TextView
-        android:id="@+id/status"
+        tools:text="Post Title" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        tools:text="Status "
-        />
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:id="@+id/description_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description: "
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="description" />
+    </LinearLayout>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:id="@+id/status_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status: "
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="status" />
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:id="@+id/start_date_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start date: "
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="start date" />
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:id="@+id/finish_date_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Finish date: "
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/finish_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="finish date" />
+    </LinearLayout>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:id="@+id/start_price_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start price: "
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/start_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="start price" />
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:id="@+id/finish_price_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Finish date: "
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/finish_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="finish price" />
+    </LinearLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

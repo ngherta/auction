@@ -47,6 +47,8 @@ export default defineComponent ({
             this.$router.push("/home")
           }, // optional (could be async)
           after: function() {
+            console.log("asdasdasdasd")
+
           } // optional (could be async)
         },
         options: {} // [Options](#options)
