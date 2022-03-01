@@ -12,7 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "mobile-demo-mvvm"
+rootProject.name = "LOT"
 include ':app:presentation'
 include ':app:data'
 include ':app:domain'

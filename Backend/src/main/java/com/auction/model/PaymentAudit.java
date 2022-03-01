@@ -1,5 +1,6 @@
 package com.auction.model;
 
+import com.auction.model.enums.PaymentType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +11,8 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -47,6 +50,7 @@ public class PaymentAudit extends AbstractEntity{
     @Column(name = "gen_date")
     private LocalDateTime genDate;
 
-    @Column(name = "commission")
-    private Boolean commission;
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private PaymentType type;
 }

@@ -7,7 +7,6 @@ import com.auction.model.NotificationMessageUser;
 import com.auction.model.User;
 import com.auction.model.enums.NotificationType;
 import com.auction.projection.NotificationProjection;
-import com.auction.repository.NotificationMessageRepository;
 import com.auction.repository.NotificationMessageUserRepository;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.NotificationGenerationService;
@@ -31,7 +30,6 @@ public class NotificationGenerationServiceImpl implements NotificationGeneration
   private final NotificationMessageService notificationMessageService;
   private final NotificationService notificationService;
   private final NotificationMessageUserRepository notificationMessageUserRepository;
-  private final NotificationMessageRepository notificationMessageRepository;
   private final UserSessionCache userServiceCache;
   private final UserRepository userRepository;
 

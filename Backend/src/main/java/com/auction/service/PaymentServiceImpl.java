@@ -7,8 +7,10 @@ import com.auction.model.AuctionWinner;
 import com.auction.model.PaymentAudit;
 import com.auction.model.PaymentOrder;
 import com.auction.model.User;
+import com.auction.model.enums.AuctionType;
 import com.auction.model.enums.AuctionWinnerStatus;
 import com.auction.model.enums.PaymentStatus;
+import com.auction.model.enums.PaymentType;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.PaymentAuditRepository;
@@ -63,14 +65,14 @@ class PaymentServiceImpl implements PaymentService {
   @SneakyThrows
   public PaymentOrder createPaymentForAuction(AuctionWinner auctionWinner) {
     PaymentOrder paymentOrder = PaymentOrder.builder()
-            .auctionEvent(auctionWinner.getAuctionEvent())
-            .description("Description of payment")
-            .price(auctionWinner.getPrice())
-            .currency("USD")
-            .method("paypal")
-            .user(auctionWinner.getUser())
-            .intent("sale")
-            .build();
+        .auctionEvent(auctionWinner.getAuctionEvent())
+        .description(auctionWinner.getAuctionEvent().getTitle() )
+        .price(auctionWinner.getPrice())
+        .currency("USD")
+        .method("paypal")
+        .user(auctionWinner.getUser())
+        .intent("sale")
+        .build();
 
     Payment payment = paypalService.createPayment(paymentOrder);
     paymentOrder.setPaymentId(payment.getId());
@@ -92,7 +94,7 @@ class PaymentServiceImpl implements PaymentService {
   @Override
   public PaymentOrderDto findByAuctionEvent(Long auctionId) {
     AuctionEvent auctionEvent = auctionEventRepository.findById(auctionId)
-            .orElseThrow(() -> new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "] not found!"));
+        .orElseThrow(() -> new AuctionEventNotFoundException("AuctionEvent[" + auctionId + "] not found!"));
     return findByAuctionEvent(auctionEvent);
   }
 
@@ -100,7 +102,7 @@ class PaymentServiceImpl implements PaymentService {
   @Override
   public PaymentOrderDto findByAuctionEvent(AuctionEvent auctionEvent) {
     PaymentOrder paymentOrder = paymentOrderRepository.findByAuctionEvent(auctionEvent)
-            .orElseThrow(() -> new PaymentNotFound("Payment for auctionEvent[" + auctionEvent.getId() + "] not found!"));
+        .orElseThrow(() -> new PaymentNotFound("Payment for auctionEvent[" + auctionEvent.getId() + "] not found!"));
     return paymentOrderDtoMapper.map(paymentOrder);
   }
 
@@ -111,10 +113,10 @@ class PaymentServiceImpl implements PaymentService {
     Payment payment = paypalService.executePayment(paymentId, payerId);
 
     PaymentOrder paymentOrder = paymentOrderRepository.findByPaymentId(paymentId)
-            .orElseThrow(() -> new PaymentNotFound("Payment order[" + paymentId + "] doesn't exist!"));
+        .orElseThrow(() -> new PaymentNotFound("Payment order[" + paymentId + "] doesn't exist!"));
 
     if (payment.getState().equals("completed") ||
-            payment.getState().equals("approved")) {
+        payment.getState().equals("approved")) {
       paymentOrder.setStatus(PaymentStatus.COMPLETED);
       paymentOrderRepository.save(paymentOrder);
       auctionWinnerService.paid(paymentOrder);
@@ -127,14 +129,14 @@ class PaymentServiceImpl implements PaymentService {
   public void createAudit(PaymentOrder paymentOrder) {
     Double amount = takeCommission(paymentOrder);
     PaymentAudit paymentAudit = PaymentAudit.builder()
-            .amount(amount)
-            .currency(paymentOrder.getCurrency())
-            .recipient(paymentOrder.getAuctionEvent().getUser())
-            .sender(paymentOrder.getUser())
-            .paymentOrder(paymentOrder)
-            .genDate(LocalDateTime.now())
-            .commission(false)
-            .build();
+        .amount(amount)
+        .currency(paymentOrder.getCurrency())
+        .recipient(paymentOrder.getAuctionEvent().getUser())
+        .sender(paymentOrder.getUser())
+        .paymentOrder(paymentOrder)
+        .genDate(LocalDateTime.now())
+        .type(PaymentType.TRANSFER)
+        .build();
 
     paymentAuditRepository.save(paymentAudit);
   }
@@ -142,30 +144,59 @@ class PaymentServiceImpl implements PaymentService {
   @Transactional
   @Override
   public Double takeCommission(PaymentOrder paymentOrder) {
-    Double amount = paymentOrder.getPrice() * COMMISSION / 100;
+    Double charityAmount = getCharityAmount(paymentOrder);
+    Double amount;
+
+    if (charityAmount == 0D) {
+      amount = paymentOrder.getPrice() * COMMISSION / 100;
+    }
+    else {
+      amount = (paymentOrder.getPrice() - charityAmount) * COMMISSION / 100;
+    }
+
     PaymentAudit paymentAudit = PaymentAudit
-            .builder()
-            .paymentOrder(paymentOrder)
-            .sender(paymentOrder.getUser())
-            .currency(paymentOrder.getCurrency())
-            .amount(amount)
-            .recipient(userService.findMainAdmin().get())
-            .commission(true)
-            .genDate(LocalDateTime.now())
-            .build();
+        .builder()
+        .paymentOrder(paymentOrder)
+        .sender(paymentOrder.getUser())
+        .currency(paymentOrder.getCurrency())
+        .amount(amount)
+        .recipient(userService.findMainAdmin().get())
+        .type(PaymentType.COMMISSION)
+        .genDate(LocalDateTime.now())
+        .build();
     paymentAuditRepository.save(paymentAudit);
     return paymentOrder.getPrice() - amount;
+  }
+
+  private Double getCharityAmount(PaymentOrder paymentOrder) {
+    Double charityAmount = 0D;
+    if (paymentOrder.getAuctionEvent().getAuctionType() == AuctionType.CHARITY) {
+      charityAmount =
+          paymentOrder.getPrice() * paymentOrder.getAuctionEvent().getCharityPercent() / 100;
+
+      PaymentAudit charityAudit = PaymentAudit.builder()
+          .type(PaymentType.CHARITY_TRANSFER)
+          .recipient(userService.findMainAdmin().get())
+          .amount(charityAmount)
+          .genDate(LocalDateTime.now())
+          .currency(paymentOrder.getCurrency())
+          .sender(paymentOrder.getUser())
+          .paymentOrder(paymentOrder)
+          .build();
+      paymentAuditRepository.save(charityAudit);
+    }
+    return charityAmount;
   }
 
   @Transactional(readOnly = true)
   @Override
   public Page<ReceivePayment> findReceivePaymentsByUser(final Long userId,
-                                                                         final int page,
-                                                                         final int perPage) {
+                                                        final int page,
+                                                        final int perPage) {
     Pageable pageable = PageRequest.of(page - 1, perPage);
     return paymentAuditRepository
-            .findAllByRecipientAndCommission(userService.findById(userId), false, pageable)
-            .map(receivePaymentMapper::map);
+        .findAllByRecipientAndTypeIn(userService.findById(userId), List.of(PaymentType.TRANSFER), pageable)
+        .map(receivePaymentMapper::map);
   }
 
   @Override
@@ -176,7 +207,7 @@ class PaymentServiceImpl implements PaymentService {
     Pageable pageable = PageRequest.of(page - 1, perPage);
 
     return paymentOrderRepository
-            .findByUser(userService.findById(userId), pageable)
-            .map(paymentOrderWithAuctionEventDtoMapper::map);
+        .findByUser(userService.findById(userId), pageable)
+        .map(paymentOrderWithAuctionEventDtoMapper::map);
   }
 }

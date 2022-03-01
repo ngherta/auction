@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.lot.mobiledemo" >
+    package="com.lot.mobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
 
     <application
         android:name=".presentation.DemoApplication"
@@ -11,11 +13,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MobileDemo" >
+        android:theme="@style/Theme.mobile">
         <activity
             android:name=".presentation.features.startup.StartupActivity"
             android:exported="true"
-            android:theme="@style/Theme.MobileDemo.Starting" >
+            android:theme="@style/Theme.mobile.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
