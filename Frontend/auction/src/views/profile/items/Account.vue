@@ -16,7 +16,6 @@
             <Field name="lastName" id="lastName" type="text" class="form-control"/>
             <ErrorMessage name="lastName" class="error-feedback"/>
           </div>
-<!--          TODO: add styles-->
           <div class="mb-3">
             <label for="birthday">BIRTHDAY:</label>
             <Datetimepicker v-model="date"
@@ -26,7 +25,7 @@
           </div>
           <div class="mb-3">
             <label for="email">EMAIL:</label>
-            <Field name="email" id="email" type="email" class="form-control"/>
+            <Field :value=user.email name="email" id="email" type="email" class="form-control"/>
             <ErrorMessage name="email" class="error-feedback"/>
           </div>
 

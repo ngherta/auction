@@ -86,16 +86,9 @@ class MainActivity : SecondaryFragmentHandler, AppCompatActivity() {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Internet Connection Alert")
                 .setMessage("Please Check Your Internet Connection")
-                .setPositiveButton("retry") { _, q ->popup()}
-                .setNegativeButton(
-                    "Close"
-                ) { dialogInterface, i -> finish() }.show()
-        } else if (isNetworkAvailable) {
-            AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Success")
-                .setMessage("test Connection")
-                .setPositiveButton("retry") { _, q ->popup()}
+                .setPositiveButton(
+                    "retry"
+                ) { _, q ->popup()}
                 .setNegativeButton(
                     "Close"
                 ) { dialogInterface, i -> finish() }.show()

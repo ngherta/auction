@@ -15,7 +15,7 @@
       <column name="recipient_id" type="int8"></column>
       <column name="sender_id" type="int8"></column>
       <column name="gen_date" type="timestamp"></column>
-      <column name="commission" type="bool"/>
+      <column name="type" type="varchar(30)"/>
     </createTable>
 
     <rollback>
