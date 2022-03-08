@@ -1,5 +1,5 @@
 <template>
-  <Actuator/>
+  <Actuator v-if="isActiveComponent"/>
   <top-categories :data="this.topCategoriesData"/>
   <chart :data="null"></chart>
 </template>
@@ -19,7 +19,8 @@ export default {
   },
   data() {
     return {
-      topCategoriesData: null
+      topCategoriesData: null,
+      isActiveComponent: false
     }
   },
   methods: {
@@ -37,6 +38,12 @@ export default {
   },
   created() {
     this.getStatisticData();
+  },
+  mounted() {
+    this.isActiveComponent = true;
+  },
+  unmounted() {
+    this.isActiveComponent = false;
   }
 }
 </script>

@@ -9,13 +9,13 @@ import com.auction.model.User;
 import com.auction.model.enums.AuctionWinnerStatus;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionWinnerRepository;
-import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.AuctionWinnerService;
 import com.auction.service.interfaces.PaymentService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionWinnerDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -63,6 +63,7 @@ public class AuctionWinnerServiceImpl implements AuctionWinnerService {
             .build();
 
     auctionWinner.setPaymentOrder(paymentService.createPaymentForAuction(auctionWinner));
+    auctionWinnerRepository.save(auctionWinner);
     publisher.publishEvent(new AuctionFinishingNotificationEvent(auctionWinner));
 
     return auctionWinner;
@@ -74,6 +75,16 @@ public class AuctionWinnerServiceImpl implements AuctionWinnerService {
     AuctionWinner winner = auctionWinnerRepository.findByAuctionEvent(paymentOrder.getAuctionEvent())
             .orElseThrow(() -> new AuctionEventNotFoundException("Auction winner for auction [" + paymentOrder.getAuctionEvent().getId() + "] not found!"));
     winner.setStatus(AuctionWinnerStatus.PAID);
+  }
+
+  private void startDelivery(AuctionWinner auctionWinner) {
+    auctionWinner.setStatus(AuctionWinnerStatus.DELIVERY_PROCESSING);
+    throw new NotYetImplementedException();
+  }
+
+  private void finishDelivery(AuctionWinner auctionWinner) {
+    auctionWinner.setStatus(AuctionWinnerStatus.DELIVERY_FINISHED);
+    throw new NotYetImplementedException();
   }
 
   @Transactional

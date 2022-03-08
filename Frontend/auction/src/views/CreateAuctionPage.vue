@@ -68,7 +68,7 @@
             </div>
           </div>
           <div class="col">
-            <UploadFiles @uploadNewImages="uploadNewImages($event)"/>
+            <upload-image @uploadNewImages="uploadNewImages($event)"/>
           </div>
         </div>
         <div class="row">
@@ -89,7 +89,7 @@
 import {ErrorMessage, Field, Form} from "vee-validate";
 import * as yup from "yup";
 import CategoryService from "../services/category.service"
-import UploadFiles from "../views/UploadFiles";
+import UploadImage from "@/views/UploadImage";
 import AuctionService from "../services/auction.service";
 import Datetimepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css'
@@ -101,7 +101,7 @@ export default {
     Form,
     Field,
     ErrorMessage,
-    UploadFiles,
+    UploadImage,
     Datetimepicker,
     Editor,
   },
@@ -129,6 +129,13 @@ export default {
     createAuction(data) {
       this.successful = false;
       this.loading = true;
+      if (this.images.length == 0) {
+        this.$notify({
+          text: 'You should add an image!',
+          type: 'error'
+        });
+        return;
+      }
 
       const auction = {
         title: data.title,

@@ -4,17 +4,15 @@
     <h2 class="h2 mt-2">Edit details</h2>
     <p class="mt-2">Feel free to edit any of your details below.</p>
     <div class="mt-4">
-      <Form @submit="handleUpdate" :validation-schema="schema">
+      <form :validation-schema="schema">
         <div v-if="!successful">
           <div class="mb-3">
             <label for="firstName">FIRST NAME:</label>
-            <Field name="firstName" id="firstName" type="text" class="form-control"/>
-            <ErrorMessage name="firstName" class="error-feedback"/>
+            <input :value=user.firstName name="firstName" id="firstName" type="text" class="form-control"/>
           </div>
           <div class="mb-3">
             <label for="lastName">LAST NAME:</label>
-            <Field name="lastName" id="lastName" type="text" class="form-control"/>
-            <ErrorMessage name="lastName" class="error-feedback"/>
+            <input :value="user.lastName" name="lastName" id="lastName" type="text" class="form-control"/>
           </div>
           <div class="mb-3">
             <label for="birthday">BIRTHDAY:</label>
@@ -25,12 +23,11 @@
           </div>
           <div class="mb-3">
             <label for="email">EMAIL:</label>
-            <Field :value=user.email name="email" id="email" type="email" class="form-control"/>
-            <ErrorMessage name="email" class="error-feedback"/>
+            <input :value=user.email name="email" id="email" type="email" class="form-control"/>
           </div>
 
           <div class="">
-            <button class="btn btn-primary btn-block" :disabled="loading">
+            <button @click="handleUpdate" class="btn btn-primary btn-block" :disabled="loading">
               <span
                   v-show="loading"
                   class="spinner-border spinner-border-sm"
@@ -39,7 +36,7 @@
             </button>
           </div>
         </div>
-      </Form>
+      </form>
     </div>
     <div class="d-flex justify-content-center mt-3">
       <router-link @click="this.$emit('handleChangePage', 'account/password')"
@@ -52,7 +49,6 @@
 import Icon from "../../../components/Icon";
 import Datetimepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css';
-import {Form, Field, useForm, ErrorMessage} from "vee-validate";
 import * as yup from "yup";
 import {ref} from 'vue'
 import UserService from '../../../services/user.service';
@@ -60,9 +56,6 @@ import UserService from '../../../services/user.service';
 export default {
   name: "Account",
   components: {
-    Form,
-    Field,
-    ErrorMessage,
     Icon,
     Datetimepicker,
   },
@@ -103,6 +96,7 @@ export default {
       successful: false,
       loading: false,
       schema,
+      firstName: '',
       user: {
         id: '',
         firstName: '',
@@ -113,13 +107,13 @@ export default {
     };
   },
   methods: {
-    handleUpdate(user) {
+    handleUpdate() {
       this.successful = false;
       this.loading = true;
-      user.birthday = this.date;
-      console.log(user);
+      // user.birthday = this.date;
+      // console.log(user);
 
-      this.$store.dispatch("users/update", user).then(
+      this.$store.dispatch("users/update", null).then(
           (response) => {
             this.successful = true;
             this.loading = false;
@@ -171,9 +165,6 @@ export default {
               email: response.data.email,
               birthday: this.date
             }
-            useForm({
-              initialValues: this.user,
-            });
             this.initFields();
           },
           (error) => {

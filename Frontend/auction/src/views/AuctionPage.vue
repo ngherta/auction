@@ -186,17 +186,20 @@
                :class="{'ml-auto' : this.isMessageFromCurrentUser(message.senderId) == true}"
                :key="message">
             <div class="chat-name">{{ message.senderFirstName + ' ' + message.senderLastName }}</div>
-            <div class="chat-date">{{ message.genDate }}</div>
-            <div class="chat-message pl-2 pr-2">{{ message.message }}</div>
+            <div class="chat-date font-weight-light">{{ message.genDate }}</div>
+            <div class="chat-message border border-info
+            pl-2 pr-2">{{ message.message }}
+            </div>
           </div>
         </div>
         <div class="">
-          <Form class="d-flex pr-3 pl-3" @submit="handleMessageSending">
-            <Field name="message"
+          <Form class="d-flex pr-3 pl-3">
+            <input name="message"
                    id="message"
                    type="text"
+                   v-model="chat_message"
                    class="form-control col-10"/>
-            <button class="btn btn-primary btn-block col-2" type="submit">SEND</button>
+            <button class="btn btn-primary btn-block col-2" @click="handleMessageSending" type="button">SEND</button>
           </Form>
         </div>
       </div>
@@ -257,7 +260,7 @@ import Stomp from "webstomp-client";
 import BettingService from "../services/betting.service"
 import AuctionService from "../services/auction.service"
 import ComplaintService from "../services/complaint.service"
-import {Field, Form} from "vee-validate";
+import {Form} from "vee-validate";
 import * as yup from "yup";
 import router from "@/router";
 import ChatService from "../services/chat.service";
@@ -270,7 +273,6 @@ export default {
   components: {
     Icon,
     Form,
-    Field,
     BettingRoom,
   },
   data() {
@@ -304,6 +306,7 @@ export default {
         lastBid: null,
       },
       qr_image: "",
+      chat_message: '',
       loading: false,
       bids: [],
       complaintMessage: null,
@@ -386,10 +389,11 @@ export default {
       if (this.stompClient && this.stompClient.connected) {
         this.stompClient.send("/app/chat/auction/" + this.auctionId, JSON.stringify({
           'senderId': this.$store.state.auth.user.userDto.id,
-          'message': 'Hello!'
+          'message': this.chat_message
         }));
         let div = document.getElementById('chat-box');
         div.scroll({top: div.scrollHeight, behavior: 'smooth'});
+        this.chat_message = '';
       }
     },
     handleBet() {
@@ -413,7 +417,11 @@ export default {
             this.connected = true;
             this.stompClient.subscribe("/betting/" + this.auctionId,
                 tick => {
-                  this.bids.push(JSON.parse(tick.body));
+                  const bid = JSON.parse(tick.body);
+                  this.bids.push(bid);
+                  if (bid.bid > this.content.finishPrice) {
+                    this.content.statusType = 'FINISHED';
+                  }
                 });
 
             this.stompClient.subscribe("/chat/auction/" + this.auctionId,
@@ -561,8 +569,6 @@ export default {
 
 .chat-message {
   display: inline-flex;
-  background-color: #9c9c9c;
   border-radius: 48%;
-  border-style: solid;
 }
 </style>

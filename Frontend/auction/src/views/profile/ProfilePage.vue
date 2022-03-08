@@ -9,7 +9,7 @@
       <change-password-component v-else-if="this.currentPage == 'account/password'"/>
       <user-table v-else-if="this.currentPage == 'user-table'"/>
       <auction-table v-else-if="this.currentPage == 'auction-table'"/>
-      <statistic-page v-else-if="this.currentPage == 'statistic'"/>
+      <statistic-page :class="{'d-none' : this.currentPage != 'statistic'}" v-else-if="this.currentPage == 'statistic'"/>
       <user-auction-list v-else-if="this.currentPage == 'my-auctions'"/>
       <create-new-category v-else-if="this.currentPage == 'create-category'"/>
       <settings v-else-if="this.currentPage == 'settings'"/>

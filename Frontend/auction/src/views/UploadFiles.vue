@@ -1,4 +1,9 @@
 <template>
+  <cropper
+      :src="img"
+
+      @change="change"
+  />
   <div class="cl-upload">
     <!-- create a form that will not submit to a server but will prevent submit and
     use the upload function as a handle-->
@@ -43,9 +48,14 @@
 
 <script>
 import axios from "axios";
+import { Cropper } from 'vue-advanced-cropper';
+import 'vue-advanced-cropper/dist/style.css';
 
 export default {
   name: "CloudinaryUpload",
+  components: {
+    Cropper,
+  },
   data() {
     const progressBarOptions = {
       text: {
@@ -71,6 +81,7 @@ export default {
       errors: [],
       file: null,
       filesSelected: 0,
+      img: 'https://images.pexels.com/photos/4323307/pexels-photo-4323307.jpeg',
       cloudName: "dxn6dcenz",
       preset: "jhjwl2sq",
       tags: "browser-upload",
@@ -82,6 +93,9 @@ export default {
     };
   },
   methods: {
+    change({ coordinates, canvas }) {
+      console.log(coordinates, canvas);
+    },
     // function to handle file info obtained from local
     // file system and set the file state
     handleFileChange: function (event) {
@@ -99,14 +113,7 @@ export default {
     upload() {
       this.progress = 0;
       //no need to look at selected files if there is no cloudname or preset
-      if (this.preset.length < 1 || this.cloudName.length < 1) {
-        this.errors.push("You must enter a cloud name and preset to upload");
-        return;
-      }
-      // clear errors
-      else {
-        this.errors = [];
-      }
+
       let reader = new FileReader();
       // attach listener to be called when data from file
       reader.addEventListener(
@@ -130,14 +137,12 @@ export default {
             this.showProgress = true;
             axios(requestObj)
                 .then(response => {
-                  console.log(response);
                   this.results.push(response.data);
                   this.$emit('uploadNewImages', response.data.secure_url)
                   // this.$store.dispatch("image/uploadImage", this.results);
                 })
                 .catch(error => {
                   this.errors.push(error);
-                  console.log(this.error);
                 })
                 .finally(() => {
                   setTimeout(

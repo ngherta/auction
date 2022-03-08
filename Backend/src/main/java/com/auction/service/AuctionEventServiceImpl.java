@@ -1,9 +1,7 @@
 package com.auction.service;
 
 import com.auction.event.notification.AuctionCreationNotificationEvent;
-import com.auction.event.notification.AuctionFinishingNotificationEvent;
 import com.auction.exception.AuctionEventNotFoundException;
-import com.auction.exception.SpecificationException;
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionWinner;
@@ -23,8 +21,6 @@ import com.auction.service.interfaces.AuctionSpecificationFilter;
 import com.auction.service.interfaces.AuctionWinnerService;
 import com.auction.service.interfaces.CategoryService;
 import com.auction.service.interfaces.MailService;
-import com.auction.service.interfaces.NotificationGenerationService;
-import com.auction.service.interfaces.NotificationSenderService;
 import com.auction.service.interfaces.PaymentService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionEventDto;
@@ -46,7 +42,6 @@ import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,7 +93,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
         .startPrice(request.getStartPrice())
         .finishPrice(request.getFinishPrice())
         .statusType(AuctionStatus.EXPECTATION)
-        .startDate(request.getStartDate().isBefore(LocalDateTime.now())
+        .startDate(request.getStartDate().isAfter(LocalDateTime.now())
                        ? request.getStartDate()
                        : LocalDateTime.now())
         .finishDate(request.getFinishDate())
@@ -114,6 +109,10 @@ class AuctionEventServiceImpl implements AuctionEventService {
     else if (request.getCharityPercent() > 0) {
       auctionEvent.setAuctionType(AuctionType.CHARITY);
       auctionEvent.setCharityPercent(request.getCharityPercent());
+    }
+
+    if (request.getStartDate().isBefore(LocalDateTime.now())) {
+      auctionEvent.setStatusType(AuctionStatus.ACTIVE);
     }
 
     auctionEvent.setImages(request.getImages());

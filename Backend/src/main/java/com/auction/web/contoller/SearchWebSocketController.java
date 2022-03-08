@@ -2,7 +2,6 @@ package com.auction.web.contoller;
 
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.web.dto.AuctionSearchDto;
-import com.auction.web.dto.response.MessageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;

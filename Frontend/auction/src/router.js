@@ -24,8 +24,13 @@ import ComplaintList from "@/views/profile/admin/ComplaintList";
 import SuccessPay from "@/views/SuccessPay";
 import Tour from "@/views/Tour";
 import Test from "@/views/profile/Test";
+import UploadImage from "@/views/UploadImage";
 
 const routes = [
+  {
+    path: "/imagetest",
+    component: UploadImage
+  },
   {
     path: "/",
     name: "home",

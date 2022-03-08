@@ -37,6 +37,7 @@
     "v-onboarding": "^1.0.1",
     "vee-validate": "^4.3.5",
     "vue": "^3.0.0",
+    "vue-advanced-cropper": "^2.8.1",
     "vue-chartjs": "^3.5.1",
     "vue-class-component": "8.0.0-rc.1",
     "vue-const": "^1.1.2",

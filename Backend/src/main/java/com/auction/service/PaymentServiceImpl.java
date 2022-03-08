@@ -6,9 +6,7 @@ import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionWinner;
 import com.auction.model.PaymentAudit;
 import com.auction.model.PaymentOrder;
-import com.auction.model.User;
 import com.auction.model.enums.AuctionType;
-import com.auction.model.enums.AuctionWinnerStatus;
 import com.auction.model.enums.PaymentStatus;
 import com.auction.model.enums.PaymentType;
 import com.auction.model.mapper.Mapper;
@@ -22,7 +20,6 @@ import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.PaymentOrderDto;
 import com.auction.web.dto.PaymentOrderWithAuctionEventDto;
 import com.auction.web.dto.ReceivePayment;
-import com.auction.web.dto.response.statistic.CommissionPerMouth;
 import com.paypal.api.payments.Payment;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -118,9 +115,8 @@ class PaymentServiceImpl implements PaymentService {
     if (payment.getState().equals("completed") ||
         payment.getState().equals("approved")) {
       paymentOrder.setStatus(PaymentStatus.COMPLETED);
-      paymentOrderRepository.save(paymentOrder);
       auctionWinnerService.paid(paymentOrder);
-      createAudit(paymentOrderRepository.save(paymentOrder));
+      createAudit(paymentOrder);
     }
   }
 
@@ -145,14 +141,7 @@ class PaymentServiceImpl implements PaymentService {
   @Override
   public Double takeCommission(PaymentOrder paymentOrder) {
     Double charityAmount = getCharityAmount(paymentOrder);
-    Double amount;
-
-    if (charityAmount == 0D) {
-      amount = paymentOrder.getPrice() * COMMISSION / 100;
-    }
-    else {
-      amount = (paymentOrder.getPrice() - charityAmount) * COMMISSION / 100;
-    }
+    Double amount = (paymentOrder.getPrice() - charityAmount) * COMMISSION / 100;
 
     PaymentAudit paymentAudit = PaymentAudit
         .builder()

@@ -48,8 +48,6 @@
             <router-link to="/login" v-on:click="logOut" v-if="currentUser" class="dropdown-item">Logout</router-link>
             <router-link to="/register" v-if="!currentUser" class="dropdown-item">Register</router-link>
             <router-link to="/login" v-if="!currentUser" class="dropdown-item">Login</router-link>
-            <div class="dropdown-divider"></div>
-            <router-link to="/home" class="dropdown-item">Something else here</router-link>
           </div>
         </li>
 
@@ -160,6 +158,8 @@ export default {
     },
     logOut() {
       this.$store.dispatch('auth/logout');
+      this.notifications = [];
+      this.unSeenNotification = 0;
       router.push("/login");
     },
     resizeForDevice() {

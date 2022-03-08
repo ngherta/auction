@@ -3,6 +3,7 @@ package com.auction.web.contoller;
 import com.auction.service.interfaces.AuctionActionService;
 import com.auction.web.dto.AuctionActionDto;
 import com.auction.web.dto.response.LastBidResponse;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,14 +24,14 @@ public class AuctionActionController {
   private final AuctionActionService auctionActionService;
 
   @GetMapping("/{auctionId}")
+  @ApiOperation("Get auction-event by id")
   public ResponseEntity<List<AuctionActionDto>> getByAuctionId(@PathVariable Long auctionId) {
     return ResponseEntity.ok(auctionActionService.getAllByAuctionId(auctionId));
   }
 
   @GetMapping("/last")
+  @ApiOperation("Get last bid for auction")
   public ResponseEntity<List<LastBidResponse>> getLastBidForAuctions(@RequestParam("auctionIds") List<Long> listOfIds) {
     return ResponseEntity.ok(auctionActionService.getLastBidForAuction(listOfIds));
   }
-
-  //create method for betting using websocket
 }
