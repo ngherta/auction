@@ -13,4 +13,9 @@ public class AuctionWinnerDto {
   private PaymentOrderDto paymentOrder;
   private String genDate;
   private AuctionWinnerStatus status;
+  private String country;
+  private String city;
+  private String address;
+  private Boolean hasDefaultAddress;
+  private Boolean needAddress;
 }

@@ -28,15 +28,17 @@
         <!--        <router-link :to="'/auction/' + auction.id"-->
         <!--                     class="text-decoration-none">-->
         <div class="row no-gutters">
-          <div class="img-item">
-            <img class="image-item"
+          <div class="">
+            <img class=""
                  :src="auction.images[0]"
+                 height="300"
+                 width="400"
                  alt="Image of auction">
           </div>
           <div class="col-md-8">
             <div class="card-body">
               <h5 class="card-title">{{ auction.title }}</h5>
-              <p class="card-text">{{ auction.description }}</p>
+              <p class="card-text">{{ auction.genDate }}</p>
               <p class="card-text"><small class="text-muted">{{ auction.statusType }}</small></p>
               <a v-if="title == 'WINNING'"
                  :href="paymentOrders.get(auction.id)"
@@ -165,19 +167,6 @@ export default {
 <style scoped>
 .filter-button {
   border: none;
-}
-
-.image-item {
-  max-width: 11rem;
-  margin: auto;
-}
-
-.img-item {
-  /*height: 10rem;*/
-  display: flex;
-  object-fit: scale-down;
-  margin: 0 auto;
-  max-width: 11rem;
 }
 
 .text-decoration-none {

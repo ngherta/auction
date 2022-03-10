@@ -16,4 +16,6 @@ public interface AuctionWinnerRepository extends JpaRepository<AuctionWinner, Lo
   Optional<AuctionWinner> findByAuctionEvent(AuctionEvent auctionEvent);
 
   Page<AuctionWinner> findByUser(User user, Pageable pageable);
+
+  Optional<AuctionWinner> findByAuctionEventId(Long id);
 }

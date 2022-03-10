@@ -24,13 +24,8 @@ import ComplaintList from "@/views/profile/admin/ComplaintList";
 import SuccessPay from "@/views/SuccessPay";
 import Tour from "@/views/Tour";
 import Test from "@/views/profile/Test";
-import UploadImage from "@/views/UploadImage";
 
 const routes = [
-  {
-    path: "/imagetest",
-    component: UploadImage
-  },
   {
     path: "/",
     name: "home",
@@ -113,10 +108,6 @@ const routes = [
     component: AuctionsPage,
   },
   {
-    path: "/auctions/:filter",
-    component: AuctionsPage,
-  },
-  {
     path: "/profile/account",
     component: ProfilePage,
   },
@@ -179,18 +170,18 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//   const publicPages = ['/login', '/register', '/home'];
-//   const authRequired = !publicPages.includes(to.path);
-//   const loggedIn = localStorage.getItem('user');
-//
-//   // trying to access a restricted page + not logged in
-//   // redirect to login page
-//   if (authRequired && !loggedIn) {
-//     next('/login');
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  const publicPages = ['/login', '/register', '/home', '/password/reset', '/error', '/about-us', '/auctions'];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem('user');
+
+  // trying to access a restricted page + not logged in
+  // redirect to login page
+  if (authRequired && !loggedIn) {
+    next('/login');
+  } else {
+    next();
+  }
+});
 
 export default router;

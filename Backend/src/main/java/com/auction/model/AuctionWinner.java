@@ -35,4 +35,17 @@ public class AuctionWinner extends AbstractEntity{
 
   @Enumerated(EnumType.STRING)
   private AuctionWinnerStatus status;
+
+  @Column(name = "country")
+  private String country;
+
+  @Column(name = "city")
+  private String city;
+
+  @Column(name = "address")
+  private String address;
+
+  public boolean hasAddress() {
+    return country != null && city != null && address != null;
+  }
 }

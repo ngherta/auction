@@ -2,6 +2,7 @@ package com.auction.service.interfaces;
 
 import com.auction.model.User;
 import com.auction.web.dto.UserDto;
+import com.auction.web.dto.request.AddDefaultAddressRequest;
 import com.auction.web.dto.request.SignupRequest;
 import com.auction.web.dto.request.UpdatePasswordRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
@@ -32,4 +33,6 @@ public interface UserService {
   User create(SignupRequest request);
 
   void updatePassword(UpdatePasswordRequest request);
+
+  void addDefaultAddress(AddDefaultAddressRequest request);
 }

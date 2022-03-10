@@ -1,15 +1,13 @@
 <template>
-  <h1 class="text-center m-5">
-    SUCCESS PAY
-  </h1>
-
-  <div class="swal2-icon swal2-success swal2-animate-success-icon" style="display: flex;">
-    <div class="swal2-success-circular-line-left" style="background-color: rgb(255, 255, 255);"></div>
-    <span class="swal2-success-line-tip"></span>
-    <span class="swal2-success-line-long"></span>
-    <div class="swal2-success-ring"></div>
-    <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
-    <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
+  <div class="d-flex justify-content-center align-items-center">
+    <div class="swal2-icon swal2-success swal2-animate-success-icon" style="display: flex;">
+      <div class="swal2-success-circular-line-left" style="background-color: rgb(255, 255, 255);"></div>
+      <span class="swal2-success-line-tip"></span>
+      <span class="swal2-success-line-long"></span>
+      <div class="swal2-success-ring"></div>
+      <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
+      <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
+    </div>
   </div>
 </template>
 
@@ -29,13 +27,13 @@ export default {
         this.$route.query['PayerID'],
         this.$route.query['token']
     ).then(
-        (response) => {
-          console.log("SUCCESS PAY - response");
-          console.log(response);
-          this.loading = false;
-        },
         () => {
+          this.loading = false;
           this.$router.push("/home");
+        },
+        (error) => {
+          console.log('something went wrong');
+          console.log(error);
         }
     )
   }

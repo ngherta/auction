@@ -3,6 +3,7 @@ package com.auction.web.contoller;
 import com.auction.service.interfaces.ResetPasswordService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.UserDto;
+import com.auction.web.dto.request.AddDefaultAddressRequest;
 import com.auction.web.dto.request.ChangePasswordRequest;
 import com.auction.web.dto.request.UpdatePasswordRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
@@ -90,6 +91,12 @@ public class UserController {
   @DeleteMapping("/{userId}")
   public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
     userService.deleteById(userId);
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/address")
+  public ResponseEntity<Void> addDefaultAddress(@RequestBody AddDefaultAddressRequest request) {
+    userService.addDefaultAddress(request);
     return ResponseEntity.ok().build();
   }
 }

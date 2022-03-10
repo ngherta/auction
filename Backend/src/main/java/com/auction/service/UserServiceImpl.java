@@ -17,6 +17,7 @@ import com.auction.service.interfaces.ComplaintService;
 import com.auction.service.interfaces.NotificationService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.UserDto;
+import com.auction.web.dto.request.AddDefaultAddressRequest;
 import com.auction.web.dto.request.SignupRequest;
 import com.auction.web.dto.request.UpdatePasswordRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
@@ -155,6 +156,15 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(newPasswordEncoded);
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void addDefaultAddress(AddDefaultAddressRequest request) {
+        User user = findById(request.getUserId());
+        user.setDefaultCountry(request.getCountry());
+        user.setDefaultCity(request.getCity());
+        user.setDefaultAddress(request.getAddress());
     }
 
     @Override

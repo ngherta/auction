@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-5">
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div id="carouselExampleControls" class="carousel slide mb-5" data-ride="carousel">
       <div class="carousel-inner">
         <div v-for="(image, index) of this.sortImages()"
              :key="image"
@@ -21,22 +21,25 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
-    <div class="">
-      <div class="card-deck" id="auctions-rendering">
-        <div v-for="auction in auctions" :key="auction.id" class="card">
-          <img class="card-img-top" v-bind:src="auction.images[0]" alt="image of auction">
-          <div class="card-body">
-            <h5 class="card-title">{{ auction.title }}</h5>
-            <p class="card-text">{{ auction.description }}</p>
-            <p class="card-text">
-              <small class="text-muted">{{ auction.statusType }}</small>
-            </p>
-          </div>
+    <div class="d-flex">
+      <div v-for="auction in auctions" :key="auction.id" class="card mr-3" style="width: 18rem;">
+        <img :src="auction.images[0]" height="300" class="card-img-top" alt="image of auction">
+        <div class="card-body">
+          <h5 class="card-title">{{auction.title}}</h5>
+          <p class="card-text">Status: <b>{{auction.statusType}}</b></p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Charity percent:
+            <b>{{ auction.charityPercent }} %</b></li>
+          <li  class="list-group-item">Start date: <b>{{auction.startDate}}</b></li>
+        </ul>
+        <div class="card-body">
+          <router-link :to="'/auction/' + auction.id" class="card-link">Open</router-link>
         </div>
       </div>
     </div>
     <div class="d-flex mt-5 mb-5">
-      <router-link to="/auctions" class="badge badge-pill badge-info m-auto text-uppercase">Show more</router-link>
+      <router-link to="/auctions" style="font-size: 1rem" class="badge badge-pill badge-info m-auto pt-1 pb-1 pr-3 pl-3 text-uppercase font-weight-bold">Show more</router-link>
     </div>
   </div>
 </template>

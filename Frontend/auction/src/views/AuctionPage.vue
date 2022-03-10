@@ -61,9 +61,9 @@
                 <div class="modal-footer">
                   <ShareNetwork
                       network="facebook"
-                      url="https://news.vuejs.org/issues/180"
-                      title=""
-                      description=""
+                      :url="'http://localhost:8080' + this.$route.fullPath"
+                      :title="content.title"
+                      description="Auction"
                       quote="qqq"
                       hashtags="auction"
                   >
@@ -71,9 +71,9 @@
                   </ShareNetwork>
                   <ShareNetwork
                       network="vk"
-                      url="https://news.vuejs.org/issues/180"
-                      title=""
-                      description=""
+                      :url="'http://localhost:8080' + this.$route.fullPath"
+                      :title="content.title"
+                      description="Auction"
                       quote="qqq"
                       hashtags="auction"
                   >
@@ -119,14 +119,13 @@
         </div>
         <div>
           <span>
-            <b>Description:</b>
-            <!--            <span v-html="content.description"/>-->
-          </span>
-          <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#descriptionModalLong">
-            open
+            <b>Status:</b>
+            {{ content.statusType }}</span>
+        </div>
+        <div>
+          <button type="button" class="btn btn-light" data-toggle="modal" data-target="#descriptionModalLong">
+            Show description
           </button>
-
           <!-- Modal -->
           <div class="modal fade" id="descriptionModalLong" tabindex="-1" role="dialog"
                aria-labelledby="descriptionModalLongTitle" aria-hidden="true">
@@ -146,8 +145,8 @@
       </div>
     </div>
 
-    <div class="row mt-5 mb-5">
-      <div class="col-6 p-3 border">
+    <div class="row mt-5 justify-content-between mb-5">
+      <div style="flex-basis: 47.5%" class="col p-3 border mr-auto">
         <button type="button"
                 data-toggle="modal"
                 data-target="#bettingModalLong"

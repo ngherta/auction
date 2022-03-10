@@ -20,18 +20,6 @@
               <ErrorMessage name="startPrice" class="error-feedback"/>
             </div>
             <div class="mb-3">
-              <label for="category">CATEGORY:</label>
-              <select class="custom-select" id="category" v-model="selectedCategories">
-                <option v-for="category in categories"
-                        :key="category.id"
-                        :value="category.id"
-                        :disabled="category.type == 'CATEGORY'"
-                        :class="{ category: category.type == 'CATEGORY' }">
-                  {{ category.name }}
-                </option>
-              </select>
-            </div>
-            <div class="mb-3">
               <div class="custom-control custom-checkbox">
                 <input @click="toggle()" type="checkbox" checked class="custom-control-input" id="customCheck1">
                 <label class="custom-control-label" for="customCheck1">Do you want to have maximum price for
@@ -43,6 +31,19 @@
                 <ErrorMessage name="finishPrice" class="error-feedback"/>
               </div>
             </div>
+            <div class="mb-3">
+              <label for="category">CATEGORY:</label>
+              <select class="custom-select" id="category" v-model="selectedCategories">
+                <option v-for="category in categories"
+                        :key="category.id"
+                        :value="category.id"
+                        :disabled="category.type == 'CATEGORY'"
+                        :class="{ category: category.type == 'CATEGORY' }">
+                  {{ category.name }}
+                </option>
+              </select>
+            </div>
+
             <!--          TODO: add styles because we cant use .form-control-->
             <div class="mb-3">
               <label for="startDate">START DATE:</label>
@@ -68,7 +69,11 @@
             </div>
           </div>
           <div class="col">
-            <upload-image @uploadNewImages="uploadNewImages($event)"/>
+            <upload-image show-results="true"
+                          ratio=5/6
+                          result-width="300"
+                          result-height="360"
+                          @uploadNewImages="uploadNewImages($event)"/>
           </div>
         </div>
         <div class="row">
@@ -158,10 +163,9 @@ export default {
             this.$router.push("/auctions");
           },
           (error) => {
-            console.log(error);
             this.$notify({
-              text: error,
-              type: 'error'
+              type: 'error',
+              text: error.response.data.errorMessage
             });
           }
       )

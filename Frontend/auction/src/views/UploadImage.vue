@@ -3,7 +3,7 @@
   <button ref="modalImageUpload"
           class="d-none"
           type="button"
-          data-toggle="modal" 
+          data-toggle="modal"
           data-target="#modalImageUpload">
     Launch demo modal
   </button>
@@ -27,18 +27,15 @@
           <cropper
               ref="cropper"
               class="upload-example-cropper"
-              :stencil-size="{
-		width: width,
-		height: height
-	}"
               :stencil-props="{
 		handlers: {},
 		movable: true,
-		resizable: false,
+		resizable: true,
 		aspectRatio: 1,
 	}"
               :src="image.src"
-          />        </div>
+          />
+        </div>
         <div class="modal-footer">
           <button type="button" ref="hideModalImage" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" data-dismiss="modal" @click="crop">Upload</button>
@@ -61,10 +58,10 @@
       </form>
     </div>
   </div>
-  <div class="d-flex">
+  <div v-if="showResults == true" class="d-flex">
     <div v-if="results">
       <section v-for="result in results" :key="result">
-        <img :src="result.secure_url" :height="height" :alt="result.public_id"/>
+        <img :src="result.secure_url" :height="resultHeight" :alt="result.public_id"/>
       </section>
     </div>
   </div>
@@ -98,6 +95,7 @@ function getMimeType(file, fallback = null) {
 
 export default {
   name: 'UploadImage',
+  props: ['ratio', 'showResults', 'width', 'height', 'resultWidth', 'resultHeight'],
   components: {
     Cropper,
   },
@@ -108,8 +106,6 @@ export default {
         type: null,
       },
       results: [],
-      width: 400,
-      height: 300,
       formData: null,
       imageFile: '',
       cloudName: "dxn6dcenz",
@@ -204,5 +200,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

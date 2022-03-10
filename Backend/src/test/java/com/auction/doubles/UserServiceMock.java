@@ -4,6 +4,7 @@ import com.auction.model.User;
 import com.auction.model.fixture.UserFixture;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.UserDto;
+import com.auction.web.dto.request.AddDefaultAddressRequest;
 import com.auction.web.dto.request.SignupRequest;
 import com.auction.web.dto.request.UpdatePasswordRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
@@ -111,6 +112,11 @@ public class UserServiceMock implements UserService {
 
   @Override
   public void updatePassword(UpdatePasswordRequest request) {
+
+  }
+
+  @Override
+  public void addDefaultAddress(AddDefaultAddressRequest request) {
 
   }
 }

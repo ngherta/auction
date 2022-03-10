@@ -22,12 +22,17 @@ public class AuctionWinnerToDtoMapper implements Mapper<AuctionWinner, AuctionWi
   @Override
   public AuctionWinnerDto map(AuctionWinner entity) {
     return AuctionWinnerDto.builder()
-            .price(entity.getPrice())
-            .user(userUserDtoMapper.map(entity.getUser()))
-            .auctionEvent(auctionEventDtoMapper.map(entity.getAuctionEvent()))
-            .paymentOrder(paymentOrderDtoMapper.map(entity.getPaymentOrder()))
-            .genDate(entity.getGenDate().toString())
-            .status(entity.getStatus())
-            .build();
+        .price(entity.getPrice())
+        .user(userUserDtoMapper.map(entity.getUser()))
+        .auctionEvent(auctionEventDtoMapper.map(entity.getAuctionEvent()))
+        .paymentOrder(paymentOrderDtoMapper.map(entity.getPaymentOrder()))
+        .genDate(entity.getGenDate().toString())
+        .status(entity.getStatus())
+        .address(entity.getAddress())
+        .city(entity.getCity())
+        .country(entity.getCountry())
+        .hasDefaultAddress(entity.getUser().hasDefaultAddress())
+        .needAddress(!entity.hasAddress())
+        .build();
   }
 }

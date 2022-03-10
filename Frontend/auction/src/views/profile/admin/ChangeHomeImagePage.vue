@@ -26,7 +26,9 @@
 
           </div>
           <div class="col">
-            <UploadFiles @uploadNewImages="uploadNewImages($event)"/>
+            <UploadImage show-results="false"
+                         ratio="1/3"
+                         @uploadNewImages="uploadNewImages($event)"/>
           </div>
         </div>
         <div class="row mt-5">
@@ -123,7 +125,7 @@
 </template>
 
 <script>
-import UploadFiles from '../../UploadFiles';
+import UploadImage from "@/views/UploadImage";
 import ImageLinkService from '../../../services/imageLink.service';
 import {ErrorMessage, Field, Form} from "vee-validate";
 import * as yup from "yup";
@@ -135,7 +137,7 @@ export default {
     Form,
     Field,
     ErrorMessage,
-    UploadFiles,
+    UploadImage,
   },
   data() {
     const schema = yup.object().shape({

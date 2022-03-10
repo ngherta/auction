@@ -22,4 +22,8 @@ public class UserDto {
     private String birthday;
     private Set<String> userRole;
     private Boolean enabled;
+    private Boolean hasDefaultAddress;
+    private String country;
+    private String city;
+    private String address;
 }

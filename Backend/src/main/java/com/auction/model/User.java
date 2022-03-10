@@ -51,8 +51,21 @@ public class User extends AbstractEntity {
   @Column(name = "gen_date")
   private LocalDateTime genDate;
 
+  @Column(name = "default_country")
+  private String defaultCountry;
+
+  @Column(name = "default_city")
+  private String defaultCity;
+
+  @Column(name = "default_address")
+  private String defaultAddress;
+
   public User(String email, String password) {
     this.email = email;
     this.password = password;
+  }
+
+  public boolean hasDefaultAddress() {
+    return defaultCountry != null && defaultCity != null && defaultAddress != null;
   }
 }

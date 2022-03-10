@@ -7,6 +7,7 @@ import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.request.AuctionEventRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -122,5 +123,14 @@ public class AuctionEventController {
                                                              @RequestParam(defaultValue = "10") int perPage,
                                                              @PathVariable Long userId) {
     return ResponseEntity.ok(auctionEventService.getAllByOwner(userId, page, perPage));
+  }
+
+  @GetMapping("/all/{userId}")
+  @ApiOperation("Get all auctions where user participates or creates")
+  public ResponseEntity<Page<AuctionEventDto>> getAllWhereContainsUser(@PathVariable Long userId){
+      if (userId != null) {
+        throw new NotYetImplementedException("Need to implement");
+      }
+    return ResponseEntity.ok().build();
   }
 }

@@ -24,7 +24,9 @@
       <column name="enabled" type="bool"></column>
       <column name="birthday" type="date"></column>
       <column name="gen_date" type="timestamp"></column>
-
+      <column name="default_country" type="varchar(255)"></column>
+      <column name="default_city" type="varchar(255)"></column>
+      <column name="default_address" type="varchar(255)"></column>
     </createTable>
 
 

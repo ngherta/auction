@@ -23,8 +23,6 @@ export class PaymentService {
     }
 
     executeSuccessPay(paymentId, payerId, token) {
-        console.log("ASDASDPAYMENTS!!!")
-        console.log(paymentId);
         return axios.post(API_URL + 'success', {},
             {
                 params: {
@@ -34,6 +32,7 @@ export class PaymentService {
                 }
             })
     }
+
 }
 
 export default new PaymentService();
