@@ -6,6 +6,7 @@ import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionWinner;
 import com.auction.model.PaymentAudit;
 import com.auction.model.PaymentOrder;
+import com.auction.model.User;
 import com.auction.model.enums.AuctionType;
 import com.auction.model.enums.PaymentStatus;
 import com.auction.model.enums.PaymentType;
@@ -13,6 +14,7 @@ import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.PaymentAuditRepository;
 import com.auction.repository.PaymentOrderRepository;
+import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.AuctionWinnerService;
 import com.auction.service.interfaces.PaymentService;
 import com.auction.service.interfaces.PaypalService;
@@ -43,6 +45,7 @@ class PaymentServiceImpl implements PaymentService {
   private final PaymentOrderRepository paymentOrderRepository;
   private final PaypalService paypalService;
   private final AuctionEventRepository auctionEventRepository;
+  private final UserRepository userRepository;
   private final Mapper<PaymentOrder, PaymentOrderDto> paymentOrderDtoMapper;
   private final Mapper<PaymentOrder, PaymentOrderWithAuctionEventDto> paymentOrderWithAuctionEventDtoMapper;
   private final Mapper<PaymentAudit, ReceivePayment> receivePaymentMapper;
@@ -134,6 +137,12 @@ class PaymentServiceImpl implements PaymentService {
         .type(PaymentType.TRANSFER)
         .build();
 
+    paymentAudit
+        .getRecipient()
+        .setMoneyBalance(paymentAudit
+                             .getRecipient()
+                             .getMoneyBalance() + paymentAudit.getAmount());
+
     paymentAuditRepository.save(paymentAudit);
   }
 
@@ -198,5 +207,18 @@ class PaymentServiceImpl implements PaymentService {
     return paymentOrderRepository
         .findByUser(userService.findById(userId), pageable)
         .map(paymentOrderWithAuctionEventDtoMapper::map);
+  }
+
+  @Override
+  @Transactional
+  public void confirmPayment(AuctionWinner auctionWinner) {
+    PaymentAudit audit = paymentAuditRepository.findByPaymentOrderAndType(auctionWinner.getPaymentOrder(), PaymentType.TRANSFER)
+        .orElseThrow(
+            () -> new PaymentNotFound("Payment for auction[" + auctionWinner
+            .getPaymentOrder()
+            .getAuctionEvent()
+            .getId() + "] not found!"));
+    User user = audit.getRecipient();
+    user.replenishBalance(audit.getAmount());
   }
 }

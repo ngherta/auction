@@ -8,8 +8,6 @@ import com.auction.web.dto.AuctionWinnerDto;
 import com.auction.web.dto.request.AddAddressToWinnerRequest;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
 public interface AuctionWinnerService {
 
   Page<AuctionWinnerDto> getAllAuctionWinnerForUser(User user, int page, int perPage);
@@ -30,5 +28,11 @@ public interface AuctionWinnerService {
 
   void startDelivery(AuctionWinner auctionWinner);
 
+  void finishDeliveryByAuctionId(Long auctionId);
+
   void finishDelivery(AuctionWinner auctionWinner);
+
+  Page<AuctionWinnerDto> getAllAuctionWinnerForUserCreator(Long userId, int page, int perPage);
+
+  void addTrackNumber(Long auctionId, String trackNumber);
 }

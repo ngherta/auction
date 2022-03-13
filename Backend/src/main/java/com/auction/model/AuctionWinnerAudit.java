@@ -14,36 +14,23 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "auction_winner")
+@Table(name = "auction_winner_audit")
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class AuctionWinner extends AbstractEntity{
-  @OneToOne
-  @JoinColumn(name = "auction_id", nullable = false, updatable = false)
-  private AuctionEvent auctionEvent;
+public class AuctionWinnerAudit extends AbstractEntity{
 
-  @OneToOne
-  @JoinColumn(name = "user_id", nullable = false, updatable = false)
-  private User user;
-
-  @Column(name = "price")
-  private Double price;
-
-  @OneToOne
-  @JoinColumn(name = "payment_order_id")
-  private PaymentOrder paymentOrder;
-
-  @Column(name = "gen_date", nullable = false)
-  private LocalDateTime genDate;
+  @ManyToOne
+  @JoinColumn(name = "auction_winner_id", nullable = false, updatable = false)
+  private AuctionWinner auctionWinner;
 
   @Enumerated(EnumType.STRING)
   private AuctionWinnerStatus status;
@@ -60,7 +47,6 @@ public class AuctionWinner extends AbstractEntity{
   @Column(name = "track_number")
   private String trackNumber;
 
-  public boolean hasAddress() {
-    return country != null && city != null && address != null;
-  }
+  @Column(nullable = false, updatable = false)
+  private LocalDateTime created;
 }

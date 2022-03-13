@@ -55,6 +55,10 @@ class AuctionActionServiceImpl implements AuctionActionService {
 
     User user = userService.findById(userId);
 
+    return create(bet, auctionEvent, user);
+  }
+
+  private AuctionActionDto create(Double bet, AuctionEvent auctionEvent, User user) {
     if (auctionEvent.getFinishPrice() != null && auctionEvent.getFinishPrice() <= bet) {
       auctionEventService.finishByFinishPrice(auctionEvent, user);
       bet = auctionEvent.getFinishPrice();
@@ -67,9 +71,10 @@ class AuctionActionServiceImpl implements AuctionActionService {
             .bet(bet)
             .genDate(LocalDateTime.now())
             .build();
+    auctionActionRepository.save(auctionAction);
 
     publisher.publishEvent(new ChangeBetEvent(auctionAction));
-    return auctionActionToDtoMapper.map(auctionActionRepository.save(auctionAction));
+    return auctionActionToDtoMapper.map(auctionAction);
   }
 
   @Override
@@ -98,7 +103,7 @@ class AuctionActionServiceImpl implements AuctionActionService {
     }
     if (!action.isEmpty()) {
       double betDifference = (bet * 100 / action.get().getBet()) - 100;
-      if (betDifference < 5.0) {
+      if (betDifference <= 5.0) {
         throw new WrongBetException("Bet should be 5 percent higher!");
       }
     }
@@ -144,6 +149,31 @@ class AuctionActionServiceImpl implements AuctionActionService {
     Pageable pageable = PageRequest.of(page - 1, perPage);
     return auctionActionRepository.findAuctionActionByParticipantAndGroupByAuction(userId, pageable)
             .map(e -> auctionEventDtoMapper.map(e.getAuctionEvent()));
+  }
+
+  @Override
+  @Transactional
+  public void bet(String terminal) {
+    AuctionAction action = AuctionAction
+        .builder()
+        .bet(3D)
+        .build();
+  }
+
+  @Override
+  @Transactional
+  public AuctionActionDto defaultBet(AuctionEvent currentAuctionEvent, User user) {
+
+    Optional<AuctionAction> action = auctionActionRepository.findTopByAuctionEventOrderByBetDesc(currentAuctionEvent);
+    Double defaultBet = currentAuctionEvent.getStartPrice();
+
+    if (action.isPresent()) {
+      defaultBet = action.get().getBet() * 1.05;
+    }
+    checkBet(currentAuctionEvent, defaultBet, action);
+
+
+    return create(defaultBet, currentAuctionEvent, user);
   }
 
   private Double getLastBidFromListById(List<LastBidProjection> list, Long auctionId) {

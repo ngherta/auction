@@ -1,5 +1,5 @@
 package com.auction.model.enums;
 
 public enum PaymentStatus {
-  CREATED, COMPLETED;
+  CREATED, COMPLETED, CLOSED;
 }

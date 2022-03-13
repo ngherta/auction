@@ -42,6 +42,21 @@
       <column name="country" type="varchar(255)"></column>
       <column name="city" type="varchar(255)"></column>
       <column name="address" type="varchar(255)"></column>
+      <column name="track_number" type="varchar(255)"></column>
+      <column name="modified" type="timestamp"></column>
+    </createTable>
+
+    <createTable tableName="auction_winner_audit">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="auction_winner_id" type="int8"></column>
+      <column name="status" type="varchar(50)"></column>
+      <column name="country" type="varchar(255)"></column>
+      <column name="city" type="varchar(255)"></column>
+      <column name="address" type="varchar(255)"></column>
+      <column name="track_number" type="varchar(255)"></column>
+      <column name="created" type="timestamp"></column>
     </createTable>
 
     <createTable tableName="auction_event_images">

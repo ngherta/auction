@@ -7,6 +7,8 @@ import com.auction.model.fixture.AuctionEventFixture;
 import com.auction.model.fixture.UserFixture;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionWinnerRepository;
+import com.auction.repository.PaymentAuditRepository;
+import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.PaymentService;
 import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.AuctionEventDto;
@@ -36,11 +38,15 @@ class AuctionWinnerServiceImplTest {
   @Mock
   private UserService userService;
   @Mock
+  private AuctionEventService auctionEventService;
+  @Mock
   private Mapper<AuctionWinner, AuctionWinnerDto> auctionWinnerDtoMapper;
   @Mock
   private PaymentService paymentService;
   @Mock
   private ApplicationEventPublisher publisher;
+  @Mock
+  private PaymentAuditRepository paymentAuditRepository;
 
 
   private AuctionWinnerServiceImpl auctionWinnerService;
@@ -51,7 +57,12 @@ class AuctionWinnerServiceImplTest {
 
   @BeforeEach
   public void setUp() {
-    auctionWinnerService = new AuctionWinnerServiceImpl(auctionWinnerRepository, userService, auctionWinnerDtoMapper, paymentService,publisher);
+    auctionWinnerService = new AuctionWinnerServiceImpl(auctionWinnerRepository,
+                                                        userService,
+                                                        auctionWinnerDtoMapper,
+                                                        paymentService,
+                                                        publisher,
+                                                        paymentAuditRepository);
     user = UserFixture.user();
     AuctionEvent auctionEvent = AuctionEventFixture.auctionEvent();
     AuctionWinner auctionWinner = AuctionWinner.builder()

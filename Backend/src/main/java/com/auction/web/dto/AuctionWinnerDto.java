@@ -18,4 +18,5 @@ public class AuctionWinnerDto {
   private String address;
   private Boolean hasDefaultAddress;
   private Boolean needAddress;
+  private String trackNumber;
 }

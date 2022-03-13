@@ -11,6 +11,8 @@ import com.auction.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
+
 @Component
 @RequiredArgsConstructor
 public class AuctionWinnerToDtoMapper implements Mapper<AuctionWinner, AuctionWinnerDto> {
@@ -26,13 +28,14 @@ public class AuctionWinnerToDtoMapper implements Mapper<AuctionWinner, AuctionWi
         .user(userUserDtoMapper.map(entity.getUser()))
         .auctionEvent(auctionEventDtoMapper.map(entity.getAuctionEvent()))
         .paymentOrder(paymentOrderDtoMapper.map(entity.getPaymentOrder()))
-        .genDate(entity.getGenDate().toString())
+        .genDate(entity.getGenDate().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")))
         .status(entity.getStatus())
         .address(entity.getAddress())
         .city(entity.getCity())
         .country(entity.getCountry())
         .hasDefaultAddress(entity.getUser().hasDefaultAddress())
         .needAddress(!entity.hasAddress())
+        .trackNumber(entity.getTrackNumber())
         .build();
   }
 }

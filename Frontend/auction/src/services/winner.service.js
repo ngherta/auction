@@ -16,6 +16,15 @@ export class WinnerService {
         });
     }
 
+    getWinnerForAuctionCreator(userId, page, perPage) {
+        return axios.get(API_URL + 'user/creator/' + userId, {
+            params: {
+                page: page,
+                perPage: perPage
+            }
+        });
+    }
+
     addAddress(data, auctionId) {
         return axios.post(API_URL + auctionId + '/address',  {
             auctionId : auctionId,
@@ -23,6 +32,14 @@ export class WinnerService {
             city: data.city,
             address: data.address,
         })
+    }
+
+    addTrackNumber(trackNumber, auctionId) {
+        return axios.post(API_URL + auctionId + '/track/' + trackNumber);
+    }
+
+    delivered(auctionId) {
+        return axios.put(API_URL + auctionId + '/delivered');
     }
 }
 

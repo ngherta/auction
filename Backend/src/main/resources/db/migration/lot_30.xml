@@ -81,6 +81,12 @@
                              onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
                              referencedTableName="users" validate="true"/>
 
+    <addForeignKeyConstraint baseColumnNames="auction_winner_id" baseTableName="auction_winner_audit"
+                             constraintName="f267qhh1d2q1123asfdasddg226qcasd83i" deferrable="false"
+                             initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="auction_winner" validate="true"/>
+
     <!--  payment FK  -->
     <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="payment"
                              constraintName="f267qxx1d2qxqa32dg22sqcpm83i" deferrable="false" initiallyDeferred="false"
@@ -170,7 +176,7 @@
                              initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                              referencedColumnNames="id" referencedTableName="users" validate="true"/>
 
-    <!--    NotificationMessageUser -->
+    <!--    Payment_audit -->
     <addForeignKeyConstraint baseColumnNames="payment_id" baseTableName="payment_audit"
                              constraintName="f267qxx123123xasdg12hkm83i" deferrable="false"
                              initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
@@ -183,6 +189,16 @@
                              constraintName="f267qxx1xas1qgkljhfs2sqcx82123" deferrable="false"
                              initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                              referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+    <!--    Button-->
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="iot_button"
+                             constraintName="f267qxx1xap1qahfsagsqchqm28fi" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    <addForeignKeyConstraint baseColumnNames="current_auction_id" baseTableName="iot_button"
+                             constraintName="f267qxx1xqgkljhfs222qwgj3" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="auction" validate="true"/>
     <rollback>
     </rollback>
   </changeSet>

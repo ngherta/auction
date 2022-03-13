@@ -13,12 +13,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice(basePackageClasses = {
-        AuctionActionController.class,
-        AuctionEventController.class,
-        AuthController.class,
-        UserController.class,
-        ComplaintController.class,
-        WebSocketController.class
+    AuctionActionController.class,
+    AuctionEventController.class,
+    AuthController.class,
+    CategoryController.class,
+    ImageLinkController.class,
+    NotificationWebsocketController.class,
+    PaymentController.class,
+    SearchWebSocketController.class,
+    SettingsController.class,
+    StatisticController.class,
+    TokenController.class,
+    UserController.class,
+    ComplaintController.class,
+    WebSocketController.class,
+    IoTController.class
 })
 @Slf4j
 public class GlobalControllerAdvice {
@@ -31,20 +40,16 @@ public class GlobalControllerAdvice {
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<List<ErrorDto>> handleConstraintViolationException(ConstraintViolationException e) {
     return ResponseEntity.badRequest().body(e.getConstraintViolations()
-                                                    .stream()
-                                                    .map(error -> new ErrorDto(error.getMessage()))
-                                                    .collect(Collectors.toList()));
+                                                .stream()
+                                                .map(error -> new ErrorDto(error.getMessage()))
+                                                .collect(Collectors.toList()));
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<List<ErrorDto>> handleNotValidException(MethodArgumentNotValidException e) {
-    log.info(e.getMessage());
-    log.info(e.getLocalizedMessage());
-    log.info(e.getFieldErrors().toString());
-
     return ResponseEntity.badRequest().body(e.getFieldErrors()
-                                                    .stream()
-                                                    .map(error -> new ErrorDto(error.getDefaultMessage()))
-                                                    .collect(Collectors.toList()));
+                                                .stream()
+                                                .map(error -> new ErrorDto(error.getDefaultMessage()))
+                                                .collect(Collectors.toList()));
   }
 }

@@ -68,7 +68,6 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public Page<UserDto> get(int page, int perPage) {
         Pageable pageable = PageRequest.of(page - 1, perPage);
-
         return userRepository.findAll(pageable).map(userToDtoMapper::map);
     }
 
@@ -137,6 +136,7 @@ public class UserServiceImpl implements UserService {
         user.setBirthday(request.getBirthday());
         user.setEnabled(true);
         user.setGenDate(LocalDateTime.now());
+        user.setMoneyBalance(0D);
         return userRepository.save(user);
     }
 

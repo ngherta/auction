@@ -170,7 +170,7 @@ export default {
 
 .custom-table {
   position: relative;
-  height: 200px;
+  height: 309px;
   overflow: auto;
   display: block;
 }

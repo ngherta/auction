@@ -71,8 +71,8 @@
           <div class="col">
             <upload-image show-results="true"
                           ratio=5/6
-                          result-width="300"
-                          result-height="360"
+                          result-width=300
+                          result-height=360
                           @uploadNewImages="uploadNewImages($event)"/>
           </div>
         </div>

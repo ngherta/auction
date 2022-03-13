@@ -420,6 +420,7 @@ export default {
                   this.bids.push(bid);
                   if (bid.bid > this.content.finishPrice) {
                     this.content.statusType = 'FINISHED';
+                    this.getData();
                   }
                 });
 

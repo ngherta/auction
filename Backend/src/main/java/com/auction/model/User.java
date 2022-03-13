@@ -60,6 +60,9 @@ public class User extends AbstractEntity {
   @Column(name = "default_address")
   private String defaultAddress;
 
+  @Column(name = "money_balance")
+  private Double moneyBalance;
+
   public User(String email, String password) {
     this.email = email;
     this.password = password;
@@ -67,5 +70,9 @@ public class User extends AbstractEntity {
 
   public boolean hasDefaultAddress() {
     return defaultCountry != null && defaultCity != null && defaultAddress != null;
+  }
+
+  public void replenishBalance(Double money) {
+    this.moneyBalance += money;
   }
 }

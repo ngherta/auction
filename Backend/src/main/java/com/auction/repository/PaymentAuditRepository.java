@@ -1,8 +1,8 @@
 package com.auction.repository;
 
 import com.auction.model.PaymentAudit;
+import com.auction.model.PaymentOrder;
 import com.auction.model.User;
-import com.auction.model.enums.AuctionStatus;
 import com.auction.model.enums.PaymentType;
 import com.auction.projection.CommissionPerMouthProjection;
 import org.springframework.data.domain.Page;
@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PaymentAuditRepository extends JpaRepository<PaymentAudit, Long> {
@@ -31,6 +32,9 @@ public interface PaymentAuditRepository extends JpaRepository<PaymentAudit, Long
             " GROUP BY date, year, index, month " +
             " ORDER BY year, index ")
     List<CommissionPerMouthProjection> getCommissionPerMouth();
+
+
+    Optional<PaymentAudit> findByPaymentOrderAndType(PaymentOrder paymentOrder, PaymentType type);
 
 
 }

@@ -21,6 +21,7 @@ public class UserToDtoMapper implements Mapper<User, UserDto> {
         userDto.setLastName(entity.getLastName());
         userDto.setEnabled(entity.isEnabled());
         userDto.setHasDefaultAddress(entity.hasDefaultAddress());
+        userDto.setMoneyBalance(entity.getMoneyBalance());
         if (entity.getBirthday() != null) {
             userDto.setBirthday(entity.getBirthday().format(DateTimeFormatter.ofPattern("dd-MM-yy")));
         }

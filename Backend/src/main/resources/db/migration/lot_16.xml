@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+  <changeSet id="16" author="ngh">
+    <createTable tableName="iot_button">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="button_id" type="varchar(50)"></column>
+      <column name="current_auction_id" type="int8"></column>
+      <column name="user_id" type="int8"></column>
+      <column name="connected" type="bool"></column>
+    </createTable>
+
+    <insert tableName="iot_button">
+      <column name="id" valueNumeric="2323"></column>
+      <column name="button_id" value="1x323124"></column>
+      <column name="user_id" value="777"></column>
+      <column name="connected" valueBoolean="false"></column>
+    </insert>
+
+    <rollback>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

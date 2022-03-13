@@ -26,4 +26,6 @@ public interface PaymentService {
                                                    final int perPage);
 
     Page<PaymentOrderWithAuctionEventDto> findByUser(Long userId, int page, int perPage);
+
+  void confirmPayment(AuctionWinner auctionWinner);
 }

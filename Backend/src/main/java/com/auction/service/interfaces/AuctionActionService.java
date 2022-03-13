@@ -2,6 +2,7 @@ package com.auction.service.interfaces;
 
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
+import com.auction.model.User;
 import com.auction.projection.LastBidProjection;
 import com.auction.web.dto.AuctionActionDto;
 import com.auction.web.dto.AuctionEventDto;
@@ -26,4 +27,7 @@ public interface AuctionActionService {
 
   Page<AuctionEventDto> getAuctionsByParticipant(Long userId, int page, int perPage);
 
+  void bet(String terminal);
+
+  AuctionActionDto defaultBet(AuctionEvent currentAuctionEvent, User user);
 }

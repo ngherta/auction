@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -26,4 +25,5 @@ public class UserDto {
     private String country;
     private String city;
     private String address;
+    private Double moneyBalance;
 }
