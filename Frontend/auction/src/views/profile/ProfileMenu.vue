@@ -68,7 +68,7 @@
                      class="text-decoration-none profile-item-link">
           <div class="p-3 border profile-item"
                :class="{'profile-item-active' : activeItem == 'create-category'}">
-            <Icon name="profile-account-overview"/>
+            <Icon name="categories"/>
             <span class="pl-3 profile-item-text">New categories</span>
           </div>
         </router-link>
@@ -92,8 +92,20 @@
                      class="text-decoration-none profile-item-link profile-item-link">
           <div class="p-3 border profile-item"
                :class="{'profile-item-active' : activeItem == 'payments'}">
-            <Icon name="settings" size="0.8"/>
+            <Icon name="payments" size="1.8"/>
             <span class="pl-3 profile-item-text">Payments</span>
+          </div>
+        </router-link>
+      </li>
+      <li>
+        <router-link @click="this.$emit('handleChangePage', 'home-images')"
+                     to="/profile/home-images"
+                     :disabled="activeItem == 'home-images'"
+                     class="text-decoration-none profile-item-link profile-item-link">
+          <div class="p-3 border profile-item"
+               :class="{'profile-item-active' : activeItem == 'home-images'}">
+            <Icon name="payments" size="1.8"/>
+            <span class="pl-3 profile-item-text">Home images</span>
           </div>
         </router-link>
       </li>

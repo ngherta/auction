@@ -1,7 +1,7 @@
 <template>
-  <div class="container mt-5 mb-5">
+  <div v-if="isActiveComponent" class="container mb-5">
     <div class="border p-5">
-      <h1 class="h1 mb-3">Add new image to home page</h1>
+      <h2 class="h1 mb-3">Add new image to home page</h2>
       <Form @submit="handleUpdate" :validation-schema="schema">
         <div class="row align-items-center">
           <div class="col">
@@ -130,7 +130,6 @@ import ImageLinkService from '../../../services/imageLink.service';
 import {ErrorMessage, Field, Form} from "vee-validate";
 import * as yup from "yup";
 
-
 export default {
   name: "ChangeHomeImagePage",
   components: {
@@ -159,21 +158,18 @@ export default {
       imageUploaded: null,
       linkModel: null,
       sequenceModel: null,
+      isActiveComponent: true,
       schema
     }
   },
   methods: {
     addImageForPreview() {
-      console.log(this.sequenceModel);
-      console.log(this.linkModel);
-      console.log(this.imageUploaded);
       if (this.sequenceModel == null ||
           this.linkModel == null ||
           this.imageUploaded == null) {
         return;
       }
 
-      console.log(this.imagesPreview[this.imagesPreview.length - 1]);
       if (this.imagesPreview[this.imagesPreview.length - 1].id == null) {
         this.imagesPreview.pop();
       }
@@ -255,7 +251,11 @@ export default {
     }
   },
   mounted() {
+    this.isActiveComponent = true;
     this.getImageLinks();
+  },
+  unmounted() {
+    this.isActiveComponent = false;
   }
 }
 </script>

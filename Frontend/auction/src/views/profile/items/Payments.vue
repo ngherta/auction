@@ -1,6 +1,6 @@
 <template>
   <div class="border container-lg p-5 mb-5">
-    <Icon name="settings"/>
+    <Icon name="payments" size="3"/>
     <div class="d-flex justify-content-between">
       <h2 class="h2 mt-2">Payments</h2>
       <h5>Balance: {{ this.userBalance }} $</h5>

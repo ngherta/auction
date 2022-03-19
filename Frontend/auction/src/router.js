@@ -14,12 +14,10 @@ import AuctionTable from "@/views/profile/admin/AuctionTable";
 import Chart from "@/views/profile/admin/Chart";
 import TopCategories from "@/views/profile/admin/TopCategories";
 import Logging from "@/views/profile/admin/Logging";
-import CreateNewCategory from "@/views/profile/admin/CreateNewCategory";
 import AuctionsPage from '@/views/AuctionsPage';
 import ProfilePage from '@/views/profile/ProfilePage';
 import AboutUsPage from '@/views/AboutUsPage';
 import Editor from "./components/Editor";
-import ChangeHomeImagePage from "@/views/profile/admin/ChangeHomeImagePage";
 import ComplaintList from "@/views/profile/admin/ComplaintList";
 import SuccessPay from "@/views/SuccessPay";
 import Tour from "@/views/Tour";
@@ -96,10 +94,6 @@ const routes = [
     component: Logging,
   },
   {
-    path: "/category/create",
-    component: CreateNewCategory,
-  },
-  {
     path: "/about-us",
     component: AboutUsPage,
   },
@@ -148,8 +142,8 @@ const routes = [
     component: Editor
   },
   {
-    path: "/admin/home-images",
-    component: ChangeHomeImagePage
+    path: "/profile/home-images",
+    component: ProfilePage
   },
   {
     path: "/admin/complaint",
@@ -170,18 +164,18 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  const publicPages = ['/login', '/register', '/home', '/password/reset', '/error', '/about-us', '/auctions'];
-  const authRequired = !publicPages.includes(to.path);
-  const loggedIn = localStorage.getItem('user');
-
+// router.beforeEach((to, from, next) => {
+  // const publicPages = ['/login', '/register', '/home', '/password/reset', '/error', '/about-us', '/auctions'];
+  // const authRequired = !publicPages.includes(to.path);
+  // const loggedIn = localStorage.getItem('user');
+  //
   // trying to access a restricted page + not logged in
   // redirect to login page
-  if (authRequired && !loggedIn) {
-    next('/login');
-  } else {
-    next();
-  }
-});
+  // if (authRequired && !loggedIn) {
+  //   next('/login');
+  // } else {
+  //   next();
+  // }
+// });
 
 export default router;

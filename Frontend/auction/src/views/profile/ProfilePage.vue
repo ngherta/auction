@@ -9,11 +9,13 @@
       <change-password-component v-else-if="this.currentPage == 'account/password'"/>
       <user-table v-else-if="this.currentPage == 'user-table'"/>
       <auction-table v-else-if="this.currentPage == 'auction-table'"/>
-      <statistic-page :class="{'d-none' : this.currentPage != 'statistic'}" v-else-if="this.currentPage == 'statistic'"/>
+      <statistic-page :class="{'d-none' : this.currentPage != 'statistic'}"
+                      v-else-if="this.currentPage == 'statistic'"/>
       <user-auction-list v-else-if="this.currentPage == 'my-auctions'"/>
       <create-new-category v-else-if="this.currentPage == 'create-category'"/>
       <settings v-else-if="this.currentPage == 'settings'"/>
       <payments v-else-if="this.currentPage == 'payments'"/>
+      <change-home-image-page  v-else-if="this.currentPage == 'home-images'"/>
     </div>
   </div>
 </template>
@@ -27,6 +29,7 @@ import StatisticPage from './StatisticPage';
 import UserAuctionList from './items/UserAuctionList';
 import CreateNewCategory from './admin/CreateNewCategory';
 import ChangePasswordComponent from "./items/ChangePasswordComponent";
+import ChangeHomeImagePage from "@/views/profile/admin/ChangeHomeImagePage";
 import Settings from './items/Settings';
 import Payments from "@/views/profile/items/Payments";
 
@@ -43,6 +46,7 @@ export default {
     StatisticPage,
     CreateNewCategory,
     ChangePasswordComponent,
+    ChangeHomeImagePage,
   },
   data() {
     return {
@@ -61,9 +65,6 @@ export default {
   },
   mounted() {
     this.currentPage = this.$route.path.replaceAll('/profile/', '');
-    // if (!this.currentUser) {
-    //   this.$router.push('/login');
-    // }
   }
 }
 </script>
@@ -82,6 +83,7 @@ export default {
     flex: 0 0 25%;
     max-width: 25%;
   }
+
   .profile-view {
     flex: 0 0 75%;
     max-width: 75%;

@@ -1,81 +1,84 @@
 <template>
-  <div class="container">
-    <ul class="list-unstyled">
-      <li v-for="(item,index) in data" :key="index" class="mb-4">
-        <h3>        {{ item.mainCategory.categoryName }}
-        </h3>
-        <form class="">
-          <div class="form-group">
-            <label class="text-gray-600 font-semibold text-lg" hidden>Create new subcategory</label>
-            <div
-                v-for="(input, index) in subcategoryFields"
-                :key="`subCategoryInput-${index}`"
-                class="input wrapper flex items-center"
-            >
-              <div v-if="input.categoryId == item.mainCategory.id">
-                <input
-                    type="text"
-                    v-model="input.subCategory"
-                    class="h-10 rounded-lg outline-none p-2"
-                    placeholder=" Enter New Subcategory"
-                />
-                <!--          Add Svg Icon-->
-                <svg
-                    @click="addField(input, subcategoryFields, item.mainCategory.id)"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="24"
-                    height="24"
-                    class="ml-2 cursor-pointer"
-                >
-                  <path fill="none" d="M0 0h24v24H0z"/>
-                  <path
-                      fill="green"
-                      d="M11 11V7h2v4h4v2h-4v4h-2v-4H7v-2h4zm1 11C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"
+  <div class="border container-lg p-5 mb-5">
+    <Icon name="categories" size="1.8"/>
+    <h2 class="h2 mt-2 mb-5">New categories</h2>
+    <div class="">
+      <ul class="list-unstyled">
+        <li v-for="(item,index) in data" :key="index" class="mb-4">
+          <h5>        {{ item.mainCategory.categoryName }}
+          </h5>
+          <form class="">
+            <div class="form-group">
+              <label class="text-gray-600 font-semibold text-lg" hidden>Create new subcategory</label>
+              <div
+                  v-for="(input, index) in subcategoryFields"
+                  :key="`subCategoryInput-${index}`"
+                  class="input wrapper flex items-center"
+              >
+                <div v-if="input.categoryId == item.mainCategory.id">
+                  <input
+                      type="text"
+                      v-model="input.subCategory"
+                      class="h-10 rounded-lg outline-none p-2"
+                      placeholder=" Enter New Subcategory"
                   />
-                </svg>
+                  <!--          Add Svg Icon-->
+                  <svg
+                      @click="addField(input, subcategoryFields, item.mainCategory.id)"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                      class="ml-2 cursor-pointer"
+                  >
+                    <path fill="none" d="M0 0h24v24H0z"/>
+                    <path
+                        fill="green"
+                        d="M11 11V7h2v4h4v2h-4v4h-2v-4H7v-2h4zm1 11C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"
+                    />
+                  </svg>
 
-                <!--          Remove Svg Icon-->
-                <svg
-                    v-show="subcategoryFields.length > 1"
-                    @click="removeField(index, subcategoryFields, item.mainCategory.id)"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="24"
-                    height="24"
-                    class="ml-2 cursor-pointer"
-                >
-                  <path fill="none" d="M0 0h24v24H0z"/>
-                  <path
-                      fill="#EC4899"
-                      d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-9.414l2.828-2.829 1.415 1.415L13.414 12l2.829 2.828-1.415 1.415L12 13.414l-2.828 2.829-1.415-1.415L10.586 12 7.757 9.172l1.415-1.415L12 10.586z"
-                  />
-                </svg>
+                  <!--          Remove Svg Icon-->
+                  <svg
+                      v-show="subcategoryFields.length > 1"
+                      @click="removeField(index, subcategoryFields, item.mainCategory.id)"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                      class="ml-2 cursor-pointer"
+                  >
+                    <path fill="none" d="M0 0h24v24H0z"/>
+                    <path
+                        fill="#EC4899"
+                        d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-9.414l2.828-2.829 1.415 1.415L13.414 12l2.829 2.828-1.415 1.415L12 13.414l-2.828 2.829-1.415-1.415L10.586 12 7.757 9.172l1.415-1.415L12 10.586z"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
-          </div>
-        </form>
-        <ul class="list-group">
-          <li v-for="(subCategory,subCategoryIndex) in item.listSubCategories" :key="subCategoryIndex" class="list-group-item">
-            {{ subCategory.categoryName }}
-          </li>
-        </ul>
-      </li>
-    </ul>
-    <button type="button" v-on:click="createNewSubCategory" class="btn btn-primary btn-block">
-      Update
-    </button>
+          </form>
+          <ul class="list-group">
+            <li v-for="(subCategory,subCategoryIndex) in item.listSubCategories" :key="subCategoryIndex" class="list-group-item">
+              {{ subCategory.categoryName }}
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <button type="button" v-on:click="createNewSubCategory" class="btn btn-primary btn-block">
+        Update
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import CategoryService from '../../../services/category.service'
-
+import Icon from '../../../components/Icon'
 export default {
   name: "CreateNewCategory",
   components: {
-    // Form,
-    // Field,
+    Icon
   },
   data() {
     return {
