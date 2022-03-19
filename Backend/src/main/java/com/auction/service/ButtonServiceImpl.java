@@ -62,6 +62,7 @@ public class ButtonServiceImpl implements ButtonService {
   }
 
   @Override
+  @Transactional
   public AuctionActionDto defaultBet(String buttonId) {
     Button button = buttonRepository.findByButtonId(buttonId)
         .orElseThrow(() -> new IoTException("Button with id[" + buttonId + "] not found"));
@@ -69,6 +70,17 @@ public class ButtonServiceImpl implements ButtonService {
       throw new IoTException("Button[" + buttonId + "] is not connected to auction!");
     }
     return auctionActionService.defaultBet(button.getCurrentAuctionEvent(), button.getUser());
+  }
+
+  @Override
+  @Transactional
+  public AuctionActionDto finishAuction(String buttonId) {
+    Button button = buttonRepository.findByButtonId(buttonId)
+        .orElseThrow(() -> new IoTException("Button with id[" + buttonId + "] not found"));
+    if (button.getCurrentAuctionEvent() == null) {
+      throw new IoTException("Button[" + buttonId + "] is not connected to auction!");
+    }
+    return auctionActionService.finish(button.getCurrentAuctionEvent(), button.getUser());
   }
 
 

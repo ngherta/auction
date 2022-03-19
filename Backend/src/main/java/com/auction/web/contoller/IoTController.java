@@ -22,9 +22,14 @@ public class IoTController {
 
   @PostMapping("/bet")
   public ResponseEntity<AuctionActionDto> defaultBet(@RequestBody String buttonId) {
-    System.out.println("HELLO IOT!!!!!!!");
-    System.out.println(buttonId);
     AuctionActionDto dto = buttonService.defaultBet(buttonId);
+    messagingTemplate.convertAndSend("/betting/" + dto.getAuctionEvent(), dto);
+    return ResponseEntity.ok(dto);
+  }
+
+  @PostMapping("/finish")
+  public ResponseEntity<AuctionActionDto> finishBet(@RequestBody String buttonId) {
+    AuctionActionDto dto = buttonService.finishAuction(buttonId);
     messagingTemplate.convertAndSend("/betting/" + dto.getAuctionEvent(), dto);
     return ResponseEntity.ok(dto);
   }

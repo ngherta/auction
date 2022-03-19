@@ -14,4 +14,6 @@ public interface ButtonService {
   void disconnect(String buttonId);
 
   AuctionActionDto defaultBet(String buttonId);
+
+  AuctionActionDto finishAuction(String buttonId);
 }

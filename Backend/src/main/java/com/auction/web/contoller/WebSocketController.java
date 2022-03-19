@@ -1,10 +1,8 @@
 package com.auction.web.contoller;
 
 import com.auction.service.interfaces.AuctionActionService;
-import com.auction.service.interfaces.AuctionEventService;
 import com.auction.web.dto.AuctionActionDto;
 import com.auction.web.dto.request.BetRequest;
-import com.auction.web.dto.response.MessageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -14,7 +12,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 

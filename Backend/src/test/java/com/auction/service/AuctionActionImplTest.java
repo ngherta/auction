@@ -164,7 +164,7 @@ class AuctionActionImplTest {
     List<AuctionActionDto> dtos = new ArrayList<>();
     dtos.add(AuctionActionDto.builder()
                      .auctionEvent(auctionId)
-                     .bid(10D)
+                     .bid("10")
                      .build());
     when(auctionActionRepository.findByAuctionEvent(any(AuctionEvent.class))).thenReturn(auctionActionList);
     when(auctionEventRepository.findById(auctionId)).thenReturn(Optional.ofNullable(auctionEvent));

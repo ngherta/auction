@@ -11,6 +11,7 @@ import com.auction.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 
 @Component
@@ -24,7 +25,7 @@ public class AuctionWinnerToDtoMapper implements Mapper<AuctionWinner, AuctionWi
   @Override
   public AuctionWinnerDto map(AuctionWinner entity) {
     return AuctionWinnerDto.builder()
-        .price(entity.getPrice())
+        .price(new DecimalFormat("#0.00").format(entity.getPrice()))
         .user(userUserDtoMapper.map(entity.getUser()))
         .auctionEvent(auctionEventDtoMapper.map(entity.getAuctionEvent()))
         .paymentOrder(paymentOrderDtoMapper.map(entity.getPaymentOrder()))

@@ -35,10 +35,10 @@ public class ScheduledTasks {
     }
   }
 
-  @Scheduled(fixedDelay = 60000)
-  public void deleteUnconfirmedUsers() {
-    tokenConfirmationService.deleteUnconfirmedUsers();
-  }
+//  @Scheduled(fixedDelay = 60000)
+//  public void deleteUnconfirmedUsers() {
+//    tokenConfirmationService.deleteUnconfirmedUsers();
+//  }
 
   @Scheduled(cron = "0 0/1 * * * ?")
   public void checkEventForStart() {

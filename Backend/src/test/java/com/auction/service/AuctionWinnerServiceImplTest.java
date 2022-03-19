@@ -73,7 +73,7 @@ class AuctionWinnerServiceImplTest {
             .build();
 
     AuctionWinnerDto dto = AuctionWinnerDto.builder()
-            .price(auctionWinner.getPrice())
+            .price(auctionWinner.getPrice().toString())
             .auctionEvent(new AuctionEventDto())
             .genDate(auctionWinner.getGenDate().toString())
             .build();

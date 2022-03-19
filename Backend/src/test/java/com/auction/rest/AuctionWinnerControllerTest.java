@@ -1,6 +1,5 @@
 package com.auction.rest;
 
-import com.auction.model.User;
 import com.auction.service.AuctionWinnerServiceImpl;
 import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.AuctionWinnerDto;
@@ -45,7 +44,7 @@ class AuctionWinnerControllerTest {
             .auctionEvent(new AuctionEventDto())
             .genDate(LocalDateTime.now().toString())
             .paymentOrder(new PaymentOrderDto())
-            .price(100D)
+            .price("100")
             .build();
     listOfDtos.add(auctionWinnerDto);
   }

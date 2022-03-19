@@ -17,6 +17,8 @@ public interface AuctionActionService {
 
   List<AuctionActionDto> getAllByAuctionId(Long auctionId);
 
+  AuctionActionDto finish(AuctionEvent auctionEvent, User user);
+
   void checkBet(AuctionEvent auctionEvent, Double bet);
 
   void checkBet(AuctionEvent auctionEvent, Double bet, Optional<AuctionAction> auctionAction);

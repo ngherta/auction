@@ -9,7 +9,7 @@ import lombok.Data;
 public class AuctionWinnerDto {
   private AuctionEventDto auctionEvent;
   private UserDto user;
-  private Double price;
+  private String price;
   private PaymentOrderDto paymentOrder;
   private String genDate;
   private AuctionWinnerStatus status;

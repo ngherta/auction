@@ -1,5 +1,6 @@
 package com.auction.web.dto;
 
+import com.auction.model.enums.AuctionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +17,8 @@ import java.time.LocalDateTime;
 public class AuctionActionDto {
   private Long id;
   private Long auctionEvent;
+  private AuctionStatus status;
   private UserDto user;
-  private Double bid;
+  private String bid;
   private String genDate;
 }

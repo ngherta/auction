@@ -25,13 +25,13 @@
       <div v-for="auction in auctions" :key="auction.id" class="card mr-3" style="width: 18rem;">
         <img :src="auction.images[0]" height="300" class="card-img-top" alt="image of auction">
         <div class="card-body">
-          <h5 class="card-title">{{auction.title}}</h5>
-          <p class="card-text">Status: <b>{{auction.statusType}}</b></p>
+          <h5 class="card-title">{{ auction.title }}</h5>
+          <p class="card-text">Status: <b>{{ auction.statusType }}</b></p>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">Charity percent:
             <b>{{ auction.charityPercent }} %</b></li>
-          <li  class="list-group-item">Start date: <b>{{auction.startDate}}</b></li>
+          <li class="list-group-item">Start date: <b>{{ auction.startDate }}</b></li>
         </ul>
         <div class="card-body">
           <router-link :to="'/auction/' + auction.id" class="card-link">Open</router-link>
@@ -39,7 +39,10 @@
       </div>
     </div>
     <div class="d-flex mt-5 mb-5">
-      <router-link to="/auctions" style="font-size: 1rem" class="badge badge-pill badge-info m-auto pt-1 pb-1 pr-3 pl-3 text-uppercase font-weight-bold">Show more</router-link>
+      <router-link to="/auctions" style="font-size: 1rem"
+                   class="badge badge-pill badge-info m-auto pt-1 pb-1 pr-3 pl-3 text-uppercase font-weight-bold">Show
+        more
+      </router-link>
     </div>
   </div>
 </template>
@@ -52,13 +55,13 @@ export default {
   name: "Home",
   data() {
     return {
-      auctions: "",
+      auctions: [],
       images: [],
     };
   },
   methods: {
-    sortImages(){
-      return this.images.slice().sort(function(a, b){
+    sortImages() {
+      return this.images.slice().sort(function (a, b) {
         return (a.sequence > b.sequence) ? 1 : -1;
       });
     }
@@ -74,18 +77,18 @@ export default {
             type: 'error'
           });
         }
-    ),
-        AuctionService.getAuctions(15, null).then(
-            (response) => {
-              this.auctions = response.data.content;
-            },
-            (error) => {
-              this.$notify({
-                text: error.response.data.errorMessage,
-                type: 'error'
-              });
-            }
-        );
+    );
+    AuctionService.getAuctions(4, null).then(
+        (response) => {
+          this.auctions = response.data.content;
+        },
+        (error) => {
+          this.$notify({
+            text: error.response.data.errorMessage,
+            type: 'error'
+          });
+        }
+    );
   },
 };
 </script>

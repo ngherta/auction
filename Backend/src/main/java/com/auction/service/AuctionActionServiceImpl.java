@@ -2,6 +2,7 @@ package com.auction.service;
 
 import com.auction.event.notification.ChangeBetEvent;
 import com.auction.exception.AuctionEventNotFoundException;
+import com.auction.exception.AuctionRuntimeException;
 import com.auction.exception.WrongBetException;
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
@@ -58,10 +59,33 @@ class AuctionActionServiceImpl implements AuctionActionService {
     return create(bet, auctionEvent, user);
   }
 
+  @Override
+  @Transactional
+  public AuctionActionDto finish(AuctionEvent auctionEvent, User user) {
+
+    if (auctionEvent.getStatusType() != AuctionStatus.ACTIVE) {
+      throw new AuctionRuntimeException("Auction[" + auctionEvent.getId() + "] has status - " + auctionEvent.getStatusType());
+    }
+
+    AuctionAction auctionAction = AuctionAction
+        .builder()
+        .auctionEvent(auctionEvent)
+        .user(user)
+        .bet(auctionEvent.getFinishPrice())
+        .genDate(LocalDateTime.now())
+        .build();
+    auctionActionRepository.save(auctionAction);
+
+    auctionEventService.finishByFinishPrice(auctionEvent, user);
+
+    publisher.publishEvent(new ChangeBetEvent(auctionAction));
+    return auctionActionToDtoMapper.map(auctionAction);  }
+
   private AuctionActionDto create(Double bet, AuctionEvent auctionEvent, User user) {
+    boolean finish = false;
     if (auctionEvent.getFinishPrice() != null && auctionEvent.getFinishPrice() <= bet) {
-      auctionEventService.finishByFinishPrice(auctionEvent, user);
       bet = auctionEvent.getFinishPrice();
+      finish = true;
     }
 
     AuctionAction auctionAction = AuctionAction
@@ -72,6 +96,10 @@ class AuctionActionServiceImpl implements AuctionActionService {
             .genDate(LocalDateTime.now())
             .build();
     auctionActionRepository.save(auctionAction);
+
+    if (finish) {
+      auctionEventService.finishByFinishPrice(auctionEvent, user);
+    }
 
     publisher.publishEvent(new ChangeBetEvent(auctionAction));
     return auctionActionToDtoMapper.map(auctionAction);
@@ -168,10 +196,9 @@ class AuctionActionServiceImpl implements AuctionActionService {
     Double defaultBet = currentAuctionEvent.getStartPrice();
 
     if (action.isPresent()) {
-      defaultBet = action.get().getBet() * 1.05;
+      defaultBet = action.get().getBet() * 1.06;
     }
     checkBet(currentAuctionEvent, defaultBet, action);
-
 
     return create(defaultBet, currentAuctionEvent, user);
   }

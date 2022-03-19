@@ -17,7 +17,7 @@
 
     <insert tableName="users">
       <column name="id" valueNumeric="777"></column>
-      <column name="email" value="gherta.nicolai@gmail.com"></column>
+      <column name="email" value="ghrta.nicolai@gmail.com"></column>
       <column name="first_name" value="Nicolae"></column>
       <column name="last_name" value="Gherta"></column>
       <column name="password" value="$2a$10$gfoTKb0N2xjMZvYhVGLODOHNGqfCMsj1o4.DHd3QipsYH/gTAWy7e"></column>

@@ -110,7 +110,7 @@
                    :last-bid="getLastBidById(auction.id)"/>
     </div>
   </div>
-  <nav v-if="this.loadingAuctions && this.searchResultEmpty"
+  <nav v-if="!this.loadingAuctions && !this.searchResultEmpty"
        aria-label="Page navigation example"
        class="d-flex justify-content-center mt-5 mb-3">
     <ul class="pagination ">
@@ -181,7 +181,7 @@ export default {
       searchDropdownData: [],
       loadingSearch: false,
       page: 1,
-      perPage: 5,
+      perPage: 9,
       countOfPages: '',
       lastBids: [{
         auctionId: '',
