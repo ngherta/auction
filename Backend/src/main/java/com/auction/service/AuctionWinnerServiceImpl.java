@@ -11,7 +11,6 @@ import com.auction.model.enums.AuctionWinnerStatus;
 import com.auction.model.enums.PaymentStatus;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionWinnerRepository;
-import com.auction.repository.PaymentAuditRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.AuctionWinnerService;
 import com.auction.service.interfaces.PaymentService;
@@ -41,7 +40,6 @@ public class AuctionWinnerServiceImpl implements AuctionWinnerService {
   private final Mapper<AuctionWinner, AuctionWinnerDto> auctionWinnerDtoMapper;
   private final PaymentService paymentService;
   private final ApplicationEventPublisher publisher;
-  private final PaymentAuditRepository paymentAuditRepository;
 
   private AuctionEventService auctionEventService;
 

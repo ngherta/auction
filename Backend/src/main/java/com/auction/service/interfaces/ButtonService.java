@@ -9,9 +9,9 @@ public interface ButtonService {
 
   void add(CreateButtonRequest request);
 
-  void connect(Long userId, Long auctionId, String buttonId);
+  void connect(Long userId, Long auctionId);
 
-  void disconnect(String buttonId);
+  void disconnect(Long userId);
 
   AuctionActionDto defaultBet(String buttonId);
 

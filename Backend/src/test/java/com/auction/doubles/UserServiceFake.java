@@ -72,4 +72,9 @@ public class UserServiceFake implements UserService {
   public void addDefaultAddress(AddDefaultAddressRequest request) {
 
   }
+
+  @Override
+  public void checkTutorial(Long userId) {
+
+  }
 }

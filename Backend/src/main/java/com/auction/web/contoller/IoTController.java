@@ -35,14 +35,14 @@ public class IoTController {
   }
 
   @PutMapping("/connect")
-  public ResponseEntity<Void> connect(@RequestBody String buttonId) {
-    buttonService.connect(777L, 1007L, buttonId);
+  public ResponseEntity<Void> connect(@RequestBody Long userId) {
+    buttonService.connect(userId, 1007L);
     return ResponseEntity.ok().build();
   }
 
   @PutMapping("/disconnect")
-  public ResponseEntity<Void> disconnect(@RequestBody String buttonId) {
-    buttonService.disconnect(buttonId);
+  public ResponseEntity<Void> disconnect(@RequestBody Long userId) {
+    buttonService.disconnect(userId);
     return ResponseEntity.ok().build();
   }
 }

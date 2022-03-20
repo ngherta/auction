@@ -119,4 +119,9 @@ public class UserServiceMock implements UserService {
   public void addDefaultAddress(AddDefaultAddressRequest request) {
 
   }
+
+  @Override
+  public void checkTutorial(Long userId) {
+
+  }
 }

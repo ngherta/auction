@@ -69,7 +69,7 @@
             </div>
           </div>
           <div class="col">
-            <upload-image show-results="true"
+            <upload-image showResults="true"
                           ratio=5/6
                           result-width=300
                           result-height=360

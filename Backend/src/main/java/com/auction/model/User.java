@@ -63,6 +63,9 @@ public class User extends AbstractEntity {
   @Column(name = "money_balance")
   private Double moneyBalance;
 
+  @Column(name = "need_tutorial")
+  private Boolean needTutorial;
+
   public User(String email, String password) {
     this.email = email;
     this.password = password;

@@ -26,4 +26,5 @@ public class UserDto {
     private String city;
     private String address;
     private Double moneyBalance;
+    private Boolean needTutorial;
 }

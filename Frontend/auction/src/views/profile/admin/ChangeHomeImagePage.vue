@@ -28,6 +28,8 @@
           <div class="col">
             <UploadImage show-results="false"
                          ratio="1/3"
+                         width="1300"
+                         height="500"
                          @uploadNewImages="uploadNewImages($event)"/>
           </div>
         </div>
@@ -229,15 +231,16 @@ export default {
       ImageLinkService.create(request, 'HOME_PAGE').then(
           () => {
             this.images.push(request);
+            this.loading = false;
           },
           (error) => {
             this.$notify({
               text: error.response.data.errorMessage,
               type: 'error'
             })
+            this.loading = false;
           }
       )
-      this.loading = false;
     },
     sortImages() {
       return this.images.slice().sort(function (a, b) {
@@ -290,6 +293,10 @@ export default {
   .modal-dialog {
     max-width: 900px;
   }
+}
+
+.error-feedback {
+  color: red;
 }
 
 .modal-header .close-custom {

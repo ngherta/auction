@@ -29,6 +29,14 @@
               <button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#qrModal">
                 SHARE
               </button>
+              <button type="button" class="btn btn-warning btn-circle" :disabled="iotLoading" @click="connectIoTButton">
+                <span v-if="!iotConnected && !iotLoading">Connect IoT</span>
+                <span v-if="iotConnected && !iotLoading">Disconnect IoT</span>
+                <span v-show="iotLoading">Connecting...</span>
+              <span
+                  class="spinner-border spinner-border-sm"
+                  v-show="iotLoading"/>
+              </button>
             </div>
             <div class="ml-2">
               <button type="button"
@@ -144,9 +152,27 @@
         </div>
       </div>
     </div>
-
+    <!-- Modal -->
+    <div class="modal fade" id="bettingModalLong" tabindex="-1" role="dialog"
+         aria-labelledby="bettingModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog modal-betting" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <!--                <h5 class="modal-title" id="bettingModalLongTitle">BETTING!</h5>-->
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <betting-room :bids="bids"
+                          :auction="content"
+                          :stomp-client="stompClient"/>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="row mt-5 justify-content-between mb-5">
-      <div style="flex-basis: 47.5%" class="col p-3 border mr-auto">
+      <div class="col mr-4 p-3 border">
         <button type="button"
                 data-toggle="modal"
                 data-target="#bettingModalLong"
@@ -158,50 +184,44 @@
                       :stomp-client="stompClient"
                       ref="betting-room"
                       @refreshAuction="getData"/>
-        <!-- Modal -->
-        <div class="modal fade" id="bettingModalLong" tabindex="-1" role="dialog"
-             aria-labelledby="bettingModalLongTitle" aria-hidden="true">
-          <div class="modal-dialog modal-betting" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <!--                <h5 class="modal-title" id="bettingModalLongTitle">BETTING!</h5>-->
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <betting-room :bids="bids"
-                              :auction="content"
-                              :stomp-client="stompClient"/>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-      <div class="col-6 border mt-auto pb-4 pr-0">
-        <div class="chat-box d-flex flex-column pt-3 pb-3" id="chat-box">
+
+
+
+      <div class="col-6 border pb-4 pr-0">
+        <div class="overflow-chat d-flex flex-column pt-3 pb-3 pl-2 pr-2 chat-box"
+             :class="{'height-500' : content.statusType == 'EXPECTATION',
+                      'height-400' : content.statusType != 'EXPECTATION'}"
+             id="chat-box">
           <div v-for="message in chatMessages"
                class=""
                :class="{'ml-auto' : this.isMessageFromCurrentUser(message.senderId) == true}"
                :key="message">
             <div class="chat-name">{{ message.senderFirstName + ' ' + message.senderLastName }}</div>
             <div class="chat-date font-weight-light">{{ message.genDate }}</div>
-            <div class="chat-message border border-info
+            <div class="chat-message border
             pl-2 pr-2">{{ message.message }}
             </div>
           </div>
         </div>
         <div class="">
-          <Form class="d-flex pr-3 pl-3">
+          <form class="d-flex pr-3 pl-3" @submit.prevent="handleMessageSending">
             <input name="message"
                    id="message"
                    type="text"
                    v-model="chat_message"
-                   class="form-control col-10"/>
-            <button class="btn btn-primary btn-block col-2" @click="handleMessageSending" type="button">SEND</button>
-          </Form>
+                   class="form-control col-10 mt-auto"/>
+            <button class="btn btn-primary btn-block col-2"
+                    :disabled="['', ' ','  ', '   ', null].includes(chat_message)"
+                    @click="handleMessageSending"
+                    type="button">SEND</button>
+          </form>
         </div>
       </div>
+
+
+
+
     </div>
   </div>
 
@@ -265,7 +285,7 @@ import router from "@/router";
 import ChatService from "../services/chat.service";
 import BettingRoom from "../components/BettingRoom";
 import Icon from "../components/Icon";
-
+import IotService from "../services/iot.service"
 
 export default {
   name: "AuctionPage",
@@ -317,6 +337,8 @@ export default {
       images: [],
       chatMessages: [],
       schema,
+      iotConnected: false,
+      iotLoading: false,
       betInput: null,
       isWrongBet: null
     };
@@ -385,14 +407,16 @@ export default {
       );
     },
     handleMessageSending() {
-      if (this.stompClient && this.stompClient.connected) {
-        this.stompClient.send("/app/chat/auction/" + this.auctionId, JSON.stringify({
-          'senderId': this.$store.state.auth.user.userDto.id,
-          'message': this.chat_message
-        }));
-        let div = document.getElementById('chat-box');
-        div.scroll({top: div.scrollHeight, behavior: 'smooth'});
-        this.chat_message = '';
+      if(!['', ' ','  ', '   ', null].includes(this.chat_message)) {
+        if (this.stompClient && this.stompClient.connected) {
+          this.stompClient.send("/app/chat/auction/" + this.auctionId, JSON.stringify({
+            'senderId': this.$store.state.auth.user.userDto.id,
+            'message': this.chat_message
+          }));
+          let div = document.getElementById('chat-box');
+          div.scroll({top: div.scrollHeight, behavior: 'smooth'});
+          this.chat_message = '';
+        }
       }
     },
     handleBet() {
@@ -405,6 +429,16 @@ export default {
         }));
       }
       this.loading = false;
+    },
+    connectIoTButton() {
+      this.iotLoading = true;
+      IotService.connect(this.getUser().userDto.id).then(
+          () => {
+            this.iotConnected = true;
+            this.iotLoading = false;
+            this.iotConnected = true;
+          }
+      )
     },
     connect() {
       this.socket = new SockJS("http://localhost:8080/websocket");
@@ -525,7 +559,6 @@ export default {
   .modal-dialog {
     max-width: 800px;
   }
-
 }
 
 @media only screen and (min-width: 1600px) {
@@ -551,14 +584,21 @@ export default {
   height: 500px;
 }
 
+.height-500 {
+  height: 500px;
+}
+
 .expand-betting-button {
   position: absolute;
   right: 5px;
   top: 5px;
 }
 
-.chat-box {
+.height-400 {
   height: 394px;
+}
+
+.overflow-chat {
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -569,6 +609,15 @@ export default {
 
 .chat-message {
   display: inline-flex;
-  border-radius: 48%;
+  border-radius: 37%;
+  background-color: lightblue;
+}
+
+.chat-name {
+  font-size: 0.7rem;
+}
+
+.chat-date {
+  font-size: 0.6rem;
 }
 </style>

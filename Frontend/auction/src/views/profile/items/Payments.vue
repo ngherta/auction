@@ -29,7 +29,7 @@
         </h5>
         <div class="step-container">
           <ul class="progressbar list-unstyled">
-            <li :class="{'active-item' : ['CREATED, NEED_ADDRESS', 'DELIVERY_START', 'DELIVERY_PROCESSING', 'DELIVERY_FINISHED'].includes(item.status)}">
+            <li :class="{'active-item' : ['CREATED', 'NEED_ADDRESS', 'DELIVERY_START', 'DELIVERY_PROCESSING', 'DELIVERY_FINISHED'].includes(item.status)}">
               Won
             </li>
             <li :class="{'active-item' : ['NEED_ADDRESS', 'DELIVERY_START', 'DELIVERY_PROCESSING', 'DELIVERY_FINISHED'].includes(item.status)}">
@@ -49,7 +49,8 @@
           Track number:
           <b>{{ item.trackNumber }}</b>
         </p>
-        <p class="card-text mt-10">
+        <p class="card-text"
+        :class="{'mt-10' : 'DELIVERY_PROCESSING' != item.status}">
           <small>Auction was finished:
             <b>{{ item.genDate }}</b>
           </small>
@@ -344,7 +345,6 @@ export default {
     getUser() {
       UserService.getUserById(this.userId).then(
           (response) => {
-            console.log(response);
             this.userBalance = response.data.moneyBalance;
           },
           (error) => {

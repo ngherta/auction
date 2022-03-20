@@ -137,12 +137,6 @@ class PaymentServiceImpl implements PaymentService {
         .type(PaymentType.TRANSFER)
         .build();
 
-    paymentAudit
-        .getRecipient()
-        .setMoneyBalance(paymentAudit
-                             .getRecipient()
-                             .getMoneyBalance() + paymentAudit.getAmount());
-
     paymentAuditRepository.save(paymentAudit);
   }
 

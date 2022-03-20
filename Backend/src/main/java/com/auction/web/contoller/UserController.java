@@ -94,6 +94,12 @@ public class UserController {
     return ResponseEntity.ok().build();
   }
 
+  @PutMapping("/{userId}/tutorial")
+  public ResponseEntity<Void> checkedTutorial(@PathVariable Long userId) {
+    userService.checkTutorial(userId);
+    return ResponseEntity.ok().build();
+  }
+
   @PostMapping("/address")
   public ResponseEntity<Void> addDefaultAddress(@RequestBody AddDefaultAddressRequest request) {
     userService.addDefaultAddress(request);

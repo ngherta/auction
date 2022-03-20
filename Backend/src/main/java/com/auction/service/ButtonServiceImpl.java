@@ -22,6 +22,7 @@ public class ButtonServiceImpl implements ButtonService {
   private final UserService userService;
   private final AuctionActionService auctionActionService;
 
+  private static final String BUTTON_ID = "1x323124";
 
   @Override
   @Transactional(readOnly = true)
@@ -43,8 +44,8 @@ public class ButtonServiceImpl implements ButtonService {
 
   @Override
   @Transactional
-  public void connect(Long userId, Long auctionId, String buttonId) {
-    Button button = findByButtonId(buttonId);
+  public void connect(Long userId, Long auctionId) {
+    Button button = findByButtonId(BUTTON_ID);
     button.setUser(userService.findById(userId));
     button.setCurrentAuctionEvent(auctionEventService.findById(auctionId));
     button.setConnected(true);
@@ -53,8 +54,9 @@ public class ButtonServiceImpl implements ButtonService {
 
   @Override
   @Transactional
-  public void disconnect(String buttonId) {
-    Button button = findByButtonId(buttonId);
+  public void disconnect(Long userId) {
+    Button button = buttonRepository.findByUserId(userId)
+        .orElseThrow(() -> new IoTException("Button for user[" + userId +"] not found!"));
     button.setUser(null);
     button.setCurrentAuctionEvent(null);
     button.setConnected(false);

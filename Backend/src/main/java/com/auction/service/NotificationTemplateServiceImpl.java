@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,9 +74,9 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
     StringBuilder sb = new StringBuilder();
     sb.append("Auction - <b>");
     sb.append(auctionWinner.getAuctionEvent().getTitle());
-    sb.append("</b> ended. Last bid - <b>");
-    sb.append(auctionWinner.getPrice());
-    sb.append("</b> by");
+    sb.append("</b> finished. Last bid - <b>");
+    sb.append(new DecimalFormat("#0.00").format(auctionWinner.getPrice()));
+    sb.append("$</b> by");
     sb.append(auctionWinner.getUser().getFirstName());
     sb.append(" ");
     sb.append(auctionWinner.getUser().getLastName());
@@ -156,11 +157,11 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
     StringBuilder sb = new StringBuilder();
     sb.append("New bet - <b>");
     sb.append(currentAction.getBet());
-    sb.append("</b> ended by <b>");
+    sb.append("</b> by ");
     sb.append(currentAction.getUser().getFirstName());
     sb.append(" ");
     sb.append(currentAction.getUser().getLastName());
-    sb.append("</b> for auction - ");
+    sb.append(" for auction - ");
     sb.append("<b>");
     sb.append(currentAction.getAuctionEvent().getTitle());
     sb.append("</b>.");

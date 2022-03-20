@@ -4,7 +4,6 @@ import com.auction.model.AuctionWinner;
 import com.auction.model.AuctionWinnerAudit;
 import com.auction.repository.AuctionWinnerAuditRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +16,6 @@ public class AuctionWinnerAuditServiceImpl implements AuctionWinnerAuditService{
 
   @Override
   @Transactional
-  @Async
   public void create(AuctionWinner auctionWinner) {
     AuctionWinnerAudit audit = AuctionWinnerAudit
         .builder()

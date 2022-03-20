@@ -1,11 +1,11 @@
 <template>
-  <div class="">
+  <div>
     <h3 v-if="this.$store.state.auth.status.loggedIn" class="text-center mb-4">MAKE A BID</h3>
     <h3 v-if="!this.$store.state.auth.status.loggedIn" class="text-center mb-4">List of bids:</h3>
     <div>
       <Form v-if="this.$store.state.auth.status.loggedIn && this.auction.statusType == 'ACTIVE'"
             @submit="handleBet" :validation-schema="schema">
-        <div class="row">
+        <div class="d-flex">
           <div class="col input-group">
             <Field @input="checkBetForChangeColor"
                    v-model="betInput"
@@ -155,17 +155,12 @@ export default {
 </script>
 
 <style scoped>
-
 .text-green {
   color: green;
 }
 
 .text-red {
   color: red;
-}
-
-.custom-table {
-  max-height: 300px;
 }
 
 .custom-table {

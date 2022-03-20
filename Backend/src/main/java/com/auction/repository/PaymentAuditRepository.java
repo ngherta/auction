@@ -28,7 +28,7 @@ public interface PaymentAuditRepository extends JpaRepository<PaymentAudit, Long
             " FROM payment_audit pa " +
             " WHERE pa.gen_date > current_date - INTERVAL '12 months' " +
             " AND to_char(pa.gen_date, 'YYYY-Month') != to_char(current_date - INTERVAL '12 months', 'YYYY-Month') " +
-            " AND pa.type != 'COMMISSION' " +
+            " AND pa.type = 'COMMISSION' " +
             " GROUP BY date, year, index, month " +
             " ORDER BY year, index ")
     List<CommissionPerMouthProjection> getCommissionPerMouth();

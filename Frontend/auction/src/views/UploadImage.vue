@@ -27,12 +27,8 @@
           <cropper
               ref="cropper"
               class="upload-example-cropper"
-              :stencil-props="{
-		handlers: {},
-		movable: true,
-		resizable: true,
-		aspectRatio: 1,
-	}"
+              :stencil-props="stencilProps"
+              :stencil-size="stencilSize"
               :src="image.src"
           />
         </div>
@@ -58,12 +54,10 @@
       </form>
     </div>
   </div>
-  <div v-if="showResults == true" class="d-flex">
-    <div v-if="results">
-      <section v-for="result in results" :key="result">
-        <img :src="result.secure_url" :height="resultHeight" :alt="result.public_id"/>
-      </section>
-    </div>
+  <div v-if="showResults == true && results" class="d-flex">
+    <section v-for="result in results" :key="result">
+      <img :src="result.secure_url" :height="resultHeight" :alt="result.public_id"/>
+    </section>
   </div>
 </template>
 
@@ -111,6 +105,8 @@ export default {
       cloudName: "dxn6dcenz",
       preset: "jhjwl2sq",
       tags: "browser-upload",
+      stencilProps: {},
+      stencilSize: {},
     };
   },
   methods: {
@@ -129,7 +125,7 @@ export default {
         //show progress bar at beginning of post
         axios(requestObj)
             .then(response => {
-              this.results.push(response.data);
+              this.results.push(response.data.secure_url);
               this.imageFile = response.data.secure_url;
               this.$emit('uploadNewImages', response.data.secure_url)
             })
@@ -194,6 +190,28 @@ export default {
     // Revoke the object URL, to allow the garbage collector to destroy the uploaded before file
     if (this.image.src) {
       URL.revokeObjectURL(this.image.src)
+    }
+  },
+  created() {
+    if(this.width !=null && this.height != null) {
+      this.stencilProps = {
+        handlers: {},
+        movable: true,
+        resizable: false,
+      };
+      this.stencilSize = {
+        width: this.width,
+        height: this.height
+      }
+    }
+    else {
+      this.stencilProps = {
+        handlers: {},
+        movable: true,
+        resizable: true,
+        aspectRatio: 1,
+      };
+      this.stencilSize = null;
     }
   }
 }

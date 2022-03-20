@@ -35,4 +35,6 @@ public interface UserService {
   void updatePassword(UpdatePasswordRequest request);
 
   void addDefaultAddress(AddDefaultAddressRequest request);
+
+  void checkTutorial(Long userId);
 }

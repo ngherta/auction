@@ -45,9 +45,6 @@ class AuctionWinnerServiceImplTest {
   private PaymentService paymentService;
   @Mock
   private ApplicationEventPublisher publisher;
-  @Mock
-  private PaymentAuditRepository paymentAuditRepository;
-
 
   private AuctionWinnerServiceImpl auctionWinnerService;
 
@@ -61,8 +58,7 @@ class AuctionWinnerServiceImplTest {
                                                         userService,
                                                         auctionWinnerDtoMapper,
                                                         paymentService,
-                                                        publisher,
-                                                        paymentAuditRepository);
+                                                        publisher);
     user = UserFixture.user();
     AuctionEvent auctionEvent = AuctionEventFixture.auctionEvent();
     AuctionWinner auctionWinner = AuctionWinner.builder()

@@ -14,5 +14,7 @@ public interface ButtonRepository extends JpaRepository<Button, Long> {
 
   Optional<Button> findByUser(User user);
 
+  Optional<Button> findByUserId(Long userId);
+
   Optional<Button> findByButtonId(String buttonId);
 }
