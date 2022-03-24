@@ -32,4 +32,6 @@ public interface AuctionActionService {
   void bet(String terminal);
 
   AuctionActionDto defaultBet(AuctionEvent currentAuctionEvent, User user);
+
+  AuctionActionDto create(Double bet, AuctionEvent auctionEvent, User user);
 }

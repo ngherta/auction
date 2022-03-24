@@ -16,12 +16,14 @@
       <settings v-else-if="this.currentPage == 'settings'"/>
       <payments v-else-if="this.currentPage == 'payments'"/>
       <change-home-image-page  v-else-if="this.currentPage == 'home-images'"/>
+      <complaint-list v-else-if="this.currentPage == 'complaints'"/>
     </div>
   </div>
 </template>
 
 <script>
 import ProfileMenu from './ProfileMenu';
+import ComplaintList from "@/views/profile/admin/ComplaintList";
 import Account from './items/Account';
 import UserTable from './admin/UserTable';
 import AuctionTable from './admin/AuctionTable';
@@ -39,6 +41,7 @@ export default {
     Settings,
     ProfileMenu,
     Account,
+    ComplaintList,
     Payments,
     UserTable,
     AuctionTable,

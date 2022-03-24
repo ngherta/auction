@@ -6,6 +6,7 @@ import com.auction.model.NotificationMessage;
 import com.auction.model.NotificationMessageUser;
 import com.auction.model.User;
 import com.auction.model.enums.NotificationType;
+import com.auction.model.enums.UserRole;
 import com.auction.projection.NotificationProjection;
 import com.auction.repository.NotificationMessageUserRepository;
 import com.auction.repository.UserRepository;
@@ -60,6 +61,14 @@ public class NotificationGenerationServiceImpl implements NotificationGeneration
 
   @Transactional
   @Override
+  public void generateNotificationForAdmins(NotificationMessage notificationMessage) {
+    List<User> admins = userRepository.findAllByRole(UserRole.ADMIN.name());
+
+    generateSingleNotificationFor(admins, notificationMessage);
+  }
+
+  @Transactional
+  @Override
   public void initNotificationsForUser(Long userId) {
     User user = userRepository.findById(userId)
             .orElseThrow(() -> new UserNotFoundException("User[" + userId + "] doesn't exist"));
@@ -90,7 +99,7 @@ public class NotificationGenerationServiceImpl implements NotificationGeneration
   @Override
   @Transactional
   public void generateSingleNotificationFor(List<User> users, NotificationMessage notificationMessage) {
-    List<NotificationMessageUser> messagesForUsers = new ArrayList<>();
+    List<NotificationMessageUser> messagesForUsers = new ArrayList<>(users.size());
 
     for (User user : users) {
       NotificationMessageUser notificationMessageUser = NotificationMessageUser

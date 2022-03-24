@@ -1,29 +1,31 @@
 <template>
   <Main_Logo class="mt-5 mb-5"></Main_Logo>
-    <div class="container border mb-4">
-      <div class="container p-0">
-        <div class="row">
-          <div class="col-sm border-bottom p-0">
-            <router-link to="/register" class="nav-link text-center list-group-item list-group-item-action">SIGN UP</router-link>
-          </div>
-          <div class="line"></div>
-          <div class="col-sm border-bottom border-info p-0">
-            <router-link to="/login" class="nav-link text-center list-group-item list-group-item-action">SIGN IN</router-link>
-          </div>
+  <div class="container border mb-4">
+    <div class="container p-0">
+      <div class="row">
+        <div class="col-sm border-bottom p-0">
+          <router-link to="/register" class="nav-link text-center list-group-item list-group-item-action">SIGN UP
+          </router-link>
+        </div>
+        <div class="line"></div>
+        <div class="col-sm border-bottom border-info p-0">
+          <router-link to="/login" class="nav-link text-center list-group-item list-group-item-action">SIGN IN
+          </router-link>
         </div>
       </div>
+    </div>
     <div class="container register-form pt-5 pb-5">
       <Form @submit="handleLogin" :validation-schema="schema">
         <div v-if="!successful">
           <div class="mb-3">
             <label for="email">EMAIL:</label>
-            <Field name="email" id="email" type="email" class="form-control" />
-            <ErrorMessage name="email" class="error-feedback" />
+            <Field name="email" id="email" type="email" class="form-control"/>
+            <ErrorMessage name="email" class="error-feedback"/>
           </div>
           <div class="mb-3">
             <label for="password">PASSWORD:</label>
-            <Field name="password" id="password" type="password" class="form-control" />
-            <ErrorMessage name="password" class="error-feedback" />
+            <Field name="password" id="password" type="password" class="form-control"/>
+            <ErrorMessage name="password" class="error-feedback"/>
           </div>
 
           <div class="">
@@ -53,7 +55,7 @@
 </template>
 
 <script>
-import { Form, Field, ErrorMessage } from "vee-validate";
+import {Form, Field, ErrorMessage} from "vee-validate";
 import * as yup from "yup";
 import Main_Logo from "@/components/Main_Logo";
 
@@ -93,8 +95,15 @@ export default {
       this.loading = true;
 
       this.$store.dispatch("auth/login", user).then(
-          () => {
-            this.$router.push("/home");
+          (response) => {
+            console.log("ASDASD")
+            console.log(response.userDto);
+            if (response.userDto.needTutorial === true) {
+              console.log("Need to check tutorial!")
+              this.$router.push("/home");
+            } else {
+              this.$router.push("/home");
+            }
           },
           (error) => {
             this.loading = false;
@@ -112,9 +121,8 @@ export default {
 </script>
 
 
-
 <style scoped>
-@media only screen and (min-width: 576px){
+@media only screen and (min-width: 576px) {
   .register-form {
     padding: 1rem 1rem;
   }
@@ -124,7 +132,7 @@ export default {
   }
 }
 
-@media only screen and (min-width: 768px){
+@media only screen and (min-width: 768px) {
   .register-form {
     padding: 1rem 1rem;
   }
@@ -134,19 +142,19 @@ export default {
   }
 }
 
-@media only screen and (min-width: 992px){
+@media only screen and (min-width: 992px) {
   .register-form {
     padding: 1rem 11rem;
   }
 }
 
-@media only screen and (min-width: 1200px){
+@media only screen and (min-width: 1200px) {
   .register-form {
     padding: 1rem 11rem;
   }
 }
 
-@media only screen and (min-width: 1400px){
+@media only screen and (min-width: 1400px) {
   .register-form {
     padding: 1rem 11rem;
   }

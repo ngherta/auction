@@ -28,6 +28,7 @@
       <column name="default_city" type="varchar(255)"></column>
       <column name="default_address" type="varchar(255)"></column>
       <column name="money_balance" type="float8"></column>
+      <column name="need_tutorial" type="bool"></column>
     </createTable>
 
 

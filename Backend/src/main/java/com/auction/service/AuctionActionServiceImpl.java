@@ -81,7 +81,9 @@ class AuctionActionServiceImpl implements AuctionActionService {
     publisher.publishEvent(new ChangeBetEvent(auctionAction));
     return auctionActionToDtoMapper.map(auctionAction);  }
 
-  private AuctionActionDto create(Double bet, AuctionEvent auctionEvent, User user) {
+  @Transactional
+  @Override
+  public AuctionActionDto create(Double bet, AuctionEvent auctionEvent, User user) {
     boolean finish = false;
     if (auctionEvent.getFinishPrice() != null && auctionEvent.getFinishPrice() <= bet) {
       bet = auctionEvent.getFinishPrice();

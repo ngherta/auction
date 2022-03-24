@@ -14,62 +14,14 @@
         </router-link>
       </li>
       <li>
-        <router-link @click="this.$emit('handleChangePage', 'user-table')"
-                     to="/profile/user-table"
-                     :disabled="activeItem == 'user-table'"
-                     class="text-decoration-none profile-item-link">
-          <div class="p-3 border profile-item"
-               :class="{'profile-item-active' : activeItem == 'user-table'}">
-            <Icon name="profile-auction-table"/>
-            <span class="pl-3 profile-item-text">User table</span>
-          </div>
-        </router-link>
-      </li>
-      <li>
-        <router-link @click="this.$emit('handleChangePage', 'auction-table')"
-                     to="/profile/auction-table"
-                     :disabled="activeItem == 'auction-table'"
-                     class="text-decoration-none profile-item-link">
-          <div class="p-3 border profile-item"
-               :class="{'profile-item-active' : activeItem == 'auction-table'}">
-            <Icon name="profile-auction-table"/>
-            <span class="pl-3 profile-item-text">Auction table</span>
-          </div>
-        </router-link>
-      </li>
-      <li>
-        <router-link @click="this.$emit('handleChangePage', 'statistic')"
-                     to="/profile/statistic"
-                     :disabled="activeItem == 'statistic'"
-                     class="text-decoration-none profile-item-link">
-          <div class="p-3 border profile-item"
-               :class="{'profile-item-active' : activeItem == 'statistic'}">
-            <Icon name="profile-statistic"/>
-            <span class="pl-3 profile-item-text">Statistic</span>
-          </div>
-        </router-link>
-      </li>
-      <li>
         <router-link @click="this.$emit('handleChangePage', 'my-auctions')"
                      to="/profile/my-auctions"
                      :disabled="activeItem == 'my-auctions'"
                      class="text-decoration-none profile-item-link">
           <div class="p-3 border profile-item"
                :class="{'profile-item-active' : activeItem == 'my-auctions'}">
-            <Icon name="profile-account-overview"/>
+            <Icon name="profile-my-auctions" size="1.6"/>
             <span class="pl-3 profile-item-text">My auctions</span>
-          </div>
-        </router-link>
-      </li>
-      <li>
-        <router-link @click="this.$emit('handleChangePage', 'create-category')"
-                     to="/profile/create-category"
-                     :disabled="activeItem == 'create-category'"
-                     class="text-decoration-none profile-item-link">
-          <div class="p-3 border profile-item"
-               :class="{'profile-item-active' : activeItem == 'create-category'}">
-            <Icon name="categories"/>
-            <span class="pl-3 profile-item-text">New categories</span>
           </div>
         </router-link>
       </li>
@@ -97,15 +49,75 @@
           </div>
         </router-link>
       </li>
-      <li>
+      <li v-show="isAdmin">
+        <router-link @click="this.$emit('handleChangePage', 'create-category')"
+                     to="/profile/create-category"
+                     :disabled="activeItem == 'create-category'"
+                     class="text-decoration-none profile-item-link">
+          <div class="p-3 border profile-item"
+               :class="{'profile-item-active' : activeItem == 'create-category'}">
+            <Icon name="categories" size="1.2"/>
+            <span class="pl-3 profile-item-text">New categories</span>
+          </div>
+        </router-link>
+      </li>
+      <li v-show="isAdmin">
         <router-link @click="this.$emit('handleChangePage', 'home-images')"
                      to="/profile/home-images"
                      :disabled="activeItem == 'home-images'"
                      class="text-decoration-none profile-item-link profile-item-link">
           <div class="p-3 border profile-item"
                :class="{'profile-item-active' : activeItem == 'home-images'}">
-            <Icon name="payments" size="1.8"/>
+            <Icon name="profile-images" size="1.7"/>
             <span class="pl-3 profile-item-text">Home images</span>
+          </div>
+        </router-link>
+      </li>
+      <li v-show="isAdmin">
+        <router-link @click="this.$emit('handleChangePage', 'user-table')"
+                     to="/profile/user-table"
+                     :disabled="activeItem == 'user-table'"
+                     class="text-decoration-none profile-item-link">
+          <div class="p-3 border profile-item"
+               :class="{'profile-item-active' : activeItem == 'user-table'}">
+            <Icon name="profile-auction-table"/>
+            <span class="pl-3 profile-item-text">User table</span>
+          </div>
+        </router-link>
+      </li>
+      <li v-show="isAdmin">
+        <router-link @click="this.$emit('handleChangePage', 'auction-table')"
+                     to="/profile/auction-table"
+                     :disabled="activeItem == 'auction-table'"
+                     class="text-decoration-none profile-item-link">
+          <div class="p-3 border profile-item"
+               :class="{'profile-item-active' : activeItem == 'auction-table'}">
+            <Icon name="profile-auction-table"/>
+            <span class="pl-3 profile-item-text">Auction table</span>
+          </div>
+        </router-link>
+      </li>
+      <li v-show="isAdmin">
+        <router-link @click="this.$emit('handleChangePage', 'complaints')"
+                     to="/profile/auction-table"
+                     :disabled="activeItem == 'complaints'"
+                     class="text-decoration-none profile-item-link">
+          <div class="p-3 border profile-item"
+               :class="{'profile-item-active' : activeItem == 'complaints'}">
+            <Icon name="profile-complaints" size="1.2"/>
+            <span class="pl-3 profile-item-text">Complaints</span>
+          </div>
+        </router-link>
+      </li>
+      <li v-show="isAdmin">
+        <router-link @click="this.$emit('handleChangePage', 'statistic')"
+                     to="/profile/statistic"
+                     :disabled="activeItem == 'statistic'"
+                     class="text-decoration-none profile-item-link">
+          <div class="p-3 border profile-item"
+               :class="{'profile-item-active' : activeItem == 'statistic'}">
+            <Icon name="profile-statistic"/>
+            <span class="pl-3 profile-item-text">Statistic</span>
           </div>
         </router-link>
       </li>
@@ -124,6 +136,11 @@ export default {
   props: [
     'activeItem'
   ],
+  data() {
+    return {
+      isAdmin: this.$store.state.auth.isAdmin,
+    }
+  },
   methods: {
     // isActiveItem(item) {
     //   console.log("NGH!!!!");
@@ -132,6 +149,8 @@ export default {
     //     return true;
     //   }
     // }
+  },
+  mounted() {
   }
 }
 </script>

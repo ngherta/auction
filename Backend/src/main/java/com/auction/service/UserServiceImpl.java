@@ -171,9 +171,24 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
+  public void addDefaultAddress(String country, String city, String address, Long userId) {
+    User user = findById(userId);
+    user.setDefaultCountry(country);
+    user.setDefaultCity(city);
+    user.setDefaultAddress(address);
+  }
+
+  @Override
+  @Transactional
   public void checkTutorial(Long userId) {
     User user = findById(userId);
     user.setNeedTutorial(false);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<User> findAllAdmins() {
+    return userRepository.findAllByRole(UserRole.ADMIN.name());
   }
 
   @Override

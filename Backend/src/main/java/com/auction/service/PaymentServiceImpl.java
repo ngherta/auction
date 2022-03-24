@@ -74,6 +74,7 @@ class PaymentServiceImpl implements PaymentService {
         .intent("sale")
         .build();
 
+    paymentOrder = paymentOrderRepository.save(paymentOrder);
     Payment payment = paypalService.createPayment(paymentOrder);
     paymentOrder.setPaymentId(payment.getId());
 

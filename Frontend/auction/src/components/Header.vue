@@ -15,7 +15,7 @@
         <li class="nav-item">
           <router-link to="/home" class="nav-link text-center">HOME</router-link>
         </li>
-        <li class="nav-item">
+        <li id="auctions-link-item" class="nav-item">
           <router-link to="/auctions" class="nav-link text-center">AUCTIONS</router-link>
         </li>
         <li class="nav-item">
@@ -51,7 +51,7 @@
           </div>
         </li>
 
-        <li v-if="this.$store.state.auth.status.loggedIn == true" class="nav-item dropdown d-flex">
+        <li v-if="this.$store.state.auth.status.loggedIn == true" id="notification-item" class="nav-item dropdown d-flex">
           <button class="nav-link text-light" id="navbarDropdown" role="button" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
             <icon name="notification-bell"

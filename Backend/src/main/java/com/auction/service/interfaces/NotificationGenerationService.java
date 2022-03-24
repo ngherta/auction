@@ -17,4 +17,6 @@ public interface NotificationGenerationService {
   void generateSingleNotificationFor(User user, NotificationMessage notificationMessage);
 
   void generateSingleNotificationFor(List<User> users, NotificationMessage notificationMessage);
+
+  void generateNotificationForAdmins(NotificationMessage notificationMessage);
 }

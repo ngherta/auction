@@ -132,7 +132,7 @@ export default {
           this.isWrongBet = false;
         }
       } else {
-        if (this.betInput <= this.content.startPrice * 1.05) {
+        if (this.betInput <= this.auction.startPrice * 1.05) {
           this.isWrongBet = true;
         } else {
           this.isWrongBet = false;

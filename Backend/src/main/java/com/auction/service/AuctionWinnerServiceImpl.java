@@ -25,7 +25,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,7 +57,6 @@ public class AuctionWinnerServiceImpl implements AuctionWinnerService {
 
   @Override
   @Transactional
-  @Async
   public void createForFinishPrice(AuctionEvent auctionEvent, User user) {
     create(auctionEvent, user, auctionEvent.getFinishPrice());
   }
@@ -74,8 +72,10 @@ public class AuctionWinnerServiceImpl implements AuctionWinnerService {
         .genDate(LocalDateTime.now())
         .build();
 
-    auctionWinner.setPaymentOrder(paymentService.createPaymentForAuction(auctionWinner));
-    auctionWinnerRepository.save(auctionWinner);
+    auctionWinner = auctionWinnerRepository.save(auctionWinner);
+    PaymentOrder order = paymentService.createPaymentForAuction(auctionWinner);
+    auctionWinner.setPaymentOrder(order);
+
     publisher.publishEvent(new AuctionFinishingNotificationEvent(auctionWinner));
     publisher.publishEvent(new AuctionWinnerAuditEvent(auctionWinner, false));
     return auctionWinner;
@@ -105,6 +105,13 @@ public class AuctionWinnerServiceImpl implements AuctionWinnerService {
     winner.setCity(request.getCity());
     winner.setAddress(request.getAddress());
     publisher.publishEvent(new AuctionWinnerAuditEvent(winner, false));
+
+    if (request.getSaveAsDefault() == Boolean.TRUE) {
+      userService.addDefaultAddress(request.getCountry(),
+                                    request.getCity(),
+                                    request.getCity(),
+                                    winner.getUser().getId());
+    }
 
     if (winner.getStatus() == AuctionWinnerStatus.NEED_ADDRESS) {
       startDelivery(winner);

@@ -8,6 +8,7 @@ import com.auction.web.dto.request.UpdatePasswordRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -37,4 +38,8 @@ public interface UserService {
   void addDefaultAddress(AddDefaultAddressRequest request);
 
   void checkTutorial(Long userId);
+
+  List<User> findAllAdmins();
+
+  void addDefaultAddress(String country, String city, String address, Long userId);
 }

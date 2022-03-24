@@ -2,9 +2,9 @@ import AuthService from '../services/auth.service';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const initialState = user
-  ? { status: { loggedIn: true },
+  ? { status: { loggedIn: true }, isAdmin: user.userDto.userRole.includes('ADMIN'),
       user }
-  : { status: { loggedIn: false }, user: null };
+  : { status: { loggedIn: false }, isAdmin : false, user: null };
 
 export const auth = {
   namespaced: true,
@@ -43,20 +43,25 @@ export const auth = {
     loginSuccess(state, user) {
       state.status.loggedIn = true;
       state.user = user;
+      state.isAdmin = user.userDto.userRole.includes('ADMIN');
     },
     loginFailure(state) {
       state.status.loggedIn = false;
       state.user = null;
+      state.isAdmin = false;
     },
     logout(state) {
       state.status.loggedIn = false;
       state.user = null;
+      state.isAdmin = false;
     },
     registerSuccess(state) {
       state.status.loggedIn = false;
+      state.isAdmin = false;
     },
     registerFailure(state) {
       state.status.loggedIn = false;
+      state.isAdmin = false;
     }
   }
 };

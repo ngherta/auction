@@ -85,5 +85,11 @@ public class ButtonServiceImpl implements ButtonService {
     return auctionActionService.finish(button.getCurrentAuctionEvent(), button.getUser());
   }
 
+  @Override
+  @Transactional(readOnly = true)
+  public Boolean isConnected(Long userId, Long auctionId) {
+    return buttonRepository.existsByCurrentAuctionEventIdAndUserIdAndConnected(auctionId, userId, true);
+  }
+
 
 }

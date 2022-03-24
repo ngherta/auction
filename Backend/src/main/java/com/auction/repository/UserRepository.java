@@ -20,15 +20,22 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
   @Query(nativeQuery = true, value = "" +
-          "SELECT to_char(u.gen_date, 'YYYY-Month')          AS date, " +
-          "       to_char(u.gen_date, 'Month')                AS month, " +
-          "       to_char(u.gen_date, 'YYYY')                AS year, " +
-          "       COUNT(u.id)                                AS count, " +
-          "       CAST(to_char(u.gen_date, 'mm') AS integer) AS index " +
-          "FROM users u " +
-          "WHERE u.gen_date > current_date - INTERVAL '12 months' " +
-          "  AND to_char(u.gen_date, 'YYYY-Month') != to_char(current_date - INTERVAL '12 months', 'YYYY-Month') " +
-          "GROUP BY date, year, index, month " +
-          "ORDER BY year, index ")
+      "SELECT to_char(u.gen_date, 'YYYY-Month')          AS date, " +
+      "       to_char(u.gen_date, 'Month')                AS month, " +
+      "       to_char(u.gen_date, 'YYYY')                AS year, " +
+      "       COUNT(u.id)                                AS count, " +
+      "       CAST(to_char(u.gen_date, 'mm') AS integer) AS index " +
+      "FROM users u " +
+      "WHERE u.gen_date > current_date - INTERVAL '12 months' " +
+      "  AND to_char(u.gen_date, 'YYYY-Month') != to_char(current_date - INTERVAL '12 months', 'YYYY-Month') " +
+      "GROUP BY date, year, index, month " +
+      "ORDER BY year, index ")
   List<UserCountPerMonthProjection> countAllByMonth();
+
+  @Query(nativeQuery = true, value = "" +
+      "select u.* from users u " +
+      "INNER JOIN user_roles ur on u.id = ur.user_id " +
+      "INNER JOIN roles r on ur.role_id = r.id " +
+      "WHERE r.user_role = :role ")
+  List<User> findAllByRole(String role);
 }

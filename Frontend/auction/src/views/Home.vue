@@ -22,7 +22,11 @@
       </a>
     </div>
     <div class="d-flex">
-      <div v-for="auction in auctions" :key="auction.id" class="card mr-3" style="width: 18rem;">
+      <div v-for="(auction, index) in auctions"
+           :key="auction.id"
+           :id="'auction-item-' + index"
+           class="card mr-3"
+           style="width: 18rem;">
         <img :src="auction.images[0]" height="300" class="card-img-top" alt="image of auction">
         <div class="card-body">
           <h5 class="card-title">{{ auction.title }}</h5>
@@ -81,6 +85,9 @@ export default {
     AuctionService.getAuctions(4, null).then(
         (response) => {
           this.auctions = response.data.content;
+          if (this.auctions.length > 0) {
+            this.$emit('handleAuctionIdForTutorial', this.auctions[0].id)
+          }
         },
         (error) => {
           this.$notify({

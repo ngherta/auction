@@ -16,4 +16,6 @@ public interface ButtonService {
   AuctionActionDto defaultBet(String buttonId);
 
   AuctionActionDto finishAuction(String buttonId);
+
+  Boolean isConnected(Long userId, Long auctionId);
 }

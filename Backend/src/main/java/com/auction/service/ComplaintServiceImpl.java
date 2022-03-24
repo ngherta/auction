@@ -1,5 +1,6 @@
 package com.auction.service;
 
+import com.auction.event.notification.ComplaintCreateNotificationEvent;
 import com.auction.event.notification.ComplaintNotificationEvent;
 import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionEventComplaint;
@@ -56,6 +57,7 @@ class ComplaintServiceImpl implements ComplaintService {
 
     auctionEventComplaint = complaintRepository.save(auctionEventComplaint);
 
+    publisher.publishEvent(new ComplaintCreateNotificationEvent(auctionEventComplaint));
     return complaintToDtoMapper.map(auctionEventComplaint);
   }
 

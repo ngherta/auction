@@ -1,16 +1,27 @@
 <template>
-  <div class="container">
-    <div v-for="item in data" :key="item" class="card">
-      <div class="card-body d-flex">
-        <p>
-          <strong class="d-block text-gray-dark">{{item.user.firstName}} {{item.user.lastName}}</strong>
-          {{item.message}}
-        </p>
-        <div>
-          <button @click="sendResponse(item.id, 'SATISFY')" class="btn btn-success" type="btn button">Satisfy</button>
-          <button @click="sendResponse(item.id, 'REJECTED')" class="btn btn-warning" type="btn button">Reject</button>
+  <div class="border container-lg p-5 mb-5">
+    <Icon name="profile-account-overview" :size="1.3"/>
+    <h2 class="h2 mt-2">Edit details</h2>
+<!--    <p class="mt-2">Feel free to edit any of your details below.</p>-->
+    <div class="mt-4">
+      <div v-for="item in data" :key="item" style="max-width: 1000px;" class="card">
+        <div class="card-body ">
+          <p>
+            <strong class="d-block text-gray-dark">{{item.user.firstName}} {{item.user.lastName}}</strong>
+            {{item.message}}
+          </p>
+          <p class="card-text">
+            <small>Created:
+              <b>{{ item.genDate }}</b>
+            </small>
+          </p>
+          <div>
+            <button @click="sendResponse(item.id, 'SATISFY')" class="btn btn-success mr-3" type="btn button">Satisfy</button>
+            <button @click="sendResponse(item.id, 'REJECTED')" class="btn btn-warning" type="btn button">Reject</button>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -39,7 +50,7 @@ export default {
     },
     sendResponse(id, status) {
       ComplainService.sendResponse({
-        admin : this.userId,
+        admin: this.userId,
         complaintId: id,
         status: status
       }).then(

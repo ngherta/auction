@@ -26,7 +26,7 @@
           <div class="d-flex align-items-center">
             <h1 class="h1">{{ content.title }}</h1>
             <div class="ml-auto">
-              <button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#qrModal">
+              <button type="button" class="btn btn-success btn-circle" id="share-button" data-toggle="modal" data-target="#qrModal">
                 SHARE
               </button>
               <button type="button" class="btn btn-warning btn-circle" :disabled="iotLoading" @click="connectIoTButton">
@@ -171,8 +171,8 @@
         </div>
       </div>
     </div>
-    <div class="row mt-5 justify-content-between mb-5">
-      <div class="col mr-4 p-3 border">
+    <div class="row mt-5 justify-content-between mb-5" >
+      <div class="col mr-4 p-3 border" id="betting-room-container">
         <button type="button"
                 data-toggle="modal"
                 data-target="#bettingModalLong"
@@ -188,7 +188,7 @@
 
 
 
-      <div class="col-6 border pb-4 pr-0">
+      <div class="col-6 border pb-4 pr-0" id="chat-container">
         <div class="overflow-chat d-flex flex-column pt-3 pb-3 pl-2 pr-2 chat-box"
              :class="{'height-500' : content.statusType == 'EXPECTATION',
                       'height-400' : content.statusType != 'EXPECTATION'}"
@@ -289,6 +289,7 @@ import IotService from "../services/iot.service"
 
 export default {
   name: "AuctionPage",
+  props: ['chatMessageForTutorial'],
   components: {
     Icon,
     Form,
@@ -340,13 +341,14 @@ export default {
       iotConnected: false,
       iotLoading: false,
       betInput: null,
-      isWrongBet: null
+      isWrongBet: null,
+      userId: this.$store.state.auth.user.userDto.id
     };
   },
   methods: {
     isMessageFromCurrentUser(senderId) {
-      if (this.$store.state.auth.user) {
-        if (this.$store.state.auth.user.userDto.id == senderId) {
+      if (this.userId) {
+        if (this.userId == senderId) {
           return true;
         } else {
           return false;
@@ -362,7 +364,7 @@ export default {
       this.complaintLoading = true;
       this.complaintSuccessful = false;
       const data = {
-        userId: this.$store.state.auth.user.userDto.id,
+        userId: this.userId,
         auctionEventId: this.auctionId,
         message: this.complaintMessage
       }
@@ -398,8 +400,9 @@ export default {
     getAllMessagesByAuctionId() {
       ChatService.getMessagesByAuctionId(this.auctionId).then(
           (response) => {
-            console.log(response);
-            this.chatMessages = response.data;
+            if (response.data.length != 0) {
+              this.chatMessages = response.data;
+            }
           },
           (error) => {
             console.log(error);
@@ -410,7 +413,7 @@ export default {
       if(!['', ' ','  ', '   ', null].includes(this.chat_message)) {
         if (this.stompClient && this.stompClient.connected) {
           this.stompClient.send("/app/chat/auction/" + this.auctionId, JSON.stringify({
-            'senderId': this.$store.state.auth.user.userDto.id,
+            'senderId': this.userId,
             'message': this.chat_message
           }));
           let div = document.getElementById('chat-box');
@@ -424,7 +427,7 @@ export default {
       if (this.stompClient && this.stompClient.connected) {
         this.stompClient.send("/app/betting/" + this.auctionId, JSON.stringify({
           'auctionId': String(this.auctionId),
-          'userId': this.getUser().userDto.id,
+          'userId': this.userId,
           'bet': this.betInput
         }));
       }
@@ -432,13 +435,22 @@ export default {
     },
     connectIoTButton() {
       this.iotLoading = true;
-      IotService.connect(this.getUser().userDto.id).then(
-          () => {
-            this.iotConnected = true;
-            this.iotLoading = false;
-            this.iotConnected = true;
-          }
-      )
+      if (this.iotConnected == false) {
+        IotService.connect(this.userId, this.auctionId).then(
+            () => {
+              this.iotConnected = !this.iotConnected;
+              this.iotLoading = false;
+            }
+        )
+      }
+      else {
+        IotService.disconnect(this.userId).then(
+            () => {
+              this.iotConnected = !this.iotConnected;
+              this.iotLoading = false;
+            }
+        )
+      }
     },
     connect() {
       this.socket = new SockJS("http://localhost:8080/websocket");
@@ -488,6 +500,16 @@ export default {
     tickleConnection() {
       this.connected ? this.disconnect() : this.connect();
     },
+    getIoTData() {
+      IotService.isConnected(this.auctionId, this.userId).then(
+          (response) => {
+            this.iotConnected = response.data;
+          },
+          () => {
+            this.iotConnected = false;
+          }
+      );
+    },
     getData() {
       AuctionService.getAuctionById(this.auctionId).then(
           (response) => {
@@ -527,6 +549,11 @@ export default {
         }
     )
     this.getAllMessagesByAuctionId();
+    this.getIoTData();
+    console.log(this.chatMessageForTutorial);
+    if (this.chatMessageForTutorial != null) {
+      this.chatMessages = [this.chatMessageForTutorial];
+    }
   }
 };
 </script>

@@ -18,10 +18,11 @@ import AuctionsPage from '@/views/AuctionsPage';
 import ProfilePage from '@/views/profile/ProfilePage';
 import AboutUsPage from '@/views/AboutUsPage';
 import Editor from "./components/Editor";
-import ComplaintList from "@/views/profile/admin/ComplaintList";
 import SuccessPay from "@/views/SuccessPay";
 import Tour from "@/views/Tour";
 import Test from "@/views/profile/Test";
+import FirstStepTutorial from "@/views/tutorials/FirstStepTutorial";
+import SecondStepTutorial from "@/views/tutorials/SecondStepTutorial";
 
 const routes = [
   {
@@ -98,6 +99,7 @@ const routes = [
     component: AboutUsPage,
   },
   {
+    name: "auctions",
     path: "/auctions",
     component: AuctionsPage,
   },
@@ -146,8 +148,8 @@ const routes = [
     component: ProfilePage
   },
   {
-    path: "/admin/complaint",
-    component: ComplaintList
+    path: "/profile/complaints",
+    component: ProfilePage
   },
   {
     path: "/payment/success",
@@ -156,6 +158,15 @@ const routes = [
   {
     path: "/guide",
     component: Tour
+  },
+  {
+    path: "/tutorial/1",
+    component: FirstStepTutorial,
+  },
+  {
+    name: "tutorialSecondPage",
+    path: "/tutorial/2/:id",
+    component: SecondStepTutorial,
   }
 ];
 

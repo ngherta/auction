@@ -2,6 +2,7 @@ package com.auction.service;
 
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
+import com.auction.model.AuctionEventComplaint;
 import com.auction.model.AuctionEventComplaintAudit;
 import com.auction.model.AuctionWinner;
 import com.auction.model.NotificationMessage;
@@ -10,9 +11,12 @@ import com.auction.model.enums.ComplaintStatus;
 import com.auction.model.enums.NotificationType;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.NotificationMessageRepository;
+import com.auction.repository.UserRepository;
+import com.auction.repository.UserRoleRepository;
 import com.auction.service.interfaces.ImageResizeService;
 import com.auction.service.interfaces.NotificationGenerationService;
 import com.auction.service.interfaces.NotificationTemplateService;
+import com.auction.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +34,7 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
   private final NotificationMessageRepository notificationMessageRepository;
   private final AuctionActionRepository auctionActionRepository;
   private final ImageResizeService imageResizeService;
+  private final UserService userService;
 
   private static final String DEFAULT_IMAGE = "IMAGE_LINK-NOT-IMPL";
 
@@ -156,7 +161,7 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
   public void sendNotificationOfChangeBet(AuctionAction currentAction) {
     StringBuilder sb = new StringBuilder();
     sb.append("New bet - <b>");
-    sb.append(currentAction.getBet());
+    sb.append(new DecimalFormat("#0.00").format(currentAction.getBet()));
     sb.append("</b> by ");
     sb.append(currentAction.getUser().getFirstName());
     sb.append(" ");
@@ -200,5 +205,43 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
             .collect(Collectors.toList());
 
     notificationGenerationService.generateSingleNotificationFor(users, message);
+  }
+
+  @Override
+  @Transactional
+  public void sendNotificationOfCreatingComplaint(AuctionEventComplaint complaint) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Complaint for auction - <b>");
+    sb.append(complaint.getAuctionEvent().getId());
+    sb.append("</b> was created by ");
+    sb.append(complaint.getUser().getFirstName());
+    sb.append(" ");
+    sb.append(complaint.getUser().getLastName());
+    sb.append(".");
+
+    String image;
+    if (!complaint.getAuctionEvent().getImages().isEmpty()) {
+      image = imageResizeService
+          .resize(complaint
+                      .getAuctionEvent()
+                      .getImages()
+                      .get(0), 200);
+    }
+    else {
+      image = DEFAULT_IMAGE;
+    }
+
+    NotificationMessage message = NotificationMessage
+        .builder()
+        .genDate(LocalDateTime.now())
+        .message(sb.toString())
+        .image(image)
+        .singleNotification(true)
+        .type(NotificationType.COMPLAINT_CREATING)
+        .build();
+
+    message = notificationMessageRepository.save(message);
+
+    notificationGenerationService.generateNotificationForAdmins(message);
   }
 }

@@ -10,4 +10,5 @@ public class AddAddressToWinnerRequest {
   private String country;
   private String city;
   private String address;
+  private Boolean saveAsDefault;
 }

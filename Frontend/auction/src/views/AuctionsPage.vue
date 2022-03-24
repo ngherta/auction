@@ -27,9 +27,9 @@
               <div v-if="loadingSearch == true" class="spinner-border spinner-border-sm search-spinner text-info" role="status">
                 <span class="sr-only">Loading...</span>
               </div>
-              <div v-if="focusSearchField == true && searchDropdownData.length > 0" class="search-container w-100">
+              <div v-if="searchDropdownData.length > 0 && (focusSearchField == true || focusSearchResult == true)" class="search-container w-100">
                 <ul class="list-group">
-                  <li class="list-group-item" v-for="(item, index) in searchDropdownData" :key="index">
+                  <li @mouseenter="focusSearchResult = true" @mouseleave="focusSearchResult = false" class="list-group-item" v-for="(item, index) in searchDropdownData" :key="index">
                     <router-link class="text-decoration-none text-reset d-flex list-group-item-link"
                                  :to="'/auction/' + item.id">
                       <h5 class="h5">{{ item.title }}</h5>
@@ -174,6 +174,7 @@ export default {
       statusValue: [],
       searchTitle: "",
       focusSearchField: false,
+      focusSearchResult: false,
       stompClient: null,
       socket: null,
       connected: false,

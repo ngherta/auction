@@ -31,6 +31,7 @@ export class WinnerService {
             country: data.country,
             city: data.city,
             address: data.address,
+            saveAsDefault: data.saveAsDefault,
         })
     }
 

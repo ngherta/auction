@@ -140,7 +140,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form v-if="modalType == 'ADD_ADDRESS'">
+          <form v-if="modalType == 'ADD_ADDRESS'" @submit="submitAddress">
             <div class="form-group">
               <label for="addCountry" class="col-form-label">Country:</label>
               <input v-model="country" name="country" type="text" class="form-control" id="addCountry"/>
@@ -153,8 +153,14 @@
               <label for="addAddress" class="col-form-label">Address:</label>
               <input v-model="address" name="address" type="text" class="form-control" id="addAddress"/>
             </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" v-model="needToSaveAsDefault" id="needToSaveAsDefault">
+              <label class="form-check-label" for="needToSaveAsDefault">
+                Save as default address
+              </label>
+            </div>
           </form>
-          <form v-if="modalType == 'ADD_TRACK_NUMBER'">
+          <form v-if="modalType == 'ADD_TRACK_NUMBER'" @submit="submitTrackNumber">
             <div class="form-group">
               <p>Add track number and change status to <b>DELIVERY-PROCESSING</b></p>
               <label for="trackNumber" class="col-form-label">Track number:</label>
@@ -215,6 +221,7 @@ export default {
       trackNumber: '',
       userBalance: 0,
       buttonLoading: false,
+      needToSaveAsDefault: false
     }
   },
   methods: {
@@ -271,7 +278,8 @@ export default {
       const data = {
         country: this.country,
         city: this.city,
-        address: this.address
+        address: this.address,
+        saveAsDefault: this.needToSaveAsDefault
       }
       WinnerService.addAddress(data, this.currentWinnerId).then(
           () => {

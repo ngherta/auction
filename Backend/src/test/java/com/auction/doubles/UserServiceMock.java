@@ -124,4 +124,14 @@ public class UserServiceMock implements UserService {
   public void checkTutorial(Long userId) {
 
   }
+
+  @Override
+  public List<User> findAllAdmins() {
+    return null;
+  }
+
+  @Override
+  public void addDefaultAddress(String country, String city, String address, Long userId) {
+
+  }
 }

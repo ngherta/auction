@@ -18,6 +18,6 @@ public class AuctionWinnerAuditEvent extends ApplicationEvent {
     super(winner);
     this.audit = winner;
     this.async = async;
-    log.info("Created ComplaintNotificationEvent for: AuctionWinnerAudit [{}]", audit.getId());
+    log.info("Created AuctionWinnerAuditEvent for: AuctionWinnerAudit [{}]", audit.getId());
   }
 }

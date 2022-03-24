@@ -10,6 +10,7 @@ import com.auction.web.dto.request.UpdatePasswordRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Optional;
 
 public class UserServiceSpy implements UserService {
@@ -129,6 +130,16 @@ public class UserServiceSpy implements UserService {
 
   @Override
   public void checkTutorial(Long userId) {
+
+  }
+
+  @Override
+  public List<User> findAllAdmins() {
+    return null;
+  }
+
+  @Override
+  public void addDefaultAddress(String country, String city, String address, Long userId) {
 
   }
 }
