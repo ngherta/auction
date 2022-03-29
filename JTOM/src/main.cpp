@@ -3,15 +3,15 @@
 #include <WiFiClient.h>
 #include <ArduinoJson.h>
 
-// const char* ssid = "Anea";
-// const char* password = "762988tis";
-const char* ssid = "Inther";
-const char* password = "inth3rmoldova";
+const char* ssid = "Anea";
+const char* password = "762988tis";
+// const char* ssid = "Inther";
+// const char* password = "inth3rmoldova";
 
 const char* id = "1x323124"; 
 volatile long userId = 777;
 
-const int PUSH_BET_BUTTON = 4;
+const int PUSH_BET_BUTTON = 12;
 volatile bool betButtonState;
 uint8_t bet_btn_prev;
 
@@ -19,17 +19,19 @@ const int PUSH_FINISH_BUTTON = 13;
 volatile bool finishButtonState;
 uint8_t finish_btn_prev;
 
-const int RED_PIN = 14;
+const int RED_PIN = 5;
 volatile bool redLedState;
 
-const int GREEN_PIN = 5;
+const int GREEN_PIN = 4;
 volatile bool greenLedState;
 
-const int BLUE_PIN = 12;
+const int BLUE_PIN = 14;
 volatile bool blueLedState;
 
-String serverApiBet = "http://172.17.44.24:8080/api/iot/bet";
-String serverApiFinish = "http://172.17.44.24:8080/api/iot/finish";
+// String serverApiBet = "http://172.17.41.32:8080/api/iot/bet";
+// String serverApiFinish = "http://172.17.41.32:8080/api/iot/finish";
+String serverApiBet = "http://192.168.0.103:8080/api/iot/bet";
+String serverApiFinish = "http://192.168.0.103:8080/api/iot/finish";
 
 void setup() {
   Serial.begin(115200); 
@@ -47,8 +49,10 @@ void setup() {
   WiFi.begin(ssid, password);
   Serial.println("Connecting");
   while(WiFi.status() != WL_CONNECTED) {
-    // RGB
     Serial.print(".");
+    analogWrite(RED_PIN, 0);
+    analogWrite(GREEN_PIN, 0);
+    analogWrite(BLUE_PIN, 1);
     delay(150);
   }
   int count = 0;
@@ -69,20 +73,6 @@ void RGB_color(int red_light_value, int green_light_value, int blue_light_value)
   analogWrite(RED_PIN, red_light_value);
   analogWrite(GREEN_PIN, green_light_value);
   analogWrite(BLUE_PIN, blue_light_value);
-}
-
-static bool isBetButtonPressed(int BUTTON_PIN)
-{
-  static bool prevButtonState;
-  bool buttonState = !digitalRead(BUTTON_PIN);
-  
-  if(buttonState != prevButtonState)
-  {
-    prevButtonState = buttonState;
-    return buttonState == HIGH;
-  }
-  
-  return LOW;
 }
 
 static bool isButtonPressedDebounced(int BUTTON_PIN)
@@ -107,21 +97,9 @@ static bool isButtonPressedDebounced(int BUTTON_PIN)
     return LOW;
 }
 
-static bool isBetButtonPressed()
-{
-  static bool prevButtonState;
-  bool buttonState = !digitalRead(PUSH_BET_BUTTON);
-  
-  if(buttonState != prevButtonState)
-  {
-    prevButtonState = buttonState;
-    return buttonState == HIGH;
-  }
-  
-  return LOW;
-}
 
 void loop() {
+
   // static bool prevBetButtonState;
   // finishButtonState = digitalRead(PUSH_FINISH_BUTTON);
   static int buttonEventTimeStamp = millis();
@@ -159,10 +137,10 @@ void loop() {
 
         buttonEventTimeStamp = millis();
         if(httpResponseCode == 200) {
-          greenLedState = HIGH;
+          RGB_color(2, 5, 29);
         }
         else {
-          redLedState = HIGH;
+          RGB_color(255, 110, 5);
         }
 
         http.end();
@@ -219,10 +197,10 @@ void loop() {
 
       buttonEventTimeStamp = millis();
       if(httpResponseCode == 200) {
-        greenLedState = HIGH;
+          RGB_color(1, 1, 5);
       }
       else {
-        redLedState = HIGH;
+          RGB_color(255, 110, 5);
       }
 
       http.end();
@@ -234,12 +212,8 @@ void loop() {
   }
 
   if(millis() - buttonEventTimeStamp > 5000) {
-    greenLedState = LOW;
-    redLedState = LOW;
+    RGB_color(255, 255, 0);
   }
-
-  // digitalWrite(GREEN_LED, greenLedState);
-  // digitalWrite(RED_LED, redLedState);
 
   bet_btn_prev = digitalRead(PUSH_BET_BUTTON);
   finish_btn_prev = digitalRead(PUSH_FINISH_BUTTON);

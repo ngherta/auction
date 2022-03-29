@@ -2,6 +2,7 @@ package com.auction.service;
 
 import com.auction.event.notification.ComplaintCreateNotificationEvent;
 import com.auction.event.notification.ComplaintNotificationEvent;
+import com.auction.exception.ComplaintException;
 import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionEventComplaint;
 import com.auction.model.AuctionEventComplaintAudit;
@@ -73,26 +74,23 @@ class ComplaintServiceImpl implements ComplaintService {
   @Override
   @Transactional
   public ComplaintAuditDto satisfyComplaint(ComplaintAdminRequest request) {
-    AuctionEventComplaint complaint = complaintRepository.getById(request.getComplaintId());
-    ComplaintStatus complaintStatus = complaint.getStatus();
+    AuctionEventComplaint complaint = complaintRepository.findById(request.getComplaintId())
+        .orElseThrow(() -> new ComplaintException("Complaint[" + request.getComplaintId() + "] not found!"));
     AuctionEvent auctionEvent = complaint.getAuctionEvent();
 
     if (request.getStatus() == ComplaintStatus.REJECTED) {
       complaint.setStatus(ComplaintStatus.REJECTED);
-      complaintStatus = ComplaintStatus.REJECTED;
     }
     else if (request.getStatus() == ComplaintStatus.SATISFIED) {
       complaint.setStatus(ComplaintStatus.SATISFIED);
-      auctionEvent = auctionEventService.blockAuctionEvent(auctionEvent);
-      complaint.setAuctionEvent(auctionEvent);
-      complaintStatus = ComplaintStatus.SATISFIED;
+      auctionEventService.blockAuctionEvent(auctionEvent);
     }
 
     User admin = userService.findById(request.getAdminId());
 
     AuctionEventComplaintAudit audit = AuctionEventComplaintAudit.builder()
             .admin(admin)
-            .complaintStatus(complaintStatus)
+            .complaintStatus(complaint.getStatus())
             .auctionEventComplaint(complaint)
             .genDate(LocalDateTime.now())
             .build();

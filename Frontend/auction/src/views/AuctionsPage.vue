@@ -24,17 +24,20 @@
                        class="form-control"
                        placeholder="Search"/>
               </div>
-              <div v-if="loadingSearch == true" class="spinner-border spinner-border-sm search-spinner text-info" role="status">
+              <div v-if="loadingSearch == true" class="spinner-border spinner-border-sm search-spinner text-info"
+                   role="status">
                 <span class="sr-only">Loading...</span>
               </div>
-              <div v-if="searchDropdownData.length > 0 && (focusSearchField == true || focusSearchResult == true)" class="search-container w-100">
+              <div v-if="searchDropdownData.length > 0 && (focusSearchField == true || focusSearchResult == true)"
+                   class="search-container w-100">
                 <ul class="list-group">
-                  <li @mouseenter="focusSearchResult = true" @mouseleave="focusSearchResult = false" class="list-group-item" v-for="(item, index) in searchDropdownData" :key="index">
+                  <li @mouseenter="focusSearchResult = true" @mouseleave="focusSearchResult = false"
+                      class="list-group-item" v-for="(item, index) in searchDropdownData" :key="index">
                     <router-link class="text-decoration-none text-reset d-flex list-group-item-link"
                                  :to="'/auction/' + item.id">
                       <h5 class="h5">{{ item.title }}</h5>
                       <div class="ml-auto">
-                        <span class="badge badge-pill badge-light">{{item.status}}</span>
+                        <span class="badge badge-pill badge-light">{{ item.status }}</span>
                       </div>
                     </router-link>
                   </li>
@@ -115,28 +118,30 @@
        class="d-flex justify-content-center mt-5 mb-3">
     <ul class="pagination ">
       <li class="page-item list-unstyled">
-        <router-link class="page-link" to="/auctions"
-                     @click="changePage(this.page-1)"
-                     aria-label="Previous">
+        <button class="page-link"
+                @click="changePage(this.page-1)"
+                :disabled="page - 1 < 1"
+                aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
-        </router-link>
+        </button>
       </li>
       <li v-for="index in countOfPages" :key="index"
           :class="{active: this.page == index,
                   'd-none': !isPageForRender(index)}"
           :aria-current="{page: this.page == index}"
           class="page-item">
-        <router-link @click="changePage(index)"
-                     class="page-link"
-                     to="/auctions">{{ index }}
-        </router-link>
+        <button @click="changePage(index)"
+                :disabled="page == this.page == index"
+                     class="page-link">{{ index }}
+        </button>
       </li>
       <li class="page-item">
-        <router-link class="page-link" to="/auctions"
-                     @click="changePage(this.page+1)"
-                     aria-label="Next">
+        <button class="page-link"
+                @click="changePage(this.page+1)"
+                :disabled="page + 1 > countOfPages"
+                aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
-        </router-link>
+        </button>
       </li>
     </ul>
   </nav>

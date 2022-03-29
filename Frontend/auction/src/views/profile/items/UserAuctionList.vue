@@ -24,25 +24,27 @@
       </button>
     </div>
     <div v-if="this.data.length != 0">
-      <div v-for="auction in data" :key="auction" class="card mt-3" style="max-width: 540px;">
+      <div v-for="auction in data" :key="auction" class="card mt-3 d-flex" style="max-width: 63em;">
         <!--        <router-link :to="'/auction/' + auction.id"-->
         <!--                     class="text-decoration-none">-->
-        <div class="row no-gutters">
+        <div class="d-flex no-gutters">
           <div class="">
             <img class=""
                  :src="auction.images[0]"
-                 height="300"
-                 width="400"
+                 height="288"
+                 width="333"
                  alt="Image of auction">
           </div>
-          <div class="col-md-8">
+          <div class="col-md-8 d-flex">
             <div class="card-body">
               <h5 class="card-title">{{ auction.title }}</h5>
-              <p class="card-text">{{ auction.genDate }}</p>
-              <p class="card-text"><small class="text-muted">{{ auction.statusType }}</small></p>
+              <p class="card-text"><strong>Status: </strong>{{ auction.statusType }}</p>
+              <p class="card-text"><strong>Start price: </strong>{{ auction.startPrice }} $</p>
+              <p class="card-text"><strong>Created: </strong>{{ auction.genDate }}</p>
               <a v-if="title == 'WINNING'"
                  :href="paymentOrders.get(auction.id)"
-                 class="btn btn-success">Pay</a>
+                 class="btn btn-success mr-3">Pay</a>
+              <router-link :to="'/auction/' + auction.id" class="btn btn-warning">Open</router-link>
             </div>
           </div>
         </div>

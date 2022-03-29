@@ -1,6 +1,6 @@
 import axios from 'axios';
-
-const API_URL = 'http://localhost:8080/api/complaint/';
+import properties from "@/properties";
+const API_URL = properties.API_URL + '/api/complaint';
 
 class ComplaintService {
     sendComplaint(data) {
@@ -12,8 +12,8 @@ class ComplaintService {
     }
 
     sendResponse(data) {
-        return axios.post(API_URL, {
-            adminId : data.adminId,
+        return axios.post(API_URL + '/answer', {
+            adminId : data.admin,
             complaintId : data.complaintId,
             status : data.status
         })

@@ -29,14 +29,6 @@
               <button type="button" class="btn btn-success btn-circle" id="share-button" data-toggle="modal" data-target="#qrModal">
                 SHARE
               </button>
-              <button type="button" class="btn btn-warning btn-circle" :disabled="iotLoading" @click="connectIoTButton">
-                <span v-if="!iotConnected && !iotLoading">Connect IoT</span>
-                <span v-if="iotConnected && !iotLoading">Disconnect IoT</span>
-                <span v-show="iotLoading">Connecting...</span>
-              <span
-                  class="spinner-border spinner-border-sm"
-                  v-show="iotLoading"/>
-              </button>
             </div>
             <div class="ml-2">
               <button type="button"
@@ -166,13 +158,22 @@
           <div class="modal-body">
             <betting-room :bids="bids"
                           :auction="content"
-                          :stomp-client="stompClient"/>
+                          :stomp-client="stompClient"
+                          :isFinished="auctionFinished"/>
           </div>
         </div>
       </div>
     </div>
     <div class="row mt-5 justify-content-between mb-5" >
       <div class="col mr-4 p-3 border" id="betting-room-container">
+        <button type="button" class="btn btn-warning btn-circle expand-iot-button" :disabled="iotLoading" @click="connectIoTButton">
+          <span v-if="!iotConnected && !iotLoading">Connect IoT</span>
+          <span v-if="iotConnected && !iotLoading">Disconnect IoT</span>
+          <span v-show="iotLoading">Connecting...</span>
+          <span
+              class="spinner-border spinner-border-sm"
+              v-show="iotLoading"/>
+        </button>
         <button type="button"
                 data-toggle="modal"
                 data-target="#bettingModalLong"
@@ -304,6 +305,7 @@ export default {
     return {
       showTest: false,
       stompClient: null,
+      auctionFinished: false,
       received_messages: [],
       send_message: null,
       socket: null,
@@ -464,8 +466,10 @@ export default {
                 tick => {
                   const bid = JSON.parse(tick.body);
                   this.bids.push(bid);
-                  if (bid.bid > this.content.finishPrice) {
+                  if (bid.status == 'FINISHED') {
                     this.content.statusType = 'FINISHED';
+                    console.log("Auction finished")
+                    this.auctionFinished = true;
                     this.getData();
                   }
                 });
@@ -619,6 +623,12 @@ export default {
   position: absolute;
   right: 5px;
   top: 5px;
+}
+
+.expand-iot-button {
+  position: absolute;
+  left: 5px;
+  top: 20px;
 }
 
 .height-400 {

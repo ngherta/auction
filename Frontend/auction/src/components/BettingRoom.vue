@@ -1,9 +1,10 @@
 <template>
   <div>
-    <h3 v-if="this.$store.state.auth.status.loggedIn" class="text-center mb-4">MAKE A BID</h3>
+    <h3 v-if="auction.statusType == 'BLOCKED'" class="text-center mb-4">Auction is blocked</h3>
+    <h3 v-else-if="this.$store.state.auth.status.loggedIn" class="text-center mb-4">MAKE A BID</h3>
     <h3 v-if="!this.$store.state.auth.status.loggedIn" class="text-center mb-4">List of bids:</h3>
     <div>
-      <Form v-if="this.$store.state.auth.status.loggedIn && this.auction.statusType == 'ACTIVE'"
+      <Form v-if="this.$store.state.auth.status.loggedIn && this.auction.statusType == 'ACTIVE' && !isFinished"
             @submit="handleBet" :validation-schema="schema">
         <div class="d-flex">
           <div class="col input-group">
@@ -48,12 +49,12 @@
         <router-link to="/login" class="alert-link">login</router-link>
         to make a bet.
       </div>
-      <h5 v-else-if="this.auction.statusType == 'EXPECTATION'"
+      <h5 v-else-if="this.auction.statusType == 'EXPECTATION' && !this.isFinished"
           class="alert alert-light text-center" role="alert">
         The auction starts in
         <Countdown v-if="startDate" :deadlineDate="startDate" @timeElapsed="timeElapsedHandler"/>
       </h5>
-      <h5 v-else-if="this.auction.statusType == 'FINISHED'"
+      <h5 v-else-if="this.auction.statusType == 'FINISHED' || this.isFinished"
           class="alert text-center alert-light" role="alert">
         Auction has status <span class="alert-link">FINISHED</span>!
       </h5>
@@ -95,7 +96,7 @@ import DateConverter from '../helpers/date.converter';
 
 export default {
   name: "BettingRoom",
-  props: ['bids', 'auction', 'stompClient'],
+  props: ['bids', 'auction', 'stompClient', 'isFinished'],
   components: {
     Form,
     Field,

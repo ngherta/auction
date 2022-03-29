@@ -100,7 +100,7 @@ export default {
             console.log(response.userDto);
             if (response.userDto.needTutorial === true) {
               console.log("Need to check tutorial!")
-              this.$router.push("/home");
+              this.$router.push("/tutorial/1");
             } else {
               this.$router.push("/home");
             }

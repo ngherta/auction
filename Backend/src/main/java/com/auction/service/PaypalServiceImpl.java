@@ -36,6 +36,7 @@ public class PaypalServiceImpl implements PaypalService {
   private final APIContext apiContext;
 
   @Override
+  @Transactional
   public Payment createPayment(PaymentOrder paymentOrder) throws PayPalRESTException {
     Amount theAmount = new Amount();
     theAmount.setCurrency(paymentOrder.getCurrency());
