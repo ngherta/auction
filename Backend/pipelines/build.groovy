@@ -5,7 +5,7 @@ pipeline {
         disableConcurrentBuilds()
     }
     environment {
-        def serviceName = "frontend"; 
+        def serviceName = "backend";
         def branchName = "";
         def versionName = "";
         def dockerRegistry = "836434573289.eu-north-1.compute.amazonaws.com"
@@ -39,7 +39,7 @@ pipeline {
             steps {
                 script {
                     echo 'Build docker image'
-                    dir('java/employee-management-backend/') {
+                    dir('java/com/') {
                         dockerImage = docker.build(imageName, , "-f pipelines/Dockerfile .")
                     }
                     
@@ -50,7 +50,7 @@ pipeline {
             steps {
                 script {
                     echo 'Publish docker image'
-                     docker.withRegistry("https://${dockerRegistry}",  'ecr:eu-west-1:ecr_key') {
+                     docker.withRegistry("https://${dockerRegistry}",  'ecr:eu-north-1:ecr_key') {
 
                         dockerImage.push()
                      }
