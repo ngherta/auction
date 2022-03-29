@@ -8,7 +8,7 @@ pipeline {
         def serviceName = "backend";
         def branchName = "";
         def versionName = "";
-        def dockerRegistry = "836434573289.eu-north-1.compute.amazonaws.com"
+        def dockerRegistry = "836434573289.dkr.ecr.eu-north-1.amazonaws.com"
         def imageName = "";
         def dockerImage = null;
     }
