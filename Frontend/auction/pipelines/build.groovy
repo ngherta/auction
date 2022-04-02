@@ -7,8 +7,9 @@ pipeline {
         def serviceName = "frontend";
         def branchName = "main";
         def versionName = "";
-        def dockerRegistry = "europe-central2-docker.pkg.dev/neat-environs-343619"
+        def dockerRegistry = "europe-central2-docker.pkg.dev/neat-environs-343619/frontend"
         def imageName = "";
+        def cloudCredential = "$PROJECT";
         def dockerImage = null;
     }
 
