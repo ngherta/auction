@@ -40,7 +40,7 @@ pipeline {
                 script {
                     echo 'Build docker image'
                     dir('java/com/') {
-                        dockerImage = docker.build(imageName, , "-f pipelines/Dockerfile .")
+                        dockerImage = docker.build("Frontend/auction/", , "-f pipelines/Dockerfile .")
                     }
 
                 }
