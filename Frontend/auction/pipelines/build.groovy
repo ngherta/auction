@@ -50,7 +50,7 @@ pipeline {
             steps {
                 script {
                     echo 'Publish docker image'
-                     docker.withRegistry("https://${dockerRegistry}",  $PROJECT) {
+                     docker.withRegistry("https://${dockerRegistry}",  cloudCredential) {
 
                         dockerImage.push()
                      }
