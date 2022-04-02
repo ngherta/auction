@@ -1,6 +1,7 @@
 import axios from 'axios';
+import properties from "@/properties";
 
-const API_URL = 'http://localhost:8080/api/category';
+const API_URL = properties.API_URL + '/api/category';
 
 
 class CategoryService {

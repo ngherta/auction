@@ -84,9 +84,10 @@ class AuctionActionServiceImpl implements AuctionActionService {
   @Transactional
   @Override
   public AuctionActionDto create(Double bet, AuctionEvent auctionEvent, User user) {
+    Double aDouble = bet;
     boolean finish = false;
-    if (auctionEvent.getFinishPrice() != null && auctionEvent.getFinishPrice() <= bet) {
-      bet = auctionEvent.getFinishPrice();
+    if (auctionEvent.getFinishPrice() != null && auctionEvent.getFinishPrice() <= aDouble) {
+      aDouble = auctionEvent.getFinishPrice();
       finish = true;
     }
 
@@ -94,7 +95,7 @@ class AuctionActionServiceImpl implements AuctionActionService {
             .builder()
             .auctionEvent(auctionEvent)
             .user(user)
-            .bet(bet)
+            .bet(aDouble)
             .genDate(LocalDateTime.now())
             .build();
     auctionActionRepository.save(auctionAction);
@@ -131,7 +132,7 @@ class AuctionActionServiceImpl implements AuctionActionService {
     if (auctionEvent.getStartPrice() > bet) {
       throw new WrongBetException("Bet should be higher than Start Price!");
     }
-    if (!action.isEmpty()) {
+    if (action.isPresent()) {
       double betDifference = (bet * 100 / action.get().getBet()) - 100;
       if (betDifference <= 5.0) {
         throw new WrongBetException("Bet should be 5 percent higher!");

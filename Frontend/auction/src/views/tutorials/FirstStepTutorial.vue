@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import {defineComponent, ref, onMounted , reactive} from 'vue'
+import {defineComponent, ref, onMounted} from 'vue'
 import {VOnboardingWrapper, useVOnboarding} from 'v-onboarding'
 import 'v-onboarding/dist/style.css'
 import Home from '../Home';
@@ -17,7 +17,7 @@ export default defineComponent({
   },
   data() {
     return {
-      $auctionLinkId: 'x'
+      auctionLinkId: 'x'
     }
   },
   setup() {
@@ -76,7 +76,7 @@ export default defineComponent({
             router.push({
               name: "tutorialSecondPage",
               params: {
-                id : this.auctionLinkId
+                id : 9999
               }
             });
           }
@@ -101,8 +101,8 @@ export default defineComponent({
         options: {} // [Options](#options)
       }
     ]
-    const $data = reactive(this.$auctionLinkId);
-    console.log($data);
+    // const $data = reactive(this.$auctionLinkId);
+    // console.log($data);
     const {start} = useVOnboarding(wrapper)
 
     onMounted(() => {
@@ -117,7 +117,7 @@ export default defineComponent({
   methods: {
     receiveAuctionId(id) {
       if (id != null) {
-        this.$auctionLinkId = id;
+        this.auctionLinkId = id;
       }
     }
   },

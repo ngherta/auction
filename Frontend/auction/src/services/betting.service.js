@@ -1,8 +1,8 @@
 import axios from "axios";
 import authHeader from "@/services/auth-header";
+import properties from "@/properties";
 
-
-const API_URL = 'http://localhost:8080/api/bids/';
+const API_URL = properties.API_URL + '/api/bids/';
 
 class BettingService {
     getBidsForByAuction(auctionId) {

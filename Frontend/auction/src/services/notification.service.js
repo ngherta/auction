@@ -1,8 +1,9 @@
 import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
 import UserService from "@/services/user.service"
+import properties from "@/properties";
 
-const STOMP_URL = 'http://localhost:8080/websocket';
+const STOMP_URL = properties.API_URL + '/websocket';
 
 class NotificationService {
     connect() {
