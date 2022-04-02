@@ -9,7 +9,7 @@ pipeline {
         def versionName = "";
         def dockerRegistry = "europe-central2-docker.pkg.dev/neat-environs-343619/frontend"
         def imageName = "";
-        def cloudCredential = "gcr:frontend";
+        def cloudCredential = "gcr:credentials-frontend";
         def dockerImage = null;
     }
 
