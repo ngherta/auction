@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    docker {
-    registryCredentialsId 'google-cloud'
-    }
     options {
         disableConcurrentBuilds()
     }
@@ -42,7 +39,7 @@ pipeline {
                 script {
                     echo 'Build docker image'
                     dir('Frontend/auction/') {
-                        dockerImage = docker.build(imageName, , "google-cloud")
+                        dockerImage = docker.build(imageName, , "-f pipelines/Dockerfile .")
                     }
 
                 }
@@ -52,7 +49,7 @@ pipeline {
             steps {
                 script {
                     echo 'Publish docker image'
-                     docker.withRegistry("https://${dockerRegistry}",  "${serviceName}") {
+                     docker.withRegistry("https://${dockerRegistry}",  $PROJECT) {
 
                         dockerImage.push()
                      }
