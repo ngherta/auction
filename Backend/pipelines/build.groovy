@@ -8,7 +8,7 @@ pipeline {
         def serviceName = "backend";
         def branchName = "";
         def versionName = "";
-        def dockerRegistry = "836434573289.dkr.ecr.eu-north-1.amazonaws.com"
+        def dockerRegistry = "europe-west1-docker.pkg.dev/neat-environs-343619/backend"
         def imageName = "";
         def dockerImage = null;
     }
@@ -23,7 +23,6 @@ pipeline {
                     versionName = env.BRANCH_NAME
                     imageName = "${serviceName}:${versionName}"
                 }
-                
             }
         }
         stage('clone') {
@@ -50,7 +49,7 @@ pipeline {
             steps {
                 script {
                     echo 'Publish docker image'
-                     docker.withRegistry("https://${dockerRegistry}",  'ecr:eu-north-1:ecr_key') {
+                     docker.withRegistry("https://${dockerRegistry}",  'gcr:[frontend]') {
 
                         dockerImage.push()
                      }
