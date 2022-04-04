@@ -40,7 +40,7 @@ pipeline {
                 script {
                     echo 'Build docker image'
                     dir('Frontend/auction/') {
-                        dockerImage = docker.build(imageName, , "-f pipelines/Dockerfile .")
+                        dockerImage = docker.build("neat-environs-343619/frontend", , "-f pipelines/Dockerfile .")
                     }
 
                 }

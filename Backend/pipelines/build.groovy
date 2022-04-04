@@ -39,7 +39,7 @@ pipeline {
                 script {
                     echo 'Build docker image'
                     dir('Backend/') {
-                        dockerImage = docker.build(imageName, , "-f pipelines/Dockerfile .")
+                        dockerImage = docker.build("neat-environs-343619/backend", , "-f pipelines/Dockerfile .")
                     }
                 }
             }
@@ -48,7 +48,7 @@ pipeline {
             steps {
                 script {
                     echo 'Publish docker image'
-                     docker.withRegistry("https://${dockerRegistry}",  'frontend') {
+                     docker.withRegistry("https://eu.gcr.io",  'gcr: gcr-admin-key') {
 
                         dockerImage.push()
                      }
