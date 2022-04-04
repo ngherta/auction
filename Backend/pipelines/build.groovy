@@ -41,7 +41,6 @@ pipeline {
                     dir('Backend/') {
                         dockerImage = docker.build(imageName, , "-f pipelines/Dockerfile .")
                     }
-                    
                 }
             }
         }
