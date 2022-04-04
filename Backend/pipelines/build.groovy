@@ -39,7 +39,7 @@ pipeline {
             steps {
                 script {
                     echo 'Build docker image'
-                    dir('backend/') {
+                    dir('Backend/') {
                         dockerImage = docker.build(imageName, , "-f pipelines/Dockerfile .")
                     }
                     
