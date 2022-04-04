@@ -48,7 +48,7 @@ pipeline {
             steps {
                 script {
                     echo 'Publish docker image'
-                     docker.withRegistry("https://${dockerRegistry}",  'gcr:[frontend]') {
+                     docker.withRegistry("https://${dockerRegistry}",  'gcr:frontend') {
 
                         dockerImage.push()
                      }
