@@ -39,8 +39,16 @@ pipeline {
                 script {
                     echo 'Build docker image'
                     dir('Backend/') {
-                        dockerImage = docker.build("neat-environs-343619/backend", , "-f pipelines/Dockerfile .")
+                        dockerImage = docker.build(imageName, , "-f pipelines/Dockerfile .")
                     }
+                }
+            }
+        }
+        stage('add tag'){
+            steps {
+                script {
+                    sh('docker tag $imageName gogo6ar/backend ')
+                    sh('echo $dockerHub_PWS | docker login -u $dockerHub_USR --password-stdin')
                 }
             }
         }
@@ -48,10 +56,7 @@ pipeline {
             steps {
                 script {
                     echo 'Publish docker image'
-                     docker.withRegistry("https://eu.gcr.io",  'gcr: gcr-admin-key') {
-
-                        dockerImage.push()
-                     }
+                    sh 'docker push gogo6ar/backend '
                     
                 }
             }
