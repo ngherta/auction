@@ -52,7 +52,13 @@ pipeline {
                 }
             }
         }
-
+        stage('login') {
+            steps {
+                script {
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PWS | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                }
+            }
+        }
         stage('docker publish') {
             steps {
                 script {
