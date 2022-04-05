@@ -39,7 +39,7 @@ pipeline {
                 script {
                     echo 'Build docker image'
                     dir('Backend/') {
-                        dockerImage = docker.build(imageName, , "-f pipelines/Dockerfile .")
+                        dockerImage = docker.build("gogo6ar/backend", , "-f pipelines/Dockerfile .")
                     }
                 }
             }
@@ -47,7 +47,7 @@ pipeline {
         stage('add tag'){
             steps {
                 script {
-                    sh('docker tag ${imageName} gogo6ar/backend:1.01 ')
+                    sh('docker tag gogo6ar/backend gogo6ar/backend:1.01 ')
                 }
             }
         }
