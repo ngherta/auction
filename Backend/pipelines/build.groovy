@@ -47,7 +47,7 @@ pipeline {
         stage('add tag'){
             steps {
                 script {
-                    sh('docker tag $imageName gogo6ar/backend ')
+                    sh('docker tag $imageName gogo6ar/backend:1.01 ')
                     sh('echo $dockerHub_PWS | docker login -u $dockerHub_USR --password-stdin')
                 }
             }
@@ -56,7 +56,7 @@ pipeline {
             steps {
                 script {
                     echo 'Publish docker image'
-                    sh 'docker push gogo6ar/backend '
+                    sh 'docker push gogo6ar/backend:1.01 '
                     
                 }
             }
