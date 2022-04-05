@@ -11,7 +11,7 @@ pipeline {
         def dockerRegistry = "europe-west1-docker.pkg.dev/neat-environs-343619/backend"
         def imageName = "";
         def dockerImage = null;
-        def DOCKERHUB_CREDENTIALS = credentials('dockerHub')
+        DOCKERHUB_CREDENTIALS = credentials('dockerHub');
     }
 
     stages {
@@ -52,11 +52,17 @@ pipeline {
                 }
             }
         }
+        stage('login') {
+            steps {
+                script {
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PWS | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                }
+            }
+        }
         stage('docker publish') {
             steps {
                 script {
                     echo 'Publish docker image'
-                    sh 'echo $DOCKERHUB_CREDENTIALS_PWS | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                     sh 'docker push gogo6ar/backend'
 
                 }
