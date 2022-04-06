@@ -40,9 +40,23 @@ pipeline {
                 script {
                     echo 'Build docker image'
                     dir('Frontend/auction/') {
-                        dockerImage = docker.build("neat-environs-343619/frontend", , "-f pipelines/Dockerfile .")
+                        dockerImage = docker.build("gogo6ar/frontend", , "-f pipelines/Dockerfile .")
                     }
 
+                }
+            }
+        }
+        stage('add tag'){
+            steps {
+                script {
+                    sh('docker tag gogo6ar/frontend gogo6ar')
+                }
+            }
+        }
+        stage('login') {
+            steps {
+                script {
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 }
             }
         }
@@ -50,10 +64,7 @@ pipeline {
             steps {
                 script {
                     echo 'Publish docker image'
-                     docker.withRegistry("https://${dockerRegistry}", "gcr:[frontend]") {
-
-                        dockerImage.push()
-                     }
+                    sh 'docker push gogo6ar/frontend'
 
                 }
             }
