@@ -8,7 +8,7 @@ COPY package.json .
 
 RUN npm install --legacy-peer-deps
 
-COPY pipelines /app
+COPY . .
 
 RUN npm run build
 
