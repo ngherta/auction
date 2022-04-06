@@ -9,7 +9,7 @@
     "test:unit": "vue-cli-service test:unit -w"
   },
   "dependencies": {
-    "@ag-grid-community/csv-export": "^26.2.1",
+    "@ag-grid-community/csv-export": "^26.2.0",
     "@ag-grid-enterprise/excel-export": "^26.2.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
