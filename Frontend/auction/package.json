@@ -9,7 +9,7 @@
     "test:unit": "vue-cli-service test:unit -w"
   },
   "dependencies": {
-    "@ag-grid-community/csv-export": "^26.2.0",
+    "@ag-grid-community/csv-export": "^26.2.1",
     "@ag-grid-enterprise/excel-export": "^26.2.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
@@ -21,7 +21,7 @@
     "@tiptap/vue-3": "^2.0.0-beta.89",
     "@vue/cli-plugin-unit-jest": "^4.5.10",
     "@vueform/multiselect": "^2.3.1",
-    "ag-grid-community": "^26.2.0",
+    "ag-grid-community": "^26.2.1",
     "ag-grid-vue": "^26.2.0",
     "ag-grid-vue3": "26.0.0",
     "axios": "^0.21.1",
