@@ -40,7 +40,7 @@ pipeline {
                 script {
                     echo 'Build docker image'
                     dir('Frontend/auction/') {
-                        dockerImage = docker.build("gogo6ar/frontend", , "-f pipelines/Dockerfile .")
+                        dockerImage = docker.build("gogo6ar/frontend", , "-f Dockerfile .")
                     }
 
                 }

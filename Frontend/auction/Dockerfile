@@ -4,11 +4,11 @@ RUN npm install -g http-server
 
 WORKDIR /app
 
-COPY package.json /app/package.json
+COPY package.json .
 
 RUN npm install
 
-COPY . /app
+COPY pipelines /app
 
 RUN npm run build
 
