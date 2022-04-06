@@ -4,7 +4,7 @@ RUN npm install -g http-server
 
 WORKDIR /app
 
-COPY package*.json /app/package.json
+COPY package.json /app/package.json
 
 RUN npm install
 
