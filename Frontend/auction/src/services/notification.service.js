@@ -14,9 +14,7 @@ class NotificationService {
         if(UserService.getUser()) {
             this.stompClient.connect(
                 {"username": UserService.getUser().userDto.id},
-                frame => {
-                    console.log("NGH" + frame);
-
+                () => {
                     return this.stompClient.subscribe("/notification/" + UserService.getUser().userDto.id + "/secured/user");
                 },
                 error => {

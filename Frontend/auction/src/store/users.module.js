@@ -40,7 +40,6 @@ export const users = {
             );
         },
         updatePassword({commit}, request) {
-            console.log(request.code + " : " + request.password)
             return UserService.changePasswordAfterReset(request.code, request.password).then(
                 response => {
                     return Promise.resolve(response);
