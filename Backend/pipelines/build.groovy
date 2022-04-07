@@ -67,6 +67,27 @@ pipeline {
                 }
             }
         }
+        stage('stop container'){
+            steps {
+                script {
+                    sh('docker stop /backend || true ')
+                }
+            }
+        }
+        stage('remove container'){
+            steps {
+                script {
+                    sh('docker rm /backend || true ')
+                }
+            }
+        }
+        stage('run container'){
+            steps {
+                script {
+                    sh('docker run -d -p 8082:8082 --name backend gogo6ar/backend:latest ')
+                }
+            }
+        }
     }
     post {
     		always {
