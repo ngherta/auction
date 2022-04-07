@@ -52,7 +52,6 @@ export default defineComponent({
         },
         on: { // optional
           before: function () {
-            console.log("Test log.");
           }, // optional (could be async)
           after: function () {
           } // optional (could be async)
@@ -72,7 +71,6 @@ export default defineComponent({
           beforeStep: function () {
           }, // optional (could be async)
           afterStep: function () {
-            console.log();
             router.push({
               name: "tutorialSecondPage",
               params: {
@@ -101,8 +99,7 @@ export default defineComponent({
         options: {} // [Options](#options)
       }
     ]
-    // const $data = reactive(this.$auctionLinkId);
-    // console.log($data);
+
     const {start} = useVOnboarding(wrapper)
 
     onMounted(() => {

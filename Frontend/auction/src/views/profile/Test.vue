@@ -32,11 +32,9 @@ export default defineComponent ({
         },
         on: { // optional
           before: function() {
-            console.log("asdasdasdasd")
             this.$router.push("/home")
           }, // optional (could be async)
           after: function() {
-            console.log("asdasdasdasd")
 
           } // optional (could be async)
         },

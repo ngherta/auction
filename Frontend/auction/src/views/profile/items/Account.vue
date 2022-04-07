@@ -111,7 +111,6 @@ export default {
       this.successful = false;
       this.loading = true;
       // user.birthday = this.date;
-      // console.log(user);
 
       this.$store.dispatch("users/update", null).then(
           (response) => {

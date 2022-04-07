@@ -10,10 +10,6 @@ class ImageService {
                     "upload_preset" : 'jhjwl2sq'
                 })
             .then(response => {
-                console.log(response);
-                if (response.data) {
-                    console.log(response.data);
-                }
                 return response.data;
             });
     }

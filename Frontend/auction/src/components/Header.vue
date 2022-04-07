@@ -147,7 +147,6 @@ export default {
           request.push(this.notifications[i].messageId);
 
           if (this.stompClient && this.stompClient.connected) {
-            console.log(request);
             this.stompClient.send("/app/notification/" + this.currentUser['userDto'].id, JSON.stringify({
               'list': request,
             }));
@@ -210,7 +209,10 @@ export default {
                 });
           },
           error => {
-            console.log(error);
+            this.$notify({
+              type: 'error',
+              text: error
+            })
             this.isConnectedToNotifications = false;
           }
       );
@@ -226,8 +228,7 @@ export default {
     disconnect() {
       if (this.stompClient) {
         this.stompClient.disconnect(
-            frame => {
-              console.log(frame);
+            () => {
             },
             {"username": this.getUser().userDto.id});
       }
@@ -245,7 +246,6 @@ export default {
     $route(to, from) {
       console.log(to);
       console.log(from);
-      console.log(this.isConnectedToNotifications);
       if (this.$store.state.auth.status.loggedIn == true &&
           this.isConnectedToNotifications == false) {
         this.connect();

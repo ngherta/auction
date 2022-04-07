@@ -55,7 +55,6 @@ export default {
       ComplainService.getAll(this.page, this.perPage).then(
           (response) => {
             this.data = response.data.content;
-            console.log(this.data)
           }
       )
     },

@@ -32,8 +32,10 @@ export default {
           this.$router.push("/home");
         },
         (error) => {
-          console.log('something went wrong');
-          console.log(error);
+          this.$notify({
+            type: 'error',
+            text: error
+          })
         }
     )
   }

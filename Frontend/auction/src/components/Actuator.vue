@@ -88,8 +88,7 @@ export default {
             this.UpTime = response.data.measurements[0].value;
           },
           (error) => {
-            this.content =
-                console.log(error)
+            this.content =error
           }
       )
     },
@@ -106,8 +105,7 @@ export default {
             };
           },
           (error) => {
-            this.content =
-                console.log(error)
+            this.content = error;
           }
       )
     },

@@ -45,7 +45,6 @@ export default {
 
   methods: {
     exportExcel() {
-      console.log("Export excel");
       this.gridApi.exportDataAsExcel();
     },
     actionCellRenderer(params) {
@@ -115,15 +114,12 @@ export default {
                 params.api.stopEditing(false);
               },
               (error) => {
-                console.log(error)
                 this.rowData = error.error;
               }
           );
         }
 
         if (action === 'cancel') {
-          console.log("NGH - CANCEL");
-
           params.api.stopEditing(true);
         }
       }

@@ -53,8 +53,6 @@ class FilterService {
     }
 
     in(filter, key, value) {
-        console.log("Add");
-        console.log(filter);
         filter = this.initFilter(filter, key);
         return filter + key + '::' + value + ',';
     }

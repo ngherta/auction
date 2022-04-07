@@ -65,7 +65,6 @@ export default {
     getStatus() {
       LoggingService.getLogLevel().then(
           (response) => {
-            console.log(response.data);
             this.status.controller = response.data.loggers['com.auction.web.controller']['configuredLevel'];
             this.status.service = response.data.loggers['com.auction.service']['configuredLevel'];
             this.status.listener = response.data.loggers['com.auction.listener']['configuredLevel'];
@@ -79,11 +78,9 @@ export default {
       this.message = "";
       this.successful = false;
       this.loading = true;
-      console.log(loggerName.toString() + " : " + logLevel);
 
       LoggingService.changeLogLevel(this.loggersName[loggerName], logLevel).then(
-          (response) => {
-            console.log(response);
+          () => {
             this.status[loggerName] = this.selectedStatus[loggerName];
           },
           (error) => {
@@ -93,7 +90,6 @@ export default {
             });
           }
       )
-      console.log(loggerName + " : " + logLevel);
     }
   },
   mounted() {

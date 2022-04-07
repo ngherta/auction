@@ -407,8 +407,10 @@ export default {
             }
           },
           (error) => {
-            console.log(error);
-          }
+            this.$notify({
+              type: 'error',
+              text: error
+            })          }
       );
     },
     handleMessageSending() {
@@ -468,7 +470,6 @@ export default {
                   this.bids.push(bid);
                   if (bid.status == 'FINISHED') {
                     this.content.statusType = 'FINISHED';
-                    console.log("Auction finished")
                     this.auctionFinished = true;
                     this.getData();
                   }

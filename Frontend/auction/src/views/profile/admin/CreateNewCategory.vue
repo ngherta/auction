@@ -97,7 +97,6 @@ export default {
       }
     },
     createNewSubCategory() {
-      console.log(this.subcategoryFields);
       let subCategory = [];
       for (let i = 0; i < this.subcategoryFields.length; i++) {
         if (this.subcategoryFields[i].subCategory != '' &&
@@ -110,11 +109,9 @@ export default {
           });
         }
       }
-      console.log(subCategory);
       CategoryService.createNewCategory(subCategory).then(
           (response) => {
             this.data = response.data;
-            console.log(this.data)
             this.initButtons(response.data);
           },
           (error) => {
@@ -126,7 +123,6 @@ export default {
       );
     },
     addField(value, fieldType, mainCategoryId) {
-      console.log(mainCategoryId);
       fieldType.push(
           {
             value: "",
@@ -135,14 +131,13 @@ export default {
       );
     },
     removeField(index, fieldType, mainCategoryId) {
-      console.log(mainCategoryId);
       fieldType.splice(index, 1);
+      console.log(mainCategoryId) ;
     },
     getCategories() {
       CategoryService.getCategoriesForCreateAuction().then(
           (response) => {
             this.data = response.data;
-            console.log(response.data);
             this.initButtons(response.data);
           }
       )

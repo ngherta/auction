@@ -59,8 +59,7 @@ export default {
 
   },
   setup() {
-    const beforeRenderLogic = (event) => {
-      console.log(event);
+    const beforeRenderLogic = () => {
     }
 
     return {

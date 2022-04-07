@@ -84,14 +84,11 @@ export default {
   },
   methods: {
     disableUserAfterReset() {
-      console.log("Try!!!")
       this.$store.dispatch("users/disableUserAfterReset", this.code).then(
           () => {
-            console.log("Disable: code[" + this.code + "]");
           },
-          (error) => {
+          () => {
             this.loading = false;
-            console.log(error);
             this.$router.push("/error")
           });
     },
@@ -102,7 +99,6 @@ export default {
 
       this.$store.dispatch("users/updatePassword", this.request).then(
           () => {
-            console.log("Change password...")
             this.$router.push("/login");
           },
           (error) => {
@@ -118,7 +114,6 @@ export default {
   },
   mounted() {
     this.disableUserAfterReset();
-    console.log("hello!")
   }
 }
 </script>

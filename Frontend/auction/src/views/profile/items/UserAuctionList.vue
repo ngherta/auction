@@ -111,15 +111,11 @@ export default {
       PaymentService.getPaymentsWithAuctionByUserId(this.userId, this.page, this.perPage).then(
           (response) => {
             this.data = [];
-            console.log(response);
             const tmpData = response.data.content;
             for (let i = 0; i < tmpData.length; i++) {
               this.data.push(tmpData[i].auctionEvent);
               this.paymentOrders.set(tmpData[i].auctionEvent.id, tmpData[i].link)
-              console.log(tmpData[i].auctionEvent.id);
-              console.log(this.paymentOrders.get(tmpData[i].auctionEvent.id))
             }
-            console.log(tmpData);
           },
           (error) => {
             this.$notify({

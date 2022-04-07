@@ -96,10 +96,7 @@ export default {
 
       this.$store.dispatch("auth/login", user).then(
           (response) => {
-            console.log("ASDASD")
-            console.log(response.userDto);
             if (response.userDto.needTutorial === true) {
-              console.log("Need to check tutorial!")
               this.$router.push("/tutorial/1");
             } else {
               this.$router.push("/home");

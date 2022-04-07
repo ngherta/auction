@@ -46,7 +46,6 @@ export default {
 
   methods: {
     exportExcel() {
-      console.log("Export excel");
       this.gridApi.exportDataAsExcel();
     },
     actionCellRenderer(params) {
@@ -106,7 +105,6 @@ export default {
         }
 
         if (action === 'delete') {
-          console.log("NGH - DELETE");
           UserService.delete(params.data.id).then(
               () => {
                 params.api.applyTransaction({
@@ -139,8 +137,6 @@ export default {
         }
 
         if (action === 'cancel') {
-          console.log("NGH - CANCEL");
-
           params.api.stopEditing(true);
         }
       }

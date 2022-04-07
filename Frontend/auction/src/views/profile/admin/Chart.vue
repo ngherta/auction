@@ -39,7 +39,6 @@ export default {
     }
 
     const beforeRenderLogic = (event) => {
-      console.log(event)
       //...
       //if(a === b) {
       //  event.preventDefault()

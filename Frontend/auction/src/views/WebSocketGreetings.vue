@@ -100,18 +100,18 @@ export default {
           () => {
             this.connected = true;
             this.stompClient.subscribe("/notification/" + this.getUser().userDto.id, tick => {
-              console.log("tick.body = " + tick.body);
               this.received_messages.push(JSON.parse(tick.body));
-              console.log(tick)
             });
             this.stompClient.subscribe("/notification/", tick => {
-              console.log("tick.body = " + tick.body);
               this.received_messages.push(JSON.parse(tick.body));
-              console.log(tick)
             });
           },
           error => {
-            console.log(error);
+            this.$notify = ({
+              type: 'error',
+              text: error
+
+            });
             this.connected = false;
           }
       );
@@ -119,8 +119,7 @@ export default {
     disconnect() {
       if (this.stompClient) {
         this.stompClient.disconnect(
-            frame => {
-              console.log(frame);
+            () => {
             },
             {"username": this.getUser().userDto.id});
       }

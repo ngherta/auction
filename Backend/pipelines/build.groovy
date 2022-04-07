@@ -64,7 +64,6 @@ pipeline {
                 script {
                     echo 'Publish docker image'
                     sh 'docker push gogo6ar/backend'
-
                 }
             }
         }

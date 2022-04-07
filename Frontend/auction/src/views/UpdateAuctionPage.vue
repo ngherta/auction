@@ -151,7 +151,6 @@ export default {
             this.$router.push("/auctions");
           },
           (error) => {
-            console.log(error);
             this.$notify({
               text: error,
               type: 'error'
@@ -161,7 +160,6 @@ export default {
       this.loading = false;
     },
     getAuctionTypeFromInput() {
-      console.log(this.isCharity);
       if (this.isCharity) {
         return 'CHARITY';
       } else if (!this.isCharity) {

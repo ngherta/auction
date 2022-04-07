@@ -142,13 +142,7 @@ export default {
     }
   },
   methods: {
-    // isActiveItem(item) {
-    //   console.log("NGH!!!!");
-    //   console.log(this.$route);
-    //   if (item == 'account-overview') {
-    //     return true;
-    //   }
-    // }
+
   },
   mounted() {
   }

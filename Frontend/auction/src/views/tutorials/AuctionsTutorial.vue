@@ -47,7 +47,6 @@ export default defineComponent({
         },
         on: { // optional
           before: function () {
-            console.log("Test log.");
           }, // optional (could be async)
           after: function () {
           } // optional (could be async)
