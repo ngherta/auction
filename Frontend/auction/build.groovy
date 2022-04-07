@@ -70,5 +70,30 @@ pipeline {
                 }
             }
         }
+        stage('stop container'){
+            steps {
+                script {
+                    sh('docker stop /frontend || true ')
+                }
+            }
+        }
+        stage('remove container'){
+            steps {
+                script {
+                    sh('docker rm /frontend || true ')
+                }
+            }
+        }
+        stage('run container'){
+            steps {
+                script {
+                    sh('docker run -d -p 8081:8081 --name frontend gogo6ar/frontend:latest ')
+                }
+            }
+        }
     }
-}
+    post {
+    		always {
+    			sh 'docker logout'
+    		}
+    }
