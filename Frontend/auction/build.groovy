@@ -11,6 +11,7 @@ pipeline {
         def imageName = "";
         def cloudCredential = "gcr:credentials-frontend";
         def dockerImage = null;
+        DOCKERHUB_CREDENTIALS = credentials('docker');
     }
 
     stages {
