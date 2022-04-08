@@ -16,7 +16,7 @@ FROM openjdk:11-jre-slim
 # copy jar from the first stage
 COPY --from=builder target/auction-0.0.1-SNAPSHOT.jar /srv/app.jar
 
-EXPOSE 8082
+EXPOSE 8081
 
 CMD ["java", "-jar", "/srv/app.jar"]
 

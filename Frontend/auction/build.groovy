@@ -87,7 +87,7 @@ pipeline {
         stage('run container'){
             steps {
                 script {
-                    sh('docker run -d -p 8081:8081 --name frontend gogo6ar/frontend:latest ')
+                    sh('docker run -d -p 8082:8082 --name frontend gogo6ar/frontend:latest ')
                 }
             }
         }
