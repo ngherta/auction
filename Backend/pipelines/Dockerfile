@@ -18,7 +18,7 @@ COPY --from=builder target/auction-0.0.1-SNAPSHOT.jar /srv/app.jar
 
 EXPOSE 8081
 
-CMD ["java", "-jar", "/srv/app.jar"]
+CMD ["java", "-jar", "-Dspring.profiles.active=prod", "/srv/app.jar"]
 
 
 
