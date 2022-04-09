@@ -6,15 +6,15 @@ const API_URL = properties.API_URL;
 
 class AuthService {
     getActuatorInfo() {
-        return axios.get(API_URL + 'actuator/info', {headers: authHeader()});
+        return axios.get(API_URL + '/actuator/info', {headers: authHeader()});
     }
 
     getActuatorHealth() {
-        return axios.get(API_URL + 'actuator/health', {headers: authHeader()});
+        return axios.get(API_URL + '/actuator/health', {headers: authHeader()});
     }
 
     getActuatorMetrics(url) {
-        return axios.get(API_URL + 'actuator/metrics/' + url, {headers: authHeader()});
+        return axios.get(API_URL + '/actuator/metrics/' + url, {headers: authHeader()});
     }
 
 }
