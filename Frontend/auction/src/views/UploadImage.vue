@@ -54,7 +54,7 @@
       </form>
     </div>
   </div>
-  <div v-if="showResults == true && results" class="d-flex">
+  <div v-if="this.showResults == true" class="d-flex">
     <section v-for="result in results" :key="result">
       <img :src="result.secure_url" :height="resultHeight" :alt="result.public_id"/>
     </section>
@@ -125,6 +125,8 @@ export default {
         //show progress bar at beginning of post
         axios(requestObj)
             .then(response => {
+              console.log("NGH")
+              console.log(response)
               this.results.push(response.data.secure_url);
               this.imageFile = response.data.secure_url;
               this.$emit('uploadNewImages', response.data.secure_url)

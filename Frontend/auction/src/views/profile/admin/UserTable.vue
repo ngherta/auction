@@ -37,6 +37,7 @@ import "@ag-grid-community/core/dist/styles/ag-theme-alpine.css";
 import {AgGridVue} from "ag-grid-vue3";
 import UserService from "../../../services/user.service";
 import {ExcelExportModule} from '@ag-grid-enterprise/excel-export';
+import properties from "@/properties";
 
 export default {
   name: "UserTable",
@@ -73,7 +74,7 @@ export default {
     },
     creatLink(params) {
       let link = document.createElement('a');
-      link.href = 'http://34.140.181.128:8082/user/' + params.data.id;
+      link.href = properties.API_URL + '/user/' + params.data.id;
       link.innerText = params.data.email;
       link.addEventListener('click', (e) => {
         e.preventDefault();

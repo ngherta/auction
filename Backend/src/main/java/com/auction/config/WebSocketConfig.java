@@ -1,6 +1,7 @@
 package com.auction.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -24,6 +25,9 @@ import java.util.Map;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+  @Value("${spring.client.url}")
+  private String client;
+
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
     config.enableSimpleBroker("/betting/",
@@ -38,7 +42,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry.addEndpoint("/websocket")
-            .setAllowedOrigins("http://34.140.181.128:8082",
+            .setAllowedOrigins(client,
                                "chrome-extension://ggnhohnkfcpcanfekomdkjffnfcjnjam")
             .setHandshakeHandler(new DefaultHandshakeHandler() {
 

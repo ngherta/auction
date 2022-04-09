@@ -96,6 +96,7 @@ export default {
 
       this.$store.dispatch("auth/login", user).then(
           (response) => {
+            console.log(response);
             if (response.userDto.needTutorial === true) {
               this.$router.push("/tutorial/1");
             } else {

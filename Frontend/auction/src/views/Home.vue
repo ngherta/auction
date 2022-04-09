@@ -21,11 +21,11 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
-    <div class="d-flex">
+    <div class="d-flex auction-box flex-wrap mb-5 ml-auto justify-content-between">
       <div v-for="(auction, index) in auctions"
            :key="auction.id"
            :id="'auction-item-' + index"
-           class="card mr-3"
+           class="card m-auto"
            style="width: 18rem;">
         <img :src="auction.images[0]" height="300" class="card-img-top" alt="image of auction">
         <div class="card-body">
@@ -82,7 +82,7 @@ export default {
           });
         }
     );
-    AuctionService.getAuctions(4, null).then(
+    AuctionService.getAuctions(3, null).then(
         (response) => {
           this.auctions = response.data.content;
           if (this.auctions.length > 0) {
@@ -101,6 +101,13 @@ export default {
 </script>
 
 <style>
+/*@media only screen and (max-width: 800px) {*/
+/*  .auction-box {*/
+/*    flex-direction: column;*/
+/*    align-items: center;*/
+/*    margin-top: 1rem;*/
+/*  }*/
+/*}*/
 .card {
   max-width: 370px;
 }

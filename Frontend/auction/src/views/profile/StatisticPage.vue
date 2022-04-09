@@ -27,6 +27,7 @@ export default {
     getStatisticData() {
       StatisticService.getStatisticData().then(
           (response) => {
+            console.log(response);
             this.topCategoriesData = response.data.categoryCount;
           },
           (error) => {

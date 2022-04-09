@@ -12,11 +12,11 @@
           </div>
 
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <a v-if="images.length > 1" class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="sr-only">Previous</span>
         </a>
-        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <a v-if="images.length > 1" class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="sr-only">Next</span>
         </a>
@@ -26,11 +26,12 @@
           <div class="d-flex align-items-center">
             <h1 class="h1">{{ content.title }}</h1>
             <div class="ml-auto">
-              <button type="button" class="btn btn-success btn-circle" id="share-button" data-toggle="modal" data-target="#qrModal">
+              <button type="button" class="btn btn-success btn-circle" id="share-button" data-toggle="modal"
+                      data-target="#qrModal">
                 SHARE
               </button>
             </div>
-            <div class="ml-2">
+            <div class="ml-2" v-if="userId != null">
               <button type="button"
                       data-toggle="modal"
                       data-target="#complaintModal"
@@ -61,7 +62,7 @@
                 <div class="modal-footer">
                   <ShareNetwork
                       network="facebook"
-                      :url="'http://34.140.181.128:8082' + this.$route.fullPath"
+                      :url="this.client_url + this.$route.fullPath"
                       :title="content.title"
                       description="Auction"
                       quote="qqq"
@@ -71,7 +72,7 @@
                   </ShareNetwork>
                   <ShareNetwork
                       network="vk"
-                      :url="'http://34.140.181.128:8082' + this.$route.fullPath"
+                      :url="this.client_url + this.$route.fullPath"
                       :title="content.title"
                       description="Auction"
                       quote="qqq"
@@ -164,9 +165,10 @@
         </div>
       </div>
     </div>
-    <div class="row mt-5 justify-content-between mb-5" >
+    <div class="row mt-5 justify-content-between mb-5">
       <div class="col mr-4 p-3 border" id="betting-room-container">
-        <button type="button" class="btn btn-warning btn-circle expand-iot-button" :disabled="iotLoading" @click="connectIoTButton">
+        <button  v-if="userId != null" type="button" class="btn btn-warning btn-circle expand-iot-button" :disabled="iotLoading"
+                @click="connectIoTButton">
           <span v-if="!iotConnected && !iotLoading">Connect IoT</span>
           <span v-if="iotConnected && !iotLoading">Disconnect IoT</span>
           <span v-show="iotLoading">Connecting...</span>
@@ -188,7 +190,6 @@
       </div>
 
 
-
       <div class="col-6 border pb-4 pr-0" id="chat-container">
         <div class="overflow-chat d-flex flex-column pt-3 pb-3 pl-2 pr-2 chat-box"
              :class="{'height-500' : content.statusType == 'EXPECTATION',
@@ -205,7 +206,7 @@
             </div>
           </div>
         </div>
-        <div class="">
+        <div v-if="userId != null">
           <form class="d-flex pr-3 pl-3" @submit.prevent="handleMessageSending">
             <input name="message"
                    id="message"
@@ -215,12 +216,11 @@
             <button class="btn btn-primary btn-block col-2"
                     :disabled="['', ' ','  ', '   ', null].includes(chat_message)"
                     @click="handleMessageSending"
-                    type="button">SEND</button>
+                    type="button">SEND
+            </button>
           </form>
         </div>
       </div>
-
-
 
 
     </div>
@@ -345,7 +345,8 @@ export default {
       iotLoading: false,
       betInput: null,
       isWrongBet: null,
-      userId: this.$store.state.auth.user.userDto.id
+      userId: null,
+      client_url: properties.CLIENT_URL,
     };
   },
   methods: {
@@ -411,11 +412,12 @@ export default {
             this.$notify({
               type: 'error',
               text: error
-            })          }
+            })
+          }
       );
     },
     handleMessageSending() {
-      if(!['', ' ','  ', '   ', null].includes(this.chat_message)) {
+      if (this.userId !=null && !['', ' ', '  ', '   ', null].includes(this.chat_message)) {
         if (this.stompClient && this.stompClient.connected) {
           this.stompClient.send("/app/chat/auction/" + this.auctionId, JSON.stringify({
             'senderId': this.userId,
@@ -447,8 +449,7 @@ export default {
               this.iotLoading = false;
             }
         )
-      }
-      else {
+      } else {
         IotService.disconnect(this.userId).then(
             () => {
               this.iotConnected = !this.iotConnected;
@@ -507,6 +508,7 @@ export default {
       this.connected ? this.disconnect() : this.connect();
     },
     getIoTData() {
+      if (this.userId == null) return;
       IotService.isConnected(this.auctionId, this.userId).then(
           (response) => {
             this.iotConnected = response.data;
@@ -541,6 +543,9 @@ export default {
     }
   },
   mounted() {
+    if(this.$store.state.auth.status.loggedIn) {
+      this.userId = this.$store.state.auth.user.userDto.id;
+    }
     this.getData();
     this.connect();
     BettingService.getBidsForByAuction(this.auctionId).then(

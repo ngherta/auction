@@ -69,10 +69,10 @@
             </div>
           </div>
           <div class="col">
-            <upload-image showResults="true"
+            <upload-image :showResults="true"
                           ratio=5/6
-                          result-width=300
-                          result-height=360
+                          result-width="300px"
+                          result-height="360px"
                           @uploadNewImages="uploadNewImages($event)"/>
           </div>
         </div>

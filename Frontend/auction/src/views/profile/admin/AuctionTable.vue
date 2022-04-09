@@ -36,6 +36,7 @@ import "@ag-grid-community/core/dist/styles/ag-theme-alpine.css";
 import {AgGridVue} from "ag-grid-vue3";
 import AuctionService from "../../../services/auction.service"
 import {ExcelExportModule} from '@ag-grid-enterprise/excel-export';
+import properties from "@/properties";
 
 export default {
   name: "AuctionTable",
@@ -72,7 +73,7 @@ export default {
     },
     creatLink(params) {
       let link = document.createElement('router-link');
-      link.href = 'http://34.140.181.128:8082/auction/' + params.data.id;
+      link.href = properties.API_URL = '/auction/' + params.data.id;
       link.innerText = params.data.title;
       link.addEventListener('click', (e) => {
         e.preventDefault();
