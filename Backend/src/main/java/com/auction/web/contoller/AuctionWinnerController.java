@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
 
-@CrossOrigin("http://34.140.181.128:8082")
+//@CrossOrigin("http://34.140.181.128:8082")
 @RestController
 @RequestMapping("/api/winner")
 @RequiredArgsConstructor

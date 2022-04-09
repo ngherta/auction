@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller
 @Slf4j
-@CrossOrigin("http://34.140.181.128:8082")
+//@CrossOrigin("http://34.140.181.128:8082")
 @RequiredArgsConstructor
 public class SearchWebSocketController {
     private final AuctionEventService auctionEventService;
