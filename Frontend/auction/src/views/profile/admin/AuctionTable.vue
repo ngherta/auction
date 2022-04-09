@@ -72,7 +72,7 @@ export default {
     },
     creatLink(params) {
       let link = document.createElement('router-link');
-      link.href = 'http://34.140.181.128:8081/auction/' + params.data.id;
+      link.href = 'http://34.140.181.128:8082/auction/' + params.data.id;
       link.innerText = params.data.title;
       link.addEventListener('click', (e) => {
         e.preventDefault();
