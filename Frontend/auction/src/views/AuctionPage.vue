@@ -56,12 +56,12 @@
                 </div>
                 <div class="modal-body m-auto">
                   <img
-                      v-bind:src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:8081/auction/' + auctionId">
+                      v-bind:src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://34.140.181.128:8081/auction/' + auctionId">
                 </div>
                 <div class="modal-footer">
                   <ShareNetwork
                       network="facebook"
-                      :url="'http://localhost:8080' + this.$route.fullPath"
+                      :url="'http://34.140.181.128:8082' + this.$route.fullPath"
                       :title="content.title"
                       description="Auction"
                       quote="qqq"
@@ -71,7 +71,7 @@
                   </ShareNetwork>
                   <ShareNetwork
                       network="vk"
-                      :url="'http://localhost:8080' + this.$route.fullPath"
+                      :url="'http://34.140.181.128:8082' + this.$route.fullPath"
                       :title="content.title"
                       description="Auction"
                       quote="qqq"
@@ -287,6 +287,7 @@ import ChatService from "../services/chat.service";
 import BettingRoom from "../components/BettingRoom";
 import Icon from "../components/Icon";
 import IotService from "../services/iot.service"
+import properties from "@/properties";
 
 export default {
   name: "AuctionPage",
@@ -457,7 +458,7 @@ export default {
       }
     },
     connect() {
-      this.socket = new SockJS("http://localhost:8080/websocket");
+      this.socket = new SockJS(properties.API_URL + "/websocket");
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
           () => {

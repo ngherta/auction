@@ -63,7 +63,7 @@ class AuctionsService {
     }
 
     getAll(page, perPage) {
-        return axios.get('http://localhost:8080/api/auction', {
+        return axios.get(API_URL, {
             params: {
                 page: page,
                 perPage: perPage

@@ -26,6 +26,6 @@ createApp(App)
 
 export default {
     const: {
-        API_URL: "http://localhost:8080",
+        API_URL: "http://34.140.181.128:8081",
     }
 }

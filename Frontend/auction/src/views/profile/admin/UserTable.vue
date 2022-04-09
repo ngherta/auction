@@ -73,7 +73,7 @@ export default {
     },
     creatLink(params) {
       let link = document.createElement('a');
-      link.href = 'http://localhost:8081/user/' + params.data.id;
+      link.href = 'http://34.140.181.128:8081/user/' + params.data.id;
       link.innerText = params.data.email;
       link.addEventListener('click', (e) => {
         e.preventDefault();

@@ -159,6 +159,7 @@ import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
 import StringCodeService from '../helpers/string.code.service'
 import Icon from "@/components/Icon";
+import properties from "@/properties";
 
 export default {
   name: "AuctionsPage",
@@ -297,7 +298,7 @@ export default {
       }
     },
     connect() {
-      this.socket = new SockJS("http://localhost:8080/websocket");
+      this.socket = new SockJS(properties.API_URL + "/websocket");
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
           () => {

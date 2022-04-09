@@ -103,6 +103,7 @@ import router from "@/router";
 import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
 import Icon from "./Icon";
+import properties from "@/properties";
 
 export default {
   name: "Header",
@@ -185,7 +186,7 @@ export default {
       }
     },
     connect() {
-      this.socket = new SockJS("http://localhost:8080/websocket");
+      this.socket = new SockJS(properties.API_URL + "/websocket");
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
           {"username": this.getUser().userDto.id},
