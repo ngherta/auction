@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:8081")
+@CrossOrigin("http://34.140.181.128:8082")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/bids")

@@ -1,7 +1,6 @@
 package com.auction.web.contoller;
 
 import com.auction.service.interfaces.CategoryService;
-import com.auction.web.dto.CategoryDto;
 import com.auction.web.dto.request.CreateCategoryRequest;
 import com.auction.web.dto.response.CategoriesResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:8081")
+@CrossOrigin("http://34.140.181.128:8082")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/category")

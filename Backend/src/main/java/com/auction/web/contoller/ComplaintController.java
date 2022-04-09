@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@CrossOrigin("http://localhost:8081")
+@CrossOrigin("http://34.140.181.128/")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/complaint")

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @Slf4j
-@CrossOrigin("http://localhost:8081")
+@CrossOrigin("http://34.140.181.128:8082")
 @RequiredArgsConstructor
 public class AuctionChatWebSocketController {
 
