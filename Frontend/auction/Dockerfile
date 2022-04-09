@@ -13,4 +13,4 @@ COPY . .
 RUN npm run build
 
 EXPOSE 8082
-CMD [ "http-server", "dist" ]
+CMD [ "npm", "run", "serve" ]
