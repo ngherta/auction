@@ -38,7 +38,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry.addEndpoint("/websocket")
-            .setAllowedOrigins("http://34.140.181.128",
+            .setAllowedOrigins("http://34.140.181.128:8082",
                                "chrome-extension://ggnhohnkfcpcanfekomdkjffnfcjnjam")
             .setHandshakeHandler(new DefaultHandshakeHandler() {
 
