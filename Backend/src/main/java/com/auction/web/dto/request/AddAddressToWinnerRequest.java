@@ -1,7 +1,6 @@
 package com.auction.web.dto.request;
 
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 public class AddAddressToWinnerRequest {

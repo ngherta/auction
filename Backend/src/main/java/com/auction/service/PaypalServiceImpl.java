@@ -25,7 +25,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PaypalServiceImpl implements PaypalService {
+class PaypalServiceImpl implements PaypalService {
 
   public static final String SUCCESS_URL = "/payment/success";
   public static final String CANCEL_URL = "/auctions";

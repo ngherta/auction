@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class ButtonServiceImpl implements ButtonService {
+class ButtonServiceImpl implements ButtonService {
 
   private final ButtonRepository buttonRepository;
   private final AuctionEventService auctionEventService;

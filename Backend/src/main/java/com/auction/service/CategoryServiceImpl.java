@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +45,7 @@ class CategoryServiceImpl implements CategoryService {
   @Transactional
   public List<CategoryDto> create(List<CreateCategoryRequest> requests) {
     List<CategoryDto> list = new ArrayList<>();
-    requests.stream().forEach(e -> list.add(create(e)));
+    requests.forEach(e -> list.add(create(e)));
     return list;
   }
 
@@ -73,7 +74,7 @@ class CategoryServiceImpl implements CategoryService {
     if (subCategories.size() != subCategoryIds.size()) {
       List<Long> notFoundSubCategories = subCategoryIds.stream()
               .filter(id -> subCategories.stream()
-                      .anyMatch(sc -> sc.getId() == id))
+                      .anyMatch(sc -> Objects.equals(sc.getId(), id)))
               .collect(Collectors.toList());
       throw new CategoryNotFound(
               "Sub categories with ids" + notFoundSubCategories.toArray() + " not found!");

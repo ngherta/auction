@@ -1,6 +1,6 @@
 package com.auction.rest;
 
-import com.auction.service.AuctionWinnerServiceImpl;
+import com.auction.service.interfaces.AuctionWinnerService;
 import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.AuctionWinnerDto;
 import com.auction.web.dto.PaymentOrderDto;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AuctionWinnerControllerTest {
 
   @MockBean
-  private AuctionWinnerServiceImpl auctionWinnerService;
+  private AuctionWinnerService auctionWinnerService;
 
   @Autowired
   private MockMvc mockMvc;

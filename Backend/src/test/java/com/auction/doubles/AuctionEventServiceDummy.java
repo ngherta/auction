@@ -134,4 +134,9 @@ public class AuctionEventServiceDummy implements AuctionEventService {
   public List<AuctionSearchDto> reactiveSearch(String message) {
     return null;
   }
+
+  @Override
+  public Page<AuctionEventDto> getAuctionsByParticipant(Long userId, int page, int perPage) {
+    return null;
+  }
 }

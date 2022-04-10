@@ -3,13 +3,13 @@ package com.auction.config;
 import com.auction.config.jwt.AuthEntryPointJwt;
 import com.auction.config.jwt.AuthTokenFilter;
 import com.auction.config.jwt.JwtUtils;
-import com.auction.service.UserDetailsServiceImpl;
 import com.auction.model.enums.UserRole;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,6 +18,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -34,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final String ADMIN = UserRole.ADMIN.name();
     private final String USER = UserRole.USER.name();
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsService userDetailsService;
     private final AuthEntryPointJwt unauthorizedHandler;
     private final JwtUtils jwtUtils;
 
@@ -86,13 +87,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-//                .antMatchers(HttpMethod.POST, "/api/auth/signin").permitAll()
-//                .antMatchers(HttpMethod.POST, "/api/auth/signup").permitAll()
-//                .antMatchers(HttpMethod.POST, "/api/auth/confirm").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/auction").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/auction/*").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/auction/sort").permitAll()
-//                .antMatchers(HttpMethod.POST, "/api/auction").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/auth/signin").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/auth/signup").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/auth/confirm").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/auction").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/auction/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/auction/sort").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/auction").hasAnyAuthority(USER)
 //                .antMatchers(HttpMethod.DELETE, "/api/auction/*").hasAuthority(USER)
 //                .antMatchers(HttpMethod.PUT, "/api/auction/*").hasAuthority(USER)
 //                .antMatchers(HttpMethod.PUT, "/api/auction/block/*").hasAuthority(USER)

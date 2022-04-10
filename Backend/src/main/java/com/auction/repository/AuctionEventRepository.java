@@ -39,8 +39,7 @@ public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long
   @Query(nativeQuery = true, value =
           "SELECT a.* FROM auction AS a " +
                   "LEFT JOIN auction_sort AS aa ON a.id = aa.auction_id " +
-                  "WHERE a.status != 'BLOCKED' " +
-                  "ORDER BY aa.rating")
+                  "WHERE a.status != 'BLOCKED'")
   Page<AuctionEvent> getAuctionEventByRating(Pageable pageable);
 
 
@@ -84,4 +83,10 @@ public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long
           " OR lower(a.description)  like '%' || lower(:message) || '%' " +
           " LIMIT :limit ")
   List<AuctionSearchProjection> findByText(@Param("message") String message, Integer limit);
+
+  @Query(nativeQuery = true, value = "" +
+      "SELECT * FROM auction a " +
+      "        WHERE a.id in (SELECT aa.auction_id " +
+      "        FROM auction_action aa WHERE aa.user_id = :userId)")
+  Page<AuctionEvent> findByUserParticipant(@Param("userId") Long userId, Pageable pageable);
 }

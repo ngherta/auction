@@ -8,7 +8,6 @@ import com.auction.web.dto.request.ComplaintRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@CrossOrigin("http://34.140.181.128/")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/complaint")

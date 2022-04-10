@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -114,7 +113,7 @@ public class AuctionEventController {
   public ResponseEntity<Page<AuctionEventDto>> getAllByParticipant(@PathVariable Long userId,
                                                                          @RequestParam(defaultValue = "1") int page,
                                                                          @RequestParam(defaultValue = "10") int perPage) {
-    return ResponseEntity.ok(auctionActionService.getAuctionsByParticipant(userId, page, perPage));
+    return ResponseEntity.ok(auctionEventService.getAuctionsByParticipant(userId, page, perPage));
   }
 
   @GetMapping("/owner/{userId}")

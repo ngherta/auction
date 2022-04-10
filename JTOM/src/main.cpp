@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
-#include <ArduinoJson.h>
+// #include <ArduinoJson.h>
 
 const char* ssid = "Anea";
 const char* password = "762988tis";
@@ -30,8 +30,8 @@ volatile bool blueLedState;
 
 // String serverApiBet = "http://172.17.41.32:8080/api/iot/bet";
 // String serverApiFinish = "http://172.17.41.32:8080/api/iot/finish";
-String serverApiBet = "http://192.168.0.103:8080/api/iot/bet";
-String serverApiFinish = "http://192.168.0.103:8080/api/iot/finish";
+String serverApiBet = "http://34.140.181.128:8081/api/iot/bet";
+String serverApiFinish = "http://34.140.181.128:8081/api/iot/finish";
 
 void setup() {
   Serial.begin(115200); 
@@ -75,24 +75,26 @@ void RGB_color(int red_light_value, int green_light_value, int blue_light_value)
   analogWrite(BLUE_PIN, blue_light_value);
 }
 
-static bool isButtonPressedDebounced(int BUTTON_PIN)
+static bool isButtonPressedDebounced(int BTN)
 {
     constexpr int dwellTimeMs = 50;
     static unsigned int buttonStateChangedTimeStamp = 0;
 
     static bool prevReadState;
-    bool readState = !digitalRead(BUTTON_PIN);
+    bool readState = !digitalRead(BTN);
     
-    if(readState != prevReadState)
-    {
-      buttonStateChangedTimeStamp = millis();
-      prevReadState = readState;
+    if( (millis() - buttonStateChangedTimeStamp) > dwellTimeMs) {
+      if(readState != prevReadState)
+      {
+        buttonStateChangedTimeStamp = millis();
+        prevReadState = readState;
+        Serial.println("BTN: " + BTN);
+        Serial.println("value = HIGH");
+        return HIGH;
+      }
     }
-
-    if(millis() - buttonStateChangedTimeStamp > dwellTimeMs)
-    {
-      return readState == HIGH;
-    }
+    Serial.println("BTN: " + BTN);
+    Serial.println("value = LOW");
 
     return LOW;
 }
@@ -124,11 +126,11 @@ void loop() {
           String payload = http.getString();
           Serial.println(payload);
 
-          StaticJsonDocument<600> doc;            
-          deserializeJson(doc, payload);
+          // StaticJsonDocument<600> doc;            
+          // deserializeJson(doc, payload);
 
           // deserializeJson(doc, http.getStream());
-          const char* status = doc["status"];
+          // const char* status = doc["status"];
         }
         else {
             Serial.print("Error code: ");
@@ -170,25 +172,25 @@ void loop() {
         String payload = http.getString();
         Serial.println(payload);
 
-        StaticJsonDocument<600> doc;            
-        deserializeJson(doc, payload);
+        // StaticJsonDocument<600> doc;            
+        // deserializeJson(doc, payload);
 
         // deserializeJson(doc, http.getStream());
-        const char* status = doc["status"];
-        Serial.println(strcmp(status, "FINISHED") == 0);
+        // const char* status = doc["status"];
+        // Serial.println(strcmp(status, "FINISHED") == 0);
 
-        if(strcmp(status, "FINISHED") == 0) {
-          int i = 0;
-          while(i != 35) {
-            i++;
-            if(i < 11) {
+        // if(strcmp(status, "FINISHED") == 0) {
+        //   int i = 0;
+        //   while(i != 35) {
+        //     i++;
+        //     if(i < 11) {
               
-            }
-            else {
+        //     }
+        //     else {
               
-            }
-          }
-        }
+        //     }
+        //   }
+        // }
       }
       else {
           Serial.print("Error code: ");

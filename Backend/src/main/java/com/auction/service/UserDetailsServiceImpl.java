@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl implements UserDetailsService {
+class UserDetailsServiceImpl implements UserDetailsService {
 
   private final UserRepository userRepository;
 

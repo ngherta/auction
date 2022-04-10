@@ -8,8 +8,8 @@ public enum NotificationType {
   COMPLAINT_ANSWER("Complaint", "Do you want to receive notification about your complaints?"),
   COMPLAINT_CREATING("Create new complaint", "Do you want to receive notification about complaint creation?");
 
-  private String value;
-  private String description;
+  private final String value;
+  private final String description;
 
   NotificationType(String value, String description) {
     this.value = value;

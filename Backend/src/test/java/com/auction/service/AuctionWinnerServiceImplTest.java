@@ -7,7 +7,6 @@ import com.auction.model.fixture.AuctionEventFixture;
 import com.auction.model.fixture.UserFixture;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.AuctionWinnerRepository;
-import com.auction.repository.PaymentAuditRepository;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.service.interfaces.PaymentService;
 import com.auction.service.interfaces.UserService;
@@ -20,7 +19,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

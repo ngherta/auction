@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AuctionSpecificationFilterImpl implements AuctionSpecificationFilter {
+class AuctionSpecificationFilterImpl implements AuctionSpecificationFilter {
 
   @Override
   public Specification<AuctionEvent> filterByTitle(String title) {

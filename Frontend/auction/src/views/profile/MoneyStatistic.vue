@@ -1,6 +1,6 @@
 <template>
-  <h2 class="text-center mb-4">Top categories</h2>
-  <div style="height:600px;width: 600px;">
+  <h2 class="text-center mb-4">Company turnover</h2>
+  <div style="width: 600px;" class="mb-5">
     <vue3-chart-js
         :id="id"
         :type="type"
@@ -14,16 +14,13 @@
 import Vue3ChartJs from '@j-t-mcc/vue3-chartjs'
 
 export default {
-  name: "Chart",
-  props: [
-    'data'
-  ],
+  name: "MoneyStatistic",
+  props: ['data'],
   components: {
     Vue3ChartJs,
   },
   data() {
     return {
-      id: 'bar',
       type: 'bar',
       values: [],
       labels: [],
@@ -34,14 +31,14 @@ export default {
     let colors = [];
 
     for (let i = 0; i < this.data.length; i++) {
-      this.labels.push(this.data[i].name);
-      this.values.push(this.data[i].count);
+      this.labels.push(this.data[i].month);
+      this.values.push(this.data[i].amount);
     }
 
     for (let i = 0; i < this.labels.length; i++) {
       colors.push('#' + (Math.random() * 0xFFFFFF << 0).toString(16));
     }
-
+    console.log(this.values);
     this.barChart = {
       id: 'bar',
       type: 'bar',

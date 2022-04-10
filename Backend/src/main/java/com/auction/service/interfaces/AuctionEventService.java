@@ -68,4 +68,6 @@ public interface AuctionEventService {
                                       int perPage);
 
   List<AuctionSearchDto> reactiveSearch(String message);
+
+  Page<AuctionEventDto> getAuctionsByParticipant(Long userId, int page, int perPage);
 }

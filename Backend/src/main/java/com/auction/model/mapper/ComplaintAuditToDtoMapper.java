@@ -8,7 +8,6 @@ import com.auction.web.dto.ComplaintDto;
 import com.auction.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Component

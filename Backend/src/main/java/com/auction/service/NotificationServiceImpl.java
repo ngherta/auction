@@ -12,7 +12,6 @@ import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.NotificationService;
 import com.auction.web.dto.NotificationDto;
 import com.auction.web.dto.request.NotificationUpdateRequest;
-import liquibase.pro.packaged.O;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

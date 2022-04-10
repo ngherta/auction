@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
-public class ImageResizeServiceImpl implements ImageResizeService {
+class ImageResizeServiceImpl implements ImageResizeService {
 
   private static final String TYPE = "c_scale";
 

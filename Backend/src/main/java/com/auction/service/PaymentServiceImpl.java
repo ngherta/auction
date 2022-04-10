@@ -162,7 +162,7 @@ class PaymentServiceImpl implements PaymentService {
   }
 
   private Double getCharityAmount(PaymentOrder paymentOrder) {
-    Double charityAmount = 0D;
+    double charityAmount = 0D;
     if (paymentOrder.getAuctionEvent().getAuctionType() == AuctionType.CHARITY) {
       charityAmount =
           paymentOrder.getPrice() * paymentOrder.getAuctionEvent().getCharityPercent() / 100;

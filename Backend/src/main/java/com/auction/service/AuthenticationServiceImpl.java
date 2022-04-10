@@ -2,15 +2,10 @@ package com.auction.service;
 
 import com.auction.config.jwt.JwtUtils;
 import com.auction.exception.UserNotFoundException;
-import com.auction.exception.UserRoleNotFoundException;
-import com.auction.model.Role;
 import com.auction.model.User;
-import com.auction.model.enums.UserRole;
 import com.auction.model.mapper.Mapper;
 import com.auction.repository.UserRepository;
-import com.auction.repository.UserRoleRepository;
 import com.auction.service.interfaces.AuthenticationService;
-import com.auction.service.interfaces.NotificationGenerationService;
 import com.auction.service.interfaces.NotificationService;
 import com.auction.service.interfaces.TokenConfirmationService;
 import com.auction.service.interfaces.UserService;
@@ -26,15 +21,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor

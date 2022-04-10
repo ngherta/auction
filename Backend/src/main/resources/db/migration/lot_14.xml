@@ -9,44 +9,44 @@
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="url" type="varchar(255)"></column>
-      <column name="image_link" type="varchar(255)"></column>
-      <column name="type" type="varchar(255)"></column>
+      <column name="url" type="varchar(255)"/>
+      <column name="image_link" type="varchar(255)"/>
+      <column name="type" type="varchar(255)"/>
       <column name="sequence" type="integer">
-        <constraints unique="true"></constraints>
+        <constraints unique="true"/>
       </column>
       <column name="internal_link" type="bool"/>
     </createTable>
 
     <insert tableName="image_link">
-      <column name="id" valueNumeric="9534"></column>
-      <column name="url" value="/auction/9999"></column>
+      <column name="id" valueNumeric="9534"/>
+      <column name="url" value="/auction/9999"/>
       <column name="image_link"
-              value="https://images.ctfassets.net/hrltx12pl8hq/5596z2BCR9KmT1KeRBrOQa/4070fd4e2f1a13f71c2c46afeb18e41c/shutterstock_451077043-hero1.jpg"></column>
-      <column name="type" value="HOME_PAGE"></column>
-      <column name="sequence" value="2"></column>
-      <column name="internal_link" valueBoolean="true"></column>
+              value="https://techbeacon.com/sites/default/files/styles/social/public/field/image/web-links-testing-nikolay.jpg?itok=gUR6pWQ5"/>
+      <column name="type" value="HOME_PAGE"/>
+      <column name="sequence" value="2"/>
+      <column name="internal_link" valueBoolean="true"/>
     </insert>
 
     <insert tableName="image_link">
-      <column name="id" valueNumeric="9565"></column>
-      <column name="url" value="/auction/9999"></column>
+      <column name="id" valueNumeric="9565"/>
+      <column name="url" value="/auction/9999"/>
       <column name="image_link"
-              value="https://images.ctfassets.net/hrltx12pl8hq/5596z2BCR9KmT1KeRBrOQa/4070fd4e2f1a13f71c2c46afeb18e41c/shutterstock_451077043-hero1.jpg"></column>
-      <column name="type" value="HOME_PAGE"></column>
-      <column name="sequence" value="3"></column>
-      <column name="internal_link" valueBoolean="true"></column>
+              value="https://techbeacon.com/sites/default/files/styles/social/public/field/image/web-links-testing-nikolay.jpg?itok=gUR6pWQ5"/>
+      <column name="type" value="HOME_PAGE"/>
+      <column name="sequence" value="3"/>
+      <column name="internal_link" valueBoolean="true"/>
     </insert>
 
 
     <insert tableName="image_link">
-      <column name="id" valueNumeric="9525"></column>
-      <column name="url" value="/auction/9999"></column>
+      <column name="id" valueNumeric="9525"/>
+      <column name="url" value="/auction/9999"/>
       <column name="image_link"
-              value="https://images.ctfassets.net/hrltx12pl8hq/5596z2BCR9KmT1KeRBrOQa/4070fd4e2f1a13f71c2c46afeb18e41c/shutterstock_451077043-hero1.jpg"></column>
-      <column name="type" value="HOME_PAGE"></column>
-      <column name="sequence" value="4"></column>
-      <column name="internal_link" valueBoolean="true"></column>
+              value="https://techbeacon.com/sites/default/files/styles/social/public/field/image/web-links-testing-nikolay.jpg?itok=gUR6pWQ5"/>
+      <column name="type" value="HOME_PAGE"/>
+      <column name="sequence" value="4"/>
+      <column name="internal_link" valueBoolean="true"/>
     </insert>
 
 

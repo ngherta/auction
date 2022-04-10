@@ -1,6 +1,5 @@
 package com.auction.service;
 
-import com.auction.exception.ChatRoomNotFoundException;
 import com.auction.model.User;
 import com.auction.model.UserChat;
 import com.auction.model.UserChatMessage;
@@ -32,9 +31,6 @@ class UserChatServiceImpl implements UserChatService {
   @Transactional
   public ChatMessageDto send(ChatMessageRequest request) {
     UserChat room = UserChat.builder().build();
-    //TODO:
-//            userChatRepository.findById(request.getChatRoom())
-//                    .orElseThrow(() -> new ChatRoomNotFoundException("ChatRoom[" + request.getChatRoom() + "] doesn't exist!"));
 
     User sender = userService.findById(request.getSenderId());
 

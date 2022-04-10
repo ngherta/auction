@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ImageLinkServiceImpl implements ImageLinkService {
+class ImageLinkServiceImpl implements ImageLinkService {
 
   @Value("${spring.client.url}")
   private String clientUrl;
@@ -66,17 +66,14 @@ public class ImageLinkServiceImpl implements ImageLinkService {
   }
 
   private ImageLink setUrlAndType(ImageLink imageLink, String url) {
-    String clientUrl = this.clientUrl
+    String client = this.clientUrl
             .replace("http://", "")
             .replace("https://", "");
 
-    if (url.contains(clientUrl)) {
+    if (url.contains(client)) {
       url =  url.replaceAll(this.clientUrl, "");
-      imageLink.setInternalLink(true);
     }
-    else {
-      imageLink.setInternalLink(true);
-    }
+    imageLink.setInternalLink(true);
     imageLink.setImageLink(url);
 
     return imageLink;

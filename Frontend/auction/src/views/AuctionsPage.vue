@@ -60,7 +60,7 @@
 
     </div>
     <div class="d-flex mb-5">
-      <div>
+      <div v-if="this.$store.state.auth.status.loggedIn">
         <router-link class="btn btn-success" to="/auction/create">Create new auction</router-link>
       </div>
       <div class="w-20 ml-auto mr-4">

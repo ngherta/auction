@@ -20,7 +20,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class StatisticServiceImpl implements StatisticService {
+class StatisticServiceImpl implements StatisticService {
   private final UserRepository userRepository;
   private final AuctionEventRepository auctionEventRepository;
   private final PaymentAuditRepository paymentAuditRepository;
@@ -44,9 +44,9 @@ public class StatisticServiceImpl implements StatisticService {
     for (CommissionPerMouthProjection commission : commissionPerMouth) {
       result.add(CommissionPerMouth.builder()
                          .amount(commission.getAmount())
-                         .date(commission.getDate())
+                         .date(commission.getDate().replace(" ", ""))
                          .index(commission.getIndex())
-                         .month(commission.getMonth())
+                         .month(commission.getMonth().replace(" ", ""))
                          .build());
     }
     return result;

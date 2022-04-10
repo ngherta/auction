@@ -40,17 +40,17 @@ import java.util.Set;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final AuctionEventRepository auctionEventRepository;
   private final AuctionActionRepository auctionActionRepository;
   private final NotificationService notificationService;
-  private AuctionEventService auctionEventService;
   private final Mapper<User, UserDto> userToDtoMapper;
   private final UserRoleRepository roleRepository;
   private final PasswordEncoder encoder;
   private ComplaintService complaintService;
+  private AuctionEventService auctionEventService;
 
   //beans cycle
   @Autowired

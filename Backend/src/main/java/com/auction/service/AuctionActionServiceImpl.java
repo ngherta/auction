@@ -21,9 +21,6 @@ import com.auction.web.dto.response.LastBidResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -172,14 +169,6 @@ class AuctionActionServiceImpl implements AuctionActionService {
   @Override
   public List<LastBidProjection> getLasBidsFromId(List<Long> auctionIds) {
     return auctionActionRepository.getLastBidByAuctionIds(auctionIds);
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public Page<AuctionEventDto> getAuctionsByParticipant(Long userId, int page, int perPage) {
-    Pageable pageable = PageRequest.of(page - 1, perPage);
-    return auctionActionRepository.findAuctionActionByParticipantAndGroupByAuction(userId, pageable)
-            .map(e -> auctionEventDtoMapper.map(e.getAuctionEvent()));
   }
 
   @Override

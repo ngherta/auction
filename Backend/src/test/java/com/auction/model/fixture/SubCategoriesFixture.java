@@ -2,7 +2,6 @@ package com.auction.model.fixture;
 
 import com.auction.model.SubCategory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SubCategoriesFixture {

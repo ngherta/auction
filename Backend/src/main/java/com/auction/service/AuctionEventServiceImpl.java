@@ -369,6 +369,14 @@ class AuctionEventServiceImpl implements AuctionEventService {
 
   @Override
   @Transactional(readOnly = true)
+  public Page<AuctionEventDto> getAuctionsByParticipant(Long userId, int page, int perPage) {
+    Pageable pageable = PageRequest.of(page - 1, perPage);
+    return auctionEventRepository.findByUserParticipant(userId, pageable)
+        .map(auctionEventToDtoMapper::map);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public List<AuctionEvent> getListForStart(AuctionStatus status) {
     return auctionEventRepository.getListForStart(status.name());
   }

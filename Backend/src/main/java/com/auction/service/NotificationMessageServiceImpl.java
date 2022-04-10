@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class NotificationMessageServiceImpl implements NotificationMessageService {
+class NotificationMessageServiceImpl implements NotificationMessageService {
 
   private final UserRepository userRepository;
   private final NotificationMessageRepository notificationMessageRepository;

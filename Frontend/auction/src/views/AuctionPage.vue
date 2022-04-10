@@ -196,14 +196,14 @@
                       'height-400' : content.statusType != 'EXPECTATION'}"
              id="chat-box">
           <div v-for="message in chatMessages"
-               class=""
+               class="d-flex flex-column align-items-end"
                :class="{'ml-auto' : this.isMessageFromCurrentUser(message.senderId) == true}"
                :key="message">
-            <div class="chat-name">{{ message.senderFirstName + ' ' + message.senderLastName }}</div>
-            <div class="chat-date font-weight-light">{{ message.genDate }}</div>
-            <div class="chat-message border
-            pl-2 pr-2">{{ message.message }}
+            <b class="chat-name">{{ message.senderFirstName + ' ' + message.senderLastName }}</b>
+            <div class="chat-message
+            pl-3 pr-3">{{ message.message }}
             </div>
+            <div class="chat-date font-weight-light">{{ message.genDate }}</div>
           </div>
         </div>
         <div v-if="userId != null">
@@ -521,9 +521,8 @@ export default {
     getData() {
       AuctionService.getAuctionById(this.auctionId).then(
           (response) => {
-            for (let i = 0; i < response.data.images.length; i++) {
-              this.images.push(response.data.images[i]);
-            }
+            console.log(response)
+            this.images = response.data.images;
             this.content = response.data;
             if (this.content.statusType == 'EXPECTATION') {
               this.$refs["betting-room"].setStartDate(response.data.startDate);

@@ -1,7 +1,5 @@
 <template>
   <div class="spring-info-container">
-    <h3>System information:</h3>
-
     <h4 class="h4">Info</h4>
     <ul>
       <li><strong>Application name: </strong> {{ actuatorInfo.name }}</li>

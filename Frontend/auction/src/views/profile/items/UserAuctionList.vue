@@ -143,6 +143,7 @@ export default {
     getAuctionsByParticipant() {
       AuctionService.getByParticipant(this.userId, this.page, this.perPage).then(
           (response) => {
+            console.log(response.data.content)
             this.data = response.data.content;
           },
           (error) => {

@@ -33,7 +33,7 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AuctionWinnerServiceImpl implements AuctionWinnerService {
+class AuctionWinnerServiceImpl implements AuctionWinnerService {
   private final AuctionWinnerRepository auctionWinnerRepository;
   private final UserService userService;
   private final Mapper<AuctionWinner, AuctionWinnerDto> auctionWinnerDtoMapper;

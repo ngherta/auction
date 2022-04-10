@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class NotificationGenerationServiceImpl implements NotificationGenerationService {
+class NotificationGenerationServiceImpl implements NotificationGenerationService {
 
   private final NotificationSenderService notificationSenderService;
   private final NotificationMessageService notificationMessageService;

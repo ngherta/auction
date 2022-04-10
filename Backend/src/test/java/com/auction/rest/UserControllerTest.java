@@ -1,8 +1,8 @@
 package com.auction.rest;
 
 import com.auction.model.User;
-import com.auction.service.UserServiceImpl;
 import com.auction.service.interfaces.ResetPasswordService;
+import com.auction.service.interfaces.UserService;
 import com.auction.web.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ class UserControllerTest {
   @MockBean
   private ResetPasswordService resetPasswordService;
   @MockBean
-  private UserServiceImpl userService;
+  private UserService userService;
 
   @Autowired
   private MockMvc mockMvc;

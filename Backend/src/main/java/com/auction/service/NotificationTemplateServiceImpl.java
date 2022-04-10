@@ -11,12 +11,9 @@ import com.auction.model.enums.ComplaintStatus;
 import com.auction.model.enums.NotificationType;
 import com.auction.repository.AuctionActionRepository;
 import com.auction.repository.NotificationMessageRepository;
-import com.auction.repository.UserRepository;
-import com.auction.repository.UserRoleRepository;
 import com.auction.service.interfaces.ImageResizeService;
 import com.auction.service.interfaces.NotificationGenerationService;
 import com.auction.service.interfaces.NotificationTemplateService;
-import com.auction.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,13 +25,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class NotificationTemplateServiceImpl implements NotificationTemplateService {
+class NotificationTemplateServiceImpl implements NotificationTemplateService {
 
   private final NotificationGenerationService notificationGenerationService;
   private final NotificationMessageRepository notificationMessageRepository;
   private final AuctionActionRepository auctionActionRepository;
   private final ImageResizeService imageResizeService;
-  private final UserService userService;
 
   private static final String DEFAULT_IMAGE = "IMAGE_LINK-NOT-IMPL";
 
