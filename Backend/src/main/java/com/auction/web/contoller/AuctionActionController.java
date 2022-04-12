@@ -34,10 +34,4 @@ public class AuctionActionController {
   public ResponseEntity<List<LastBidResponse>> getLastBidForAuctions(@RequestParam("auctionIds") List<Long> listOfIds) {
     return ResponseEntity.ok(auctionActionService.getLastBidForAuction(listOfIds));
   }
-
-  @PostMapping("/create/iot")
-  public ResponseEntity<Void> betByIoT(String terminal) {
-    auctionActionService.bet(terminal);
-    return ResponseEntity.ok().build();
-  }
 }

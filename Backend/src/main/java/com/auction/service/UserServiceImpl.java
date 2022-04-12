@@ -96,10 +96,6 @@ class UserServiceImpl implements UserService {
   @Transactional
   public UserDto update(UserUpdateRequest request) {
     User user = findById(request.getId());
-    if (Boolean.TRUE.equals(request.getEnabled()) != user.isEnabled()) {
-      user.setEnabled(request.getEnabled());
-    }
-
     if (!request.getEmail().equals(user.getEmail())) {
       user.setEmail(request.getEmail());
     }
