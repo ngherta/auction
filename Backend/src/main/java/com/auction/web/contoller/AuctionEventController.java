@@ -1,7 +1,6 @@
 package com.auction.web.contoller;
 
 import com.auction.model.enums.AuctionStatus;
-import com.auction.service.interfaces.AuctionActionService;
 import com.auction.service.interfaces.AuctionEventService;
 import com.auction.web.dto.AuctionEventDto;
 import com.auction.web.dto.request.AuctionEventRequest;
@@ -30,7 +29,6 @@ import java.util.List;
 public class AuctionEventController {
 
   private final AuctionEventService auctionEventService;
-  private final AuctionActionService auctionActionService;
 
   @PostMapping
   @ApiOperation("Create new auction-event")

@@ -18,7 +18,9 @@ class AuctionsService {
             params: {
                 page: page,
                 perPage: perPage
-            }
+            },
+            headers:
+                authHeader()
         })
     }
 
@@ -27,7 +29,9 @@ class AuctionsService {
             params: {
                 page: page,
                 perPage: perPage
-            }
+            },
+            headers:
+                authHeader()
         })
     }
 
@@ -44,12 +48,16 @@ class AuctionsService {
             finishDate: auction.finishDate,
             auctionType: auction.auctionType,
             charityPercent : auction.charityPercent
+        }, {
+            headers:
+                authHeader()
         });
     }
 
     update(auction) {
         return axios.put(API_URL + auction.id, {
             auction,
+        }, {
             headers:
                 authHeader()
         });

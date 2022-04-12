@@ -75,6 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeRequests()
+
 //        AuctionActionController
         .antMatchers(HttpMethod.GET, "/api/bids/*").permitAll()
         .antMatchers(HttpMethod.GET, "/api/bids/last").permitAll()
@@ -85,41 +86,41 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.GET, "/api/auction/filter").permitAll()
         .antMatchers(HttpMethod.GET, "/api/auction/all").permitAll()
         .antMatchers(HttpMethod.GET, "/api/auction/sort").permitAll()
-        .antMatchers(HttpMethod.DELETE, "/api/auction{auctionId}").hasAnyRole(USER)
-        .antMatchers(HttpMethod.GET, "/api/auction/{auctionId}").permitAll()
-        .antMatchers(HttpMethod.PUT, "/api/auction/{auctionId}").hasAnyAuthority(USER)
-        .antMatchers(HttpMethod.PUT, "/api/auction/block/{auctionId}").hasAnyAuthority(USER)
-        .antMatchers(HttpMethod.GET, "/api/auction/category/{subCategoryId}").permitAll()
-        .antMatchers(HttpMethod.GET, "/api/auction/participant/{userId}").hasAnyAuthority(USER)
-        .antMatchers(HttpMethod.GET, "/api/auction/owner/{userId}").hasAnyAuthority(USER)
-        .antMatchers(HttpMethod.GET, "/api/auction/all/{userId}").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.DELETE, "/api/auction{\\d+}").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.GET, "/api/auction/{\\d+}").permitAll()
+        .antMatchers(HttpMethod.PUT, "/api/auction/{\\d+}").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.PUT, "/api/auction/block/{\\d+}").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.GET, "/api/auction/category/{\\d+}").permitAll()
+        .antMatchers(HttpMethod.GET, "/api/auction/participant/{\\d+}").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.GET, "/api/auction/owner/{\\d+}").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.GET, "/api/auction/all/{\\d+}").hasAnyAuthority(USER)
 
 //        AuctionWinnerController
-        .antMatchers(HttpMethod.GET, "/api/winner/user/{userId}").hasAnyAuthority(USER)
-        .antMatchers(HttpMethod.GET, "/api/winner/creator/{userId}").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.GET, "/api/winner/user/{\\d+}").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.GET, "/api/winner/creator/{\\d+}").hasAnyAuthority(USER)
         .antMatchers(HttpMethod.POST, "/api/winner/address/default").hasAnyAuthority(USER)
         .antMatchers(HttpMethod.POST, "/api/winner/address").hasAnyAuthority(USER)
-        .antMatchers(HttpMethod.POST, "/api/winner/track/{trackNumber}").hasAnyAuthority(USER)
-        .antMatchers(HttpMethod.PUT, "/api/winner/{auctionId}/delivered").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.POST, "/api/winner/track/{\\d+}").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.PUT, "/api/winner/{\\d+}/delivered").hasAnyAuthority(USER)
 
 //        AuthController
         .antMatchers(HttpMethod.POST, "/api/auth/signin").permitAll()
         .antMatchers(HttpMethod.POST, "/api/auth/signup").permitAll()
         .antMatchers(HttpMethod.POST, "/api/auth/confirm").permitAll()
-        .antMatchers(HttpMethod.GET, "/api/auth/token/{token}").permitAll()
+        .antMatchers(HttpMethod.GET, "/api/auth/token/{\\d+}").permitAll()
 
 //        CategoryController
         .antMatchers(HttpMethod.GET, "/api/category").permitAll()
-        .antMatchers(HttpMethod.POST, "/api/category").hasAnyRole(ADMIN)
+        .antMatchers(HttpMethod.POST, "/api/category").hasAnyAuthority(ADMIN)
 
 //        ComplaintController
-        .antMatchers(HttpMethod.GET, "/api/complaint").hasAnyRole(ADMIN)
-        .antMatchers(HttpMethod.POST, "/api/complaint/answer").hasAnyRole(ADMIN)
-        .antMatchers(HttpMethod.POST, "/api/complaint").hasAnyRole(ADMIN)
+        .antMatchers(HttpMethod.GET, "/api/complaint").hasAnyAuthority(ADMIN)
+        .antMatchers(HttpMethod.POST, "/api/complaint").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.POST, "/api/complaint/answer").hasAnyAuthority(ADMIN)
 
 //        ImageLinkController
-        .antMatchers(HttpMethod.GET, "/api/links/{type}").permitAll()
-        .antMatchers(HttpMethod.POST, "/api/complaint").hasAnyRole(ADMIN)
+        .antMatchers(HttpMethod.GET, "/api/links/{\\d+}").permitAll()
+        .antMatchers(HttpMethod.POST, "/api/links").hasAnyAuthority(ADMIN)
 
 //        IoTController
         .antMatchers(HttpMethod.POST, "/api/iot/bet").permitAll()
@@ -129,38 +130,38 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.GET, "/api/iot/auction").permitAll()
 
 //        PaymentController
-        .antMatchers(HttpMethod.POST, "/api/payment/success").hasAnyRole(USER)
-        .antMatchers(HttpMethod.GET, "/api/payment").hasAnyRole(USER)
-        .antMatchers(HttpMethod.GET, "/api/payment/send/{userId}").hasAnyRole(USER)
-        .antMatchers(HttpMethod.GET, "/api/payment/receive/{userId}").hasAnyRole(USER)
+        .antMatchers(HttpMethod.POST, "/api/payment/success").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.GET, "/api/payment").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.GET, "/api/payment/send/{\\d+}").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.GET, "/api/payment/receive/{\\d+}").hasAnyAuthority(USER)
 
 //        SettingController
-        .antMatchers(HttpMethod.GET, "/api/settings/{userId}").hasAnyRole(USER)
-        .antMatchers(HttpMethod.PUT, "/api/settings/notification").hasAnyRole(USER)
+        .antMatchers(HttpMethod.GET, "/api/settings/{\\d+}").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.PUT, "/api/settings/notification").hasAnyAuthority(USER)
 
 //        SettingController
-        .antMatchers(HttpMethod.GET, "/api/statistic").hasAnyRole(ADMIN)
+        .antMatchers(HttpMethod.GET, "/api/statistic").hasAnyAuthority(ADMIN)
 
 
 //        TokenController
         .antMatchers(HttpMethod.GET, "/api/token/refresh").permitAll()
 
 //        UserController
-        .antMatchers(HttpMethod.POST, "/api/user/reset/password/{email}").permitAll()
-        .antMatchers(HttpMethod.PUT, "/api/user/password").hasAnyRole(USER)
-        .antMatchers(HttpMethod.PUT, "/api/user").hasAnyRole(USER)
-        .antMatchers(HttpMethod.POST, "/api/user/update/password/{code}").permitAll()
-        .antMatchers(HttpMethod.POST, "/api/user/disable/code/{code}").permitAll()
-        .antMatchers(HttpMethod.POST, "/api/user/disable/{userId}").hasAnyRole(ADMIN)
-        .antMatchers(HttpMethod.POST, "/api/user/enable/{userId}").hasAnyRole(ADMIN)
-        .antMatchers(HttpMethod.GET, "/api/user").hasAnyRole(ADMIN)
-        .antMatchers(HttpMethod.GET, "/api/user/{userId}").hasAnyRole(USER)
-        .antMatchers(HttpMethod.DELETE, "/api/user/{userId}").hasAnyRole(ADMIN)
-        .antMatchers(HttpMethod.PUT, "/api/user/{userId}/tutorial").hasAnyRole(USER)
-        .antMatchers(HttpMethod.POST, "/api/user/address").hasAnyRole(USER)
+        .antMatchers(HttpMethod.POST, "/api/user/reset/password/{\\d+}").permitAll()
+        .antMatchers(HttpMethod.PUT, "/api/user/password").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.PUT, "/api/user").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.POST, "/api/user/update/password/{\\d+}").permitAll()
+        .antMatchers(HttpMethod.POST, "/api/user/disable/code/{\\d+}").permitAll()
+        .antMatchers(HttpMethod.POST, "/api/user/disable/{\\d+}").hasAnyAuthority(ADMIN)
+        .antMatchers(HttpMethod.POST, "/api/user/enable/{\\d+}").hasAnyAuthority(ADMIN)
+        .antMatchers(HttpMethod.GET, "/api/user").hasAnyAuthority(ADMIN)
+        .antMatchers(HttpMethod.GET, "/api/user/{\\d+}").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.DELETE, "/api/user/{\\d+}").hasAnyAuthority(ADMIN)
+        .antMatchers(HttpMethod.PUT, "/api/user/{\\d+}/tutorial").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.POST, "/api/user/address").hasAnyAuthority(USER)
 
 //        AuctionChatController
-        .antMatchers(HttpMethod.GET, "/api/auction/chat/{id}").permitAll()
+        .antMatchers(HttpMethod.GET, "/api/auction/chat/{\\d+}").permitAll()
 
 
 
@@ -171,7 +172,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/instances").permitAll()
         .antMatchers("/api/instances/*").permitAll()
         .antMatchers("/wb/users").permitAll()
-        .antMatchers("/**").permitAll()
+//        .antMatchers("/**").permitAll()
         .anyRequest().authenticated()
         .and()
         .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

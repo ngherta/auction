@@ -378,6 +378,7 @@ export default {
             this.complaintSuccessful = true;
           },
           error => {
+            console.log(error.response)
             this.$notify({
               type: 'error',
               text: error.response.data.errorMessage

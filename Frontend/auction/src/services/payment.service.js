@@ -1,6 +1,7 @@
 import axios from 'axios';
 // import authHeader from './auth-header';
 import properties from "@/properties";
+import authHeader from "@/services/auth-header";
 
 const API_URL = properties.API_URL + '/api/payment/';
 
@@ -10,7 +11,9 @@ export class PaymentService {
             params: {
                 page: page,
                 perPage: perPage
-            }
+            },
+            headers:
+                authHeader()
         });
     }
 
@@ -19,7 +22,9 @@ export class PaymentService {
             params: {
                 page: page,
                 perPage: perPage
-            }
+            },
+            headers:
+                authHeader()
         });
     }
 
@@ -30,7 +35,9 @@ export class PaymentService {
                     paymentId: paymentId,
                     PayerID: payerId,
                     token: token,
-                }
+                },
+                headers:
+                    authHeader()
             })
     }
 

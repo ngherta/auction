@@ -17,6 +17,9 @@ export class UserService {
             lastName: user.lastName,
             enabled: user.enabled,
             birthday: user.birthday
+        }, {
+            headers:
+                authHeader()
         })
     }
 
@@ -25,6 +28,9 @@ export class UserService {
             userId: userId,
             oldPassword: oldPassword,
             newPassword: newPassword,
+        }, {
+            headers:
+                authHeader()
         })
     }
 
@@ -61,7 +67,10 @@ export class UserService {
     }
 
     checkTutorial(userId) {
-        return axios.put(API_URL + '/' + userId + '/tutorial');
+        return axios.put(API_URL + '/' + userId + '/tutorial', {
+            headers:
+                authHeader()
+        });
     }
 }
 

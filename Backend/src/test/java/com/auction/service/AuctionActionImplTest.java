@@ -112,7 +112,7 @@ class AuctionActionImplTest {
     auctionEvent.setStartPrice(1D);
     auctionAction.setBet(20D);
     Exception exception = assertThrows(RuntimeException.class, () -> {
-      auctionActionService.checkBetDifference(100D, auctionEvent, Optional.empty());
+      auctionActionService.checkBetDifference(21D, auctionEvent, Optional.of(auctionAction));
     });
 
     String expectedMessage = "Bet should be 5 percent higher!";

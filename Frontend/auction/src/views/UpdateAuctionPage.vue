@@ -155,9 +155,9 @@ export default {
               text: error,
               type: 'error'
             });
+            this.loading = false;
           }
       )
-      this.loading = false;
     },
     getAuctionTypeFromInput() {
       if (this.isCharity) {
