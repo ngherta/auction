@@ -1,11 +1,15 @@
 import axios from 'axios';
 import properties from "@/properties";
+import authHeader from "@/services/auth-header";
 
 const API_URL = properties.API_URL + '/api/winner/';
 
 export class WinnerService {
     useDefaultAddress(auctionId) {
-        return axios.post(API_URL + auctionId + '/address/default');
+        return axios.post(API_URL + auctionId + '/address/default', {}, {
+            headers:
+                authHeader()
+        });
     }
 
     getWinner(userId, page, perPage) {
@@ -13,7 +17,9 @@ export class WinnerService {
             params: {
                 page: page,
                 perPage: perPage
-            }
+            },
+            headers:
+                authHeader()
         });
     }
 
@@ -22,26 +28,38 @@ export class WinnerService {
             params: {
                 page: page,
                 perPage: perPage
-            }
+            },
+            headers:
+                authHeader()
         });
     }
 
     addAddress(data, auctionId) {
-        return axios.post(API_URL + auctionId + '/address',  {
-            auctionId : auctionId,
-            country: data.country,
-            city: data.city,
-            address: data.address,
-            saveAsDefault: data.saveAsDefault,
-        })
+        return axios.post(API_URL + auctionId + '/address', {
+                auctionId: auctionId,
+                country: data.country,
+                city: data.city,
+                address: data.address,
+                saveAsDefault: data.saveAsDefault,
+            },
+            {
+                headers:
+                    authHeader()
+            })
     }
 
     addTrackNumber(trackNumber, auctionId) {
-        return axios.post(API_URL + auctionId + '/track/' + trackNumber);
+        return axios.post(API_URL + auctionId + '/track/' + trackNumber, {}, {
+            headers:
+                authHeader()
+        });
     }
 
     delivered(auctionId) {
-        return axios.put(API_URL + auctionId + '/delivered');
+        return axios.put(API_URL + auctionId + '/delivered', {}, {
+            headers:
+                authHeader()
+        });
     }
 }
 

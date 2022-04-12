@@ -16,7 +16,12 @@
             </div>
             <div class="mb-3">
               <label for="startPrice">START PRICE:</label>
-              <Field name="startPrice" id="startPrice" type="number" class="form-control"/>
+              <div class="input-group">
+                <Field name="startPrice" id="startPrice" type="number" class="form-control"/>
+                <div class="input-group-append">
+                  <span class="input-group-text" id="basic-addon3">$</span>
+                </div>
+              </div>
               <ErrorMessage name="startPrice" class="error-feedback"/>
             </div>
             <div class="mb-3">
@@ -25,9 +30,14 @@
                 <label class="custom-control-label" for="customCheck1">Do you want to have maximum price for
                   auction?</label>
               </div>
-              <div v-if="isCheckedFinishPrice">
+              <div v-if="isCheckedFinishPrice" class="mt-2">
                 <label for="finishPrice">FINISH PRICE:</label>
-                <Field name="finishPrice" id="finishPrice" type="number" class="form-control"/>
+                <div class="input-group">
+                  <Field name="finishPrice" id="finishPrice" type="number" class="form-control"/>
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon4">$</span>
+                  </div>
+                </div>
                 <ErrorMessage name="finishPrice" class="error-feedback"/>
               </div>
             </div>
@@ -69,15 +79,21 @@
             </div>
           </div>
           <div class="col">
+            <label for="finishDate">Upload an image:</label>
             <upload-image :showResults="true"
                           ratio=5/6
                           result-width="300px"
                           result-height="360px"
                           @uploadNewImages="uploadNewImages($event)"/>
+            <div v-if="images.length > -1" class="d-flex">
+              <section v-for="(result, index) in images" :key="result">
+                <img class="mr-2" :src="result" height="100" :alt="'image number ' + index"/>
+              </section>
+            </div>
           </div>
         </div>
         <div class="row">
-          <button class="btn btn-primary btn-block" :disabled="loading">
+          <button class="btn btn-primary btn-block" :disabled="loading ||images.length == 0">
               <span
                   v-show="loading"
                   class="spinner-border spinner-border-sm"
@@ -191,6 +207,7 @@ export default {
     },
     uploadNewImages(event) {
       this.images.push(event);
+      console.log(this.images)
     },
     prepareCategories(categories) {
       for (let i = 0; i < categories.length; i++) {
