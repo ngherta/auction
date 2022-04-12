@@ -59,10 +59,6 @@ const routes = [
     component: WebSocketGreetings,
   },
   {
-    path: "/error",
-    component: NotFoundPage,
-  },
-  {
     path: "/auction/:id",
     component: AuctionPage,
   },
@@ -167,7 +163,11 @@ const routes = [
     name: "tutorialSecondPage",
     path: "/tutorial/2/:id",
     component: SecondStepTutorial,
-  }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    component: NotFoundPage,
+  },
 ];
 
 const router = createRouter({
@@ -176,17 +176,17 @@ const router = createRouter({
 });
 
 // router.beforeEach((to, from, next) => {
-  // const publicPages = ['/login', '/register', '/home', '/password/reset', '/error', '/about-us', '/auctions'];
-  // const authRequired = !publicPages.includes(to.path);
-  // const loggedIn = localStorage.getItem('user');
-  //
-  // trying to access a restricted page + not logged in
-  // redirect to login page
-  // if (authRequired && !loggedIn) {
-  //   next('/login');
-  // } else {
-  //   next();
-  // }
+//   const publicPages = ['/login', '/register', '/home', '/password/reset', '/error', '/about-us', '/auctions'];
+//   const authRequired = !publicPages.includes(to.path);
+//   const loggedIn = localStorage.getItem('user');
+//
+//   // trying to access a restricted page + not logged in
+//   // redirect to login page
+//   if (authRequired && !loggedIn) {
+//     next('/login');
+//   } else {
+//     next();
+//   }
 // });
 
 export default router;

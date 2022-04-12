@@ -89,13 +89,13 @@ export default {
         this.title = 'All Auctions'
         this.getAuctionsByOwner();
       } else if (filter == 'WINNING') {
-        this.title = 'WINNING';
+        this.title = 'Winning';
         this.getWinningAuctions();
       } else if (filter == 'OWNER') {
         this.title = 'My auctions';
         this.getAuctionsByOwner();
       } else if (filter == 'PARTICIPANT') {
-        this.title = 'PARTICIPANT';
+        this.title = 'Participant';
         this.getAuctionsByParticipant();
       }
       window.scrollTo(0, 0);

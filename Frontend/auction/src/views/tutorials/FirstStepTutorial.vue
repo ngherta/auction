@@ -9,6 +9,7 @@ import {VOnboardingWrapper, useVOnboarding} from 'v-onboarding'
 import 'v-onboarding/dist/style.css'
 import Home from '../Home';
 import {useRouter} from "vue-router";
+import UserService from "@/services/user.service";
 
 export default defineComponent({
   components: {
@@ -116,7 +117,15 @@ export default defineComponent({
       if (id != null) {
         this.auctionLinkId = id;
       }
+    },
+    checkTutorial() {
+      if (this.$store.state.auth.status.loggedIn) {
+        UserService.checkTutorial(this.$store.state.auth.user.userDto.id);
+      }
     }
   },
+  mounted() {
+    this.checkTutorial();
+  }
 })
 </script>

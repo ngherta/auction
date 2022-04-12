@@ -112,7 +112,7 @@ export default {
       this.loading = true;
       // user.birthday = this.date;
 
-      this.$store.dispatch("users/update", null).then(
+      this.$store.dispatch("users/update", this.user).then(
           (response) => {
             this.successful = true;
             this.loading = false;

@@ -59,6 +59,10 @@ export class UserService {
             password: password,
         });
     }
+
+    checkTutorial(userId) {
+        return axios.put(API_URL + '/' + userId + '/tutorial');
+    }
 }
 
 export default new UserService();

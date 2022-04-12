@@ -8,6 +8,7 @@ import { ref, onMounted } from 'vue'
 import { VOnboardingWrapper, useVOnboarding } from 'v-onboarding'
 import 'v-onboarding/dist/style.css'
 import AuctionPage from "@/views/AuctionPage";
+const date = new Date();
 
 export default {
   name: "SecondStepTutorial",
@@ -23,7 +24,12 @@ export default {
         senderId: '777',
         senderFirstName: 'Nicolae',
         senderLastName: 'Gherta',
-        genDate: Date().toString()
+        genDate: ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
+            ("00" + date.getDate()).slice(-2) + "/" +
+            date.getFullYear() + " " +
+            ("00" + date.getHours()).slice(-2) + ":" +
+            ("00" + date.getMinutes()).slice(-2) + ":" +
+            ("00" + date.getSeconds()).slice(-2),
       }
     }
   },
