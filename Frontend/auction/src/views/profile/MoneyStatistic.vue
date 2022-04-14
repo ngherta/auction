@@ -38,7 +38,6 @@ export default {
     for (let i = 0; i < this.labels.length; i++) {
       colors.push('#' + (Math.random() * 0xFFFFFF << 0).toString(16));
     }
-    console.log(this.values);
     this.barChart = {
       id: 'bar',
       type: 'bar',

@@ -39,7 +39,7 @@
 
 
         <li v-if="!isMobile" class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" role="button"
+          <a class="nav-link dropdown-toggle text-center" href="#" id="navbarDropdownProfile" role="button"
              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             MY PROFILE
           </a>

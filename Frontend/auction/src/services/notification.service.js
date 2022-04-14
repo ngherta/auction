@@ -7,7 +7,6 @@ const STOMP_URL = properties.API_URL + '/websocket';
 
 class NotificationService {
     connect() {
-        console.log("Try to connect to notification websocket for user[" + UserService.getUser().userDto.id + "]")
         this.socket = new SockJS(STOMP_URL);
         this.error = "";
         this.stompClient = Stomp.over(this.socket);

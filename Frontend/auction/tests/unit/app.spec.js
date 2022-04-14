@@ -1,5 +1,4 @@
 import {mount, shallowMount} from '@vue/test-utils'
-import Test from '../../src/views/profile/Test'
 import Home from "../../src/views/Home";
 import AuctionPage from '../../src/views/AuctionPage'
 import Header from '../../src/components/Header'
@@ -32,15 +31,6 @@ describe('Home.vue', () => {
     });
 });
 
-describe('Test.vue', () => {
-    it('renders props.msg when passed', () => {
-        const msg = ''
-        const wrapper = shallowMount(Test, {
-            props: {msg}
-        })
-        expect(wrapper.text()).toMatch(msg)
-    })
-})
 
 describe('Home.vue Test', () => {
     it('renders message when component is created', () => {

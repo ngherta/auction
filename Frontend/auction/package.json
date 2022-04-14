@@ -9,11 +9,6 @@
     "test:unit": "vue-cli-service test:unit -w"
   },
   "dependencies": {
-    "@ag-grid-community/csv-export": "^26.2.0",
-    "@ag-grid-enterprise/excel-export": "^26.2.0",
-    "@fortawesome/fontawesome-svg-core": "^1.2.35",
-    "@fortawesome/free-solid-svg-icons": "^5.15.3",
-    "@fortawesome/vue-fontawesome": "^3.0.0-3",
     "@j-t-mcc/vue3-chartjs": "^1.2.0",
     "@kyvg/vue3-notification": "^2.3.4",
     "@popperjs/core": "^2.11.0",
@@ -21,8 +16,6 @@
     "@tiptap/vue-3": "^2.0.0-beta.89",
     "@vue/cli-plugin-unit-jest": "^4.5.10",
     "@vueform/multiselect": "^2.3.1",
-    "ag-grid-community": "^26.2.1",
-    "ag-grid-vue3": "26.0.0",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "chart.js": "^3.7.0",
@@ -39,7 +32,6 @@
     "vue-advanced-cropper": "^2.8.1",
     "vue-chartjs": "^3.5.1",
     "vue-class-component": "8.0.0-rc.1",
-    "vue-const": "^1.1.2",
     "vue-loader": "^15.9.8",
     "vue-material": "^1.0.0-beta-15",
     "vue-notification-bell": "^0.9.12",
@@ -49,7 +41,6 @@
     "vue-window-size": "^1.1.2",
     "vue3-date-time-picker": "^2.4.4",
     "vue3-datepicker": "^0.3.1",
-    "vue3-flip-countdown": "^0.1.6",
     "vuex": "^4.0.0",
     "webstomp-client": "^1.2.6",
     "yup": "^0.32.9"
@@ -70,7 +61,7 @@
     "sass-loader": "^10.2.1",
     "typescript": "~3.9.3",
     "vue-jest": "^5.0.0-alpha.10",
-    "vuejs-progress-bar": "^1.1.1"
+    "webpack-bundle-analyzer": "^4.5.0"
   },
   "browserslist": [
     "> 1%",

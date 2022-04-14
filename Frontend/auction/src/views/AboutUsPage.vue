@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <h1 class="h1">About us</h1>
+  <div class="container mt-5">
+    <h1 class="h1 text-center">About us</h1>
     <p>
       Welcome to the LOT
       <span v-if="this.loggedInValue">

@@ -52,7 +52,7 @@
       <h5 v-else-if="this.auction.statusType == 'EXPECTATION' && !this.isFinished"
           class="alert alert-light text-center" role="alert">
         The auction starts in
-        <Countdown v-if="startDate" :deadlineDate="startDate" @timeElapsed="timeElapsedHandler"/>
+        <countdown :date="startDate"/>
       </h5>
       <h5 v-else-if="this.auction.statusType == 'FINISHED' || this.isFinished"
           class="alert text-center alert-light" role="alert">
@@ -90,9 +90,8 @@
 <script>
 import {Field, Form} from "vee-validate";
 import * as yup from "yup";
-import {Countdown} from 'vue3-flip-countdown'
 import DateConverter from '../helpers/date.converter';
-
+import Countdown from "@/views/profile/Countdown";
 
 export default {
   name: "BettingRoom",
@@ -100,7 +99,7 @@ export default {
   components: {
     Form,
     Field,
-    Countdown,
+    Countdown
   },
   data() {
     const schema = yup.object().shape({

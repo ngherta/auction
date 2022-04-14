@@ -20,7 +20,7 @@ import AboutUsPage from '@/views/AboutUsPage';
 import Editor from "./components/Editor";
 import SuccessPay from "@/views/SuccessPay";
 import Tour from "@/views/Tour";
-import Test from "@/views/profile/Test";
+import Countdown from "@/views/profile/Countdown";
 import FirstStepTutorial from "@/views/tutorials/FirstStepTutorial";
 import SecondStepTutorial from "@/views/tutorials/SecondStepTutorial";
 
@@ -32,7 +32,7 @@ const routes = [
   },
   {
     path: "/test",
-    component: Test
+    component: Countdown
   },
   {
     path: "/home",

@@ -130,9 +130,8 @@ export default {
           }
       );
     },
-    removeField(index, fieldType, mainCategoryId) {
+    removeField(index, fieldType) {
       fieldType.splice(index, 1);
-      console.log(mainCategoryId) ;
     },
     getCategories() {
       CategoryService.getCategoriesForCreateAuction().then(

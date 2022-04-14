@@ -3,7 +3,7 @@
     <h1 class="h1 mb-4">Create auction</h1>
     <div>
       <Form @submit="createAuction" :validation-schema="schema">
-        <div v-if="!successful" class="row">
+        <div v-if="!successful" class="row creation-block mb-3">
           <div class="col">
             <div class="mb-3">
               <label for="title">TITLE:</label>
@@ -188,7 +188,6 @@ export default {
       this.loading = false;
     },
     getAuctionTypeFromInput() {
-      console.log(this.isCharity);
       if (this.isCharity) {
         return 'CHARITY';
       } else if (!this.isCharity) {
@@ -207,7 +206,6 @@ export default {
     },
     uploadNewImages(event) {
       this.images.push(event);
-      console.log(this.images)
     },
     prepareCategories(categories) {
       for (let i = 0; i < categories.length; i++) {
@@ -233,6 +231,12 @@ export default {
 </script>
 
 <style scoped>
+@media only screen and (max-width: 769px) {
+  .creation-block {
+    flex-direction: column;
+  }
+}
+
 .category {
   background-color: #9c9c9c;
 }

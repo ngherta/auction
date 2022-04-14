@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="row mt-5">
+    <div class="row mt-5 first-block">
       <div v-if="showTest" id="carouselExampleControls" class="col carousel slide w-25 border" data-ride="carousel">
         <div class="carousel-inner" style="height: 500px">
           <div v-for="(image, index) of images"
@@ -157,16 +157,16 @@
             </button>
           </div>
           <div class="modal-body">
-            <betting-room :bids="bids"
-                          :auction="content"
-                          :stomp-client="stompClient"
-                          :isFinished="auctionFinished"/>
+<!--            <betting-room :bids="bids"-->
+<!--                          :auction="content"-->
+<!--                          :stomp-client="stompClient"-->
+<!--                          :isFinished="auctionFinished"/>-->
           </div>
         </div>
       </div>
     </div>
     <div class="row mt-5 justify-content-between mb-5">
-      <div class="col mr-4 p-3 border" id="betting-room-container">
+      <div class="col mr-4 p-3 border betting-room-container" id="betting-room-container">
         <button  v-if="userId != null" type="button" class="btn btn-warning btn-circle expand-iot-button" :disabled="iotLoading"
                 @click="connectIoTButton">
           <span v-if="!iotConnected && !iotLoading">Connect IoT</span>
@@ -190,7 +190,7 @@
       </div>
 
 
-      <div class="col-6 border pb-4 pr-0" id="chat-container">
+      <div class="col-6 border pb-4 pr-0 chat-container" id="chat-container">
         <div class="overflow-chat d-flex flex-column pt-3 pb-3 pl-2 pr-2 chat-box"
              :class="{'height-500' : content.statusType == 'EXPECTATION',
                       'height-400' : content.statusType != 'EXPECTATION'}"
@@ -378,7 +378,6 @@ export default {
             this.complaintSuccessful = true;
           },
           error => {
-            console.log(error.response)
             this.$notify({
               type: 'error',
               text: error.response.data.errorMessage
@@ -522,7 +521,6 @@ export default {
     getData() {
       AuctionService.getAuctionById(this.auctionId).then(
           (response) => {
-            console.log(response)
             this.images = response.data.images;
             this.content = response.data;
             if (this.content.statusType == 'EXPECTATION') {
@@ -561,7 +559,6 @@ export default {
     )
     this.getAllMessagesByAuctionId();
     this.getIoTData();
-    console.log(this.chatMessageForTutorial);
     if (this.chatMessageForTutorial != null) {
       this.chatMessages = [this.chatMessageForTutorial];
     }
@@ -570,16 +567,66 @@ export default {
 </script>
 
 <style scoped>
+@media only screen and (min-width: 100px) {
+  .first-block {
+    flex-direction: column;
+  }
+
+  .carousel  {
+    width: 100% !important;
+  }
+  .chat-container {
+    max-width: 100%!important;
+    flex: initial;
+    margin-top: 2rem;
+  }
+}
+
 @media only screen and (min-width: 576px) {
   .modal-dialog {
     max-width: 500px;
     /*margin: 1.75rem auto;*/
+  }
+  .first-block {
+    flex-direction: column;
+  }
+
+  .carousel {
+    width: 100% !important;
+  }
+  .chat-container {
+    max-width: 100%!important;
+    flex: initial;
+    margin-top: 2rem;
+  }
+
+  .betting-room-container {
+    margin-right: 0!important;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .carousel {
+    width: 25% !important;
+  }
+  .first-block {
+    flex-direction: initial;
   }
 }
 
 @media only screen and (min-width: 992px) {
   .modal-dialog {
     max-width: 600px;
+  }
+
+  .chat-container {
+    max-width: 50%!important;
+    flex: 0 0 50%;
+    margin-top: 0!important;
+  }
+
+  .betting-room-container {
+    margin-right: 1.5rem!important;
   }
 }
 

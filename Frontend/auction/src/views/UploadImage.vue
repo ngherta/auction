@@ -125,8 +125,6 @@ export default {
         //show progress bar at beginning of post
         axios(requestObj)
             .then(response => {
-              console.log("NGH")
-              console.log(response)
               this.results.push(response.data.secure_url);
               this.imageFile = response.data.secure_url;
               this.$emit('uploadNewImages', response.data.secure_url)
