@@ -26,7 +26,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import java.io.UnsupportedEncodingException;
 
-@CrossOrigin(origins = "*",allowedHeaders = "*")
+//@CrossOrigin(origins = "*",allowedHeaders = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
@@ -94,7 +94,7 @@ public class UserController {
     return ResponseEntity.ok().build();
   }
 
-  @PutMapping("/{userId}/tutorial")
+  @PutMapping("/tutorial/{userId}")
   public ResponseEntity<Void> checkedTutorial(@PathVariable Long userId) {
     userService.checkTutorial(userId);
     return ResponseEntity.ok().build();

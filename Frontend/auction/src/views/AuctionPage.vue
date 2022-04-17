@@ -12,11 +12,13 @@
           </div>
 
         </div>
-        <a v-if="images.length > 1" class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <a v-if="images.length > 1" class="carousel-control-prev" href="#carouselExampleControls" role="button"
+           data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="sr-only">Previous</span>
         </a>
-        <a v-if="images.length > 1" class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <a v-if="images.length > 1" class="carousel-control-next" href="#carouselExampleControls" role="button"
+           data-slide="next">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="sr-only">Next</span>
         </a>
@@ -26,16 +28,17 @@
           <div class="d-flex align-items-center">
             <h1 class="h1">{{ content.title }}</h1>
             <div class="ml-auto">
-              <button type="button" class="btn btn-success btn-circle" id="share-button" data-toggle="modal"
+              <button type="button" class="btn" id="share-button" data-toggle="modal"
                       data-target="#qrModal">
-                SHARE
+                <icon name="auction-share"/>
               </button>
             </div>
-            <div class="ml-2" v-if="userId != null">
+            <div class="" v-if="userId != null">
               <button type="button"
                       data-toggle="modal"
                       data-target="#complaintModal"
-                      class="btn btn-danger btn-circle">COMPLAINT
+                      class="btn">
+                <icon name="complaint-auction"/>
               </button>
             </div>
 
@@ -157,17 +160,18 @@
             </button>
           </div>
           <div class="modal-body">
-<!--            <betting-room :bids="bids"-->
-<!--                          :auction="content"-->
-<!--                          :stomp-client="stompClient"-->
-<!--                          :isFinished="auctionFinished"/>-->
+            <!--            <betting-room :bids="bids"-->
+            <!--                          :auction="content"-->
+            <!--                          :stomp-client="stompClient"-->
+            <!--                          :isFinished="auctionFinished"/>-->
           </div>
         </div>
       </div>
     </div>
-    <div class="row mt-5 justify-content-between mb-5">
+    <div class="row mt-4 justify-content-between mb-5">
       <div class="col mr-4 p-3 border betting-room-container" id="betting-room-container">
-        <button  v-if="userId != null" type="button" class="btn btn-warning btn-circle expand-iot-button" :disabled="iotLoading"
+        <button v-if="userId != null" type="button" class="btn btn-warning btn-circle expand-iot-button"
+                :disabled="iotLoading"
                 @click="connectIoTButton">
           <span v-if="!iotConnected && !iotLoading">Connect IoT</span>
           <span v-if="iotConnected && !iotLoading">Disconnect IoT</span>
@@ -190,7 +194,7 @@
       </div>
 
 
-      <div class="col-6 border pb-4 pr-0 chat-container" id="chat-container">
+      <div class="col-6 border pb-0 pl-0 pb-2 pr-0 chat-container" id="chat-container">
         <div class="overflow-chat d-flex flex-column pt-3 pb-3 pl-2 pr-2 chat-box"
              :class="{'height-500' : content.statusType == 'EXPECTATION',
                       'height-400' : content.statusType != 'EXPECTATION'}"
@@ -208,16 +212,21 @@
         </div>
         <div v-if="userId != null">
           <form class="d-flex pr-3 pl-3" @submit.prevent="handleMessageSending">
-            <input name="message"
-                   id="message"
-                   type="text"
-                   v-model="chat_message"
-                   class="form-control col-10 mt-auto"/>
-            <button class="btn btn-primary btn-block col-2"
-                    :disabled="['', ' ','  ', '   ', null].includes(chat_message)"
-                    @click="handleMessageSending"
-                    type="button">SEND
-            </button>
+            <div class="input-group mb-3 justify-content-center">
+              <input name="message"
+                     id="message"
+                     type="text"
+                     v-model="chat_message"
+                     class="form-control col-10 mt-auto"
+                     aria-describedby="basic-addon2"/>
+              <div class="input-group-append">
+                <button class="btn btn-primary btn-block"
+                        :disabled="['', ' ','  ', '   ', null].includes(chat_message)"
+                        @click="handleMessageSending"
+                        type="button">SEND
+                </button>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -417,7 +426,7 @@ export default {
       );
     },
     handleMessageSending() {
-      if (this.userId !=null && !['', ' ', '  ', '   ', null].includes(this.chat_message)) {
+      if (this.userId != null && !['', ' ', '  ', '   ', null].includes(this.chat_message)) {
         if (this.stompClient && this.stompClient.connected) {
           this.stompClient.send("/app/chat/auction/" + this.auctionId, JSON.stringify({
             'senderId': this.userId,
@@ -541,7 +550,7 @@ export default {
     }
   },
   mounted() {
-    if(this.$store.state.auth.status.loggedIn) {
+    if (this.$store.state.auth.status.loggedIn) {
       this.userId = this.$store.state.auth.user.userDto.id;
     }
     this.getData();
@@ -572,11 +581,12 @@ export default {
     flex-direction: column;
   }
 
-  .carousel  {
+  .carousel {
     width: 100% !important;
   }
+
   .chat-container {
-    max-width: 100%!important;
+    max-width: 100% !important;
     flex: initial;
     margin-top: 2rem;
   }
@@ -587,6 +597,7 @@ export default {
     max-width: 500px;
     /*margin: 1.75rem auto;*/
   }
+
   .first-block {
     flex-direction: column;
   }
@@ -594,14 +605,15 @@ export default {
   .carousel {
     width: 100% !important;
   }
+
   .chat-container {
-    max-width: 100%!important;
+    max-width: 100% !important;
     flex: initial;
     margin-top: 2rem;
   }
 
   .betting-room-container {
-    margin-right: 0!important;
+    margin-right: 0 !important;
   }
 }
 
@@ -609,6 +621,7 @@ export default {
   .carousel {
     width: 25% !important;
   }
+
   .first-block {
     flex-direction: initial;
   }
@@ -620,13 +633,13 @@ export default {
   }
 
   .chat-container {
-    max-width: 50%!important;
+    max-width: 50% !important;
     flex: 0 0 50%;
-    margin-top: 0!important;
+    margin-top: 0 !important;
   }
 
   .betting-room-container {
-    margin-right: 1.5rem!important;
+    margin-right: 1.5rem !important;
   }
 }
 

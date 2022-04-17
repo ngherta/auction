@@ -6,7 +6,6 @@
         <router-view/>
       </div>
       <Footer class="flex-shrink-0 mt-auto"/>
-      <notifications/>
     </div>
   </div>
 </template>
@@ -36,20 +35,6 @@ export default {
 
 
 <style scoped>
-/*@font-face {*/
-  /*font-family: "Century Gothic";*/
-  /*src: local("Century Gothic"),*/
-  /*url("./public/fonts/century-gothic.woff2") format("woff2");*/
-/*}*/
-
-/*@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');*/
-
-/*p,*/
-/*span,*/
-/*div {*/
-/*  font-family: "Nanum Gothic", Helvetica, Arial!important;*/
-/*}*/
-
 p {
   font-size: 1rem;
 }

@@ -47,8 +47,8 @@
 
 <script>
 import Icon from "../../../components/Icon";
-import Datetimepicker from 'vue3-date-time-picker';
-import 'vue3-date-time-picker/dist/main.css';
+import Datetimepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 import * as yup from "yup";
 import {ref} from 'vue'
 import UserService from '../../../services/user.service';

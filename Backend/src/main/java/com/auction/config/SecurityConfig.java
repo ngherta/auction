@@ -32,8 +32,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private final String ADMIN = UserRole.ADMIN.name();
-  private final String USER = UserRole.USER.name();
+  private static final String ADMIN = UserRole.ADMIN.name();
+  private static final String USER = UserRole.USER.name();
 
   private final UserDetailsService userDetailsService;
   private final AuthEntryPointJwt unauthorizedHandler;
@@ -70,9 +70,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf().disable()
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeRequests()
 
@@ -142,28 +139,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        SettingController
         .antMatchers(HttpMethod.GET, "/api/statistic").hasAnyAuthority(ADMIN)
 
-
 //        TokenController
         .antMatchers(HttpMethod.GET, "/api/token/refresh").permitAll()
 
 //        UserController
-        .antMatchers(HttpMethod.POST, "/api/user/reset/password/{\\d+}").permitAll()
-        .antMatchers(HttpMethod.PUT, "/api/user/password").hasAnyAuthority(USER)
-        .antMatchers(HttpMethod.PUT, "/api/user").hasAnyAuthority(USER)
-        .antMatchers(HttpMethod.POST, "/api/user/update/password/{\\d+}").permitAll()
-        .antMatchers(HttpMethod.POST, "/api/user/disable/code/{\\d+}").permitAll()
-        .antMatchers(HttpMethod.POST, "/api/user/disable/{\\d+}").hasAnyAuthority(ADMIN)
-        .antMatchers(HttpMethod.POST, "/api/user/enable/{\\d+}").hasAnyAuthority(ADMIN)
-        .antMatchers(HttpMethod.GET, "/api/user").hasAnyAuthority(ADMIN)
-        .antMatchers(HttpMethod.GET, "/api/user/{\\d+}").hasAnyAuthority(USER)
-        .antMatchers(HttpMethod.DELETE, "/api/user/{\\d+}").hasAnyAuthority(ADMIN)
-        .antMatchers(HttpMethod.PUT, "/api/user/{\\d+}/tutorial").hasAnyAuthority(USER)
-        .antMatchers(HttpMethod.POST, "/api/user/address").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.POST, "/api/users/reset/password/{\\d+}").permitAll()
+        .antMatchers(HttpMethod.PUT, "/api/users/password").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.PUT, "/api/users/tutorial/{\\d+}").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.PUT, "/api/users").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.POST, "/api/users/update/password/{\\d+}").permitAll()
+        .antMatchers(HttpMethod.POST, "/api/users/disable/code/{\\d+}").permitAll()
+        .antMatchers(HttpMethod.POST, "/api/users/disable/{\\d+}").hasAnyAuthority(ADMIN)
+        .antMatchers(HttpMethod.POST, "/api/users/enable/{\\d+}").hasAnyAuthority(ADMIN)
+        .antMatchers(HttpMethod.GET, "/api/users").hasAnyAuthority(ADMIN)
+        .antMatchers(HttpMethod.GET, "/api/users/{\\d+}").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.DELETE, "/api/users/{\\d+}").hasAnyAuthority(ADMIN)
+        .antMatchers(HttpMethod.POST, "/api/users/address").hasAnyAuthority(USER)
 
 //        AuctionChatController
         .antMatchers(HttpMethod.GET, "/api/auction/chat/{\\d+}").permitAll()
-
-
 
         .antMatchers("/websocket/**").permitAll()
         .antMatchers("/websocket").permitAll()

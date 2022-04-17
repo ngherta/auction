@@ -67,7 +67,7 @@ export class UserService {
     }
 
     checkTutorial(userId) {
-        return axios.put(API_URL + '/' + userId + '/tutorial', {
+        return axios.put(API_URL + 'tutorial/' + userId , {
             headers:
                 authHeader()
         });

@@ -80,8 +80,7 @@
 import {Form, Field, ErrorMessage} from "vee-validate";
 import * as yup from "yup";
 import Main_Logo from "@/components/Main_Logo";
-import Datetimepicker from 'vue3-date-time-picker';
-import 'vue3-date-time-picker/dist/main.css'
+import Datetimepicker from '@vuepic/vue-datepicker';
 import {ref} from 'vue'
 
 

@@ -112,8 +112,8 @@ import * as yup from "yup";
 import CategoryService from "../services/category.service"
 import UploadImage from "@/views/UploadImage";
 import AuctionService from "../services/auction.service";
-import Datetimepicker from 'vue3-date-time-picker';
-import 'vue3-date-time-picker/dist/main.css'
+import Datetimepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 import Editor from "../components/Editor";
 
 export default {

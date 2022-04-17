@@ -51,7 +51,8 @@
           </div>
         </li>
 
-        <li v-if="this.$store.state.auth.status.loggedIn == true" id="notification-item" class="nav-item dropdown d-flex">
+        <li v-if="this.$store.state.auth.status.loggedIn == true" id="notification-item"
+            class="nav-item dropdown d-flex">
           <button class="nav-link text-light" id="navbarDropdown" role="button" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
             <icon name="notification-bell"
@@ -73,7 +74,9 @@
                 <h6 class="text-center">You don't have any notifications :(</h6>
               </div>
             </li>
-            <li class="notification-container">
+            <li
+                class="notification-container"
+                :class="{'overflow-hidden-y' : this.notifications.length < 3}">
               <div class="notification-box border-bottom"
                    :class="{'bg-gray' : notification.seen == false }"
                    v-for="notification in notifications.slice().reverse()"
@@ -83,7 +86,6 @@
                     <img :src="notification.image" class="img-fluid">
                   </div>
                   <div class="col-lg-8 col-sm-8 col-8">
-<!--                    <strong class="text-info">David John</strong>-->
                     <div class="white-space-nowrap" v-html="notification.message"/>
                     <small class="text-warning">{{ notification.genDate }}</small>
                   </div>
@@ -350,6 +352,10 @@ button {
   max-height: 300px;
   overflow-x: hidden;
   overflow-y: scroll;
+}
+
+.overflow-hidden-y {
+  overflow-y: hidden !important;
 }
 
 @media (max-width: 640px) {

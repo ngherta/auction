@@ -50,7 +50,7 @@
           <b>{{ item.trackNumber }}</b>
         </p>
         <p class="card-text"
-        :class="{'mt-10' : 'DELIVERY_PROCESSING' != item.status}">
+           :class="{'mt-10' : 'DELIVERY_PROCESSING' != item.status}">
           <small>Auction was finished:
             <b>{{ item.genDate }}</b>
           </small>
@@ -162,6 +162,12 @@
           </form>
           <form v-if="modalType == 'ADD_TRACK_NUMBER'" @submit="submitTrackNumber">
             <div class="form-group">
+              <h3 class="h3">Delivery address</h3>
+              <p><strong>Name: </strong>{{currentWinner.auctionEvent.user.firstName + ' ' + currentWinner.auctionEvent.user.lastName}}</p>
+              <p><strong>Country: </strong>{{currentWinner.country}}</p>
+              <p><strong>City: </strong>{{currentWinner.city}}</p>
+              <p><strong>Street: </strong>{{currentWinner.address}}</p>
+              <p class="border-bottom"></p>
               <p>Add track number and change status to <b>DELIVERY-PROCESSING</b></p>
               <label for="trackNumber" class="col-form-label">Track number:</label>
               <input v-model="trackNumber" name="trackNumber" type="text" class="form-control" id="trackNumber"/>
@@ -327,6 +333,7 @@ export default {
       WinnerService.getWinnerForAuctionCreator(this.userId, this.page, this.perPage)
           .then(
               (response) => {
+                console.log(response)
                 this.loading = false;
                 this.data = response.data.content;
                 this.countOfPages = response.data.totalPages;
@@ -349,6 +356,13 @@ export default {
                 this.countOfPages = response.data.totalPages;
               }
           )
+    },
+    getCurrentAuctionWinnerById(id) {
+      for (let i = 0; i < this.data.length; i++) {
+        if (this.data[i].auctionEvent.id == id) {
+          return this.data[i];
+        }
+      }
     },
     getUser() {
       UserService.getUserById(this.userId).then(

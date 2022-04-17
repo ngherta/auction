@@ -20,7 +20,7 @@ public interface AuctionEventRepository extends JpaRepository<AuctionEvent, Long
         JpaSpecificationExecutor<AuctionEvent> {
   @Query(nativeQuery = true, value =
           "select * from auction as a " +
-                  "where a.status = :status and a.start_date >= LOCALTIMESTAMP")
+                  "where a.status = :status and a.start_date <= LOCALTIMESTAMP")
   List<AuctionEvent> getListForStart(@Param("status") String status);
 
   @Query(nativeQuery = true, value =

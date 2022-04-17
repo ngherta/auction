@@ -16,6 +16,7 @@
     "@tiptap/vue-3": "^2.0.0-beta.89",
     "@vue/cli-plugin-unit-jest": "^4.5.10",
     "@vueform/multiselect": "^2.3.1",
+    "@vuepic/vue-datepicker": "^3.1.1",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "chart.js": "^3.7.0",
@@ -39,8 +40,6 @@
     "vue-router": "^4.0.6",
     "vue-social-sharing": "^4.0.0-alpha4",
     "vue-window-size": "^1.1.2",
-    "vue3-date-time-picker": "^2.4.4",
-    "vue3-datepicker": "^0.3.1",
     "vuex": "^4.0.0",
     "webstomp-client": "^1.2.6",
     "yup": "^0.32.9"
