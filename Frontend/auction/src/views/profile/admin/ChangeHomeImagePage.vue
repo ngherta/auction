@@ -223,14 +223,35 @@ export default {
       }
 
       const request = {
-        url: data.link,
+        url: this.linkModel,
         imageLink: this.imageUploaded,
         sequence: data.sequence
       }
 
+      if (this.linkModel == null) {
+        this.$notify({
+          text: 'You should add link!',
+          type: 'error'
+        });
+        return;
+      }
+
+      if (this.sequenceModel == null) {
+        this.$notify({
+          text: 'You should add sequence!',
+          type: 'error'
+        });
+        return;
+      }
       ImageLinkService.create(request, 'HOME_PAGE').then(
-          () => {
-            this.images.push(request);
+          (response) => {
+            console.log(response)
+            const responseData = {
+              id: response.data.id,
+              sequence: response.data.sequence,
+              url: response.data.url
+            }
+            this.images.push(responseData);
             this.loading = false;
           },
           (error) => {

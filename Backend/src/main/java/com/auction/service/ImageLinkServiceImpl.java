@@ -20,7 +20,7 @@ import java.util.List;
 class ImageLinkServiceImpl implements ImageLinkService {
 
   @Value("${spring.client.url}")
-  private String clientUrl;
+  private String[] clientUrl;
 
   private final ImageLinkRepository imageLinkRepository;
   private final Mapper<ImageLink, ImageLinkDto> imageLinkDtoMapper;
@@ -66,15 +66,16 @@ class ImageLinkServiceImpl implements ImageLinkService {
   }
 
   private ImageLink setUrlAndType(ImageLink imageLink, String url) {
-    String client = this.clientUrl
-            .replace("http://", "")
-            .replace("https://", "");
-
-    if (url.contains(client)) {
-      url =  url.replaceAll(this.clientUrl, "");
-    }
+    //TODO
+//    String client = this.clientUrl
+//            .replace("http://", "")
+//            .replace("https://", "");
+//
+//    if (url.contains(client)) {
+//      url =  url.replaceAll(this.clientUrl, "");
+//    }
     imageLink.setInternalLink(true);
-    imageLink.setImageLink(url);
+    imageLink.setUrl(url);
 
     return imageLink;
   }

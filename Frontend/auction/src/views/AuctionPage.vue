@@ -10,7 +10,6 @@
             <img class="d-flex m-auto img-responsive"
                  v-bind:src="image">
           </div>
-
         </div>
         <a v-if="images.length > 1" class="carousel-control-prev" href="#carouselExampleControls" role="button"
            data-slide="prev">
@@ -532,6 +531,7 @@ export default {
           (response) => {
             this.images = response.data.images;
             this.content = response.data;
+
             if (this.content.statusType == 'EXPECTATION') {
               this.$refs["betting-room"].setStartDate(response.data.startDate);
             }
@@ -713,7 +713,7 @@ export default {
 
 .chat-message {
   display: inline-flex;
-  border-radius: 37%;
+  border-radius: 12px;
   background-color: lightblue;
 }
 

@@ -7,7 +7,7 @@
         <li v-for="(item,index) in data" :key="index" class="mb-4">
           <h5>        {{ item.mainCategory.categoryName }}
           </h5>
-          <form class="">
+          <form class="" @submit.prevent="createNewSubCategory">
             <div class="form-group">
               <label class="text-gray-600 font-semibold text-lg" hidden>Create new subcategory</label>
               <div
@@ -114,7 +114,7 @@ export default {
             this.data = response.data;
             this.initButtons(response.data);
           },
-          (error) => {
+          error => {
             this.$notify({
               text: error.response.data.errorMessage,
               type: 'error'

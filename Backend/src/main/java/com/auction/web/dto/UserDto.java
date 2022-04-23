@@ -16,6 +16,7 @@ import java.util.Set;
 public class UserDto {
     private Long id;
     private String email;
+    private String fullName;
     private String firstName;
     private String lastName;
     private String birthday;

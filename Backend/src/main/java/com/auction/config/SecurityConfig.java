@@ -112,6 +112,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 //        ComplaintController
         .antMatchers(HttpMethod.GET, "/api/complaint").hasAnyAuthority(ADMIN)
+        .antMatchers(HttpMethod.GET, "/api/complaint/*").hasAnyAuthority(ADMIN)
         .antMatchers(HttpMethod.POST, "/api/complaint").hasAnyAuthority(USER)
         .antMatchers(HttpMethod.POST, "/api/complaint/answer").hasAnyAuthority(ADMIN)
 

@@ -19,6 +19,7 @@ public class UserToDtoMapper implements Mapper<User, UserDto> {
         userDto.setEmail(entity.getEmail());
         userDto.setFirstName(entity.getFirstName());
         userDto.setLastName(entity.getLastName());
+        userDto.setFullName(entity.getFirstName() + " " + entity.getLastName());
         userDto.setEnabled(entity.isEnabled());
         userDto.setHasDefaultAddress(entity.hasDefaultAddress());
         userDto.setMoneyBalance(entity.getMoneyBalance());

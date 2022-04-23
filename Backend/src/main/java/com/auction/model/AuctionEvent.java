@@ -55,7 +55,8 @@ public class AuctionEvent extends AbstractEntity{
     private User user;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> images;
+    @CollectionTable(name="auction_event_images")
+    private List<String> images = new ArrayList<>();
 
     @Column
     private Double charityPercent;

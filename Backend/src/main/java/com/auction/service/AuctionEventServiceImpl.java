@@ -2,6 +2,7 @@ package com.auction.service;
 
 import com.auction.event.notification.AuctionCreationNotificationEvent;
 import com.auction.exception.AuctionEventNotFoundException;
+import com.auction.exception.AuctionRuntimeException;
 import com.auction.model.AuctionAction;
 import com.auction.model.AuctionEvent;
 import com.auction.model.AuctionWinner;
@@ -113,6 +114,10 @@ class AuctionEventServiceImpl implements AuctionEventService {
 
     if (request.getStartDate().isBefore(LocalDateTime.now())) {
       auctionEvent.setStatusType(AuctionStatus.ACTIVE);
+    }
+
+    if(request.getFinishDate().isBefore(request.getStartDate())) {
+      throw new AuctionRuntimeException("Finish date should be after start date");
     }
 
     auctionEvent.setImages(request.getImages());

@@ -33,7 +33,10 @@
                   class="spinner-border spinner-border-sm"></span>
               BID
             </button>
-            <button class="btn btn-primary btn-block mt-0" :disabled="loading">
+            <button class="btn btn-primary btn-block mt-0"
+                    v-if="auction.finishPrice != null"
+                    type="button"
+                    @click="buyNow" :disabled="loading">
               <span
                   v-show="loading"
                   class="spinner-border spinner-border-sm"
@@ -139,17 +142,32 @@ export default {
         }
       }
     },
+    buyNow() {
+      const finishBet = this.auction.finishPrice != null ? this.auction.finishPrice : null;
+      if (finishBet != null) {
+        this.bet(finishBet);
+      }
+      else {
+        this.$notify({
+          type: 'error',
+          text: "This auction doesn't have finish price!"
+        })
+      }
+    },
     handleBet() {
+      this.bet(this.betInput);
+    },
+    bet(amount) {
       this.loading = true;
       if (this.stompClient && this.stompClient.connected) {
         this.stompClient.send("/app/betting/" + this.auction.id, JSON.stringify({
           'auctionId': String(this.auction.id),
           'userId': this.$store.state.auth.user.userDto.id,
-          'bet': this.betInput
+          'bet': amount
         }));
       }
       this.loading = false;
-    },
+    }
   }
 }
 </script>

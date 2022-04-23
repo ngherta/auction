@@ -31,7 +31,7 @@ class PaypalServiceImpl implements PaypalService {
   public static final String CANCEL_URL = "/auctions";
 
   @Value("${spring.client.url}")
-  private String clientUrl;
+  private String[] clientUrl;
 
   private final APIContext apiContext;
 
@@ -59,8 +59,8 @@ class PaypalServiceImpl implements PaypalService {
     thePayment.setPayer(thePayer);
 
     RedirectUrls theRedirectUrls = new RedirectUrls();
-    theRedirectUrls.setCancelUrl(clientUrl + CANCEL_URL);
-    theRedirectUrls.setReturnUrl(clientUrl + SUCCESS_URL);
+    theRedirectUrls.setCancelUrl(clientUrl[0] + CANCEL_URL);
+    theRedirectUrls.setReturnUrl(clientUrl[0] + SUCCESS_URL);
     thePayment.setRedirectUrls(theRedirectUrls);
 
     return thePayment.create(apiContext);

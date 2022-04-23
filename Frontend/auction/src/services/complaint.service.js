@@ -10,7 +10,7 @@ class ComplaintService {
             userId: data.userId,
             auctionEventId: data.auctionEventId,
             message: data.message
-        },{
+        }, {
             headers:
                 authHeader()
         });
@@ -18,10 +18,14 @@ class ComplaintService {
 
     sendResponse(data) {
         return axios.post(API_URL + '/answer', {
-            adminId : data.admin,
-            complaintId : data.complaintId,
-            status : data.status
-        })
+                adminId: data.admin,
+                complaintId: data.complaintId,
+                status: data.status
+            },
+            {
+                headers:
+                    authHeader()
+            })
     }
 
     getAll(page, perPage) {
@@ -29,7 +33,9 @@ class ComplaintService {
             params: {
                 page: page,
                 perPage: perPage
-            }
+            },
+            headers:
+                authHeader()
         });
     }
 }

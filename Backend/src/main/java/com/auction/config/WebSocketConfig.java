@@ -26,7 +26,7 @@ import java.util.Map;
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Value("${spring.client.url}")
-  private String client;
+  private String[] client;
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -42,8 +42,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry.addEndpoint("/websocket")
-            .setAllowedOrigins(client,
-                               "chrome-extension://ggnhohnkfcpcanfekomdkjffnfcjnjam")
+            .setAllowedOrigins(client)
             .setHandshakeHandler(new DefaultHandshakeHandler() {
 
               //Get sessionId from request and set it in Map attributes
