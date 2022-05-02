@@ -69,7 +69,10 @@ export default {
         {
           label: "Enabled",
           field: "enabled",
-          width: "5%"
+          width: "5%",
+          display: function (row) {
+            return (row.enabled ? 'Yes' : 'No')
+          }
         },
         {
           label: "",

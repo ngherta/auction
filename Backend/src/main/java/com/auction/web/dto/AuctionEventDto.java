@@ -29,5 +29,7 @@ public class AuctionEventDto {
     private String genDate;
     private Double charityPercent;
     private List<String> images;
+    private List<String> categories;
     private Double lastBid;
+
 }

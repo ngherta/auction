@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+  <changeSet id="17" author="ngh">
+    <insert tableName="category">
+      <column name="id" valueNumeric="100002"/>
+      <column name="category" value="OTHER"/>
+    </insert>
+
+    <insert tableName="sub_category">
+      <column name="id" valueNumeric="100008"/>
+      <column name="category_id" value="10002"/>
+      <column name="category" value="T-shirt"/>
+    </insert>
+
+    <insert tableName="sub_category">
+      <column name="id" valueNumeric="100010"/>
+      <column name="category_id" value="10002"/>
+      <column name="category" value="Shoes"/>
+    </insert>
+
+    <insert tableName="sub_category">
+      <column name="id" valueNumeric="100012"/>
+      <column name="category_id" value="10002"/>
+      <column name="category" value="Jacket"/>
+    </insert>
+
+    <insert tableName="sub_category">
+      <column name="id" valueNumeric="100004"/>
+      <column name="category_id" value="100002"/>
+      <column name="category" value="Books"/>
+    </insert>
+
+    <rollback>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

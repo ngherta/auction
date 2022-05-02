@@ -4,6 +4,7 @@ import com.auction.model.enums.AuctionType;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +27,8 @@ public class AuctionEventRequest {
 //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm")
     private LocalDateTime finishDate;
     private Double charityPercent;
+    @NotEmpty
     private List<String> images;
-    private Long categoryIds;
+    @NotEmpty
+    private List<Long> categoryIds;
 }

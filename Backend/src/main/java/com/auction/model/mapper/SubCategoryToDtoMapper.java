@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class SubCategoryToDtoMapper implements Mapper<SubCategory, CategoryDto>{
+class SubCategoryToDtoMapper implements Mapper<SubCategory, CategoryDto>{
   @Override
   public CategoryDto map(SubCategory entity) {
     return CategoryDto.builder()

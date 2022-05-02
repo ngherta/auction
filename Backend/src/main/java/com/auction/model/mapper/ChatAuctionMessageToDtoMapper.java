@@ -9,7 +9,8 @@ import java.time.format.DateTimeFormatter;
 
 @RequiredArgsConstructor
 @Component
-public class ChatAuctionMessageToDtoMapper implements Mapper<AuctionChatMessage, ChatMessageDto> {
+class ChatAuctionMessageToDtoMapper implements Mapper<AuctionChatMessage, ChatMessageDto> {
+
   @Override
   public ChatMessageDto map(AuctionChatMessage entity) {
     return ChatMessageDto.builder()

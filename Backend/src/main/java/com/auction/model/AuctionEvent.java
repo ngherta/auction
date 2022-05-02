@@ -27,53 +27,53 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class AuctionEvent extends AbstractEntity{
-    @Column
-    private String title;
+public class AuctionEvent extends AbstractEntity {
+  @Column
+  private String title;
 
-    @Column(name = "description")
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    private String description;
+  @Column(name = "description")
+  @Lob
+  @Type(type = "org.hibernate.type.TextType")
+  private String description;
 
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private AuctionStatus statusType;
+  @Column(name = "status")
+  @Enumerated(EnumType.STRING)
+  private AuctionStatus statusType;
 
-    @Column(name = "type")
-    @Enumerated(EnumType.STRING)
-    private AuctionType auctionType;
+  @Column(name = "type")
+  @Enumerated(EnumType.STRING)
+  private AuctionType auctionType;
 
-    @Column(name = "start_price")
-    private Double startPrice;
+  @Column(name = "start_price")
+  private Double startPrice;
 
-    @Column(name = "finish_price")
-    private Double finishPrice;
+  @Column(name = "finish_price")
+  private Double finishPrice;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "genUser_id", nullable = false, updatable = false)
-    private User user;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "genUser_id", nullable = false, updatable = false)
+  private User user;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name="auction_event_images")
-    private List<String> images = new ArrayList<>();
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name = "auction_event_images", joinColumns = @JoinColumn(name = "auction_id"))
+  private List<String> images = new ArrayList<>();
 
-    @Column
-    private Double charityPercent;
+  @Column
+  private Double charityPercent;
 
-    @Column
-    private LocalDateTime startDate;
+  @Column
+  private LocalDateTime startDate;
 
-    @Column
-    private LocalDateTime finishDate;
+  @Column
+  private LocalDateTime finishDate;
 
-    @Column(name = "gen_date")
-    private LocalDateTime genDate;
+  @Column(name = "gen_date")
+  private LocalDateTime genDate;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @Fetch(FetchMode.SUBSELECT)
-    @JoinTable(	name = "auction_category",
-            joinColumns = @JoinColumn(name = "auction_id"),
-            inverseJoinColumns = @JoinColumn(name = "sub_category_id"))
-    private List<SubCategory> categories = new ArrayList<>();
+  @ManyToMany(fetch = FetchType.LAZY)
+  @Fetch(FetchMode.SUBSELECT)
+  @JoinTable(name = "auction_category",
+      joinColumns = @JoinColumn(name = "auction_id"),
+      inverseJoinColumns = @JoinColumn(name = "sub_category_id"))
+  private List<SubCategory> categories = new ArrayList<>();
 }

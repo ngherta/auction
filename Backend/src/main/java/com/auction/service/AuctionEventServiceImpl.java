@@ -80,11 +80,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
   public AuctionEventDto save(AuctionEventRequest request) {
     checkDateForAuction(request);
 
-    //Temp
-    List<Long> listTemp = new ArrayList<>();
-    listTemp.add(request.getCategoryIds());
-
-    List<SubCategory> subCategoryList = categoryService.getSubCategoriesByIds(listTemp);
+    List<SubCategory> subCategoryList = categoryService.getSubCategoriesByIds(request.getCategoryIds());
 
     User user = userService.findById(request.getUserId());
     AuctionEvent auctionEvent = AuctionEvent.builder()

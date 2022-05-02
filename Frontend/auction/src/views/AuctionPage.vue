@@ -100,12 +100,19 @@
               Charity percent:
             </b> {{ content.charityPercent }}%</span>
         </div>
+        <div v-if="content.categories.length != 0">
+          <span>
+            <b>
+              Categories:
+            </b> {{ content.categories.toString() }}
+          </span>
+        </div>
         <div>
           <span>
             <b>Start price:</b>
             {{ content.startPrice }} USD</span>
         </div>
-        <div>
+        <div v-if="content.finishPrice != null">
           <span>
             <b>Finish price:</b>
             {{ content.finishPrice }} USD</span>
@@ -169,7 +176,7 @@
     </div>
     <div class="row mt-4 justify-content-between mb-5">
       <div class="col mr-4 p-3 border betting-room-container" id="betting-room-container">
-        <button v-if="userId != null" type="button" class="btn btn-warning btn-circle expand-iot-button"
+        <button v-if="userId != null && false" type="button" class="btn btn-warning btn-circle expand-iot-button"
                 :disabled="iotLoading"
                 @click="connectIoTButton">
           <span v-if="!iotConnected && !iotLoading">Connect IoT</span>
@@ -334,6 +341,7 @@ export default {
         genDate: "",
         charityPercent: "",
         images: [],
+        categories: [],
         lastBid: null,
       },
       qr_image: "",
@@ -531,6 +539,7 @@ export default {
           (response) => {
             this.images = response.data.images;
             this.content = response.data;
+            console.log(response.data);
 
             if (this.content.statusType == 'EXPECTATION') {
               this.$refs["betting-room"].setStartDate(response.data.startDate);

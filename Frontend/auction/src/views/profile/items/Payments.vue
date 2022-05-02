@@ -45,7 +45,7 @@
           </ul>
         </div>
         <p class="card-text mt-10"
-           v-if="'DELIVERY_PROCESSING' == item.status">
+           v-if="'DELIVERY_PROCESSING' == item.status && item.trackNumber != null">
           Track number:
           <b>{{ item.trackNumber }}</b>
         </p>
@@ -270,6 +270,7 @@ export default {
       WinnerService.addTrackNumber(this.trackNumber, this.currentWinnerId).then(
           () => {
             this.currentWinnerId = null;
+            this.currentWinner.
             this.currentWinner.status = 'DELIVERY_PROCESSING';
           },
           (error) => {

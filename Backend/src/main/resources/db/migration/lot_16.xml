@@ -9,17 +9,17 @@
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="button_id" type="varchar(50)"></column>
-      <column name="current_auction_id" type="int8"></column>
-      <column name="user_id" type="int8"></column>
-      <column name="connected" type="bool"></column>
+      <column name="button_id" type="varchar(50)"/>
+      <column name="current_auction_id" type="int8"/>
+      <column name="user_id" type="int8"/>
+      <column name="connected" type="bool"/>
     </createTable>
 
     <insert tableName="iot_button">
-      <column name="id" valueNumeric="2323"></column>
-      <column name="button_id" value="1x323124"></column>
-      <column name="user_id" value="777"></column>
-      <column name="connected" valueBoolean="false"></column>
+      <column name="id" valueNumeric="2323"/>
+      <column name="button_id" value="1x323124"/>
+      <column name="user_id" value="777"/>
+      <column name="connected" valueBoolean="false"/>
     </insert>
 
     <rollback>

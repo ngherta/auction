@@ -16,18 +16,18 @@
     </insert>
 
     <insert tableName="users">
-      <column name="id" valueNumeric="777"></column>
-      <column name="email" value="ghrta.nicolai@gmail.com"></column>
-      <column name="first_name" value="Nicolae"></column>
-      <column name="last_name" value="Gherta"></column>
-      <column name="password" value="$2a$10$gfoTKb0N2xjMZvYhVGLODOHNGqfCMsj1o4.DHd3QipsYH/gTAWy7e"></column>
-      <column name="user_rating" value="12"></column>
-      <column name="enabled" value="true"></column>
-      <column name="birthday" valueDate="CURRENT_TIMESTAMP()"></column>
+      <column name="id" valueNumeric="777"/>
+      <column name="email" value="ghrta.nicolai@gmail.com"/>
+      <column name="first_name" value="Nicolae"/>
+      <column name="last_name" value="Gherta"/>
+      <column name="password" value="$2a$10$gfoTKb0N2xjMZvYhVGLODOHNGqfCMsj1o4.DHd3QipsYH/gTAWy7e"/>
+      <column name="user_rating" value="12"/>
+      <column name="enabled" value="true"/>
+      <column name="birthday" valueDate="CURRENT_TIMESTAMP()"/>
     </insert>
     <insert tableName="user_roles">
-      <column name="user_id" valueNumeric="777"></column>
-      <column name="role_id" valueNumeric="1"></column>
+      <column name="user_id" valueNumeric="777"/>
+      <column name="role_id" valueNumeric="1"/>
     </insert>
 
     <rollback>

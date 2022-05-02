@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class PaymentOrderToDtoMapper implements Mapper<PaymentOrder, PaymentOrderDto> {
+class PaymentOrderToDtoMapper implements Mapper<PaymentOrder, PaymentOrderDto> {
 
   @Override
   public PaymentOrderDto map(PaymentOrder entity) {

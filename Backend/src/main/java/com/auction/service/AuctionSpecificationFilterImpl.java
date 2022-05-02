@@ -25,8 +25,8 @@ class AuctionSpecificationFilterImpl implements AuctionSpecificationFilter {
 
   @Override
   public Specification<AuctionEvent> filterByStatus(List<AuctionStatus> list) {
-    return ((root, query, builder) ->
-            builder.in(root.get("statusType")).value(list));
+    return (root, query, builder) ->
+            builder.in(root.get("statusType")).value(list);
   }
 
   @Override
@@ -50,6 +50,7 @@ class AuctionSpecificationFilterImpl implements AuctionSpecificationFilter {
   public Specification<AuctionEvent> filterByCategories(List<Long> categories) {
     return (root, query, builder) -> {
       Join<AuctionEvent, SubCategory> join = root.join("categories");
+      query.groupBy(root.get("id"));
       return builder.in(join.get("id")).value(categories);
     };
   }

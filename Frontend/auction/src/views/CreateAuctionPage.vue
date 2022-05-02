@@ -1,6 +1,7 @@
 <template>
   <div class="container mt-5 mb-5">
     <h1 class="h1 mb-4">Create auction</h1>
+    <div>{{this.categoryValue}}</div>
     <div>
       <Form @submit="createAuction" :validation-schema="schema">
         <div v-if="!successful" class="row creation-block mb-3">
@@ -42,19 +43,21 @@
               </div>
             </div>
             <div class="mb-3">
-              <label for="category">CATEGORY:</label>
-              <select class="custom-select" id="category" v-model="selectedCategories">
-                <option v-for="category in categories"
-                        :key="category.id"
-                        :value="category.id"
-                        :disabled="category.type == 'CATEGORY'"
-                        :class="{ category: category.type == 'CATEGORY' }">
-                  {{ category.name }}
-                </option>
-              </select>
+              <label for="categories">CATEGORIES:</label>
+              <Multiselect
+                  id="categories"
+                  v-model="categoryValue"
+                  placeholder="Select category"
+                  :options="categoriesOptions"
+                  :loading="true"
+                  :search="true"
+                  :hideSelectedTag="true"
+                  mode="multiple"
+                  :closeOnSelect="false"
+                  :hideSelected="false"
+                  :searchable="true"
+              />
             </div>
-
-            <!--          TODO: add styles because we cant use .form-control-->
             <div class="mb-3">
               <label for="startDate">START DATE:</label>
               <Datetimepicker v-model="startDate"
@@ -115,6 +118,8 @@ import AuctionService from "../services/auction.service";
 import Datetimepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Editor from "../components/Editor";
+import Multiselect from '@vueform/multiselect';
+import '@vueform/multiselect/themes/default.css';
 
 export default {
   name: "CreateAuctionPage",
@@ -125,6 +130,7 @@ export default {
     UploadImage,
     Datetimepicker,
     Editor,
+    Multiselect
   },
   data() {
     const schema = yup.object().shape({});
@@ -134,18 +140,39 @@ export default {
       message: "",
       schema,
       isCheckedFinishPrice: true,
-      categories: [],
-      selectedCategories: [],
       images: [],
       startDate: null,
       finishDate: null,
       isCharity: false,
       descriptionValue: "",
+      categoriesOptions: [],
+      categoryValue: null
     };
   },
   methods: {
     handleDescriptionInput(event) {
       this.descriptionValue = event;
+    },
+    getCategories() {
+      CategoryService.getCategoriesForCreateAuction().then(
+          (response) => {
+            this.categories = response.data;
+            this.categoriesOptions = [];
+            for (let i = 0; i < this.categories.length; i++) {
+              this.categoriesOptions.push({
+                label: this.categories[i].mainCategory.categoryName,
+                value: this.categories[i].mainCategory.id,
+                disabled: true
+              });
+              for (let q = 0; q < this.categories[i].listSubCategories.length; q++) {
+                this.categoriesOptions.push({
+                  label: this.categories[i].listSubCategories[q].categoryName,
+                  value: this.categories[i].listSubCategories[q].id
+                });
+              }
+            }
+          }
+      )
     },
     createAuction(data) {
       this.successful = false;
@@ -163,7 +190,7 @@ export default {
         description: this.descriptionValue,
         startPrice: data.startPrice,
         finishPrice: data.finishPrice,
-        categoryIds: this.selectedCategories,
+        categoryIds: this.categoryValue,
         images: this.images,
         userId: this.$store.state.auth.user.userDto.id,
         startDate: this.startDate,
@@ -183,7 +210,7 @@ export default {
               type: 'error',
               text: error.response.data.errorMessage
             });
-          }
+          },
       )
       this.loading = false;
     },
@@ -197,31 +224,8 @@ export default {
     toggle() {
       this.isCheckedFinishPrice = !this.isCheckedFinishPrice;
     },
-    getCategories() {
-      CategoryService.getCategoriesForCreateAuction().then(
-          (response) => {
-            this.prepareCategories(response.data);
-          }
-      )
-    },
     uploadNewImages(event) {
       this.images.push(event);
-    },
-    prepareCategories(categories) {
-      for (let i = 0; i < categories.length; i++) {
-        this.categories.push({
-          id: categories[i].mainCategory.id,
-          type: categories[i].mainCategory.type,
-          name: categories[i].mainCategory.categoryName
-        });
-        for (let q = 0; q < categories[i].listSubCategories.length; q++) {
-          this.categories.push({
-            id: categories[i].listSubCategories[q].id,
-            type: categories[i].listSubCategories[q].type,
-            name: categories[i].listSubCategories[q].categoryName
-          });
-        }
-      }
     }
   },
   mounted() {

@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 
 @RequiredArgsConstructor
 @Component
-public class ComplaintToDtoMapper implements Mapper<AuctionEventComplaint, ComplaintDto>{
+class ComplaintToDtoMapper implements Mapper<AuctionEventComplaint, ComplaintDto>{
 
   private final Mapper<AuctionEvent, AuctionEventDto> auctionEventToDtoMapper;
   private final Mapper<User, UserDto> userToDtoMapper;

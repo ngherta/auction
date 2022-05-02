@@ -40,7 +40,7 @@
 
 
     <!--  auction_images FK  -->
-    <addForeignKeyConstraint baseColumnNames="auction_event_id" baseTableName="auction_event_images"
+    <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="auction_event_images"
                              constraintName="f23nxj1d2wv5qxxs7i26qcpm83i" deferrable="false" initiallyDeferred="false"
                              onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
                              referencedTableName="auction" validate="true"/>

@@ -10,16 +10,16 @@
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="title" type="varchar(255)"></column>
-      <column name="type" type="varchar(255)"></column>
-      <column name="description" type="text"></column>
-      <column name="start_date" type="timestamp"></column>
-      <column name="finish_date" type="timestamp"></column>
-      <column name="start_price" type="float8"></column>
-      <column name="finish_price" type="float8"></column>
-      <column name="status" type="varchar(255)"></column>
-      <column name="charity_percent" type="float8"></column>
-      <column name="gen_date" type="timestamp"></column>
+      <column name="title" type="varchar(255)"/>
+      <column name="type" type="varchar(255)"/>
+      <column name="description" type="text"/>
+      <column name="start_date" type="timestamp"/>
+      <column name="finish_date" type="timestamp"/>
+      <column name="start_price" type="float8"/>
+      <column name="finish_price" type="float8"/>
+      <column name="status" type="varchar(255)"/>
+      <column name="charity_percent" type="float8"/>
+      <column name="gen_date" type="timestamp"/>
       <column name="gen_user_id" type="int8">
         <constraints nullable="false"/>
       </column>
@@ -29,38 +29,38 @@
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="price" type="float8"></column>
+      <column name="price" type="float8"/>
       <column name="auction_id" type="int8">
         <constraints nullable="false"/>
       </column>
       <column name="user_id" type="int8">
         <constraints nullable="false"/>
       </column>
-      <column name="payment_order_id" type="int8"></column>
-      <column name="gen_date" type="timestamp"></column>
-      <column name="status" type="varchar(50)"></column>
-      <column name="country" type="varchar(255)"></column>
-      <column name="city" type="varchar(255)"></column>
-      <column name="address" type="varchar(255)"></column>
-      <column name="track_number" type="varchar(255)"></column>
-      <column name="modified" type="timestamp"></column>
+      <column name="payment_order_id" type="int8"/>
+      <column name="gen_date" type="timestamp"/>
+      <column name="status" type="varchar(50)"/>
+      <column name="country" type="varchar(255)"/>
+      <column name="city" type="varchar(255)"/>
+      <column name="address" type="varchar(255)"/>
+      <column name="track_number" type="varchar(255)"/>
+      <column name="modified" type="timestamp"/>
     </createTable>
 
     <createTable tableName="auction_winner_audit">
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="auction_winner_id" type="int8"></column>
-      <column name="status" type="varchar(50)"></column>
-      <column name="country" type="varchar(255)"></column>
-      <column name="city" type="varchar(255)"></column>
-      <column name="address" type="varchar(255)"></column>
-      <column name="track_number" type="varchar(255)"></column>
-      <column name="created" type="timestamp"></column>
+      <column name="auction_winner_id" type="int8"/>
+      <column name="status" type="varchar(50)"/>
+      <column name="country" type="varchar(255)"/>
+      <column name="city" type="varchar(255)"/>
+      <column name="address" type="varchar(255)"/>
+      <column name="track_number" type="varchar(255)"/>
+      <column name="created" type="timestamp"/>
     </createTable>
 
     <createTable tableName="auction_event_images">
-      <column name="auction_event_id" type="int8">
+      <column name="auction_id" type="int8">
         <constraints nullable="false"/>
       </column>
       <column name="images" type="varchar(255)">
@@ -72,10 +72,10 @@
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="bet" type="float8"></column>
-      <column name="gen_date" type="timestamp"></column>
-      <column name="auction_id" type="int8"></column>
-      <column name="user_id" type="int8"></column>
+      <column name="bet" type="float8"/>
+      <column name="gen_date" type="timestamp"/>
+      <column name="auction_id" type="int8"/>
+      <column name="user_id" type="int8"/>
     </createTable>
 
 

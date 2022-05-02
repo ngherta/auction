@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class UserToDtoMapper implements Mapper<User, UserDto> {
+class UserToDtoMapper implements Mapper<User, UserDto> {
 
     @Override
     public UserDto map(User entity) {

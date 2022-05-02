@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 
 @RequiredArgsConstructor
 @Component
-public class PaymentAuditToDtoMapper implements Mapper<PaymentAudit, ReceivePayment>{
+class PaymentAuditToDtoMapper implements Mapper<PaymentAudit, ReceivePayment>{
     private final Mapper<AuctionEvent, AuctionEventDto> auctionEventDtoMapper;
 
     @Override

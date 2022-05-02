@@ -9,26 +9,17 @@
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="method" type="varchar(50)"></column>
-      <column name="currency" type="varchar(20)"></column>
-      <column name="price" type="float"></column>
-      <column name="description" type="varchar(255)"></column>
-      <column name="intent" type="varchar(255)"></column>
-      <column name="link" type="varchar(255)"></column>
-      <column name="status" type="varchar(30)"></column>
-      <column name="payment_id" type="varchar(255)"></column>
-      <column name="user_id" type="int8"></column>
-      <column name="auction_id" type="int8"></column>
+      <column name="method" type="varchar(50)"/>
+      <column name="currency" type="varchar(20)"/>
+      <column name="price" type="float"/>
+      <column name="description" type="varchar(255)"/>
+      <column name="intent" type="varchar(255)"/>
+      <column name="link" type="varchar(255)"/>
+      <column name="status" type="varchar(30)"/>
+      <column name="payment_id" type="varchar(255)"/>
+      <column name="user_id" type="int8"/>
+      <column name="auction_id" type="int8"/>
     </createTable>
-
-    <insert tableName="auction_action">
-      <column name="id" valueNumeric="9555"></column>
-      <column name="bet" valueNumeric="10"></column>
-      <column name="gen_date" valueDate="current_timestamp()"></column>
-      <column name="auction_id" valueNumeric="9999"></column>
-      <column name="user_id" valueNumeric="777"></column>
-    </insert>
-
     <rollback>
     </rollback>
   </changeSet>

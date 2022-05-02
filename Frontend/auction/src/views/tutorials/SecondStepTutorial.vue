@@ -1,13 +1,14 @@
 <template>
-  <VOnboardingWrapper ref="wrapper" :steps="steps" />
+  <VOnboardingWrapper ref="wrapper" :steps="steps"/>
   <auction-page :chat-message-for-tutorial="chatMessage"/>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
-import { VOnboardingWrapper, useVOnboarding } from 'v-onboarding'
+import {ref, onMounted} from 'vue'
+import {VOnboardingWrapper, useVOnboarding} from 'v-onboarding'
 import 'v-onboarding/dist/style.css'
 import AuctionPage from "@/views/AuctionPage";
+
 const date = new Date();
 
 export default {
@@ -104,5 +105,7 @@ export default {
 </script>
 
 <style scoped>
-
+.v-onboarding-item__header-close {
+  border: snow !important;
+}
 </style>

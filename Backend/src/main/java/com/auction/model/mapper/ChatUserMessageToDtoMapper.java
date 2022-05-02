@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 
 @RequiredArgsConstructor
 @Component
-public class ChatUserMessageToDtoMapper implements Mapper<UserChatMessage, ChatMessageDto>{
+class ChatUserMessageToDtoMapper implements Mapper<UserChatMessage, ChatMessageDto>{
 
   @Override
   public ChatMessageDto map(UserChatMessage entity) {

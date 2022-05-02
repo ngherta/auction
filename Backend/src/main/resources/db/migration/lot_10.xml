@@ -10,7 +10,7 @@
         <constraints primaryKey="true" nullable="false"/>
       </column>
       <column name="category" type="varchar(50)">
-        <constraints unique="true"></constraints>
+        <constraints unique="true"/>
       </column>
     </createTable>
 
@@ -21,7 +21,7 @@
       <column name="category_id" type="int8">
       </column>
       <column name="category" type="varchar(50)">
-        <constraints unique="true"></constraints>
+        <constraints unique="true"/>
       </column>
     </createTable>
 

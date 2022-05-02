@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class ComplaintAuditToDtoMapper implements Mapper<AuctionEventComplaintAudit, ComplaintAuditDto>{
+class ComplaintAuditToDtoMapper implements Mapper<AuctionEventComplaintAudit, ComplaintAuditDto>{
 
   private final Mapper<AuctionEventComplaint, ComplaintDto> complaintToDtoMapper;
   private final Mapper<User, UserDto> userToDtoMapper;

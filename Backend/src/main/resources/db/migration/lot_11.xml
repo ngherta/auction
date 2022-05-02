@@ -7,28 +7,23 @@
   <changeSet id="10" author="ngh">
 
     <insert tableName="category">
-      <column name="id" valueNumeric="10000"></column>
-      <column name="category" value="ELECTRONIC"></column>
+      <column name="id" valueNumeric="10000"/>
+      <column name="category" value="ELECTRONIC"/>
     </insert>
     <insert tableName="category">
-      <column name="id" valueNumeric="10002"></column>
-      <column name="category" value="CLOTHING"></column>
+      <column name="id" valueNumeric="10002"/>
+      <column name="category" value="CLOTHING"/>
     </insert>
 
     <insert tableName="sub_category">
-      <column name="id" valueNumeric="10004"></column>
-      <column name="category_id" value="10000"></column>
-      <column name="category" value="PHONE"></column>
+      <column name="id" valueNumeric="10004"/>
+      <column name="category_id" value="10000"/>
+      <column name="category" value="Phone"/>
     </insert>
     <insert tableName="sub_category">
-      <column name="id" valueNumeric="10006"></column>
-      <column name="category_id" value="10000"></column>
-      <column name="category" value="LAPTOP"></column>
-    </insert>
-    <insert tableName="sub_category">
-      <column name="id" valueNumeric="10008"></column>
-      <column name="category_id" value="10002"></column>
-      <column name="category" value="T_SHIRT"></column>
+      <column name="id" valueNumeric="10006"/>
+      <column name="category_id" value="10000"/>
+      <column name="category" value="Laptop"/>
     </insert>
 
     <rollback>

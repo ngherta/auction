@@ -146,7 +146,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        UserController
         .antMatchers(HttpMethod.POST, "/api/users/reset/password/{\\d+}").permitAll()
         .antMatchers(HttpMethod.PUT, "/api/users/password").hasAnyAuthority(USER)
-        .antMatchers(HttpMethod.PUT, "/api/users/tutorial/{\\d+}").hasAnyAuthority(USER)
+        .antMatchers(HttpMethod.PUT, "/api/users/tutorial/{\\d+}").permitAll()
         .antMatchers(HttpMethod.PUT, "/api/users").hasAnyAuthority(USER)
         .antMatchers(HttpMethod.POST, "/api/users/update/password/{\\d+}").permitAll()
         .antMatchers(HttpMethod.POST, "/api/users/disable/code/{\\d+}").permitAll()

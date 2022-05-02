@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 
 @Component
 @RequiredArgsConstructor
-public class AuctionWinnerToDtoMapper implements Mapper<AuctionWinner, AuctionWinnerDto> {
+class AuctionWinnerToDtoMapper implements Mapper<AuctionWinner, AuctionWinnerDto> {
   private final Mapper<PaymentOrder, PaymentOrderDto> paymentOrderDtoMapper;
   private final Mapper<AuctionEvent, AuctionEventDto> auctionEventDtoMapper;
   private final Mapper<User, UserDto> userUserDtoMapper;

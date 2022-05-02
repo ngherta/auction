@@ -5,7 +5,7 @@ import com.auction.web.dto.NotificationDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NotificationToDtoMapper implements Mapper<Notification, NotificationDto> {
+class NotificationToDtoMapper implements Mapper<Notification, NotificationDto> {
 
   @Override
   public NotificationDto map(Notification entity) {

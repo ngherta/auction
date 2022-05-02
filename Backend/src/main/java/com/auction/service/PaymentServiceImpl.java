@@ -26,6 +26,7 @@ import com.paypal.api.payments.Payment;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -85,7 +86,7 @@ class PaymentServiceImpl implements PaymentService {
       paymentOrder.setStatus(PaymentStatus.CREATED);
     }
     else {
-      //TODO exception
+      throw new NotYetImplementedException();
     }
 
     return paymentOrderRepository.save(paymentOrder);
@@ -158,10 +159,10 @@ class PaymentServiceImpl implements PaymentService {
         .genDate(LocalDateTime.now())
         .build();
     paymentAuditRepository.save(paymentAudit);
-    return paymentOrder.getPrice() - amount;
+    return paymentOrder.getPrice() - amount - charityAmount;
   }
 
-  private Double getCharityAmount(PaymentOrder paymentOrder) {
+  private double getCharityAmount(PaymentOrder paymentOrder) {
     double charityAmount = 0D;
     if (paymentOrder.getAuctionEvent().getAuctionType() == AuctionType.CHARITY) {
       charityAmount =
@@ -169,7 +170,7 @@ class PaymentServiceImpl implements PaymentService {
 
       PaymentAudit charityAudit = PaymentAudit.builder()
           .type(PaymentType.CHARITY_TRANSFER)
-          .recipient(userService.findMainAdmin().get())
+          .recipient(userService.findMainAdmin().orElseThrow())
           .amount(charityAmount)
           .genDate(LocalDateTime.now())
           .currency(paymentOrder.getCurrency())

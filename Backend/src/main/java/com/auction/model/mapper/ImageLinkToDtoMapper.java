@@ -5,7 +5,8 @@ import com.auction.web.dto.ImageLinkDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ImageLinkToDtoMapper implements Mapper<ImageLink, ImageLinkDto> {
+class ImageLinkToDtoMapper implements Mapper<ImageLink, ImageLinkDto> {
+
   @Override
   public ImageLinkDto map(ImageLink entity) {
     return ImageLinkDto.builder()

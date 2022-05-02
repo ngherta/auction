@@ -9,7 +9,7 @@
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="sort_rating" type="int8"></column>
+      <column name="sort_rating" type="int8"/>
       <column name="auction_id" type="int8">
         <constraints nullable="false"/>
       </column>

@@ -158,15 +158,14 @@ class NotificationTemplateServiceImpl implements NotificationTemplateService {
     StringBuilder sb = new StringBuilder();
     sb.append("New bet - <b>");
     sb.append(new DecimalFormat("#0.00").format(currentAction.getBet()));
-    sb.append("</b> by ");
+    sb.append("$</b> by ");
     sb.append(currentAction.getUser().getFirstName());
     sb.append(" ");
     sb.append(currentAction.getUser().getLastName());
     sb.append(" for auction - ");
     sb.append("<b>");
     sb.append(currentAction.getAuctionEvent().getTitle());
-    sb.append("</b>.");
-
+    sb.append("</b>");
     sb.append(".");
 
     String image;

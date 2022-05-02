@@ -9,23 +9,23 @@
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="message" type="text"></column>
-      <column name="complaint_status" type="varchar(255)"></column>
+      <column name="message" type="text"/>
+      <column name="complaint_status" type="varchar(255)"/>
       <column name="auction_id" type="int8">
         <constraints nullable="false"/>
       </column>
       <column name="user_id" type="int8">
         <constraints nullable="false"/>
       </column>
-      <column name="gen_date" type="timestamp"></column>
+      <column name="gen_date" type="timestamp"/>
     </createTable>
 
     <createTable tableName="auction_complaint_audit">
       <column name="id" type="int8">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="status" type="int4"></column>
-      <column name="gen_date" type="timestamp"></column>
+      <column name="status" type="int4"/>
+      <column name="gen_date" type="timestamp"/>
       <column name="auction_complaint_id" type="int8">
         <constraints nullable="false"/>
       </column>

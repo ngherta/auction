@@ -9,20 +9,20 @@
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="message" type="varchar(255)"></column>
-      <column name="type" type="varchar(20)"></column>
-      <column name="single_notification" type="bool"></column>
-      <column name="image" type="varchar(255)"></column>
-      <column name="gen_date" type="timestamp"></column>
+      <column name="message" type="varchar(255)"/>
+      <column name="type" type="varchar(20)"/>
+      <column name="single_notification" type="bool"/>
+      <column name="image" type="varchar(255)"/>
+      <column name="gen_date" type="timestamp"/>
     </createTable>
 
     <createTable tableName="notification_message_user">
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="user_id" type="int8"></column>
-      <column name="notification_message_id" type="int8"></column>
-      <column name="seen" type="bool"></column>
+      <column name="user_id" type="int8"/>
+      <column name="notification_message_id" type="int8"/>
+      <column name="seen" type="bool"/>
     </createTable>
 
     <rollback>

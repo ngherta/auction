@@ -5,7 +5,7 @@ import com.auction.web.dto.RoleDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RoleToDtoMapper implements Mapper<Role, RoleDto> {
+class RoleToDtoMapper implements Mapper<Role, RoleDto> {
 
   @Override
   public RoleDto map(Role entity) {

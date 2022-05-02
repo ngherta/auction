@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class NotificationMessageToDtoMapper implements Mapper<NotificationMessageUser, NotificationMessageDto> {
+class NotificationMessageToDtoMapper implements Mapper<NotificationMessageUser, NotificationMessageDto> {
 
   @Override
   public NotificationMessageDto map(NotificationMessageUser entity) {

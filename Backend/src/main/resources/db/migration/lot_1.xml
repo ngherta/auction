@@ -15,20 +15,20 @@
         <constraints primaryKey="true" nullable="false"/>
       </column>
       <column name="email" type="varchar(255)">
-        <constraints unique="true"></constraints>
+        <constraints unique="true"/>
       </column>
-      <column name="first_name" type="varchar(255)"></column>
-      <column name="last_name" type="varchar(255)"></column>
-      <column name="password" type="varchar(255)"></column>
-      <column name="user_rating" type="float8"></column>
-      <column name="enabled" type="bool"></column>
-      <column name="birthday" type="date"></column>
-      <column name="gen_date" type="timestamp"></column>
-      <column name="default_country" type="varchar(255)"></column>
-      <column name="default_city" type="varchar(255)"></column>
-      <column name="default_address" type="varchar(255)"></column>
-      <column name="money_balance" type="float8"></column>
-      <column name="need_tutorial" type="bool"></column>
+      <column name="first_name" type="varchar(255)"/>
+      <column name="last_name" type="varchar(255)"/>
+      <column name="password" type="varchar(255)"/>
+      <column name="user_rating" type="float8"/>
+      <column name="enabled" type="bool"/>
+      <column name="birthday" type="date"/>
+      <column name="gen_date" type="timestamp"/>
+      <column name="default_country" type="varchar(255)"/>
+      <column name="default_city" type="varchar(255)"/>
+      <column name="default_address" type="varchar(255)"/>
+      <column name="money_balance" type="float8"/>
+      <column name="need_tutorial" type="bool"/>
     </createTable>
 
 
@@ -45,9 +45,9 @@
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="code" type="varchar(255)"></column>
-      <column name="enabled" type="bool"></column>
-      <column name="user_id" type="int8"></column>
+      <column name="code" type="varchar(255)"/>
+      <column name="enabled" type="bool"/>
+      <column name="user_id" type="int8"/>
 
     </createTable>
 

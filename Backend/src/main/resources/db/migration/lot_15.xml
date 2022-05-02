@@ -9,12 +9,12 @@
       <column name="id" type="bigserial">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="currency" type="varchar(20)"></column>
-      <column name="amount" type="float"></column>
-      <column name="payment_id" type="int8"></column>
-      <column name="recipient_id" type="int8"></column>
-      <column name="sender_id" type="int8"></column>
-      <column name="gen_date" type="timestamp"></column>
+      <column name="currency" type="varchar(20)"/>
+      <column name="amount" type="float"/>
+      <column name="payment_id" type="int8"/>
+      <column name="recipient_id" type="int8"/>
+      <column name="sender_id" type="int8"/>
+      <column name="gen_date" type="timestamp"/>
       <column name="type" type="varchar(30)"/>
     </createTable>
 

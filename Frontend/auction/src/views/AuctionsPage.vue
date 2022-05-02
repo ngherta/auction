@@ -1,8 +1,6 @@
 <template>
   <div class="container">
     <div class="">
-
-
       <div class="search mt-5 mb-5">
         <Form @submit="searchFromInput">
           <div class="d-flex justify-content-center">

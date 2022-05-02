@@ -129,3 +129,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+.v-onboarding-item__header-close {
+  border: snow!important;
+}
+</style>
