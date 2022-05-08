@@ -183,22 +183,22 @@
           </form>
           <form v-if="modalType == 'WITHDRAW_MONEY'" @submit="submitWithdrawMoneyRequest">
             <h3 class="h3">Withdraw money</h3>
-            <p><strong>Balance: </strong>{{this.userBalance}}</p>
+            <p><strong>Balance: </strong>{{this.userBalance}} $</p>
             <div class="form-check">
               <label for="userName" class="col-form-label">Name: </label>
-              <input v-model="nameRequest" name="userNameInput" placeholder="John Smith" type="text" class="form-control" id="userName"/>
+              <input v-model="nameRequest" name="userNameInput" placeholder="John Smith" type="text" class="form-control" id="userName" required/>
             </div>
             <div class="form-check">
               <label for="cardNumber" class="col-form-label">Card number: </label>
-              <input v-model="cardRequest" name="cardNumberInput" placeholder="1234567812345678" type="text" class="form-control" id="cardNumber"/>
+              <input v-model="cardRequest" name="cardNumberInput" placeholder="1234567812345678" type="text" class="form-control" required id="cardNumber"/>
             </div>
             <div class="form-check">
               <label for="expiredDate" class="col-form-label">Expire date: </label>
-              <input v-model="expireDateRequest" name="expiredDate" placeholder="10/2024" type="text" class="form-control" id="expiredDate"/>
+              <input v-model="expireDateRequest" name="expiredDate" placeholder="10/2024" type="text" class="form-control" required id="expiredDate"/>
             </div>
             <div class="form-check">
               <label for="withDrawMoneyInput" class="col-form-label">Amount: </label>
-              <input v-model="amountRequest" name="withDrawMoneyInput" type="number" class="form-control" id="withDrawMoneyInput"/>
+              <input v-model="amountRequest" name="withDrawMoneyInput" type="number" class="form-control" required id="withDrawMoneyInput"/>
             </div>
           </form>
         </div>

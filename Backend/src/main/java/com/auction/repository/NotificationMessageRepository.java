@@ -21,8 +21,9 @@ public interface NotificationMessageRepository extends JpaRepository<Notificatio
       "WHERE nmu.user_id = :userId " +
       "AND nmu.notification_message_id = nm.id ) " +
       "AND nm.single_notification = false " +
+      "AND nm.gen_date > :date " +
       "AND nm.gen_date < (select gen_date from user_gen_date LIMIT 1)")
-  List<NotificationMessage> findUncreatedNotificationForUser(Long userId, List<String> notificationTypes);
+  List<NotificationMessage> findUncreatedNotificationForUser(Long userId, List<String> notificationTypes, LocalDateTime date);
 
 
   @Query(nativeQuery = true, value = "" +

@@ -51,7 +51,7 @@ class NotificationMessageServiceImpl implements NotificationMessageService {
   @Transactional
   public List<NotificationMessage> findNotificationMessageForCreateByUser(User user, List<NotificationType> notificationTypes) {
     List<String> list = notificationTypes.stream().map(Enum::name).collect(Collectors.toList());
-    return notificationMessageRepository.findUncreatedNotificationForUser(user.getId(), list);
+    return notificationMessageRepository.findUncreatedNotificationForUser(user.getId(), list, user.getGenDate());
   }
 
   @Override
