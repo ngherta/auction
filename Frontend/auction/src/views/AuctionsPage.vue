@@ -129,7 +129,7 @@
           :aria-current="{page: this.page == index}"
           class="page-item">
         <button @click="changePage(index)"
-                :disabled="page == this.page == index"
+                :disabled="page == this.page - 1 == index"
                      class="page-link">{{ index }}
         </button>
       </li>
@@ -186,7 +186,7 @@ export default {
       searchDropdownData: [],
       loadingSearch: false,
       page: 1,
-      perPage: 9,
+      perPage: 2,
       countOfPages: '',
       lastBids: [{
         auctionId: '',
