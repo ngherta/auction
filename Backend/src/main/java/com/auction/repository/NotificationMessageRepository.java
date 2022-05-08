@@ -27,7 +27,7 @@ public interface NotificationMessageRepository extends JpaRepository<Notificatio
 
   @Query(nativeQuery = true, value = "" +
       "SELECT * FROM notification_message nm " +
-      "WHERE nm.gen_date >= :localDateTime ")
+      "WHERE nm.gen_date <= :localDateTime ")
   List<NotificationMessage> findAllOlderThan(LocalDateTime localDateTime);
 
   List<NotificationMessage> findAllByIdIn(List<Long> ids);

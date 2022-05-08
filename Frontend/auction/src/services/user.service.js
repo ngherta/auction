@@ -72,6 +72,17 @@ export class UserService {
                 authHeader()
         });
     }
+
+    withdrawMoney(userId, amount, name, card, date) {
+        return axios.post(API_URL + 'withdraw', {
+            userId: userId,
+            amount : amount,
+            card : card,
+            name: name,
+            date : date
+        }, {headers: authHeader()
+        })
+    }
 }
 
 export default new UserService();

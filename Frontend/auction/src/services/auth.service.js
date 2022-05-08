@@ -32,6 +32,14 @@ class AuthService {
       birthday: user.birthday,
     });
   }
+
+  verify(code) {
+    return axios.post(API_URL + 'confirm', {}, {
+      params : {
+        code : code
+      }
+    })
+  }
 }
 
 export default new AuthService();

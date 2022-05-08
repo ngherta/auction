@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+  <changeSet id="18" author="ngh">
+    <createTable tableName="withdraw_money">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="user_id" type="int8"/>
+      <column name="status" type="varchar(50)"/>
+      <column name="amount" type="float"/>
+      <column name="gen_date" type="timestamp"/>
+    </createTable>
+
+    <!--    withdraw_money-->
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="withdraw_money"
+                             constraintName="f267qxx1xqgkljhfsx2qwqwk3" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+
+    <rollback>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

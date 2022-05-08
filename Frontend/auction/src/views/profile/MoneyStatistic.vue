@@ -4,63 +4,145 @@
     <vue3-chart-js
         :id="id"
         :type="type"
-        :data="barChart.data"
-        @before-render="beforeRenderLogic"
+        :data="this.barChartX.data"
     ></vue3-chart-js>
   </div>
 </template>
 
 <script>
 import Vue3ChartJs from '@j-t-mcc/vue3-chartjs'
+import authHeader from "@/services/auth-header";
+import properties from "@/properties";
+import axios from 'axios';
 
 export default {
   name: "MoneyStatistic",
-  props: ['data'],
   components: {
     Vue3ChartJs,
   },
   data() {
     return {
       type: 'bar',
-      values: [],
-      labels: [],
-      barChart: null,
-    }
-  },
-  created() {
-    let colors = [];
-
-    for (let i = 0; i < this.data.length; i++) {
-      this.labels.push(this.data[i].month);
-      this.values.push(this.data[i].amount);
-    }
-
-    for (let i = 0; i < this.labels.length; i++) {
-      colors.push('#' + (Math.random() * 0xFFFFFF << 0).toString(16));
-    }
-    this.barChart = {
-      id: 'bar',
-      type: 'bar',
-      data: {
-        labels: this.labels,
-        datasets: [
-          {
-            backgroundColor: colors,
-            data: this.values
-          }
-        ]
+      barChartX: {
+        id: 'bar',
+        type: 'bar',
+        data: {
+          labels: [],
+          datasets: [
+            {
+              backgroundColor: [],
+              data: []
+            }
+          ]
+        }
       }
     }
   },
   methods: {
+    beforeX() {
+      axios.post(properties.API_URL + '/api/statistic', {
+        types: ['MONEY']
+      }, {
+        headers:
+            authHeader()
+      }).then(
+          (response) => {
+            console.log(response);
+            const moneyData = response.data.commissionPerMouths;
+            let colors = [];
+            let labels = [];
+            let values = [];
 
+            for (let i = 0; i < moneyData.length; i++) {
+              labels.push(moneyData[i].month);
+              values.push(moneyData[i].amount);
+            }
+
+            for (let i = 0; i < labels.length; i++) {
+              colors.push('#' + (Math.random() * 0xFFFFFF << 0).toString(16));
+            }
+            this.barChartX = {
+              id: 'bar',
+              type: 'bar',
+              data: {
+                labels: labels,
+                datasets: [
+                  {
+                    backgroundColor: colors,
+                    data: values
+                  }
+                ]
+              }
+            }
+          })
+    },
   },
-  setup() {
-    const beforeRenderLogic = () => {
-    }
+  mounted() {
+    this.beforeX();
+  },
 
+  setup: function () {
+    let barChart = {
+      id: 'bar',
+      type: 'bar',
+      data: {
+        labels: [],
+        datasets: [
+          {
+            backgroundColor: [],
+            data: []
+          }
+        ]
+      }
+    };
+
+    const beforeRenderLogic = () => {
+      new Promise((resolve, reject) => {
+        axios.post(properties.API_URL + '/api/statistic', {
+          types: ['MONEY']
+        }, {
+          headers:
+              authHeader()
+        }).then(
+            (response) => {
+              console.log(response);
+              const moneyData = response.data.commissionPerMouths;
+              let colors = [];
+              let labels = [];
+              let values = [];
+
+              for (let i = 0; i < moneyData.length; i++) {
+                labels.push(moneyData[i].month);
+                values.push(moneyData[i].amount);
+              }
+
+              for (let i = 0; i < labels.length; i++) {
+                colors.push('#' + (Math.random() * 0xFFFFFF << 0).toString(16));
+              }
+              barChart = {
+                id: 'bar',
+                type: 'bar',
+                data: {
+                  labels: labels,
+                  datasets: [
+                    {
+                      backgroundColor: colors,
+                      data: values
+                    }
+                  ]
+                }
+              }
+              resolve(barChart);
+            },
+            () => {
+              reject(barChart);
+            }
+        );
+      })
+    }
     return {
-      beforeRenderLogic
+      beforeRenderLogic,
+      barChart,
     }
   },
 }

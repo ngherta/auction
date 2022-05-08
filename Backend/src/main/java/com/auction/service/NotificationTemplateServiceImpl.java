@@ -77,7 +77,7 @@ class NotificationTemplateServiceImpl implements NotificationTemplateService {
     sb.append(auctionWinner.getAuctionEvent().getTitle());
     sb.append("</b> finished. Last bid - <b>");
     sb.append(new DecimalFormat("#0.00").format(auctionWinner.getPrice()));
-    sb.append("$</b> by");
+    sb.append("$</b> by ");
     sb.append(auctionWinner.getUser().getFirstName());
     sb.append(" ");
     sb.append(auctionWinner.getUser().getLastName());

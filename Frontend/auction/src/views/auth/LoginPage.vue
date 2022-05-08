@@ -58,6 +58,7 @@
 import {Form, Field, ErrorMessage} from "vee-validate";
 import * as yup from "yup";
 import Main_Logo from "@/components/Main_Logo";
+import AuthService from "@/services/auth.service";
 
 export default {
   name: "Login",
@@ -88,6 +89,18 @@ export default {
   created() {
     if (this.loggedIn) {
       this.$router.push("/profile/account");
+    }
+    if (this.$route.path.toString().match("login/confirm")) {
+      AuthService.verify(this.$route.params.code).then(
+          () => {
+          },
+          (error) => {
+            this.$notify({
+              type: 'error',
+              text: error.response.data.errorMessage
+            })
+      }
+      )
     }
   },
   methods: {

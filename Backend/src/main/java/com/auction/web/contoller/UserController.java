@@ -2,15 +2,16 @@ package com.auction.web.contoller;
 
 import com.auction.service.interfaces.ResetPasswordService;
 import com.auction.service.interfaces.UserService;
+import com.auction.service.interfaces.WithdrawMoneyService;
 import com.auction.web.dto.UserDto;
 import com.auction.web.dto.request.AddDefaultAddressRequest;
 import com.auction.web.dto.request.ChangePasswordRequest;
 import com.auction.web.dto.request.UpdatePasswordRequest;
 import com.auction.web.dto.request.UserUpdateRequest;
+import com.auction.web.dto.request.WithdrawMoneyRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,9 +31,10 @@ import java.io.UnsupportedEncodingException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
-public class UserController {
+class UserController {
   private final ResetPasswordService resetPasswordService;
   private final UserService userService;
+  private final WithdrawMoneyService withdrawMoneyService;
 
   @PostMapping("/reset/password/{email}")
   public ResponseEntity<Void> resetPasswordByEmail(@Valid
@@ -103,6 +105,12 @@ public class UserController {
   @PostMapping("/address")
   public ResponseEntity<Void> addDefaultAddress(@RequestBody AddDefaultAddressRequest request) {
     userService.addDefaultAddress(request);
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/withdraw")
+  public ResponseEntity<Void> withdrawMoney(@RequestBody WithdrawMoneyRequest request) {
+    withdrawMoneyService.create(request);
     return ResponseEntity.ok().build();
   }
 }

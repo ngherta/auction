@@ -66,7 +66,7 @@ class NotificationMessageServiceImpl implements NotificationMessageService {
     });
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   @Override
   public List<NotificationMessage> getMessagesOlderThan(LocalDateTime localDateTime) {
     return notificationMessageRepository.findAllOlderThan(localDateTime);
@@ -82,7 +82,7 @@ class NotificationMessageServiceImpl implements NotificationMessageService {
   @Transactional
   public void seen(Long userId, List<Long> notificationMessageId) {
     User user = userRepository.findById(userId)
-            .orElseThrow(() -> new UserNotFoundException("User[" + userId + "] doesn't exist"));;
+            .orElseThrow(() -> new UserNotFoundException("User[" + userId + "] doesn't exist"));
     List<NotificationMessage> notificationMessages = notificationMessageRepository.findAllByIdIn(notificationMessageId);
     List<NotificationMessageUser> notificationMessageUsers = notificationMessageUserRepository.findAllByUserAndAndNotificationMessageIn(user, notificationMessages);
     for (NotificationMessageUser notificationMessageUser : notificationMessageUsers) {

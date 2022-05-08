@@ -5,6 +5,7 @@ import com.auction.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
@@ -12,28 +13,28 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 class UserToDtoMapper implements Mapper<User, UserDto> {
 
-    @Override
-    public UserDto map(User entity) {
-        UserDto userDto = new UserDto();
-        userDto.setId(entity.getId());
-        userDto.setEmail(entity.getEmail());
-        userDto.setFirstName(entity.getFirstName());
-        userDto.setLastName(entity.getLastName());
-        userDto.setFullName(entity.getFirstName() + " " + entity.getLastName());
-        userDto.setEnabled(entity.isEnabled());
-        userDto.setHasDefaultAddress(entity.hasDefaultAddress());
-        userDto.setMoneyBalance(entity.getMoneyBalance());
-        userDto.setNeedTutorial(entity.getNeedTutorial());
-        if (entity.getBirthday() != null) {
-            userDto.setBirthday(entity.getBirthday().format(DateTimeFormatter.ofPattern("dd-MM-yy")));
-        }
-        userDto.setUserRole(entity
-                                    .getUserRoles()
-                                    .stream()
-                                    .map(e -> e.getUserRole()
-                                            .getAuthority())
-                                    .collect(Collectors.toSet()));
-
-        return userDto;
-    }
+  @Override
+  public UserDto map(User e) {
+    return UserDto.builder()
+        .id(e.getId())
+        .email(e.getEmail())
+        .firstName(e.getFirstName())
+        .lastName(e.getLastName())
+        .fullName(e.getFirstName() + " " + e.getLastName())
+        .enabled(e.isEnabled())
+        .hasDefaultAddress(e.hasDefaultAddress())
+        .moneyBalance(Double.parseDouble(new DecimalFormat("##.##")
+                                             .format(e.getMoneyBalance())))
+        .needTutorial(e.getNeedTutorial())
+        .birthday(e.getBirthday() == null ?
+                      null :
+                      e.getBirthday().format(DateTimeFormatter.ofPattern("dd-MM-yy")))
+        .userRole(e
+                      .getUserRoles()
+                      .stream()
+                      .map(r -> r.getUserRole()
+                          .getAuthority())
+                      .collect(Collectors.toSet()))
+        .build();
+  }
 }

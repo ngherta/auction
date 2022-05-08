@@ -43,6 +43,10 @@ const routes = [
     component: Login,
   },
   {
+    path: "/login/confirm/:code",
+    component: Login
+  },
+  {
     path: "/password/reset",
     component: ForgotPasswordPage,
   },

@@ -5,11 +5,6 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
   <changeSet id="17" author="ngh">
-    <insert tableName="category">
-      <column name="id" valueNumeric="100002"/>
-      <column name="category" value="OTHER"/>
-    </insert>
-
     <insert tableName="sub_category">
       <column name="id" valueNumeric="100008"/>
       <column name="category_id" value="10002"/>
@@ -28,11 +23,78 @@
       <column name="category" value="Jacket"/>
     </insert>
 
+    <insert tableName="category">
+      <column name="id" valueNumeric="100002"/>
+      <column name="category" value="OTHER"/>
+    </insert>
+
     <insert tableName="sub_category">
       <column name="id" valueNumeric="100004"/>
       <column name="category_id" value="100002"/>
       <column name="category" value="Books"/>
     </insert>
+    <insert tableName="sub_category">
+      <column name="id" valueNumeric="100013"/>
+      <column name="category_id" value="100002"/>
+      <column name="category" value="Home and Garden"/>
+    </insert>
+    <insert tableName="sub_category">
+      <column name="id" valueNumeric="100014"/>
+      <column name="category_id" value="100002"/>
+      <column name="category" value="Music"/>
+    </insert>
+    <insert tableName="sub_category">
+      <column name="id" valueNumeric="100015"/>
+      <column name="category_id" value="100002"/>
+      <column name="category" value="Toys"/>
+    </insert>
+    <insert tableName="sub_category">
+      <column name="id" valueNumeric="100016"/>
+      <column name="category_id" value="100002"/>
+      <column name="category" value="Office products"/>
+    </insert>
+
+    <insert tableName="category">
+      <column name="id" valueNumeric="100018"/>
+      <column name="category" value="ART"/>
+    </insert>
+    <insert tableName="sub_category">
+      <column name="id" valueNumeric="100020"/>
+      <column name="category_id" value="100018"/>
+      <column name="category" value="Pictures"/>
+    </insert>
+    <insert tableName="sub_category">
+      <column name="id" valueNumeric="100021"/>
+      <column name="category_id" value="100018"/>
+      <column name="category" value="Coins"/>
+    </insert>
+    <insert tableName="sub_category">
+      <column name="id" valueNumeric="100022"/>
+      <column name="category_id" value="100018"/>
+      <column name="category" value="Sculpture"/>
+    </insert>
+    <insert tableName="sub_category">
+      <column name="id" valueNumeric="100040"/>
+      <column name="category_id" value="100018"/>
+      <column name="category" value="Other"/>
+    </insert>
+
+    <insert tableName="sub_category">
+      <column name="id" valueNumeric="100041"/>
+      <column name="category_id" value="10002"/>
+      <column name="category" value="Sneakers"/>
+    </insert>
+    <insert tableName="sub_category">
+      <column name="id" valueNumeric="100042"/>
+      <column name="category_id" value="10002"/>
+      <column name="category" value="Trainers"/>
+    </insert>
+    <insert tableName="sub_category">
+      <column name="id" valueNumeric="100043"/>
+      <column name="category_id" value="10002"/>
+      <column name="category" value="Socks"/>
+    </insert>
+
 
     <rollback>
     </rollback>

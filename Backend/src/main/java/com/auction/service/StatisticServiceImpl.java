@@ -7,6 +7,7 @@ import com.auction.repository.AuctionEventRepository;
 import com.auction.repository.PaymentAuditRepository;
 import com.auction.repository.UserRepository;
 import com.auction.service.interfaces.StatisticService;
+import com.auction.web.dto.StatisticEnum;
 import com.auction.web.dto.response.statistic.CategoryCount;
 import com.auction.web.dto.response.statistic.CommissionPerMouth;
 import com.auction.web.dto.response.statistic.Statistic;
@@ -36,6 +37,25 @@ class StatisticServiceImpl implements StatisticService {
     return statistic;
   }
 
+  @Transactional(readOnly = true)
+  @Override
+  public Statistic getStatisticByFilter(List<StatisticEnum> types) {
+    Statistic statistic = new Statistic();
+    for (StatisticEnum type : types) {
+      switch (type) {
+        case MONEY:
+          statistic.setCommissionPerMouths(getCommissionStats());
+          break;
+        case CATEGORIES:
+          statistic.setSubCategoryCount(getSubCategoryCount());
+          break;
+        default:
+          throw new IllegalArgumentException("Statistic type[" + type.name() + "] doesn't exist.");
+      }
+    }
+    return statistic;
+  }
+
   @Override
   @Transactional(readOnly = true)
   public List<CommissionPerMouth> getCommissionStats() {
@@ -43,11 +63,11 @@ class StatisticServiceImpl implements StatisticService {
     List<CommissionPerMouth> result = new ArrayList<>();
     for (CommissionPerMouthProjection commission : commissionPerMouth) {
       result.add(CommissionPerMouth.builder()
-                         .amount(commission.getAmount())
-                         .date(commission.getDate().replace(" ", ""))
-                         .index(commission.getIndex())
-                         .month(commission.getMonth().replace(" ", ""))
-                         .build());
+                     .amount(commission.getAmount())
+                     .date(commission.getDate().replace(" ", ""))
+                     .index(commission.getIndex())
+                     .month(commission.getMonth().replace(" ", ""))
+                     .build());
     }
     return result;
   }
@@ -89,7 +109,6 @@ class StatisticServiceImpl implements StatisticService {
     listProjections.forEach(e -> list.add(new CategoryCount(e.getName(), e.getCount())));
     return list;
   }
-
 
 
 //  private List<UserCountPerMonth> addNonExistentMonths(List<UserCountPerMonth> countPerMonths) {

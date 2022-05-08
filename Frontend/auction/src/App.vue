@@ -7,6 +7,7 @@
       </div>
       <Footer class="flex-shrink-0 mt-auto"/>
     </div>
+    <notifications />
   </div>
 </template>
 

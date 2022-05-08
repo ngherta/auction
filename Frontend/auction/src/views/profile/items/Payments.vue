@@ -3,7 +3,15 @@
     <Icon name="payments" size="3"/>
     <div class="d-flex justify-content-between">
       <h2 class="h2 mt-2">Payments</h2>
-      <h5>Balance: {{ this.userBalance }} $</h5>
+      <h5>Balance: {{ this.userBalance }} $
+        <button v-if="userBalance > 0"
+                @click="modalType = 'WITHDRAW_MONEY'"
+                type="button"
+                class="btn"
+                data-toggle="modal"
+                data-target="#addressModal"><Icon class="m-auto" size="1.3" name="withdraw-money"></Icon>
+        </button>
+      </h5>
     </div>
     <div class="d-flex justify-content-end mt-3 mb-3">
       <button class="badge badge-pill filter-button"
@@ -173,6 +181,26 @@
               <input v-model="trackNumber" name="trackNumber" type="text" class="form-control" id="trackNumber"/>
             </div>
           </form>
+          <form v-if="modalType == 'WITHDRAW_MONEY'" @submit="submitWithdrawMoneyRequest">
+            <h3 class="h3">Withdraw money</h3>
+            <p><strong>Balance: </strong>{{this.userBalance}}</p>
+            <div class="form-check">
+              <label for="userName" class="col-form-label">Name: </label>
+              <input v-model="nameRequest" name="userNameInput" placeholder="John Smith" type="text" class="form-control" id="userName"/>
+            </div>
+            <div class="form-check">
+              <label for="cardNumber" class="col-form-label">Card number: </label>
+              <input v-model="cardRequest" name="cardNumberInput" placeholder="1234567812345678" type="text" class="form-control" id="cardNumber"/>
+            </div>
+            <div class="form-check">
+              <label for="expiredDate" class="col-form-label">Expire date: </label>
+              <input v-model="expireDateRequest" name="expiredDate" placeholder="10/2024" type="text" class="form-control" id="expiredDate"/>
+            </div>
+            <div class="form-check">
+              <label for="withDrawMoneyInput" class="col-form-label">Amount: </label>
+              <input v-model="amountRequest" name="withDrawMoneyInput" type="number" class="form-control" id="withDrawMoneyInput"/>
+            </div>
+          </form>
         </div>
         <div class="modal-footer">
           <button v-if="this.$store.state.auth.user.userDto.hasDefaultAddress == true && modalType == 'ADD_ADDRESS'"
@@ -186,6 +214,12 @@
                   @click="submitAddress"
                   class="btn btn-primary"
                   data-dismiss="modal">Add address
+          </button>
+          <button @click="submitWithdrawMoneyRequest"
+                  type="button"
+                  v-if="modalType == 'WITHDRAW_MONEY'"
+                  class="btn btn-primary"
+                  data-dismiss="modal">Submit
           </button>
           <button type="submit"
                   v-if="modalType == 'ADD_TRACK_NUMBER'"
@@ -227,7 +261,11 @@ export default {
       trackNumber: '',
       userBalance: 0,
       buttonLoading: false,
-      needToSaveAsDefault: false
+      needToSaveAsDefault: false,
+      amountRequest: 0,
+      nameRequest : null,
+      cardRequest : null,
+      expireDateRequest : null
     }
   },
   methods: {
@@ -252,6 +290,18 @@ export default {
       this.getAuctions();
       window.scrollTo(0, 0);
     },
+    submitWithdrawMoneyRequest() {
+      UserService.withdrawMoney(this.userId, this.amountRequest, this.nameRequest, this.cardRequest, this.expireDateRequest).then(
+          () => {
+          },
+          (error) => {
+            this.$notify({
+              type: 'error',
+              text: error.response.data.errorMessage
+            });
+          }
+      );
+    },
     handleDelivered() {
       WinnerService.delivered(this.currentWinnerId).then(
           () => {
@@ -270,8 +320,8 @@ export default {
       WinnerService.addTrackNumber(this.trackNumber, this.currentWinnerId).then(
           () => {
             this.currentWinnerId = null;
-            this.currentWinner.
             this.currentWinner.status = 'DELIVERY_PROCESSING';
+            this.currentWinner.trackNumber = this.trackNumber;
           },
           (error) => {
             this.$notify({
