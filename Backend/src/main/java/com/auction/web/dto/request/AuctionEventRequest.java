@@ -22,9 +22,7 @@ public class AuctionEventRequest {
     private Double finishPrice;
     @NotNull
     private Long userId;
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm")
     private LocalDateTime startDate;
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm")
     private LocalDateTime finishDate;
     private Double charityPercent;
     @NotEmpty

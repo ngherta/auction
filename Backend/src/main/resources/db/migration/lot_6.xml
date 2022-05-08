@@ -24,6 +24,7 @@
       <column name="user_rating" value="12"/>
       <column name="enabled" value="true"/>
       <column name="birthday" valueDate="CURRENT_TIMESTAMP()"/>
+      <column name="money_balance" valueNumeric="0"/>
     </insert>
     <insert tableName="user_roles">
       <column name="user_id" valueNumeric="777"/>

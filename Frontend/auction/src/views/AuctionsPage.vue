@@ -186,7 +186,7 @@ export default {
       searchDropdownData: [],
       loadingSearch: false,
       page: 1,
-      perPage: 2,
+      perPage: 9,
       countOfPages: '',
       lastBids: [{
         auctionId: '',

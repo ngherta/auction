@@ -1,5 +1,6 @@
 package com.auction.config;
 
+import com.auction.exception.AuctionRuntimeException;
 import com.auction.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -82,6 +83,9 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
+        if (Boolean.FALSE.equals(enabled)) {
+            throw new AuctionRuntimeException("Firstly you should confirm your email!");
+        }
         return enabled;
     }
 
@@ -93,5 +97,10 @@ public class UserDetailsImpl implements UserDetails {
             return false;
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

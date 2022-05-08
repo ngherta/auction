@@ -98,12 +98,13 @@ class AuctionEventServiceImpl implements AuctionEventService {
         .categories(subCategoryList)
         .build();
 
-    if (request.getAuctionType() == AuctionType.CHARITY &&
+    if (request.getAuctionType() != AuctionType.CHARITY &&
         request.getCharityPercent() != null &&
         request.getCharityPercent() == 0) {
       auctionEvent.setAuctionType(AuctionType.COMMERCIAL);
     }
-    else if (request.getCharityPercent() > 0) {
+    else if (request.getCharityPercent() != null &&
+        request.getCharityPercent() > 0) {
       auctionEvent.setAuctionType(AuctionType.CHARITY);
       auctionEvent.setCharityPercent(request.getCharityPercent());
     }

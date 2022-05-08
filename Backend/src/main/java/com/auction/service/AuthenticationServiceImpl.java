@@ -47,7 +47,8 @@ class AuthenticationServiceImpl implements AuthenticationService {
   @Transactional
   public JwtResponse authenticateUser(LoginRequest loginRequest) {
     Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+            new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
+                                                    loginRequest.getPassword()));
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtils.generateJwtToken(authentication);
 

@@ -125,7 +125,7 @@ class UserServiceImpl implements UserService {
         .firstName(request.getFirstName())
         .lastName(request.getLastName())
         .birthday(request.getBirthday())
-        .enabled(true)
+        .enabled(false)
         .genDate(LocalDateTime.now())
         .moneyBalance(0D)
         .needTutorial(true)
