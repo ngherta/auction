@@ -1,6 +1,7 @@
 package com.auction.repository;
 
 import com.auction.model.NotificationMessage;
+import com.auction.model.enums.NotificationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -25,6 +26,8 @@ public interface NotificationMessageRepository extends JpaRepository<Notificatio
       "AND nm.gen_date < (select gen_date from user_gen_date LIMIT 1)")
   List<NotificationMessage> findUncreatedNotificationForUser(Long userId, List<String> notificationTypes, LocalDateTime date);
 
+
+  List<NotificationMessage> findAllByTypeInAndGenDateAfterAndSingleNotification(List<NotificationType> types, LocalDateTime date, boolean isSingleNotification);
 
   @Query(nativeQuery = true, value = "" +
       "SELECT * FROM notification_message nm " +

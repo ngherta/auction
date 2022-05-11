@@ -6,6 +6,7 @@ import com.auction.model.User;
 import com.auction.model.enums.NotificationType;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 public interface NotificationMessageService {
@@ -25,4 +26,6 @@ public interface NotificationMessageService {
   NotificationMessageUser getNotificationMessageByUserAndMessage(User user, NotificationMessage notificationMessage);
 
   void seen(Long userId, Long notificationMessageId);
+
+  List<NotificationMessage> findNotSingleNotification(List<NotificationType> typeList, User user);
 }

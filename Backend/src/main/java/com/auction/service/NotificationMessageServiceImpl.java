@@ -109,4 +109,10 @@ class NotificationMessageServiceImpl implements NotificationMessageService {
 
     notificationMessageUser.setSeen(true);
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<NotificationMessage> findNotSingleNotification(List<NotificationType> typeList, User user) {
+    return notificationMessageRepository.findAllByTypeInAndGenDateAfterAndSingleNotification(typeList, user.getGenDate(), false);
+  }
 }

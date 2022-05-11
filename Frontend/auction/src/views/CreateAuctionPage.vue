@@ -184,7 +184,11 @@ export default {
         });
         return;
       }
-
+      let charityPercentValue = 0;
+      let type = this.getAuctionTypeFromInput();
+      if (type != 'COMMERCIAL') {
+        charityPercentValue = 10;
+      }
       const auction = {
         title: data.title,
         description: this.descriptionValue,
@@ -195,8 +199,8 @@ export default {
         userId: this.$store.state.auth.user.userDto.id,
         startDate: this.startDate,
         finishDate: this.finishDate,
-        auctionType: this.getAuctionTypeFromInput(),
-        charityPercent: 10
+        auctionType: type,
+        charityPercent: charityPercentValue
       }
 
       AuctionService.create(auction).then(
@@ -217,7 +221,7 @@ export default {
     getAuctionTypeFromInput() {
       if (this.isCharity) {
         return 'CHARITY';
-      } else if (!this.isCharity) {
+      } else  {
         return 'COMMERCIAL';
       }
     },

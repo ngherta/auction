@@ -27,13 +27,13 @@
            :id="'auction-item-' + index"
            class="card m-auto"
            style="width: 18rem;">
-        <img :src="auction.images[0]" height="300" class="card-img-top" alt="image of auction">
+        <img :src="auction.images[0]" class="card-img-top" alt="image of auction">
         <div class="card-body">
           <h5 class="card-title">{{ auction.title }}</h5>
           <p class="card-text">Status: <b>{{ auction.statusType }}</b></p>
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">Charity percent:
+          <li v-if="auction.statusType != 'COMMERCIAL'" class="list-group-item">Charity percent:
             <b>{{ auction.charityPercent }} %</b></li>
           <li class="list-group-item">Start date: <b>{{ auction.startDate }}</b></li>
         </ul>

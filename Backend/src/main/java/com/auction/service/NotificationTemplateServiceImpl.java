@@ -156,7 +156,7 @@ class NotificationTemplateServiceImpl implements NotificationTemplateService {
   @Transactional
   public void sendNotificationOfChangeBet(AuctionAction currentAction) {
     StringBuilder sb = new StringBuilder();
-    sb.append("New bet - <b>");
+    sb.append("New bid - <b>");
     sb.append(new DecimalFormat("#0.00").format(currentAction.getBet()));
     sb.append("$</b> by ");
     sb.append(currentAction.getUser().getFirstName());
