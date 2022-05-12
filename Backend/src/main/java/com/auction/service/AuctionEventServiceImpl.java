@@ -67,11 +67,11 @@ class AuctionEventServiceImpl implements AuctionEventService {
 
   private void checkDateForAuction(AuctionEventRequest request) {
     if (request.getFinishDate().isBefore(LocalDateTime.now())) {
-      throw new DateTimeException("Finish date should be before " + LocalDateTime.now());
+      throw new AuctionRuntimeException("Finish date should be before " + LocalDateTime.now());
     }
 
     if (request.getStartDate().isAfter(request.getFinishDate())) {
-      throw new DateTimeException("Start date should be before Finish date!");
+      throw new AuctionRuntimeException("Start date should be before finish date!");
     }
   }
 
@@ -81,6 +81,8 @@ class AuctionEventServiceImpl implements AuctionEventService {
     checkDateForAuction(request);
 
     List<SubCategory> subCategoryList = categoryService.getSubCategoriesByIds(request.getCategoryIds());
+
+    request.setFinishDate(request.getFinishDate().plusHours(3));
 
     User user = userService.findById(request.getUserId());
     AuctionEvent auctionEvent = AuctionEvent.builder()

@@ -14,7 +14,7 @@
   <artifactId>auction</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>auction</name>
-  <description>JTOM project for Spring Boot</description>
+  <description>Spring Boot for JTOM</description>
   <properties>
     <java.version>11</java.version>
     <spring-boot-admin-starter-client.version>2.4.1</spring-boot-admin-starter-client.version>

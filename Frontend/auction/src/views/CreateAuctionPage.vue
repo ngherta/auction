@@ -1,7 +1,6 @@
 <template>
   <div class="container mt-5 mb-5">
     <h1 class="h1 mb-4">Create auction</h1>
-    <div>{{this.categoryValue}}</div>
     <div>
       <Form @submit="createAuction" :validation-schema="schema">
         <div v-if="!successful" class="row creation-block mb-3">
@@ -141,8 +140,8 @@ export default {
       schema,
       isCheckedFinishPrice: true,
       images: [],
-      startDate: null,
-      finishDate: null,
+      startDate: new Date(),
+      finishDate: new Date(),
       isCharity: false,
       descriptionValue: "",
       categoriesOptions: [],
@@ -176,6 +175,8 @@ export default {
     },
     createAuction(data) {
       this.successful = false;
+      console.log(this.startDate.getFullYear() + '-' + this.startDate.getMonth() + '-' + this.startDate.getDay() + 'T' + this.startDate.getHours() + ':' + this.startDate.getMinutes());
+      console.log(this.finishDate)
       this.loading = true;
       if (this.images.length == 0) {
         this.$notify({
@@ -210,6 +211,7 @@ export default {
             this.$router.push("/auctions");
           },
           (error) => {
+            console.log(error.response)
             this.$notify({
               type: 'error',
               text: error.response.data.errorMessage

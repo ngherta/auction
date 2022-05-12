@@ -31,28 +31,23 @@ class TokenConfirmationServiceImpl implements TokenConfirmationService {
   @Transactional
   public void confirm(String confirmation) {
     TokenConfirmation tokenConfirmation = tokenConfirmationRepository.findByConfirmation(confirmation)
-            .orElseThrow(() -> new TokenConfirmationNotFoundException(String.format("TokenConfirmation[%s] not found", confirmation)));
+        .orElseThrow(() -> new TokenConfirmationNotFoundException(String.format("TokenConfirmation[%s] not found", confirmation)));
 
     User user = tokenConfirmation.getUser();
 
-    if (user.isEnabled()) {
-      throw new UserAlreadyEnabledException("User [" + user.getId() + "] already enabled!");
-    }
-    else {
-      user.setEnabled(true);
-      user = userRepository.save(user);
-      tokenConfirmationRepository.delete(tokenConfirmation);
-    }
+    user.setEnabled(true);
+    userRepository.save(user);
+    tokenConfirmationRepository.delete(tokenConfirmation);
   }
 
   @Override
   @Transactional
   public void generate(User user) {
     TokenConfirmation confirmation = TokenConfirmation.builder()
-            .confirmation(RandomString.make(64))
-            .user(user)
-            .genDate(LocalDateTime.now())
-            .build();
+        .confirmation(RandomString.make(64))
+        .user(user)
+        .genDate(LocalDateTime.now())
+        .build();
 
     confirmation = tokenConfirmationRepository.save(confirmation);
     mailService.sendEmailConfirmation(confirmation);
