@@ -82,6 +82,7 @@ class AuctionEventServiceImpl implements AuctionEventService {
 
     List<SubCategory> subCategoryList = categoryService.getSubCategoriesByIds(request.getCategoryIds());
 
+//    request.setStartDate(request.getStartDate().plusHours(3));
     request.setFinishDate(request.getFinishDate().plusHours(3));
 
     User user = userService.findById(request.getUserId());
